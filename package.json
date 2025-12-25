@@ -1,0 +1,31 @@
+{
+  "name": "rivaas-docs",
+  "description": "Example site that uses Docsy theme for technical documentation.",
+  "repository": "github:rivaas-dev/docs",
+  "homepage": "https://rivaas.dev/docs",
+  "author": "Rivaas Authors",
+  "license": "Apache-2.0",
+  "bugs": "https://github.com/rivaas-dev/docs/issues",
+  "spelling": "cSpell:ignore docsy hugo htmltest precheck postbuild rtlcss -",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "cross-env": "^10.1.0",
+    "postcss-cli": "^11.0.1",
+    "rtlcss": "^4.3.0"
+  },
+  "optionalDependencies": {
+    "npm-check-updates": "^19.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "private": true,
+  "prettier": {
+    "proseWrap": "always",
+    "singleQuote": true
+  },
+  "cSpell:ignore": "",
+  "dependencies": {
+    "murmurhash-native": "^3.5.1"
+  }
+}

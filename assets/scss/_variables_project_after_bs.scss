@@ -1,0 +1,40 @@
+/*
+Bootstrap overrides for Rivaas alpine theme
+For details, see: https://www.docsy.dev/docs/content/lookandfeel/#project-style-files
+*/
+
+// ========================================
+// Custom Semantic Colors for Features
+// ========================================
+$custom-colors: (
+  'alpine-green': $primary,
+  'mountain-stone': $secondary,
+  'moss': $success,
+  'glacier': $info,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// ========================================
+// Dark Mode Theme Colors
+// ========================================
+// Override primary in dark mode for better contrast
+[data-bs-theme="dark"] {
+  --bs-primary: #3FAF98;
+  --bs-primary-rgb: 63, 175, 152;
+  
+  --bs-body-bg: #0F1413;
+  --bs-body-bg-rgb: 15, 20, 19;
+  
+  --bs-body-color: #E6ECE9;
+  --bs-body-color-rgb: 230, 236, 233;
+  
+  --bs-secondary-color: #A3B1AB;
+  --bs-secondary-color-rgb: 163, 177, 171;
+  
+  --bs-tertiary-bg: #1A2220;
+  --bs-tertiary-bg-rgb: 26, 34, 32;
+  
+  --bs-border-color: rgba(163, 177, 171, 0.2);
+}
+
