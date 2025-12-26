@@ -1,5 +1,5 @@
 baseURL: https://rivaas.dev/docs/
-title: Rivaas Documentation
+title: RIVAAS Documentation
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu
 
@@ -46,7 +46,7 @@ imaging:
 languages:
   en:
     languageName: English
-    title: Rivaas Documentation
+    title: RIVAAS Documentation
     params:
       description: Developer documentation for the Rivaas Go framework 
   # cSpell:disable

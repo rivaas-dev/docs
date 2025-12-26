@@ -11,6 +11,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
+          config.allowUnfree = true;
         };
       in
       {
@@ -22,6 +23,7 @@
             hugo
             gum
             nodejs_24
+            google-chrome
           ];
 
           shellHook = ''
