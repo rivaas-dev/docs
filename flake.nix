@@ -25,6 +25,7 @@
           ];
 
           shellHook = ''
+            export NODE_PATH=$PWD/node_modules
             gum style --foreground 158 "$(cat logo.txt)"
 
             npm install
