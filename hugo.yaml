@@ -92,10 +92,11 @@ menu:
       weight: 50
     
 params:
-  algolia:
-    appId: EBIDHGIWS4
-    apiKey: e96738e39de23a08bf385cf5c50bcedb
-    indexName: "Rivaas Documentation"
+  search:
+    algolia:
+      appId: EIOQ6BU63M
+      apiKey: cd9aa3304cd2ff523daef11d5b336117
+      indexName: docs
 
   taxonomy:
     # set taxonomyCloud = [] to hide taxonomy clouds

@@ -1,0 +1,27 @@
+{{- if and .Site.Params.search (isset .Site.Params.search "algolia") -}}
+<!-- Algolia DocSearch JS -->
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script type="text/javascript">
+// Initialize DocSearch for both desktop and mobile containers
+const containers = ['#docsearch-0', '#docsearch-1'];
+for (let c of containers) {
+  docsearch({
+    container: c,
+    appId: '{{ .Site.Params.search.algolia.appId }}',
+    apiKey: '{{ .Site.Params.search.algolia.apiKey }}',
+    indexName: '{{ .Site.Params.search.algolia.indexName }}',
+    debug: false,
+    searchParameters: {
+      facetFilters: ['language:en'],
+    },
+    placeholder: 'Search documentation...',
+    translations: {
+      button: {
+        buttonText: 'Search',
+        buttonAriaLabel: 'Search documentation',
+      },
+    },
+  });
+}
+</script>
+{{- end -}}
