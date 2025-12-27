@@ -10,17 +10,6 @@ for (let c of containers) {
     appId: '{{ .Site.Params.search.algolia.appId }}',
     apiKey: '{{ .Site.Params.search.algolia.apiKey }}',
     indexName: '{{ .Site.Params.search.algolia.indexName }}',
-    debug: false,
-    searchParameters: {
-      facetFilters: ['language:en'],
-    },
-    placeholder: 'Search documentation...',
-    translations: {
-      button: {
-        buttonText: 'Search',
-        buttonAriaLabel: 'Search documentation',
-      },
-    },
   });
 }
 </script>
