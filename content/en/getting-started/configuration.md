@@ -109,7 +109,7 @@ Features:
 
 ## Observability
 
-💡 **Note**: This section covers observability setup. For detailed observability patterns, see the [Observability Guide](/guides/observability/).
+💡 **Note**: This section covers observability setup. For detailed observability patterns, see the [Observability Guide](/guides/app/observability/).
 
 Enable logging, metrics, and tracing:
 
@@ -275,24 +275,6 @@ a := app.MustNew(
 
 💡 **Learn More**: See the [Middleware Guide](../middleware/) for detailed middleware usage patterns.
 
-## Advanced: Router Options
-
-💡 **When You Need This**: Most apps don't need custom router options. Use this when you need fine-grained control over routing behavior.
-
-Pass options to the underlying router:
-
-```go
-import "rivaas.dev/router"
-
-a := app.MustNew(
-    app.WithServiceName("my-api"),
-    app.WithRouterOptions(
-        router.WithStrictSlash(true),
-        router.WithNotFoundHandler(customNotFound),
-    ),
-)
-```
-
 ## Complete Example
 
 Here's a production-ready configuration:
@@ -418,11 +400,11 @@ Now that you understand configuration, explore these topics:
 
 - **[Middleware Guide](../middleware/)** — Add functionality with middleware
 - **[Next Steps](../next-steps/)** — Continue your learning journey
-- **[Routing Guide](/guides/routing/)** — Advanced routing patterns
-- **[Observability Guide](/guides/observability/)** — Deep dive into logging, metrics, tracing
-- **[Package Documentation](/packages/app/)** — Complete API reference
+- **[Routing Guide](/guides/router/)** — Advanced routing patterns
+- **[Observability Guide](/guides/app/observability/)** — Deep dive into logging, metrics, tracing
+- **[Package Documentation](/reference/packages/app/)** — Complete API reference
 
 ## Reference
 
-For a complete list of all configuration options, see the [Configuration Reference](/reference/configuration-options/).
+For a complete list of all configuration options, see the [App Options Reference](/reference/packages/app/options/).
 

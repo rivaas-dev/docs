@@ -82,7 +82,7 @@ func handleHello(c *app.Context) {
 // handleEcho echoes back the request body
 func handleEcho(c *app.Context) {
     var body map[string]any
-    if err := c.BindJSON(&body); err != nil {
+    if err := c.Bind(&body); err != nil {
         c.JSON(http.StatusBadRequest, map[string]string{
             "error": "Invalid JSON",
         })
@@ -215,7 +215,7 @@ func handleRoot(c *app.Context) {
 - Handlers receive an `*app.Context`
 - `c.JSON()` sends a JSON response
 - `c.Param()` gets path parameters
-- `c.BindJSON()` parses JSON request bodies
+- `c.Bind()` parses request bodies (auto-detects JSON, form, etc.)
 
 ## Common Patterns
 
@@ -253,7 +253,7 @@ a.GET("/search", func(c *app.Context) {
 
 ```go
 a.GET("/headers", func(c *app.Context) {
-    userAgent := c.GetHeader("User-Agent")
+    userAgent := c.Request.Header.Get("User-Agent")
     
     c.JSON(http.StatusOK, map[string]string{
         "user_agent": userAgent,
@@ -398,8 +398,8 @@ You now have a working Rivaas application! Here are some next steps:
 
 - **[Configuration](../configuration/)** — Learn about configuration options
 - **[Middleware](../middleware/)** — Add middleware for logging, CORS, etc.
-- **[Routing Guide](/guides/routing/)** — Advanced routing patterns
-- **[Observability Guide](/guides/observability/)** — Add logging, metrics, and tracing
+- **[Routing Guide](/guides/router/)** — Advanced routing patterns
+- **[Observability Guide](/guides/app/observability/)** — Add logging, metrics, and tracing
 
 ## Complete Example
 
@@ -425,7 +425,7 @@ a.Start(ctx, ":3000")  // Use port 3000 instead
 
 ### JSON Binding Errors
 
-If `BindJSON()` fails, ensure:
+If `Bind()` fails for JSON requests, ensure:
 1. Content-Type header is set to `application/json`
 2. Request body contains valid JSON
 3. JSON structure matches your Go struct

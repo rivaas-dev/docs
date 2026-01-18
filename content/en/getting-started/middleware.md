@@ -41,7 +41,7 @@ Rivaas includes 12 production-ready middleware packages:
 | `methodoverride` | HTTP method override | ✅ |
 | `trailingslash` | Trailing slash handling | ✅ |
 
-See the [Middleware Reference](/reference/middleware/) for complete documentation.
+See the [Middleware Reference](/reference/packages/router/middleware/) for complete documentation.
 
 ## Adding Middleware
 
@@ -178,7 +178,7 @@ import "rivaas.dev/router/middleware/recovery"
 // Custom recovery with stack traces
 a.Use(recovery.New(
     recovery.WithStackTrace(true),
-    recovery.WithRecoveryHandler(func(c *app.Context, err any) {
+    recovery.WithHandler(func(c *router.Context, err any) {
         log.Printf("Panic recovered: %v", err)
         c.JSON(http.StatusInternalServerError, map[string]string{
             "error": "Internal server error",
@@ -194,8 +194,11 @@ Limit request rate (single-instance only):
 ```go
 import "rivaas.dev/router/middleware/ratelimit"
 
-// 100 requests per minute
-a.Use(ratelimit.New(100, time.Minute))
+// 100 requests per second with burst of 20
+a.Use(ratelimit.New(
+    ratelimit.WithRequestsPerSecond(100),
+    ratelimit.WithBurst(20),
+))
 ```
 
 ⚠️ **Production Note**: This uses in-memory storage. For multi-instance deployments, use a distributed rate limiter (Redis, etc.).
@@ -268,7 +271,7 @@ a.Use(timingMiddleware())
 
 ```go
 func authMiddleware(c *app.Context) {
-    token := c.GetHeader("Authorization")
+    token := c.Request.Header.Get("Authorization")
     
     if token == "" {
         c.JSON(http.StatusUnauthorized, map[string]string{
@@ -425,7 +428,7 @@ func handleHealth(c *app.Context) {
 }
 
 func authMiddleware(c *app.Context) {
-    token := c.GetHeader("Authorization")
+    token := c.Request.Header.Get("Authorization")
     if token == "" || !isValidToken(token) {
         c.JSON(http.StatusUnauthorized, map[string]string{"error": "Unauthorized"})
         return
@@ -435,7 +438,7 @@ func authMiddleware(c *app.Context) {
 
 func adminMiddleware(c *app.Context) {
     // Check if user is admin (simplified)
-    if !isAdmin(c.GetHeader("Authorization")) {
+    if !isAdmin(c.Request.Header.Get("Authorization")) {
         c.JSON(http.StatusForbidden, map[string]string{"error": "Forbidden"})
         return
     }
@@ -504,9 +507,8 @@ a.Use(cors.New(
 
 - **[Complete Configuration →](../configuration/)** — Advanced configuration options
 - **[Next Steps →](../next-steps/)** — Continue your learning journey
-- **[Middleware Reference →](/reference/middleware/)** — All 12 middleware with examples
-- **[Creating Middleware →](/guides/custom-middleware/)** — Build your own middleware
-- **[Examples →](/examples/)** — See middleware in action
+- **[Middleware Reference →](/reference/packages/router/middleware/)** — All 12 middleware with examples
+- **[Router Middleware Guide →](/guides/router/middleware/)** — Build your own middleware
 
 ## Learn More
 

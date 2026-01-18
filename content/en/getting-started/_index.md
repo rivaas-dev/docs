@@ -137,8 +137,8 @@ This creates a basic API server. Continue through the guide to learn about confi
 
 ## Need Help?
 
-- **Examples:** Check out the [Examples](/examples/) section for complete applications
-- **API Reference:** See the [Reference](/reference/) documentation for detailed options
+- **Guides:** Check out the [Guides](/guides/) section for detailed tutorials
+- **API Reference:** See the [Reference](/reference/packages/) documentation for detailed options
 - **Issues:** Report problems on [GitHub Issues](https://github.com/rivaas-dev/rivaas/issues)
 - **Discussions:** Ask questions on [GitHub Discussions](https://github.com/rivaas-dev/rivaas/discussions)
 

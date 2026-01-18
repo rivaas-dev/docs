@@ -19,10 +19,10 @@ Congratulations! You've completed the Getting Started guide. You now know how to
 
 Learn advanced routing, error handling, and API patterns:
 
-- **[Routing Guide](/guides/routing/)** — Advanced routing patterns, groups, constraints
-- **[Error Handling](/guides/errors/)** — RFC 9457 problem details, JSON:API errors
+- **[Routing Guide](/guides/router/)** — Advanced routing patterns, groups, constraints
 - **[Request Binding](/guides/binding/)** — Bind and validate JSON, XML, YAML, form data
 - **[OpenAPI Documentation](/guides/openapi/)** — Auto-generate API documentation
+- **[Validation Guide](/guides/validation/)** — Input validation strategies
 
 **Recommended Example:** [Blog API](https://github.com/rivaas-dev/rivaas/tree/main/app/examples/02-blog) — Full-featured blog with CRUD operations, validation, and testing.
 
@@ -33,18 +33,17 @@ Understand your application in production:
 - **[Logging Guide](/guides/logging/)** — Structured logging with slog
 - **[Metrics Guide](/guides/metrics/)** — Prometheus metrics and custom instrumentation
 - **[Tracing Guide](/guides/tracing/)** — Distributed tracing with OpenTelemetry
-- **[Health Checks](/guides/health-checks/)** — Kubernetes-compatible liveness/readiness
+- **[Health Endpoints](/guides/app/health-endpoints/)** — Kubernetes-compatible liveness/readiness
 
 **Key Pattern:** The observability trinity (logs, metrics, traces) works together to give complete visibility.
 
-### 🔒 Security & Authentication
+### 🔒 Security & Best Practices
 
 Secure your APIs:
 
-- **[Authentication Guide](/guides/authentication/)** — JWT, OAuth, API keys
-- **[Authorization Guide](/guides/authorization/)** — RBAC, permissions
-- **[Security Headers](/guides/security/)** — CSP, HSTS, X-Frame-Options
-- **[Rate Limiting](/guides/rate-limiting/)** — Protect against abuse
+- **[Validation Guide](/guides/validation/)** — Input validation and sanitization
+- **[Validation Security](/guides/validation/security/)** — Security considerations for validation
+- **[Router Middleware](/guides/router/middleware/)** — Security middleware (basic auth, rate limiting)
 
 **Security Checklist:**
 - ✅ Use HTTPS in production
@@ -57,10 +56,10 @@ Secure your APIs:
 
 Deploy your application to production:
 
-- **[Docker Deployment](/guides/docker/)** — Containerize your application
-- **[Kubernetes Deployment](/guides/kubernetes/)** — Deploy to Kubernetes
-- **[Configuration Management](/guides/configuration/)** — Environment-based config
-- **[Graceful Shutdown](/guides/shutdown/)** — Handle signals properly
+- **[App Configuration](/guides/app/configuration/)** — Environment-based config
+- **[Server Configuration](/guides/app/server/)** — Timeouts and graceful shutdown
+- **[Health Endpoints](/guides/app/health-endpoints/)** — Kubernetes-compatible probes
+- **[Debug Endpoints](/guides/app/debug-endpoints/)** — pprof for profiling
 
 **Production Checklist:**
 - ✅ Set up health endpoints
@@ -73,10 +72,9 @@ Deploy your application to production:
 
 Deep dive into framework internals:
 
-- **[Custom Middleware](/guides/custom-middleware/)** — Build reusable middleware
-- **[Performance Tuning](/guides/performance/)** — Optimize your application
-- **[Testing Strategies](/guides/testing/)** — Unit, integration, and E2E tests
-- **[Framework Architecture](/concepts/architecture/)** — How Rivaas works internally
+- **[Router Middleware](/guides/router/middleware/)** — Build reusable middleware
+- **[App Testing](/guides/app/testing/)** — Unit, integration, and E2E tests
+- **[Lifecycle Hooks](/reference/packages/app/lifecycle-hooks/)** — Application lifecycle management
 
 ## Example Applications
 
@@ -149,16 +147,16 @@ Rivaas is modular — use any package independently:
 | **openapi** | OpenAPI 3.0/3.1 generation | [pkg.go.dev](https://pkg.go.dev/rivaas.dev/openapi) |
 | **errors** | Error formatting (RFC 9457, JSON:API) | [pkg.go.dev](https://pkg.go.dev/rivaas.dev/errors) |
 
-**Learn More:** [Package Documentation](/packages/)
+**Learn More:** [Package Documentation](/reference/packages/)
 
 ## Reference Documentation
 
 Quick access to API references:
 
-- **[Configuration Options](/reference/configuration-options/)** — All config options
-- **[Context Methods](/reference/context/)** — Request/response handling
-- **[Middleware Reference](/reference/middleware/)** — All middleware options
-- **[Router API](/reference/router/)** — Low-level router API
+- **[App Options](/reference/packages/app/options/)** — All configuration options
+- **[App Context API](/reference/packages/app/context-api/)** — Request/response handling
+- **[Router Middleware](/reference/packages/router/middleware/)** — All middleware options
+- **[Router API](/reference/packages/router/api-reference/)** — Low-level router API
 
 ## Community & Support
 
@@ -227,10 +225,10 @@ func handler(c *app.Context) {
     // Get query parameter
     filter := c.Query("filter")
     
-    // Bind JSON body
+    // Bind request body (auto-detects JSON, form, etc.)
     var req MyRequest
-    if err := c.BindJSON(&req); err != nil {
-        c.JSON(400, map[string]string{"error": "Invalid JSON"})
+    if err := c.Bind(&req); err != nil {
+        c.JSON(400, map[string]string{"error": "Invalid request"})
         return
     }
     
