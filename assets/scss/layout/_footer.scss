@@ -1,0 +1,245 @@
+/*
+ * Rivaas Documentation - Footer
+ * Mountain foundation footer with sections
+ */
+
+// ========================================
+// Footer - Mountain Foundation
+// ========================================
+.td-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rivaas-footer-bg);
+  color: var(--rivaas-footer-text);
+  padding: var(--rivaas-space-5) var(--rivaas-space-6);
+  min-height: 70px;
+  border-top: 3px solid var(--rivaas-footer-border);
+  font-size: 0.8125rem;
+  text-align: center;
+  line-height: 1.6;
+  
+  // Links in footer
+  a {
+    color: var(--rivaas-footer-link);
+    text-decoration: none;
+    transition: all var(--rivaas-transition-normal);
+    position: relative;
+    
+    &:hover {
+      color: var(--rivaas-footer-link-hover);
+      transform: translateY(-1px);
+    }
+    
+    // Underline on hover
+    &:not([class*="btn"])::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width var(--rivaas-transition-normal);
+    }
+    
+    &:hover:not([class*="btn"])::after {
+      width: 100%;
+    }
+  }
+  
+  // Separator pipes - more subtle
+  span, .px-2 {
+    color: var(--rivaas-text-disabled);
+    margin: 0 0.375rem;
+    opacity: 0.6;
+  }
+  
+  // Improved pipe character spacing
+  .td-footer__copyright, .td-footer__authors {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+}
+
+// Remove extra column padding in footer
+.td-footer .col,
+.td-footer [class*="col-"] {
+  padding: 0;
+}
+
+// ========================================
+// Footer Left Section (Icons)
+// ========================================
+.td-footer__left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--rivaas-space-3);
+  
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--rivaas-radius-full);
+    background: var(--rivaas-interactive-muted);
+    color: var(--rivaas-footer-text);
+    transition: all var(--rivaas-transition-normal);
+    
+    &:hover {
+      background: var(--rivaas-interactive-muted-hover);
+      color: var(--rivaas-footer-link-hover);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: var(--rivaas-shadow-md);
+    }
+    
+    // Remove underline effect for icon links
+    &::after {
+      display: none;
+    }
+    
+    i, .fa, .fab, .fas {
+      font-size: var(--rivaas-text-base);
+    }
+  }
+}
+
+// ========================================
+// Footer Center Section (Copyright)
+// ========================================
+.td-footer__center {
+  text-align: center;
+  line-height: 1.8;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--rivaas-space-2);
+  
+  // Remove Bootstrap margin utilities
+  .ms-2, .me-2 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  // Remove margins from copyright span
+  .td-footer__copyright {
+    margin-right: 0 !important;
+  }
+  
+  // Better spacing for links and all children
+  a, span {
+    margin: 0;
+  }
+  
+  // Ensure consistent spacing in text content
+  .td-footer__authors {
+    display: inline-block;
+  }
+}
+
+// ========================================
+// Footer Right Section (Links/Icons)
+// ========================================
+.td-footer__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--rivaas-space-3);
+  
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--rivaas-radius-full);
+    background: var(--rivaas-interactive-muted);
+    color: var(--rivaas-footer-text);
+    transition: all var(--rivaas-transition-normal);
+    
+    &:hover {
+      background: var(--rivaas-interactive-muted-hover);
+      color: var(--rivaas-footer-link-hover);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: var(--rivaas-shadow-md);
+    }
+    
+    // Remove underline effect for icon links
+    &::after {
+      display: none;
+    }
+    
+    i, .fa, .fab, .fas {
+      font-size: var(--rivaas-text-base);
+    }
+  }
+}
+
+// ========================================
+// Footer Copyright & Links
+// ========================================
+.td-footer__copyright-etc {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+}
+
+.td-footer__links-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--rivaas-space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    margin: 0;
+  }
+}
+
+// ========================================
+// Footer Content Wrapper
+// ========================================
+.td-footer .container-fluid {
+  max-width: 100%;
+  
+  > .row {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+// ========================================
+// Footer Responsive
+// ========================================
+@media (max-width: 767.98px) {
+  .td-footer {
+    padding: var(--rivaas-space-6) var(--rivaas-space-4);
+    min-height: auto;
+    font-size: var(--rivaas-text-xs);
+    
+    .td-footer__center {
+      line-height: 2;
+    }
+  }
+  
+  .td-footer__left,
+  .td-footer__right {
+    a {
+      width: 32px;
+      height: 32px;
+      
+      i, .fa, .fab, .fas {
+        font-size: var(--rivaas-text-sm);
+      }
+    }
+  }
+}

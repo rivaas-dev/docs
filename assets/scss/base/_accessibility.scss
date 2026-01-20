@@ -1,0 +1,58 @@
+/*
+ * Rivaas Documentation - Accessibility
+ * Focus states, reduced motion, selection styling
+ */
+
+// ========================================
+// Smooth Scroll & Reduced Motion
+// ========================================
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ========================================
+// Text Selection Styling
+// ========================================
+::selection {
+  background: rgba($primary, 0.2);
+  color: var(--rivaas-text-primary);
+}
+
+[data-bs-theme="dark"] ::selection {
+  background: rgba($dark-accent, 0.3);
+}
+
+// ========================================
+// Enhanced Focus States (Accessibility)
+// ========================================
+:focus-visible {
+  outline: 2px solid var(--rivaas-border-focus);
+  outline-offset: 2px;
+}
+
+// Remove default outline when not using keyboard
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// ========================================
+// Fix: Remove padding from body.td-section that causes sidebar position shift
+// ========================================
+body.td-section {
+  padding: 0;
+}

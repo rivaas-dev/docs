@@ -1,4 +1,31 @@
 /*
+ * Rivaas Design Tokens Reference
+ * ================================
+ *
+ * COLORS
+ *   --rivaas-accent           Context-aware brand accent
+ *   --rivaas-text-primary     Main text color
+ *   --rivaas-text-secondary   Secondary/muted text
+ *   --rivaas-text-muted       Disabled/tertiary text
+ *   --rivaas-surface-primary  Main background
+ *   --rivaas-surface-secondary Card/code backgrounds
+ *
+ * SPACING (0.25rem increments)
+ *   --rivaas-space-{1-16}     4px to 64px
+ *
+ * TYPOGRAPHY
+ *   --rivaas-text-{xs|sm|base|lg|xl|2xl|3xl|4xl|5xl}
+ *   --rivaas-font-{normal|medium|semibold|bold}
+ *
+ * EFFECTS
+ *   --rivaas-shadow-{xs|sm|md|lg}
+ *   --rivaas-radius-{xs|sm|md|lg|full}
+ *   --rivaas-transition-{fast|normal|slow}
+ *
+ * See Dark Mode Token Overrides section for automatic theme switching.
+ */
+
+/*
 Rivaas Documentation Theme Customization
 Alpine-inspired palette reflecting ریواس (wild rhubarb) in mountain terrain
 For details, see: https://www.docsy.dev/docs/content/lookandfeel/#project-style-files
@@ -126,43 +153,379 @@ $btn-border-radius-sm: $border-radius-sm;
 $btn-border-radius-lg: $border-radius-lg;
 
 // ========================================
-// CSS Custom Properties (Runtime Theming)
+// CSS Custom Properties (Design Tokens)
 // ========================================
+// 
+// Token Reference:
+// ────────────────────────────────────────
+// TEXT TOKENS
+//   --rivaas-text-primary      Main content text
+//   --rivaas-text-secondary    Descriptions, meta info
+//   --rivaas-text-muted        Hints, placeholders, disabled
+//   --rivaas-text-inverse      Text on dark/colored backgrounds
+//   --rivaas-text-link         Hyperlinks
+//   --rivaas-text-link-hover   Hyperlink hover state
+//   --rivaas-text-code         Inline code text
+//   --rivaas-text-heading      Heading text
+//
+// SURFACE TOKENS
+//   --rivaas-surface-primary   Main page background
+//   --rivaas-surface-secondary Cards, sidebars, elevated areas
+//   --rivaas-surface-tertiary  Subtle backgrounds
+//   --rivaas-surface-elevated  Modals, dropdowns, popovers
+//   --rivaas-surface-sunken    Inset areas, code blocks
+//   --rivaas-surface-overlay   Modal/dialog backdrops
+//   --rivaas-surface-code      Code block background
+//   --rivaas-surface-code-inline Inline code background
+//
+// BORDER TOKENS
+//   --rivaas-border-default    Standard borders
+//   --rivaas-border-subtle     Dividers, separators
+//   --rivaas-border-strong     Emphasized borders
+//   --rivaas-border-interactive Focus, active states
+//   --rivaas-border-error      Error state borders
+//
+// INTERACTIVE TOKENS
+//   --rivaas-interactive-*     Button and interactive element colors
+//
+// FEEDBACK TOKENS
+//   --rivaas-feedback-*        Alert and status colors
+//
+// SPACING SCALE
+//   --rivaas-space-{0-16}      Spacing values (0.25rem increments)
+//
+// TYPOGRAPHY SCALE
+//   --rivaas-text-{xs-4xl}     Font size scale
+//
+// ────────────────────────────────────────
+
 :root {
-  // Brand colors
+  // ========================================
+  // Brand Colors
+  // ========================================
   --rivaas-primary: #{$primary};
   --rivaas-primary-dark: #{$primary-dark};
   --rivaas-primary-light: #{$primary-light};
   --rivaas-accent: #{$primary};
-  
-  // Transitions
-  --rivaas-transition-fast: 0.15s ease;
-  --rivaas-transition-normal: 0.2s ease;
-  --rivaas-transition-slow: 0.3s ease;
-  
-  // Shadows
-  --rivaas-shadow-sm: 0 2px 8px rgba(31, 42, 39, 0.08);
-  --rivaas-shadow-md: 0 8px 24px rgba(31, 42, 39, 0.12);
-  --rivaas-shadow-lg: 0 12px 32px rgba(31, 42, 39, 0.15);
-  
-  // Border radius
-  --rivaas-radius: #{$border-radius};
+
+  // ========================================
+  // Text Tokens
+  // ========================================
+  --rivaas-text-primary: #{$gray-900};
+  --rivaas-text-secondary: #{$gray-600};
+  --rivaas-text-muted: #{$gray-500};
+  --rivaas-text-disabled: #{$gray-400};
+  --rivaas-text-inverse: #{$white};
+  --rivaas-text-link: #{$primary};
+  --rivaas-text-link-hover: #{$primary-dark};
+  --rivaas-text-code: #{$primary-dark};
+  --rivaas-text-heading: #{$gray-900};
+
+  // ========================================
+  // Surface Tokens (Backgrounds)
+  // ========================================
+  --rivaas-surface-primary: #{$white};
+  --rivaas-surface-secondary: #{$gray-100};
+  --rivaas-surface-tertiary: #{$gray-50};
+  --rivaas-surface-elevated: #{$white};
+  --rivaas-surface-sunken: #{$gray-100};
+  --rivaas-surface-overlay: #{rgba($gray-900, 0.5)};
+  --rivaas-surface-code: #{$gray-100};
+  --rivaas-surface-code-inline: #{$primary-light};
+
+  // ========================================
+  // Border Tokens
+  // ========================================
+  --rivaas-border-default: #{$gray-300};
+  --rivaas-border-subtle: #{$gray-200};
+  --rivaas-border-strong: #{$gray-400};
+  --rivaas-border-interactive: #{$primary};
+  --rivaas-border-focus: #{$primary};
+  --rivaas-border-error: #{$danger};
+  --rivaas-border-success: #{$success};
+  --rivaas-border-warning: #{$warning};
+  --rivaas-border-info: #{$info};
+
+  // ========================================
+  // Interactive Tokens (Buttons, Links)
+  // ========================================
+  --rivaas-interactive-primary: #{$primary};
+  --rivaas-interactive-primary-hover: #{$primary-dark};
+  --rivaas-interactive-primary-text: #{$white};
+  --rivaas-interactive-secondary: #{$gray-100};
+  --rivaas-interactive-secondary-hover: #{$gray-200};
+  --rivaas-interactive-secondary-text: #{$gray-900};
+  --rivaas-interactive-muted: #{$gray-200};
+  --rivaas-interactive-muted-hover: #{$gray-300};
+
+  // ========================================
+  // Feedback Tokens (Alerts, Status)
+  // ========================================
+  --rivaas-feedback-success: #{$success};
+  --rivaas-feedback-success-bg: #{rgba($success, 0.1)};
+  --rivaas-feedback-success-text: #{darken($success, 10%)};
+  --rivaas-feedback-warning: #{$warning};
+  --rivaas-feedback-warning-bg: #{rgba($warning, 0.1)};
+  --rivaas-feedback-warning-text: #{darken($warning, 10%)};
+  --rivaas-feedback-error: #{$danger};
+  --rivaas-feedback-error-bg: #{rgba($danger, 0.1)};
+  --rivaas-feedback-error-text: #{darken($danger, 10%)};
+  --rivaas-feedback-info: #{$info};
+  --rivaas-feedback-info-bg: #{rgba($info, 0.1)};
+  --rivaas-feedback-info-text: #{darken($info, 10%)};
+
+  // ========================================
+  // Spacing Scale
+  // ========================================
+  --rivaas-space-0: 0;
+  --rivaas-space-px: 1px;
+  --rivaas-space-0-5: 0.125rem;  // 2px
+  --rivaas-space-1: 0.25rem;     // 4px
+  --rivaas-space-1-5: 0.375rem;  // 6px
+  --rivaas-space-2: 0.5rem;      // 8px
+  --rivaas-space-2-5: 0.625rem;  // 10px
+  --rivaas-space-3: 0.75rem;     // 12px
+  --rivaas-space-3-5: 0.875rem;  // 14px
+  --rivaas-space-4: 1rem;        // 16px
+  --rivaas-space-5: 1.25rem;     // 20px
+  --rivaas-space-6: 1.5rem;      // 24px
+  --rivaas-space-7: 1.75rem;     // 28px
+  --rivaas-space-8: 2rem;        // 32px
+  --rivaas-space-9: 2.25rem;     // 36px
+  --rivaas-space-10: 2.5rem;     // 40px
+  --rivaas-space-11: 2.75rem;    // 44px
+  --rivaas-space-12: 3rem;       // 48px
+  --rivaas-space-14: 3.5rem;     // 56px
+  --rivaas-space-16: 4rem;       // 64px
+
+  // ========================================
+  // Typography Scale
+  // ========================================
+  --rivaas-text-xs: 0.75rem;     // 12px
+  --rivaas-text-sm: 0.875rem;    // 14px
+  --rivaas-text-base: 1rem;      // 16px
+  --rivaas-text-lg: 1.125rem;    // 18px
+  --rivaas-text-xl: 1.25rem;     // 20px
+  --rivaas-text-2xl: 1.5rem;     // 24px
+  --rivaas-text-3xl: 1.875rem;   // 30px
+  --rivaas-text-4xl: 2.25rem;    // 36px
+  --rivaas-text-5xl: 3rem;       // 48px
+
+  // Line heights
+  --rivaas-leading-none: 1;
+  --rivaas-leading-tight: 1.25;
+  --rivaas-leading-snug: 1.375;
+  --rivaas-leading-normal: 1.5;
+  --rivaas-leading-relaxed: 1.625;
+  --rivaas-leading-loose: 2;
+
+  // Font weights
+  --rivaas-font-light: 300;
+  --rivaas-font-normal: 400;
+  --rivaas-font-medium: 500;
+  --rivaas-font-semibold: 600;
+  --rivaas-font-bold: 700;
+
+  // ========================================
+  // Border Radius
+  // ========================================
+  --rivaas-radius-none: 0;
+  --rivaas-radius-xs: #{$border-radius-xs};
   --rivaas-radius-sm: #{$border-radius-sm};
+  --rivaas-radius: #{$border-radius};
   --rivaas-radius-lg: #{$border-radius-lg};
+  --rivaas-radius-xl: 16px;
+  --rivaas-radius-2xl: 24px;
+  --rivaas-radius-full: 9999px;
+
+  // ========================================
+  // Shadows
+  // ========================================
+  --rivaas-shadow-xs: 0 1px 2px rgba(31, 42, 39, 0.04);
+  --rivaas-shadow-sm: 0 2px 4px rgba(31, 42, 39, 0.06);
+  --rivaas-shadow: 0 4px 8px rgba(31, 42, 39, 0.08);
+  --rivaas-shadow-md: 0 6px 16px rgba(31, 42, 39, 0.1);
+  --rivaas-shadow-lg: 0 12px 24px rgba(31, 42, 39, 0.12);
+  --rivaas-shadow-xl: 0 20px 40px rgba(31, 42, 39, 0.15);
+  --rivaas-shadow-2xl: 0 32px 64px rgba(31, 42, 39, 0.2);
+  --rivaas-shadow-inner: inset 0 2px 4px rgba(31, 42, 39, 0.06);
+
+  // ========================================
+  // Transitions
+  // ========================================
+  --rivaas-duration-instant: 50ms;
+  --rivaas-duration-fast: 150ms;
+  --rivaas-duration-normal: 200ms;
+  --rivaas-duration-slow: 300ms;
+  --rivaas-duration-slower: 500ms;
+  --rivaas-easing-default: ease;
+  --rivaas-easing-in: ease-in;
+  --rivaas-easing-out: ease-out;
+  --rivaas-easing-in-out: ease-in-out;
+  --rivaas-easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --rivaas-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  // Shorthand transitions
+  --rivaas-transition-fast: var(--rivaas-duration-fast) var(--rivaas-easing-default);
+  --rivaas-transition-normal: var(--rivaas-duration-normal) var(--rivaas-easing-default);
+  --rivaas-transition-slow: var(--rivaas-duration-slow) var(--rivaas-easing-default);
+
+  // ========================================
+  // Z-Index Scale
+  // ========================================
+  --rivaas-z-below: -1;
+  --rivaas-z-base: 0;
+  --rivaas-z-dropdown: 100;
+  --rivaas-z-sticky: 200;
+  --rivaas-z-fixed: 300;
+  --rivaas-z-modal-backdrop: 400;
+  --rivaas-z-modal: 500;
+  --rivaas-z-popover: 600;
+  --rivaas-z-tooltip: 700;
+  --rivaas-z-toast: 800;
+
+  // ========================================
+  // Component-Specific Tokens
+  // ========================================
+  
+  // Sidebar
+  --rivaas-sidebar-bg: var(--rivaas-surface-secondary);
+  --rivaas-sidebar-border: var(--rivaas-border-default);
+  --rivaas-sidebar-link-color: var(--rivaas-text-secondary);
+  --rivaas-sidebar-link-hover-bg: #{rgba($primary, 0.08)};
+  --rivaas-sidebar-link-hover-color: var(--rivaas-accent);
+  --rivaas-sidebar-link-active-bg: #{$primary-light};
+  --rivaas-sidebar-link-active-color: #{$primary-dark};
+  --rivaas-sidebar-link-active-border: var(--rivaas-accent);
+
+  // Table of Contents
+  --rivaas-toc-link-color: var(--rivaas-text-muted);
+  --rivaas-toc-link-hover-color: var(--rivaas-accent);
+  --rivaas-toc-link-active-color: #{$primary-dark};
+  --rivaas-toc-link-active-bg: #{$primary-light};
+  --rivaas-toc-link-active-border: var(--rivaas-accent);
+
+  // Code blocks
+  --rivaas-code-bg: var(--rivaas-surface-code);
+  --rivaas-code-border: var(--rivaas-border-default);
+  --rivaas-code-text: var(--rivaas-text-primary);
+  --rivaas-code-inline-bg: var(--rivaas-surface-code-inline);
+  --rivaas-code-inline-text: var(--rivaas-text-code);
+  --rivaas-code-line-number: var(--rivaas-text-muted);
+
+  // Cards
+  --rivaas-card-bg: var(--rivaas-surface-primary);
+  --rivaas-card-border: var(--rivaas-border-default);
+  --rivaas-card-shadow: var(--rivaas-shadow-sm);
+  --rivaas-card-shadow-hover: var(--rivaas-shadow-lg);
+  --rivaas-card-header-bg: var(--rivaas-surface-secondary);
+
+  // Navbar
+  --rivaas-navbar-bg: #{$primary};
+  --rivaas-navbar-text: #{$white};
+  --rivaas-navbar-link-hover-bg: #{rgba($white, 0.1)};
+
+  // Footer
+  --rivaas-footer-bg: #{$gray-900};
+  --rivaas-footer-text: #{$gray-400};
+  --rivaas-footer-link: #{$gray-300};
+  --rivaas-footer-link-hover: #{$white};
+  --rivaas-footer-border: var(--rivaas-accent);
 }
 
+// ========================================
+// Dark Mode Token Overrides
+// ========================================
 [data-bs-theme="dark"] {
+  // Brand
   --rivaas-accent: #{$dark-accent};
-  --rivaas-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --rivaas-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --rivaas-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+  // Text
+  --rivaas-text-primary: #{$dark-text};
+  --rivaas-text-secondary: #{$dark-text-muted};
+  --rivaas-text-muted: #{rgba($dark-text-muted, 0.7)};
+  --rivaas-text-disabled: #{rgba($dark-text-muted, 0.5)};
+  --rivaas-text-inverse: #{$dark-bg};
+  --rivaas-text-link: #{$dark-accent};
+  --rivaas-text-link-hover: #{lighten($dark-accent, 10%)};
+  --rivaas-text-code: #{$dark-accent};
+  --rivaas-text-heading: #{$dark-text};
+
+  // Surfaces
+  --rivaas-surface-primary: #{$dark-bg};
+  --rivaas-surface-secondary: #{$dark-surface};
+  --rivaas-surface-tertiary: #{darken($dark-bg, 2%)};
+  --rivaas-surface-elevated: #{lighten($dark-surface, 3%)};
+  --rivaas-surface-sunken: #{darken($dark-bg, 2%)};
+  --rivaas-surface-overlay: #{rgba($black, 0.7)};
+  --rivaas-surface-code: #{$dark-surface};
+  --rivaas-surface-code-inline: #{rgba($dark-accent, 0.15)};
+
+  // Borders
+  --rivaas-border-default: #{rgba($dark-text-muted, 0.2)};
+  --rivaas-border-subtle: #{rgba($dark-text-muted, 0.1)};
+  --rivaas-border-strong: #{rgba($dark-text-muted, 0.3)};
+  --rivaas-border-interactive: #{$dark-accent};
+  --rivaas-border-focus: #{$dark-accent};
+
+  // Interactive
+  --rivaas-interactive-primary: #{$dark-accent};
+  --rivaas-interactive-primary-hover: #{lighten($dark-accent, 10%)};
+  --rivaas-interactive-primary-text: #{$dark-bg};
+  --rivaas-interactive-secondary: #{$dark-surface};
+  --rivaas-interactive-secondary-hover: #{lighten($dark-surface, 5%)};
+  --rivaas-interactive-secondary-text: #{$dark-text};
+  --rivaas-interactive-muted: #{rgba($dark-text-muted, 0.1)};
+  --rivaas-interactive-muted-hover: #{rgba($dark-text-muted, 0.2)};
+
+  // Feedback (adjust for dark backgrounds)
+  --rivaas-feedback-success-bg: #{rgba($success, 0.15)};
+  --rivaas-feedback-success-text: #{lighten($success, 15%)};
+  --rivaas-feedback-warning-bg: #{rgba($warning, 0.15)};
+  --rivaas-feedback-warning-text: #{lighten($warning, 15%)};
+  --rivaas-feedback-error-bg: #{rgba($danger, 0.15)};
+  --rivaas-feedback-error-text: #{lighten($danger, 15%)};
+  --rivaas-feedback-info-bg: #{rgba($info, 0.15)};
+  --rivaas-feedback-info-text: #{lighten($info, 15%)};
+
+  // Shadows (darker for dark mode)
+  --rivaas-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --rivaas-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --rivaas-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --rivaas-shadow-md: 0 6px 16px rgba(0, 0, 0, 0.35);
+  --rivaas-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4);
+  --rivaas-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.45);
+  --rivaas-shadow-2xl: 0 32px 64px rgba(0, 0, 0, 0.5);
+  --rivaas-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  // Component-Specific
+  --rivaas-sidebar-bg: var(--rivaas-surface-secondary);
+  --rivaas-sidebar-link-hover-bg: #{rgba($dark-accent, 0.1)};
+  --rivaas-sidebar-link-hover-color: #{$dark-accent};
+  --rivaas-sidebar-link-active-bg: #{rgba($dark-accent, 0.15)};
+  --rivaas-sidebar-link-active-color: #{$dark-accent};
+
+  --rivaas-toc-link-hover-color: #{$dark-accent};
+  --rivaas-toc-link-active-color: #{$dark-accent};
+  --rivaas-toc-link-active-bg: #{rgba($dark-accent, 0.15)};
+  --rivaas-toc-link-active-border: #{$dark-accent};
+
+  --rivaas-code-inline-text: #{$dark-accent};
+  --rivaas-code-line-number: #{$dark-text-muted};
+
+  --rivaas-card-shadow: var(--rivaas-shadow-sm);
+  --rivaas-card-shadow-hover: var(--rivaas-shadow-lg);
+
+  --rivaas-navbar-bg: #{$dark-bg};
+  --rivaas-navbar-text: #{$dark-text};
+
+  --rivaas-footer-bg: #{$black};
+  --rivaas-footer-border: #{$dark-accent};
+  --rivaas-footer-link-hover: #{$dark-accent};
 }
 
 // ========================================
-// Dark Mode Mixin (Utility)
+// Mixins
 // ========================================
-@mixin dark-mode {
-  [data-bs-theme="dark"] & {
-    @content;
-  }
-}
+// Mixins have been moved to abstracts/_mixins.scss
+// Import them via _styles_project.scss for use in components

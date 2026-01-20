@@ -1,0 +1,108 @@
+/*
+ * Rivaas Documentation - Code Blocks
+ * Syntax highlighting, inline code, and copy button
+ */
+
+// ========================================
+// Code Blocks - Stone Surface Treatment
+// ========================================
+.highlight {
+  background: var(--rivaas-code-bg);
+  border: 1px solid var(--rivaas-code-border);
+  border-radius: var(--rivaas-radius);
+  box-shadow: var(--rivaas-shadow-xs);
+  margin: var(--rivaas-space-6) 0;
+  overflow-x: auto;
+  position: relative;
+  
+  // Code block pre element
+  pre {
+    margin: 0;
+    padding: var(--rivaas-space-4) var(--rivaas-space-5);
+    overflow-x: auto;
+    
+    code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      font-size: var(--rivaas-text-sm);
+      line-height: 1.6;
+      font-family: $font-family-monospace;
+      font-variant-ligatures: common-ligatures;
+      font-feature-settings: "liga" 1, "calt" 1;
+    }
+  }
+  
+  // Chroma-specific styling
+  .chroma {
+    background: transparent !important;
+    padding: var(--rivaas-space-4) var(--rivaas-space-5);
+    overflow-x: auto;
+    font-size: var(--rivaas-text-sm);
+    line-height: 1.6;
+    font-family: $font-family-monospace;
+    font-variant-ligatures: common-ligatures;
+    font-feature-settings: "liga" 1, "calt" 1;
+    tab-size: 4;
+    
+    // Line numbers
+    .lnt, .ln {
+      color: var(--rivaas-code-line-number);
+      user-select: none;
+      padding-right: var(--rivaas-space-4);
+    }
+  }
+  
+  // Language badge for code blocks
+  &[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: var(--rivaas-space-1) var(--rivaas-space-2-5);
+    font-size: 0.6875rem;
+    font-family: $font-family-monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--rivaas-font-medium);
+    color: var(--rivaas-text-muted);
+    background: var(--rivaas-surface-secondary);
+    border-radius: 0 var(--rivaas-radius) 0 var(--rivaas-radius-sm);
+    z-index: 1;
+  }
+}
+
+// ========================================
+// Inline Code
+// ========================================
+code:not(.hljs) {
+  background: var(--rivaas-code-inline-bg);
+  color: var(--rivaas-code-inline-text);
+  padding: 0.2em 0.4em;
+  border-radius: var(--rivaas-radius-xs);
+  font-size: 0.875em;
+  font-family: $font-family-monospace;
+  font-weight: var(--rivaas-font-normal);
+  white-space: nowrap;
+}
+
+// Code in links should inherit link color
+a code {
+  color: inherit;
+}
+
+// ========================================
+// Code Copy Button Enhancement
+// ========================================
+.highlight-copy-btn {
+  border-radius: var(--rivaas-radius-sm);
+  transition: all var(--rivaas-transition-normal);
+  background: var(--rivaas-interactive-muted);
+  color: var(--rivaas-accent);
+  
+  &:hover {
+    transform: scale(1.05);
+    background: var(--rivaas-interactive-primary);
+    color: var(--rivaas-interactive-primary-text);
+  }
+}

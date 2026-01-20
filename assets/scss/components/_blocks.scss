@@ -1,0 +1,162 @@
+/*
+ * Rivaas Documentation - Block Components
+ * Hero sections, features, and landing page blocks
+ */
+
+// ========================================
+// Hero Section - Alpine Gradient
+// ========================================
+.td-cover-block {
+  position: relative;
+  padding: var(--rivaas-space-16) 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    z-index: -1;
+  }
+  
+  h1, .h1 {
+    font-size: var(--rivaas-text-5xl);
+    font-weight: var(--rivaas-font-bold);
+    margin-bottom: var(--rivaas-space-6);
+    
+    @media (max-width: 767.98px) {
+      font-size: var(--rivaas-text-4xl);
+    }
+  }
+  
+  .lead {
+    font-size: var(--rivaas-text-xl);
+    margin-bottom: var(--rivaas-space-8);
+  }
+  
+  .btn {
+    margin: var(--rivaas-space-2);
+    padding: var(--rivaas-space-3) var(--rivaas-space-8);
+    font-size: var(--rivaas-text-lg);
+    font-weight: var(--rivaas-font-semibold);
+    border-radius: var(--rivaas-radius);
+    transition: all var(--rivaas-transition-normal);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--rivaas-shadow-md);
+    }
+  }
+}
+
+// ========================================
+// Content Sections
+// ========================================
+.td-section {
+  padding: var(--rivaas-space-12) 0;
+  
+  &.td-section--colored {
+    background: var(--rivaas-surface-secondary);
+  }
+}
+
+// ========================================
+// Feature Boxes
+// ========================================
+.td-feature {
+  container-type: inline-size;
+  padding: var(--rivaas-space-8);
+  text-align: center;
+  transition: all var(--rivaas-transition-slow);
+  border-radius: var(--rivaas-radius);
+  
+  &:hover {
+    transform: translateY(-4px);
+    background: var(--rivaas-interactive-muted);
+  }
+  
+  i, .fa, .fab, .fas {
+    font-size: var(--rivaas-text-5xl);
+    color: var(--rivaas-accent);
+    margin-bottom: var(--rivaas-space-4);
+    display: block;
+  }
+  
+  h3, .h3 {
+    font-size: var(--rivaas-text-2xl);
+    font-weight: var(--rivaas-font-semibold);
+    margin-bottom: var(--rivaas-space-4);
+  }
+  
+  p {
+    color: var(--rivaas-text-secondary);
+  }
+  
+  @container (max-width: 250px) {
+    padding: var(--rivaas-space-4);
+    
+    i, .fa, .fab, .fas {
+      font-size: var(--rivaas-text-3xl);
+    }
+    
+    h3, .h3 {
+      font-size: var(--rivaas-text-xl);
+    }
+  }
+}
+
+// ========================================
+// Lead Title Block
+// ========================================
+.td-lead {
+  padding: var(--rivaas-space-12) 0;
+  text-align: center;
+  
+  h1, .h1 {
+    font-size: 2.5rem;
+    font-weight: var(--rivaas-font-bold);
+    margin-bottom: var(--rivaas-space-6);
+    
+    @media (max-width: 767.98px) {
+      font-size: var(--rivaas-text-4xl);
+    }
+  }
+  
+  p {
+    font-size: var(--rivaas-text-xl);
+    color: var(--rivaas-text-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+// ========================================
+// Arrow Down Navigation
+// ========================================
+.td-arrow-down {
+  display: inline-block;
+  padding: var(--rivaas-space-4);
+  color: var(--rivaas-accent);
+  font-size: var(--rivaas-text-4xl);
+  transition: all var(--rivaas-transition-slow);
+  animation: bounce 2s infinite;
+  
+  &:hover {
+    color: var(--rivaas-interactive-primary-hover);
+    transform: translateY(4px);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}

@@ -1,0 +1,60 @@
+/*
+ * Rivaas Documentation - Mixins
+ * Reusable Sass mixins for the design system
+ */
+
+// ========================================
+// Dark Mode Mixin (Utility)
+// ========================================
+@mixin dark-mode {
+  [data-bs-theme="dark"] & {
+    @content;
+  }
+}
+
+// ========================================
+// Token Usage Mixins
+// ========================================
+
+// Apply surface styles with automatic dark mode
+@mixin surface($surface-token: --rivaas-surface-primary) {
+  background: var(#{$surface-token});
+}
+
+// Apply text styles with automatic dark mode
+@mixin text($text-token: --rivaas-text-primary) {
+  color: var(#{$text-token});
+}
+
+// Apply border styles with automatic dark mode
+@mixin border($border-token: --rivaas-border-default, $width: 1px, $style: solid) {
+  border: $width $style var(#{$border-token});
+}
+
+// Apply shadow styles with automatic dark mode
+@mixin shadow($shadow-token: --rivaas-shadow) {
+  box-shadow: var(#{$shadow-token});
+}
+
+// Apply transition with token-based timing
+@mixin transition($properties: all, $duration-token: --rivaas-duration-normal, $easing-token: --rivaas-easing-default) {
+  transition: $properties var(#{$duration-token}) var(#{$easing-token});
+}
+
+// Combine common card styles
+@mixin card-surface {
+  background: var(--rivaas-card-bg);
+  border: 1px solid var(--rivaas-card-border);
+  border-radius: var(--rivaas-radius);
+  box-shadow: var(--rivaas-card-shadow);
+}
+
+// Interactive element hover effect
+@mixin hover-lift {
+  transition: transform var(--rivaas-transition-normal), box-shadow var(--rivaas-transition-normal);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rivaas-shadow-md);
+  }
+}

@@ -1,0 +1,58 @@
+/*
+ * Rivaas Documentation - Scrollbars
+ * Custom scrollbar styling for code blocks and sidebar
+ */
+
+// ========================================
+// Code Block Scrollbars
+// ========================================
+.highlight, pre, code {
+  // Webkit browsers (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    height: 8px;
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--rivaas-surface-sunken);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--rivaas-border-strong);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--rivaas-text-muted);
+    }
+  }
+  
+  // Firefox
+  scrollbar-width: thin;
+  scrollbar-color: var(--rivaas-border-strong) transparent;
+}
+
+// ========================================
+// Sidebar Scrollbar Styling
+// ========================================
+.td-sidebar-nav-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rivaas-border-strong) transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--rivaas-border-strong);
+    border-radius: 3px;
+    
+    &:hover {
+      background: var(--rivaas-text-muted);
+    }
+  }
+}

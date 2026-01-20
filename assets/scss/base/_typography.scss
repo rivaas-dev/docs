@@ -1,0 +1,300 @@
+/*
+ * Rivaas Documentation - Typography
+ * Content typography styles for headings, paragraphs, lists
+ */
+
+// ========================================
+// Alpine-Inspired Surface Treatments
+// ========================================
+.td-content {
+  background: var(--rivaas-surface-primary);
+  color: var(--rivaas-text-primary);
+  font-size: var(--rivaas-text-base);
+  line-height: var(--rivaas-leading-relaxed);
+  max-width: 100%;
+  
+  // ========================================
+  // Typography - Headings
+  // ========================================
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--rivaas-font-bold);
+    line-height: var(--rivaas-leading-snug);
+    color: var(--rivaas-text-heading);
+    margin-top: var(--rivaas-space-8);
+    margin-bottom: var(--rivaas-space-4);
+    scroll-margin-top: 5rem;
+    
+    .td-heading-anchor {
+      opacity: 0;
+      transition: opacity var(--rivaas-transition-normal);
+      color: var(--rivaas-text-muted);
+      text-decoration: none;
+      margin-left: var(--rivaas-space-2);
+      font-size: 0.8em;
+      
+      &:hover {
+        color: var(--rivaas-accent);
+      }
+    }
+    
+    &:hover .td-heading-anchor {
+      opacity: 1;
+    }
+  }
+  
+  h1 {
+    font-size: var(--rivaas-text-4xl);
+    margin-top: 0;
+    margin-bottom: var(--rivaas-space-6);
+    padding-bottom: var(--rivaas-space-3);
+    border-bottom: 2px solid var(--rivaas-border-subtle);
+    
+    @media (max-width: 767.98px) {
+      font-size: var(--rivaas-text-3xl);
+    }
+  }
+  
+  h2 {
+    font-size: var(--rivaas-text-3xl);
+    padding-bottom: var(--rivaas-space-2);
+    border-bottom: 1px solid var(--rivaas-border-subtle);
+    
+    @media (max-width: 767.98px) {
+      font-size: 1.625rem;
+    }
+  }
+  
+  h3 {
+    font-size: var(--rivaas-text-2xl);
+    
+    @media (max-width: 767.98px) {
+      font-size: 1.375rem;
+    }
+  }
+  
+  h4 {
+    font-size: var(--rivaas-text-xl);
+    font-weight: var(--rivaas-font-semibold);
+  }
+  
+  h5 {
+    font-size: var(--rivaas-text-lg);
+    font-weight: var(--rivaas-font-semibold);
+    color: var(--rivaas-text-secondary);
+  }
+  
+  h6 {
+    font-size: var(--rivaas-text-base);
+    font-weight: var(--rivaas-font-semibold);
+    color: var(--rivaas-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+  
+  // ========================================
+  // Typography - Paragraphs & Text
+  // ========================================
+  p {
+    margin-bottom: var(--rivaas-space-5);
+    line-height: var(--rivaas-leading-relaxed);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .lead, > p:first-of-type {
+    font-size: var(--rivaas-text-lg);
+    line-height: 1.6;
+    color: var(--rivaas-text-secondary);
+    margin-bottom: var(--rivaas-space-6);
+  }
+  
+  strong, b {
+    font-weight: var(--rivaas-font-semibold);
+    color: var(--rivaas-text-primary);
+  }
+  
+  em, i {
+    font-style: italic;
+  }
+  
+  // ========================================
+  // Typography - Lists
+  // ========================================
+  ul, ol {
+    margin-bottom: var(--rivaas-space-5);
+    padding-left: 1.75rem;
+    
+    li {
+      margin-bottom: var(--rivaas-space-2);
+      line-height: 1.6;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      ul, ol {
+        margin-top: var(--rivaas-space-2);
+        margin-bottom: var(--rivaas-space-2);
+      }
+    }
+  }
+  
+  ul {
+    list-style-type: disc;
+    
+    ul {
+      list-style-type: circle;
+      
+      ul {
+        list-style-type: square;
+      }
+    }
+  }
+  
+  ul li::marker {
+    color: var(--rivaas-accent);
+  }
+  
+  // ========================================
+  // Typography - Blockquotes
+  // ========================================
+  blockquote {
+    margin: var(--rivaas-space-6) 0;
+    padding: var(--rivaas-space-4) var(--rivaas-space-6);
+    border-left: 4px solid var(--rivaas-accent);
+    background: var(--rivaas-surface-secondary);
+    border-radius: 0 var(--rivaas-radius) var(--rivaas-radius) 0;
+    font-size: 1.0625rem;
+    font-style: italic;
+    color: var(--rivaas-text-secondary);
+    
+    p:last-child {
+      margin-bottom: 0;
+    }
+    
+    cite, footer {
+      display: block;
+      margin-top: var(--rivaas-space-3);
+      font-size: var(--rivaas-text-sm);
+      font-style: normal;
+      color: var(--rivaas-text-muted);
+      
+      &::before {
+        content: "— ";
+      }
+    }
+  }
+  
+  // ========================================
+  // Typography - Horizontal Rules
+  // ========================================
+  hr {
+    margin: var(--rivaas-space-8) 0;
+    border: 0;
+    border-top: 2px solid var(--rivaas-border-subtle);
+  }
+  
+  // ========================================
+  // Images & Figures
+  // ========================================
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--rivaas-radius);
+    box-shadow: var(--rivaas-shadow-sm);
+  }
+  
+  figure {
+    margin: var(--rivaas-space-6) 0;
+    
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    
+    figcaption {
+      margin-top: var(--rivaas-space-3);
+      text-align: center;
+      font-size: var(--rivaas-text-sm);
+      font-style: italic;
+      color: var(--rivaas-text-muted);
+    }
+  }
+  
+  // ========================================
+  // Task Lists (GitHub-style checkboxes)
+  // ========================================
+  .task-list-item {
+    list-style-type: none;
+    
+    input[type="checkbox"] {
+      margin-right: var(--rivaas-space-2);
+    }
+  }
+  
+  // ========================================
+  // Keyboard Keys
+  // ========================================
+  kbd {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    font-family: monospace;
+    font-size: 0.875em;
+    color: var(--rivaas-text-primary);
+    background-color: var(--rivaas-surface-secondary);
+    border: 1px solid var(--rivaas-border-default);
+    border-radius: var(--rivaas-radius-xs);
+    box-shadow: var(--rivaas-shadow-xs);
+  }
+  
+  // ========================================
+  // Definition Lists
+  // ========================================
+  dl {
+    margin-bottom: var(--rivaas-space-6);
+    
+    dt {
+      font-weight: var(--rivaas-font-semibold);
+      margin-top: var(--rivaas-space-4);
+      color: var(--rivaas-text-primary);
+      
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+    
+    dd {
+      margin-left: var(--rivaas-space-6);
+      margin-bottom: var(--rivaas-space-2);
+      color: var(--rivaas-text-secondary);
+    }
+  }
+}
+
+// ========================================
+// Links - Alpine Green with Deep Forest Hover
+// ========================================
+.td-content a:not(.btn) {
+  color: var(--rivaas-text-link);
+  text-decoration-color: rgba($primary, 0.3);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  transition: color var(--rivaas-transition-normal), text-decoration-color var(--rivaas-transition-normal);
+  
+  &:hover {
+    color: var(--rivaas-text-link-hover);
+    text-decoration-color: var(--rivaas-text-link-hover);
+    text-decoration-thickness: 3px;
+  }
+}
+
+// Code in headings
+.td-content {
+  h1, h2, h3, h4, h5, h6 {
+    code {
+      font-size: 0.9em;
+    }
+  }
+}

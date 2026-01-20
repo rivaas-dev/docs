@@ -1,0 +1,83 @@
+/*
+ * Rivaas Documentation - Tabs
+ * Tab navigation styling
+ */
+
+// ========================================
+// Tab Panes - Alpine Tab Styling
+// ========================================
+.nav-tabs {
+  border-bottom: 2px solid var(--rivaas-border-default);
+  margin-bottom: var(--rivaas-space-6);
+  gap: var(--rivaas-space-2);
+  
+  .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    color: var(--rivaas-text-muted);
+    font-weight: var(--rivaas-font-medium);
+    padding: var(--rivaas-space-3) var(--rivaas-space-5);
+    transition: all var(--rivaas-transition-normal);
+    position: relative;
+    
+    &:hover {
+      color: var(--rivaas-accent);
+      background: var(--rivaas-interactive-muted);
+      border-bottom-color: var(--rivaas-border-interactive);
+    }
+    
+    &.active {
+      color: var(--rivaas-accent);
+      background: transparent;
+      border-bottom-color: var(--rivaas-accent);
+      font-weight: var(--rivaas-font-semibold);
+    }
+    
+    &.disabled {
+      color: var(--rivaas-text-disabled);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+.tab-content {
+  padding: var(--rivaas-space-6) 0;
+  
+  .tab-pane {
+    animation: fadeIn var(--rivaas-duration-slow) var(--rivaas-easing-smooth);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ========================================
+// Docsy Specific Tab Styling
+// ========================================
+.td-tabs {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--rivaas-border-strong);
+      border-radius: 2px;
+    }
+  }
+}

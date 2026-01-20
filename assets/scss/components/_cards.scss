@@ -1,0 +1,151 @@
+/*
+ * Rivaas Documentation - Cards
+ * Card components with Alpine styling
+ */
+
+// ========================================
+// Card Enhancements
+// ========================================
+.td-card {
+  transition: transform var(--rivaas-transition-normal), box-shadow var(--rivaas-transition-normal);
+  border-radius: var(--rivaas-radius-lg);
+  border-color: var(--rivaas-card-border);
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--rivaas-card-shadow-hover);
+  }
+}
+
+// ========================================
+// Icon Styling
+// ========================================
+.td-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+// ========================================
+// Feature Boxes
+// ========================================
+.td-box {
+  border-radius: var(--rivaas-radius-lg);
+  transition: all var(--rivaas-transition-slow);
+  background: var(--rivaas-surface-primary);
+  border: 1px solid var(--rivaas-border-default);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rivaas-shadow-md);
+    border-color: var(--rivaas-accent);
+  }
+}
+
+// ========================================
+// Card Component - Alpine Card Styling
+// ========================================
+.card {
+  container-type: inline-size;
+  background: var(--rivaas-card-bg);
+  border: 1px solid var(--rivaas-card-border);
+  border-radius: var(--rivaas-radius);
+  box-shadow: var(--rivaas-card-shadow);
+  margin-bottom: var(--rivaas-space-6);
+  transition: all var(--rivaas-transition-normal);
+  
+  &:hover {
+    box-shadow: var(--rivaas-card-shadow-hover);
+    border-color: var(--rivaas-border-interactive);
+  }
+  
+  // Card header
+  .card-header {
+    background: var(--rivaas-card-header-bg);
+    border-bottom: 1px solid var(--rivaas-border-default);
+    padding: var(--rivaas-space-4) var(--rivaas-space-5);
+    font-weight: var(--rivaas-font-semibold);
+    
+    &:first-child {
+      border-radius: calc(var(--rivaas-radius) - 1px) calc(var(--rivaas-radius) - 1px) 0 0;
+    }
+  }
+  
+  // Card body
+  .card-body {
+    padding: var(--rivaas-space-5);
+    
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Card footer
+  .card-footer {
+    background: var(--rivaas-card-header-bg);
+    border-top: 1px solid var(--rivaas-border-default);
+    padding: var(--rivaas-space-3-5) var(--rivaas-space-5);
+    font-size: var(--rivaas-text-sm);
+  }
+  
+  // Card title
+  .card-title {
+    font-weight: var(--rivaas-font-semibold);
+    margin-bottom: var(--rivaas-space-3);
+    color: var(--rivaas-text-primary);
+  }
+  
+  // Card subtitle
+  .card-subtitle {
+    color: var(--rivaas-text-muted);
+    margin-bottom: var(--rivaas-space-2);
+  }
+  
+  // Card with code
+  &.card-code {
+    .card-body {
+      padding: 0;
+      
+      pre {
+        margin: 0;
+        border-radius: 0;
+      }
+    }
+  }
+  
+  // Compact layout for narrow containers
+  @container (max-width: 300px) {
+    .card-header,
+    .card-body,
+    .card-footer {
+      padding: var(--rivaas-space-3);
+    }
+  }
+}
+
+// ========================================
+// Card Group Spacing
+// ========================================
+.card-group {
+  gap: var(--rivaas-space-6);
+  
+  .card {
+    flex: 1 0 0%;
+    margin-bottom: 0;
+  }
+}
+
+// ========================================
+// Docsy Card Pane - Side by Side Cards
+// ========================================
+.td-card-deck {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--rivaas-space-6);
+  margin: var(--rivaas-space-8) 0;
+  
+  // Container query replaces viewport media query
+  @container (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: var(--rivaas-space-4);
+  }
+}

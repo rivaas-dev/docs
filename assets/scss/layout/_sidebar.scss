@@ -1,0 +1,153 @@
+/*
+ * Rivaas Documentation - Sidebar
+ * Left sidebar navigation with Alpine emphasis
+ */
+
+// ========================================
+// Sidebar Navigation Arrows
+// ========================================
+.td-sidebar-nav {
+  // Up arrow for tree-root (go back to parent section)
+  .tree-root::before {
+    content: '↑';
+    margin-right: var(--rivaas-space-2);
+    opacity: 0.6;
+    font-weight: bold;
+  }
+  
+  // Hide arrow only on the root docs link when active (no parent to go back to)
+  #m-docs.tree-root.active::before {
+    display: none;
+  }
+  
+  // Hide only the default Docsy up icon arrow, not the text
+  .td-sidebar-root-up-icon::after {
+    display: none !important;
+  }
+  
+  // Right arrow for sections with children (not tree-root)
+  li.with-child > a.td-sidebar-link__section:not(.tree-root) {
+    position: relative;
+    
+    &::after {
+      content: '›';
+      position: absolute;
+      right: var(--rivaas-space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.5;
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+  }
+  
+  // Ensure tree-root items don't get the right arrow
+  .tree-root::after {
+    display: none !important;
+  }
+}
+
+// ========================================
+// Sidebar Container - Stone Surface
+// ========================================
+.td-sidebar {
+  background: var(--rivaas-sidebar-bg);
+  border-right: 1px solid var(--rivaas-sidebar-border);
+}
+
+// ========================================
+// Sidebar Navigation - Alpine Emphasis
+// ========================================
+.td-sidebar-nav {
+  padding: var(--rivaas-space-3) var(--rivaas-space-2);
+  
+  // Override Bootstrap's ps-0 (padding-start: 0) on sidebar links
+  .td-sidebar-link.ps-0 {
+    padding-left: var(--rivaas-space-3) !important;
+  }
+  
+  // Section headers (top-level items like "DOCS", "CORE TASKS", etc.)
+  .td-sidebar-link__section {
+    font-weight: var(--rivaas-font-semibold);
+    font-size: var(--rivaas-text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: var(--rivaas-text-muted);
+    padding: var(--rivaas-space-2) var(--rivaas-space-3);
+    margin-top: var(--rivaas-space-2);
+    margin-bottom: var(--rivaas-space-1);
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  
+  // Tree root items
+  .tree-root {
+    font-weight: var(--rivaas-font-semibold);
+    color: var(--rivaas-text-primary);
+  }
+  
+  // All sidebar links
+  .td-sidebar-link {
+    display: block;
+    padding: var(--rivaas-space-2) var(--rivaas-space-3);
+    margin: var(--rivaas-space-0-5) 0;
+    border-radius: var(--rivaas-radius-sm);
+    color: var(--rivaas-sidebar-link-color);
+    font-size: 0.9rem;
+    line-height: var(--rivaas-leading-normal);
+    border-left: 3px solid transparent;
+    transition: all var(--rivaas-transition-fast);
+    
+    &:hover {
+      background: var(--rivaas-sidebar-link-hover-bg);
+      color: var(--rivaas-sidebar-link-hover-color);
+      text-decoration: none;
+    }
+    
+    &.active {
+      background: var(--rivaas-sidebar-link-active-bg);
+      color: var(--rivaas-sidebar-link-active-color);
+      border-left-color: var(--rivaas-sidebar-link-active-border);
+      font-weight: var(--rivaas-font-medium);
+    }
+  }
+  
+  // Nested items (child pages)
+  .with-child {
+    > ul {
+      margin-left: 0;
+      padding-left: var(--rivaas-space-3);
+    }
+  }
+  
+  // Expand/collapse toggle
+  .td-sidebar-nav-toggle {
+    padding: var(--rivaas-space-1);
+    margin-right: var(--rivaas-space-1);
+    border-radius: var(--rivaas-radius-xs);
+    color: var(--rivaas-text-muted);
+    transition: all var(--rivaas-transition-fast);
+    
+    &:hover {
+      background: var(--rivaas-sidebar-link-hover-bg);
+      color: var(--rivaas-accent);
+    }
+  }
+}
+
+// ========================================
+// Sidebar Menu Container
+// ========================================
+#td-sidebar-menu {
+  padding: var(--rivaas-space-2) 0;
+}
+
+// ========================================
+// Sidebar Expand/Collapse Icon
+// ========================================
+.td-sidebar-root-up-icon::after {
+  color: var(--rivaas-text-muted);
+  transition: transform var(--rivaas-transition-normal);
+}

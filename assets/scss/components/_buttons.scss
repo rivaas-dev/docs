@@ -1,0 +1,87 @@
+/*
+ * Rivaas Documentation - Buttons
+ * Button styling with Alpine aesthetics
+ */
+
+// ========================================
+// Buttons - Alpine Green Primary
+// ========================================
+.btn-primary {
+  background-color: var(--rivaas-interactive-primary);
+  border-color: var(--rivaas-interactive-primary);
+  color: var(--rivaas-interactive-primary-text);
+  
+  &:hover {
+    background-color: var(--rivaas-interactive-primary-hover);
+    border-color: var(--rivaas-interactive-primary-hover);
+  }
+}
+
+// ========================================
+// Search Box
+// ========================================
+.td-search-input {
+  border-color: var(--rivaas-border-default);
+  
+  &:focus {
+    border-color: var(--rivaas-border-focus);
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.15);
+  }
+  
+  @include dark-mode {
+    background: var(--rivaas-surface-secondary);
+    color: var(--rivaas-text-primary);
+  }
+}
+
+// ========================================
+// Buttons - Enhanced Alpine Styling
+// ========================================
+.btn {
+  border-radius: var(--rivaas-radius);
+  font-weight: var(--rivaas-font-medium);
+  padding: var(--rivaas-space-2-5) var(--rivaas-space-5);
+  transition: all var(--rivaas-transition-normal);
+  border-width: 2px;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--rivaas-shadow-md);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &.btn-lg {
+    padding: var(--rivaas-space-3-5) var(--rivaas-space-8);
+    font-size: var(--rivaas-text-lg);
+  }
+  
+  &.btn-sm {
+    padding: var(--rivaas-space-2) var(--rivaas-space-4);
+    font-size: var(--rivaas-text-sm);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--rivaas-interactive-secondary);
+  border-color: var(--rivaas-interactive-secondary);
+  color: var(--rivaas-interactive-secondary-text);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--rivaas-interactive-secondary-hover);
+    border-color: var(--rivaas-interactive-secondary-hover);
+  }
+}
+
+.btn-outline-primary {
+  color: var(--rivaas-accent);
+  border-color: var(--rivaas-accent);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--rivaas-interactive-primary);
+    border-color: var(--rivaas-interactive-primary);
+    color: var(--rivaas-interactive-primary-text);
+  }
+}

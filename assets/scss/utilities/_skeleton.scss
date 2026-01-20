@@ -1,0 +1,58 @@
+/*
+ * Rivaas Documentation - Skeleton Loaders
+ * Loading placeholder animations
+ */
+
+// ========================================
+// Loading Skeleton Placeholder
+// ========================================
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--rivaas-surface-secondary) 25%,
+    var(--rivaas-surface-tertiary) 50%,
+    var(--rivaas-surface-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--rivaas-radius-sm);
+}
+
+.skeleton-text {
+  @extend .skeleton;
+  height: 1em;
+  margin-bottom: 0.5em;
+  
+  &:last-child {
+    width: 80%;
+  }
+}
+
+.skeleton-heading {
+  @extend .skeleton;
+  height: 1.5em;
+  width: 60%;
+  margin-bottom: 1em;
+}
+
+.skeleton-image {
+  @extend .skeleton;
+  width: 100%;
+  padding-bottom: 56.25%; // 16:9 aspect ratio
+}
+
+.skeleton-avatar {
+  @extend .skeleton;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--rivaas-radius-full);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

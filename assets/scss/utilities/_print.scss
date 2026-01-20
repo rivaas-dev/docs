@@ -1,0 +1,88 @@
+/*
+ * Rivaas Documentation - Print Styles
+ * Optimized styles for printing
+ */
+
+// ========================================
+// Print Styles
+// ========================================
+@media print {
+  // Hide non-essential elements
+  .td-sidebar,
+  .td-toc,
+  .td-navbar,
+  .td-footer,
+  .td-page-meta,
+  .highlight-copy-btn,
+  .td-breadcrumbs,
+  .td-sidebar-toggle,
+  .btn,
+  [data-bs-theme-switcher] {
+    display: none !important;
+  }
+  
+  // Optimize main content for print
+  .td-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    // Show URLs after links
+    a[href^="http"]::after {
+      content: " (" attr(href) ")";
+      font-size: 0.75em;
+      color: #666;
+      word-break: break-all;
+    }
+    
+    // Don't show URLs for internal/anchor links
+    a[href^="#"]::after,
+    a[href^="/"]::after {
+      content: none;
+    }
+  }
+  
+  // Optimize code blocks
+  .highlight {
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    
+    pre {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+    }
+  }
+  
+  // Prevent breaks inside important elements
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  
+  img, figure, table, .pageinfo {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  // Ensure content is readable
+  body {
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  
+  // Remove backgrounds and shadows
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  // Show page breaks
+  .page-break {
+    page-break-before: always;
+    break-before: always;
+  }
+}

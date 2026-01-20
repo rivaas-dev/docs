@@ -1,0 +1,251 @@
+/*
+ * Rivaas Documentation - Alerts & PageInfo
+ * Information boxes and alert components
+ */
+
+// ========================================
+// PageInfo Component - Information Boxes
+// ========================================
+.pageinfo {
+  position: relative;
+  font-weight: var(--rivaas-font-normal);
+  font-size: var(--rivaas-text-sm);
+  line-height: 1.6;
+  background: var(--bs-alert-bg);
+  color: inherit;
+  margin: var(--rivaas-space-8) 0;
+  padding: var(--rivaas-space-5) var(--rivaas-space-6);
+  border-radius: var(--rivaas-radius);
+  box-shadow: var(--rivaas-shadow-sm);
+  border-left: 4px solid transparent;
+  padding-left: 3rem;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: var(--rivaas-space-4);
+    top: var(--rivaas-space-5);
+    width: 24px;
+    height: 24px;
+    border-radius: var(--rivaas-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: var(--rivaas-text-sm);
+    opacity: 0.8;
+  }
+  
+  p {
+    margin-bottom: var(--rivaas-space-3);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  a {
+    font-weight: var(--rivaas-font-medium);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+  
+  strong, b {
+    font-weight: var(--rivaas-font-semibold);
+  }
+  
+  code {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.125rem 0.375rem;
+    
+    @include dark-mode {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// ========================================
+// PageInfo Variants with Icons & Colors
+// ========================================
+.pageinfo-primary {
+  border-left-color: var(--rivaas-accent);
+  
+  &::before {
+    content: '\f05a';
+    color: var(--rivaas-accent);
+  }
+}
+
+.pageinfo-secondary {
+  border-left-color: $secondary;
+  
+  &::before {
+    content: '\f0eb';
+    color: $secondary;
+  }
+}
+
+.pageinfo-success {
+  border-left-color: var(--rivaas-feedback-success);
+  
+  &::before {
+    content: '\f058';
+    color: var(--rivaas-feedback-success);
+  }
+}
+
+.pageinfo-info {
+  border-left-color: var(--rivaas-feedback-info);
+  
+  &::before {
+    content: '\f05a';
+    color: var(--rivaas-feedback-info);
+  }
+}
+
+.pageinfo-warning {
+  border-left-color: var(--rivaas-feedback-warning);
+  
+  &::before {
+    content: '\f071';
+    color: var(--rivaas-feedback-warning);
+  }
+}
+
+.pageinfo-danger {
+  border-left-color: var(--rivaas-feedback-error);
+  
+  &::before {
+    content: '\f06a';
+    color: var(--rivaas-feedback-error);
+  }
+}
+
+.pageinfo-light {
+  border-left-color: var(--rivaas-border-default);
+  
+  &::before {
+    content: '\f0eb';
+    color: var(--rivaas-text-muted);
+  }
+}
+
+.pageinfo-dark {
+  border-left-color: var(--rivaas-text-primary);
+  
+  &::before {
+    content: '\f05a';
+    color: var(--rivaas-text-primary);
+  }
+}
+
+.pageinfo-alpine-green {
+  border-left-color: var(--rivaas-accent);
+  
+  &::before {
+    content: '\f6fc';
+    color: var(--rivaas-accent);
+  }
+}
+
+.pageinfo-mountain-stone {
+  border-left-color: $secondary;
+  
+  &::before {
+    content: '\f6fc';
+    color: $secondary;
+  }
+}
+
+.pageinfo-moss {
+  border-left-color: var(--rivaas-feedback-success);
+  
+  &::before {
+    content: '\f4d8';
+    color: var(--rivaas-feedback-success);
+  }
+}
+
+.pageinfo-glacier {
+  border-left-color: var(--rivaas-feedback-info);
+  
+  &::before {
+    content: '\f2dc';
+    color: var(--rivaas-feedback-info);
+  }
+}
+
+// ========================================
+// PageInfo Responsive
+// ========================================
+@media (max-width: 767.98px) {
+  .pageinfo {
+    padding: var(--rivaas-space-4) var(--rivaas-space-5);
+    padding-left: 2.5rem;
+    font-size: var(--rivaas-text-sm);
+    margin: var(--rivaas-space-6) 0;
+    
+    &::before {
+      left: var(--rivaas-space-3);
+      top: var(--rivaas-space-4);
+      width: 20px;
+      height: 20px;
+      font-size: var(--rivaas-text-xs);
+    }
+  }
+}
+
+// ========================================
+// PageInfo Without Icon (optional)
+// ========================================
+.pageinfo--no-icon {
+  padding-left: var(--rivaas-space-6);
+  
+  &::before {
+    display: none;
+  }
+}
+
+// ========================================
+// Alert Component - Enhanced Styling
+// ========================================
+.alert {
+  border-radius: var(--rivaas-radius);
+  border-left-width: 4px;
+  font-size: var(--rivaas-text-sm);
+  line-height: 1.6;
+  box-shadow: var(--rivaas-shadow-sm);
+  
+  // Alert heading
+  .alert-heading {
+    font-weight: var(--rivaas-font-semibold);
+    margin-bottom: var(--rivaas-space-3);
+    font-size: var(--rivaas-text-lg);
+  }
+  
+  // Alert links
+  a {
+    font-weight: var(--rivaas-font-medium);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+  
+  // Dismissible alert button
+  .btn-close {
+    opacity: 0.5;
+    transition: opacity var(--rivaas-transition-normal);
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
