@@ -17,13 +17,13 @@ func Validate(ctx context.Context, v any, opts ...Option) error
 Validates a value using the default validator. Returns `nil` if validation passes, or `*Error` if validation fails.
 
 **Parameters:**
-- `ctx` - Context passed to `ValidatorWithContext` implementations
-- `v` - The value to validate (typically a pointer to a struct)
-- `opts` - Optional per-call configuration options
+- `ctx` - Context passed to `ValidatorWithContext` implementations.
+- `v` - The value to validate. Typically a pointer to a struct.
+- `opts` - Optional per-call configuration options.
 
 **Returns:**
-- `nil` on success
-- `*Error` with field-level errors on failure
+- `nil` on success.
+- `*Error` with field-level errors on failure.
 
 **Example:**
 
@@ -46,10 +46,10 @@ func ValidatePartial(ctx context.Context, v any, pm PresenceMap, opts ...Option)
 Validates only fields present in the `PresenceMap`. Useful for PATCH requests where only provided fields should be validated.
 
 **Parameters:**
-- `ctx` - Context for validation
-- `v` - The value to validate
-- `pm` - Map of present fields
-- `opts` - Optional configuration options
+- `ctx` - Context for validation.
+- `v` - The value to validate.
+- `pm` - Map of present fields.
+- `opts` - Optional configuration options.
 
 **Example:**
 
@@ -67,11 +67,11 @@ func ComputePresence(rawJSON []byte) (PresenceMap, error)
 Analyzes raw JSON and returns a map of present field paths. Used for partial validation.
 
 **Parameters:**
-- `rawJSON` - Raw JSON bytes
+- `rawJSON` - Raw JSON bytes.
 
 **Returns:**
-- `PresenceMap` - Map of field paths to `true`
-- `error` - If JSON is invalid
+- `PresenceMap` - Map of field paths to `true`.
+- `error` - If JSON is invalid.
 
 **Example:**
 

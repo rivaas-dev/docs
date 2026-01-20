@@ -31,9 +31,9 @@ r.POST("/users", func(c *router.Context) {
 ```
 
 **Features:**
-- Rejects unknown fields (catches typos)
-- Enforces request body size limits
-- Returns appropriate HTTP status codes (400 for malformed, 422 for type errors)
+- Rejects unknown fields. Catches typos.
+- Enforces request body size limits.
+- Returns appropriate HTTP status codes. 400 for malformed. 422 for type errors.
 
 ### Manual Parameter Access
 

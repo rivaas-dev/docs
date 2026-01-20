@@ -1,12 +1,12 @@
 ---
 title: "Configuration Management"
 linkTitle: "Config"
-description: "Learn how to manage application configuration with Rivaas config package"
+description: "Learn how to manage application configuration with the Rivaas config package"
 weight: 5
 ---
 
 {{% pageinfo %}}
-The Rivaas Config package provides powerful and versatile configuration management for Go applications, simplifying handling of settings across different environments and formats following the [Twelve-Factor App methodology](https://12factor.net/).
+The Rivaas Config package provides configuration management for Go applications. It simplifies handling settings across different environments and formats. Follows the [Twelve-Factor App methodology](https://12factor.net/).
 {{% /pageinfo %}}
 
 ## Features

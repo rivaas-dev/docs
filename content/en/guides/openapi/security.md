@@ -10,10 +10,10 @@ Learn how to add security schemes to your OpenAPI specification for authenticati
 
 The package supports four types of security schemes:
 
-1. **Bearer Authentication** - JWT or token-based authentication
-2. **API Key** - API keys in headers, query parameters, or cookies
-3. **OAuth2** - OAuth 2.0 authorization flows
-4. **OpenID Connect** - OpenID Connect authentication
+1. **Bearer Authentication** - JWT or token-based authentication.
+2. **API Key** - API keys in headers, query parameters, or cookies.
+3. **OAuth2** - OAuth 2.0 authorization flows.
+4. **OpenID Connect** - OpenID Connect authentication.
 
 ## Bearer Authentication
 

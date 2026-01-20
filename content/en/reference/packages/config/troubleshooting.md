@@ -18,7 +18,7 @@ config error in source[0] during load: open config.yaml: no such file or directo
 
 **Solutions:**
 
-1. **Check file path**: Ensure the path is correct relative to where your application runs
+1. **Check file path**: Ensure the path is correct relative to where your application runs.
 
 ```go
 // Use absolute path if needed
@@ -27,14 +27,14 @@ cfg := config.MustNew(
 )
 ```
 
-2. **Check working directory**: Verify your application's working directory
+2. **Check working directory**: Verify your application's working directory.
 
 ```go
 wd, _ := os.Getwd()
 fmt.Printf("Working directory: %s\n", wd)
 ```
 
-3. **Make file optional**: Handle missing files gracefully
+3. **Make file optional**: Handle missing files gracefully.
 
 ```go
 cfg, err := config.New(

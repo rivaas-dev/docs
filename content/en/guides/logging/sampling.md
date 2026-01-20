@@ -11,16 +11,16 @@ This guide covers log sampling to reduce log volume in high-throughput productio
 Log sampling reduces the number of log entries written while preserving statistical sampling for debugging and analysis.
 
 **Why log sampling:**
-- Reduce log storage costs in high-traffic scenarios
-- Prevent log flooding during traffic spikes
-- Maintain representative sample for debugging
-- Always log critical errors (sampling bypasses ERROR level)
+- Reduce log storage costs in high-traffic scenarios.
+- Prevent log flooding during traffic spikes.
+- Maintain representative sample for debugging.
+- Always log critical errors. Sampling bypasses ERROR level.
 
 **When to use:**
-- Services handling >1000 logs/second
-- Cost-constrained log storage
-- High-volume debug/info logging
-- Noisy services with repetitive logs
+- Services handling more than 1000 logs per second.
+- Cost-constrained log storage.
+- High-volume debug or info logging.
+- Noisy services with repetitive logs.
 
 ## Basic Configuration
 

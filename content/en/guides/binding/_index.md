@@ -6,7 +6,7 @@ weight: 3
 ---
 
 {{% pageinfo %}}
-The Rivaas Binding package provides high-performance request data binding for Go web applications, mapping values from various sources (query parameters, form data, JSON bodies, headers, cookies, path parameters) into Go structs using struct tags.
+The Rivaas Binding package provides high-performance request data binding for Go web applications. It maps values from various sources (query parameters, form data, JSON bodies, headers, cookies, path parameters) into Go structs using struct tags.
 {{% /pageinfo %}}
 
 ## Features

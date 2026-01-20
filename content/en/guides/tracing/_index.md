@@ -6,7 +6,7 @@ weight: 9
 ---
 
 {{% pageinfo %}}
-The Rivaas Tracing package provides OpenTelemetry-based distributed tracing with support for various exporters and seamless integration with HTTP frameworks, enabling observability best practices with minimal configuration.
+The Rivaas Tracing package provides OpenTelemetry-based distributed tracing. Supports various exporters and integrates with HTTP frameworks. Enables observability best practices with minimal configuration.
 {{% /pageinfo %}}
 
 ## Features
@@ -120,13 +120,13 @@ func main() {
 
 - **Providers** determine where traces are exported (Stdout, OTLP, Noop)
 - **Lifecycle management** ensures proper initialization and graceful shutdown
-- **HTTP middleware** automatically creates spans for requests
+- **HTTP middleware** creates spans for requests automatically
 - **Custom spans** can be created for detailed operation tracing
 - **Context propagation** enables distributed tracing across services
 
 ## Learning Path
 
-Follow these guides to master distributed tracing with Rivaas:
+Follow these guides to learn distributed tracing with Rivaas:
 
 1. [**Installation**](installation/) - Get started with the tracing package
 2. [**Basic Usage**](basic-usage/) - Learn tracer creation and span management

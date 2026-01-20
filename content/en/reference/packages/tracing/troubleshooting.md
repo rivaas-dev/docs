@@ -34,9 +34,9 @@ if err := tracer.Start(context.Background()); err != nil {
 
 #### 2. Sampling Rate Too Low
 
-**Problem:** Sample rate is set too low (e.g., 1% sampling means 99% of requests aren't traced).
+**Problem:** Sample rate is set too low. For example, 1% sampling means 99% of requests aren't traced.
 
-**Solution:** Increase sample rate or remove sampling for testing:
+**Solution:** Increase sample rate or remove sampling for testing.
 
 ```go
 // Development - trace everything
@@ -70,7 +70,7 @@ tracer := tracing.MustNew(
 
 **Problem:** Paths are excluded via middleware options.
 
-**Solution:** Check middleware exclusions:
+**Solution:** Check middleware exclusions.
 
 ```go
 // Check if your paths are excluded

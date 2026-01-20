@@ -4,23 +4,23 @@ description: Add functionality to your application with middleware
 weight: 4
 ---
 
-Middleware functions intercept HTTP requests, allowing you to add cross-cutting functionality like logging, authentication, and error recovery to your Rivaas application.
+Middleware functions intercept HTTP requests. They add functionality like logging, authentication, and error recovery to your Rivaas application.
 
 ## What is Middleware?
 
-Middleware wraps your route handlers, executing code before and/or after the handler runs. Think of it as layers around your core logic:
+Middleware wraps your route handlers. It runs code before and after the handler. Think of it as layers around your core logic:
 
 ```
 Request → Middleware 1 → Middleware 2 → Handler → Middleware 2 → Middleware 1 → Response
 ```
 
 Common uses:
-- Logging requests and responses
-- Authentication and authorization
-- Error recovery
-- Request/response modification
-- Rate limiting
-- CORS headers
+- Log requests and responses
+- Authenticate and authorize users
+- Recover from errors
+- Modify requests and responses
+- Limit request rates
+- Add CORS headers
 
 ## Built-in Middleware
 
@@ -41,7 +41,7 @@ Rivaas includes 12 production-ready middleware packages:
 | `methodoverride` | HTTP method override | ✅ |
 | `trailingslash` | Trailing slash handling | ✅ |
 
-See the [Middleware Reference](/reference/packages/router/middleware/) for complete documentation.
+Check the [Middleware Reference](/reference/packages/router/middleware/) for complete documentation.
 
 ## Adding Middleware
 

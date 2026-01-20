@@ -4,7 +4,7 @@ description: "Master error handling patterns for robust request validation and d
 weight: 9
 ---
 
-Comprehensive guide to error handling in the binding package, including error types, validation patterns, and debugging strategies.
+Comprehensive guide to error handling in the binding package. This includes error types, validation patterns, and debugging strategies.
 
 ## Error Types
 
@@ -13,17 +13,17 @@ The binding package provides structured error types for detailed error handling:
 ```go
 // BindError represents a field-specific binding error
 type BindError struct {
-    Field  string // Field name that failed
-    Source string // Source ("query", "json", "header", etc.)
-    Err    error  // Underlying error
+    Field  string // Field name that failed.
+    Source string // Source like "query", "json", "header".
+    Err    error  // Underlying error.
 }
 
 // ValidationError represents a validation failure
 type ValidationError struct {
-    Field   string // Field name that failed validation
-    Value   interface{} // The invalid value
-    Rule    string // Validation rule that failed
-    Message string // Human-readable message
+    Field   string // Field name that failed validation.
+    Value   interface{} // The invalid value.
+    Rule    string // Validation rule that failed.
+    Message string // Human-readable message.
 }
 ```
 

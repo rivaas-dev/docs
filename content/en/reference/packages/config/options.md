@@ -27,12 +27,12 @@ func WithFile(path string) Option
 Loads configuration from a file with automatic format detection based on extension.
 
 **Parameters:**
-- `path` - Path to configuration file
+- `path` - Path to configuration file.
 
 **Supported extensions:**
-- `.json` - JSON format
-- `.yaml`, `.yml` - YAML format
-- `.toml` - TOML format
+- `.json` - JSON format.
+- `.yaml`, `.yml` - YAML format.
+- `.toml` - TOML format.
 
 **Example:**
 
@@ -56,8 +56,8 @@ func WithFileAs(path string, codecType codec.Type) Option
 Loads configuration from a file with explicit format specification.
 
 **Parameters:**
-- `path` - Path to configuration file
-- `codecType` - Codec type (e.g., `codec.TypeYAML`, `codec.TypeJSON`)
+- `path` - Path to configuration file.
+- `codecType` - Codec type like `codec.TypeYAML` or `codec.TypeJSON`.
 
 **Example:**
 

@@ -10,7 +10,7 @@ Solutions to common issues, frequently asked questions, and debugging strategies
 
 ### Field Not Binding
 
-**Problem**: Field remains zero value after binding
+**Problem**: Field remains zero value after binding.
 
 **Possible Causes:**
 
@@ -70,7 +70,7 @@ Solutions to common issues, frequently asked questions, and debugging strategies
 
 ### Type Conversion Errors
 
-**Problem**: Error like "cannot unmarshal string into int"
+**Problem**: Error like "cannot unmarshal string into int".
 
 **Solutions:**
 

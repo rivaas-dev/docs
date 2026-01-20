@@ -12,7 +12,7 @@ The metrics package provides utilities for testing without port conflicts or com
 
 ## TestingRecorder
 
-Create a test recorder with stdout provider (no network required):
+Create a test recorder with stdout provider. No network is required.
 
 ```go
 package myapp_test
@@ -56,17 +56,17 @@ func TestingRecorder(tb testing.TB, serviceName string, opts ...Option) *Recorde
 ```
 
 **Parameters**:
-- `tb testing.TB` - Test or benchmark instance
-- `serviceName string` - Service name for metrics
-- `opts ...Option` - Optional additional configuration options
+- `tb testing.TB` - Test or benchmark instance.
+- `serviceName string` - Service name for metrics.
+- `opts ...Option` - Optional additional configuration options.
 
 ### Features
 
-- **No port conflicts**: Uses stdout provider, no network required
-- **Automatic cleanup**: Registers cleanup via `t.Cleanup()`
-- **Parallel safe**: Safe to use in parallel tests
-- **Simple setup**: One-line initialization
-- **Works with benchmarks**: Accepts `testing.TB` (both `*testing.T` and `*testing.B`)
+- **No port conflicts**: Uses stdout provider, no network required.
+- **Automatic cleanup**: Registers cleanup via `t.Cleanup()`.
+- **Parallel safe**: Safe to use in parallel tests.
+- **Simple setup**: One-line initialization.
+- **Works with benchmarks**: Accepts `testing.TB` (both `*testing.T` and `*testing.B`).
 
 ### Example
 

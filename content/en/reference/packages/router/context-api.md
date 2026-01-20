@@ -9,7 +9,7 @@ description: >
 The `Context` provides access to request/response and utility methods.
 
 {{% alert title="Memory Safety" color="warning" %}}
-Context objects are pooled and reused. **Never** store references to Context beyond the request handler. See [Context Guide](/guides/router/context/) for details.
+Context objects are pooled and reused. **Never** store references to Context beyond the request handler. Check [Context Guide](/guides/router/context/) for details.
 {{% /alert %}}
 
 ## Request Information

@@ -8,7 +8,7 @@ Complete API reference for the metrics package core types and methods.
 
 ## Recorder Type
 
-The `Recorder` is the main type for collecting metrics. It is thread-safe and can be used concurrently.
+The `Recorder` is the main type for collecting metrics. It is thread-safe. You can use it concurrently.
 
 ```go
 type Recorder struct {
@@ -27,11 +27,11 @@ func New(opts ...Option) (*Recorder, error)
 Creates a new Recorder with the given options. Returns an error if configuration is invalid.
 
 **Parameters**:
-- `opts ...Option` - Configuration options
+- `opts ...Option` - Configuration options.
 
 **Returns**:
-- `*Recorder` - Configured recorder
-- `error` - Configuration error, if any
+- `*Recorder` - Configured recorder.
+- `error` - Configuration error, if any.
 
 **Example**:
 
@@ -46,9 +46,9 @@ if err != nil {
 ```
 
 **Errors**:
-- Multiple provider options specified
-- Invalid service name
-- Invalid port or endpoint configuration
+- Multiple provider options specified.
+- Invalid service name.
+- Invalid port or endpoint configuration.
 
 #### MustNew
 
@@ -59,12 +59,12 @@ func MustNew(opts ...Option) *Recorder
 Creates a new Recorder with the given options. Panics if configuration is invalid.
 
 **Parameters**:
-- `opts ...Option` - Configuration options
+- `opts ...Option` - Configuration options.
 
 **Returns**:
-- `*Recorder` - Configured recorder
+- `*Recorder` - Configured recorder.
 
-**Panics**: If configuration is invalid
+**Panics**: If configuration is invalid.
 
 **Example**:
 

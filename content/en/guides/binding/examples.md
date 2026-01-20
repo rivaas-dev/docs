@@ -8,7 +8,7 @@ Complete, production-ready examples demonstrating common binding patterns and in
 
 ## Basic REST API
 
-Complete CRUD handlers with proper error handling:
+Complete CRUD handlers with proper error handling.
 
 ```go
 package main

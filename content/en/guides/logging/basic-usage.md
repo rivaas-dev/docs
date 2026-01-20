@@ -4,7 +4,7 @@ description: "Learn the fundamentals of structured logging with handler types an
 weight: 3
 ---
 
-This guide covers the essential operations for working with the logging package: choosing handler types, setting log levels, and producing structured log output.
+This guide covers the essential operations for working with the logging package. Learn to choose handler types, set log levels, and produce structured log output.
 
 ## Handler Types
 
@@ -28,10 +28,10 @@ log.Info("user action", "user_id", "123", "action", "login")
 ```
 
 **Use cases:**
-- Production environments
-- Log aggregation systems (ELK, Splunk, Datadog)
-- Machine-parseable logs
-- Cloud logging services
+- Production environments.
+- Log aggregation systems like ELK, Splunk, Datadog.
+- Machine-parseable logs.
+- Cloud logging services.
 
 ### Text Handler
 
@@ -73,10 +73,10 @@ log.Info("server starting", "port", 8080)
 ```
 
 **Use cases:**
-- Local development
-- Debugging
-- Terminal output
-- Interactive troubleshooting
+- Local development.
+- Debugging.
+- Terminal output.
+- Interactive troubleshooting.
 
 **Note:** Console handler uses ANSI colors automatically. Colors are optimized for dark terminal themes.
 

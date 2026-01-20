@@ -19,9 +19,9 @@ type Config struct {
 Main configuration container. Thread-safe for concurrent read operations and loading.
 
 **Key properties:**
-- Thread-safe for concurrent `Load()` and getter operations
-- Nil-safe - all getter methods handle nil instances gracefully
-- Hierarchical data storage with dot notation support
+- Thread-safe for concurrent `Load()` and getter operations.
+- Nil-safe. All getter methods handle nil instances gracefully.
+- Hierarchical data storage with dot notation support.
 
 ### ConfigError
 
@@ -54,11 +54,11 @@ func New(options ...Option) (*Config, error)
 Creates a new Config instance with the given options. Returns an error if any option fails.
 
 **Parameters:**
-- `options` - Variable number of Option functions
+- `options` - Variable number of Option functions.
 
 **Returns:**
-- `*Config` - Initialized configuration instance
-- `error` - Error if initialization fails
+- `*Config` - Initialized configuration instance.
+- `error` - Error if initialization fails.
 
 **Example:**
 
@@ -72,7 +72,7 @@ if err != nil {
 }
 ```
 
-**Use when:** You need explicit error handling (recommended for libraries).
+**Use when:** You need explicit error handling. Recommended for libraries.
 
 ### MustNew
 

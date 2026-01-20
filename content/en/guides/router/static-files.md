@@ -10,7 +10,7 @@ The router provides methods for serving static files and directories.
 
 ## Directory Serving
 
-Serve an entire directory:
+Serve an entire directory.
 
 ```go
 r := router.MustNew()
@@ -51,7 +51,7 @@ r.StaticFile("/robots.txt", "./static/robots.txt")
 
 ## Custom File System
 
-Use a custom filesystem:
+Use a custom filesystem.
 
 ```go
 import "net/http"

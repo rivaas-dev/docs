@@ -10,15 +10,15 @@ description: >
 
 The app package provides unified configuration for the three pillars of observability:
 
-- **Metrics** - Prometheus/OTLP metrics with automatic HTTP instrumentation
-- **Tracing** - OpenTelemetry distributed tracing with context propagation
-- **Logging** - Structured logging with slog, including request-scoped fields
+- **Metrics** - Prometheus or OTLP metrics with automatic HTTP instrumentation.
+- **Tracing** - OpenTelemetry distributed tracing with context propagation.
+- **Logging** - Structured logging with slog that includes request-scoped fields.
 
-All three pillars use the same consistent functional options pattern and automatically receive service metadata (name/version) from app-level configuration.
+All three pillars use the same functional options pattern. They automatically receive service metadata (name and version) from app-level configuration.
 
 ## Unified Observability Configuration
 
-Configure all three pillars in one place:
+Configure all three pillars in one place.
 
 ```go
 a, err := app.New(
@@ -48,7 +48,7 @@ a, err := app.New(
 
 ### Log Handlers
 
-Choose from different log handlers:
+Choose from different log handlers.
 
 ```go
 // JSON handler (production)
@@ -74,7 +74,7 @@ app.WithLogging(
 
 ### Request-Scoped Logging
 
-Use the request-scoped logger in handlers:
+Use the request-scoped logger in handlers.
 
 ```go
 a.GET("/orders/:id", func(c *app.Context) {

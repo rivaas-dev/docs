@@ -10,11 +10,11 @@ description: >
 
 The app package provides lifecycle hooks for managing application state:
 
-- **OnStart** - Called before server starts (sequential, stops on first error)
-- **OnReady** - Called when server is ready to accept connections (async, non-blocking)
-- **OnShutdown** - Called during graceful shutdown (LIFO order)
-- **OnStop** - Called after shutdown completes (best-effort)
-- **OnRoute** - Called when a route is registered (synchronous)
+- **OnStart** - Called before server starts. Runs sequentially. Stops on first error.
+- **OnReady** - Called when server is ready to accept connections. Runs async. Non-blocking.
+- **OnShutdown** - Called during graceful shutdown. LIFO order.
+- **OnStop** - Called after shutdown completes. Best-effort.
+- **OnRoute** - Called when a route is registered. Synchronous.
 
 ## OnStart Hook
 

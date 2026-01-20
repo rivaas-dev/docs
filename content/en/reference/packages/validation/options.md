@@ -10,8 +10,8 @@ Complete reference for all configuration options (`With*` functions) available i
 
 Options can be used in two ways:
 
-1. **Validator Creation**: Pass to `New()` or `MustNew()` - applies to all validations
-2. **Per-Call**: Pass to `Validate()` or `ValidatePartial()` - applies to that call only
+1. **Validator Creation**: Pass to `New()` or `MustNew()`. Applies to all validations.
+2. **Per-Call**: Pass to `Validate()` or `ValidatePartial()`. Applies to that call only.
 
 ```go
 // Validator creation options
@@ -38,10 +38,10 @@ func WithStrategy(strategy Strategy) Option
 Sets the validation strategy to use.
 
 **Values:**
-- `StrategyAuto` - Automatically select best strategy (default)
-- `StrategyTags` - Use struct tags only
-- `StrategyJSONSchema` - Use JSON Schema only
-- `StrategyInterface` - Use interface methods only
+- `StrategyAuto` - Automatically select best strategy. This is the default.
+- `StrategyTags` - Use struct tags only.
+- `StrategyJSONSchema` - Use JSON Schema only.
+- `StrategyInterface` - Use interface methods only.
 
 **Example:**
 

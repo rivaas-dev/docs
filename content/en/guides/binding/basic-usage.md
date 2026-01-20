@@ -4,7 +4,7 @@ description: "Learn the fundamentals of binding request data to Go structs"
 weight: 3
 ---
 
-This guide covers the essential operations for working with the binding package: binding from different sources, understanding the API variants, and handling errors.
+This guide covers the essential operations for working with the binding package. Learn how to bind from different sources, understand the API variants, and handle errors.
 
 ## Generic API vs Non-Generic API
 
@@ -21,10 +21,10 @@ params, err := binding.Query[ListParams](r.URL.Query())
 ```
 
 **Benefits:**
-- Compile-time type safety
-- Cleaner syntax
-- Better IDE support
-- No need to pre-allocate the struct
+- Compile-time type safety.
+- Cleaner syntax.
+- Better IDE support.
+- No need to pre-allocate the struct.
 
 ### Non-Generic API
 
@@ -39,9 +39,9 @@ err := binding.QueryTo(r.URL.Query(), &params)
 ```
 
 **Use when:**
-- Type is determined at runtime
-- Working with reflection
-- Integrating with older codebases
+- Type is determined at runtime.
+- Working with reflection.
+- Integrating with older codebases.
 
 ## Binding from Different Sources
 

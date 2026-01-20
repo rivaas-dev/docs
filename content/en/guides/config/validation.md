@@ -4,15 +4,15 @@ description: "Validate configuration to catch errors early and ensure applicatio
 weight: 6
 ---
 
-The config package supports multiple validation strategies to help catch configuration errors early and ensure your application runs with correct settings.
+The config package supports multiple validation strategies. These help catch configuration errors early. They ensure your application runs with correct settings.
 
 ## Validation Strategies
 
 The config package provides three validation approaches:
 
-1. **Struct-based validation** - Implement `Validate() error` on your struct
-2. **JSON Schema validation** - Validate against a JSON Schema
-3. **Custom validation functions** - Use custom validation logic
+1. **Struct-based validation** - Implement `Validate() error` on your struct.
+2. **JSON Schema validation** - Validate against a JSON Schema.
+3. **Custom validation functions** - Use custom validation logic.
 
 ## Struct-Based Validation
 

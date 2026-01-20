@@ -8,7 +8,7 @@ Extend the validation package with custom validation tags and functions to handl
 
 ## Custom Validation Tags
 
-Register custom tags for use in struct tags with `WithCustomTag`:
+Register custom tags for use in struct tags with `WithCustomTag`.
 
 ```go
 import (
@@ -29,7 +29,7 @@ type User struct {
 
 ## FieldLevel Interface
 
-Custom tag functions receive a `validator.FieldLevel` with methods to access field information:
+Custom tag functions receive a `validator.FieldLevel` with methods to access field information.
 
 ```go
 type FieldLevel interface {

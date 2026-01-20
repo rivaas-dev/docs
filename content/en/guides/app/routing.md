@@ -82,7 +82,7 @@ v2.GET("/users", v2GetUsersHandler)
 
 ### Version Detection
 
-Configure how versions are detected (requires router configuration):
+Configure how versions are detected. This requires router configuration:
 
 ```go
 a, err := app.New(

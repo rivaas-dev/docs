@@ -13,9 +13,9 @@ type Option func(*Config)
 ```
 
 Options configure binding behavior. They can be passed to:
-- Package-level functions (e.g., `binding.JSON[T](data, opts...)`)
-- `Binder` constructor (e.g., `binding.MustNew(opts...)`)
-- `Binder` methods (e.g., `binder.JSON[T](data, opts...)`)
+- Package-level functions like `binding.JSON[T](data, opts...)`.
+- `Binder` constructor like `binding.MustNew(opts...)`.
+- `Binder` methods like `binder.JSON[T](data, opts...)`.
 
 ## Security Limits
 
@@ -35,9 +35,9 @@ user, err := binding.JSON[User](data, binding.WithMaxDepth(16))
 ```
 
 **Use Cases:**
-- Protect against malicious deeply nested JSON
-- Limit resource usage
-- Prevent stack overflow
+- Protect against malicious deeply nested JSON.
+- Limit resource usage.
+- Prevent stack overflow.
 
 ### WithMaxSliceLen
 
@@ -75,9 +75,9 @@ config, err := binding.JSON[Config](data, binding.WithMaxMapSize(500))
 ```
 
 **Use Cases:**
-- Protect against memory attacks
-- Limit object sizes
-- Control memory allocation
+- Protect against memory attacks.
+- Limit object sizes.
+- Control memory allocation.
 
 ## Unknown Field Handling
 

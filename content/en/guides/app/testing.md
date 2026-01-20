@@ -8,7 +8,7 @@ description: >
 
 ## Overview
 
-The app package provides built-in testing utilities for testing routes and handlers without starting an HTTP server.
+The app package provides built-in testing utilities. Test routes and handlers without starting an HTTP server.
 
 ## Test Method
 

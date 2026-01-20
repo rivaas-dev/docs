@@ -1,10 +1,10 @@
 ---
 title: Your First Application
-description: Build a complete REST API in 5 minutes
+description: Build a complete REST API quickly
 weight: 2
 ---
 
-Let's build a simple REST API to understand the basics of Rivaas. You'll create a working application with multiple routes, JSON responses, and graceful shutdown.
+Build a simple REST API to learn Rivaas basics. You'll create a working application with multiple routes, JSON responses, and graceful shutdown.
 
 ## Create Your Project
 
@@ -160,7 +160,7 @@ Response:
 
 ## Understanding the Code
 
-Let's break down what's happening:
+Here's what each part does:
 
 ### 1. Creating the Application
 
@@ -171,9 +171,9 @@ a := app.MustNew(
 )
 ```
 
-- `MustNew()` creates a new application (panics on error, suitable for `main()`)
-- `WithServiceName()` sets the service name
-- `WithServiceVersion()` sets the version
+- `MustNew()` creates a new application. Panics on error. Use in `main()` functions.
+- `WithServiceName()` sets the service name.
+- `WithServiceVersion()` sets the version.
 
 ### 2. Defining Routes
 
@@ -183,9 +183,9 @@ a.GET("/hello/:name", handleHello)
 a.POST("/echo", handleEcho)
 ```
 
-- `GET()` and `POST()` register route handlers
-- `:name` is a path parameter (accessed via `c.Param("name")`)
-- Handler functions receive an `*app.Context` with all request data
+- `GET()` and `POST()` register route handlers.
+- `:name` is a path parameter. Access it with `c.Param("name")`.
+- Handler functions receive an `*app.Context` with all request data.
 
 ### 3. Graceful Shutdown
 
@@ -198,9 +198,9 @@ if err := a.Start(ctx, ":8080"); err != nil {
 }
 ```
 
-- `signal.NotifyContext()` creates a context that cancels on SIGINT (Ctrl+C) or SIGTERM
-- `Start()` starts the server and blocks until the context is canceled
-- The server shuts down gracefully, finishing in-flight requests
+- `signal.NotifyContext()` creates a context that cancels on SIGINT (Ctrl+C) or SIGTERM.
+- `Start()` starts the server and blocks until the context is canceled.
+- The server shuts down gracefully. It finishes active requests before stopping.
 
 ### 4. Handler Functions
 
@@ -212,10 +212,10 @@ func handleRoot(c *app.Context) {
 }
 ```
 
-- Handlers receive an `*app.Context`
-- `c.JSON()` sends a JSON response
-- `c.Param()` gets path parameters
-- `c.Bind()` parses request bodies (auto-detects JSON, form, etc.)
+- Handlers receive an `*app.Context`.
+- `c.JSON()` sends a JSON response.
+- `c.Param()` gets path parameters.
+- `c.Bind()` parses request bodies. It auto-detects JSON, form, and other formats.
 
 ## Common Patterns
 
@@ -279,7 +279,7 @@ a.POST("/created", func(c *app.Context) {
 
 ## Testing Your Application
 
-Rivaas provides built-in testing utilities for integration tests:
+Rivaas provides testing utilities for integration tests:
 
 ```go
 package main
@@ -394,9 +394,9 @@ See the [full-featured example](https://github.com/rivaas-dev/rivaas/tree/main/a
 
 ## What's Next?
 
-You now have a working Rivaas application! Here are some next steps:
+You now have a working Rivaas application. Here are the next steps:
 
-- **[Configuration](../configuration/)** — Learn about configuration options
+- **[Configuration](../configuration/)** — Learn configuration options
 - **[Middleware](../middleware/)** — Add middleware for logging, CORS, etc.
 - **[Routing Guide](/guides/router/)** — Advanced routing patterns
 - **[Observability Guide](/guides/app/observability/)** — Add logging, metrics, and tracing

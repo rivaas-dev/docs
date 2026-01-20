@@ -10,11 +10,11 @@ description: >
 
 Consider migrating from router to app when you need:
 
-- **Integrated observability** - Built-in metrics, tracing, and logging
-- **Lifecycle management** - OnStart, OnReady, OnShutdown, OnStop hooks
-- **Graceful shutdown** - Automatic shutdown handling with context
-- **Health endpoints** - Kubernetes-compatible liveness and readiness probes
-- **Sensible defaults** - Pre-configured with production-ready settings
+- **Integrated observability** - Built-in metrics, tracing, and logging.
+- **Lifecycle management** - OnStart, OnReady, OnShutdown, OnStop hooks.
+- **Graceful shutdown** - Automatic shutdown handling with context.
+- **Health endpoints** - Kubernetes-compatible liveness and readiness probes.
+- **Sensible defaults** - Pre-configured with production-ready settings.
 
 ## Key Differences
 
@@ -52,7 +52,7 @@ a.GET("/", func(c *app.Context) {  // Different context type
 })
 ```
 
-`app.Context` embeds `router.Context` and adds binding, validation, and error handling methods.
+`app.Context` embeds `router.Context`. It adds binding, validation, and error handling methods.
 
 ### Server Startup
 

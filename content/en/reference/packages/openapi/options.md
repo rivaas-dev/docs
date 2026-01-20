@@ -17,8 +17,8 @@ func WithTitle(title, version string) Option
 Sets the API title and version. **Required.**
 
 **Parameters:**
-- `title` - API title
-- `version` - API version (e.g., "1.0.0")
+- `title` - API title.
+- `version` - API version like "1.0.0".
 
 **Example:**
 
@@ -46,9 +46,7 @@ openapi.WithInfoDescription("Comprehensive API for managing users and resources"
 func WithInfoSummary(summary string) Option
 ```
 
-Sets a short summary for the API. **OpenAPI 3.1 only.**
-
-Generates warning if used with 3.0 target.
+Sets a short summary for the API. **OpenAPI 3.1 only.** Generates warning if used with 3.0 target.
 
 **Example:**
 

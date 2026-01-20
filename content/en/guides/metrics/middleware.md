@@ -10,11 +10,11 @@ This guide covers using the metrics middleware to automatically collect HTTP met
 
 The metrics middleware automatically records metrics for HTTP requests:
 
-- Request duration (histogram)
-- Request count (counter)
-- Active requests (gauge)
-- Request/response sizes (histograms)
-- Error counts (counter)
+- Request duration as histogram.
+- Request count as counter.
+- Active requests as gauge.
+- Request and response sizes as histograms.
+- Error counts as counter.
 
 ## Basic Usage
 
@@ -66,9 +66,9 @@ The middleware automatically collects:
 
 Each metric includes relevant labels:
 
-- **method**: HTTP method (GET, POST, PUT, DELETE, etc.)
-- **path**: Request path (e.g., `/api/users`, `/health`)
-- **status**: HTTP status code (e.g., `200`, `404`, `500`)
+- **method**: HTTP method like GET, POST, PUT, DELETE.
+- **path**: Request path like `/api/users`, `/health`.
+- **status**: HTTP status code like `200`, `404`, `500`.
 
 ## Path Exclusion
 

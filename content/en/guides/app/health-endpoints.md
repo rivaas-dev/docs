@@ -8,16 +8,16 @@ description: >
 
 ## Overview
 
-The app package provides standard health check endpoints compatible with Kubernetes and other orchestration platforms:
+The app package provides standard health check endpoints. They work with Kubernetes and other orchestration platforms:
 
-- **Liveness Probe** (`/healthz`) - Indicates if the process is alive and should be restarted if failing
-- **Readiness Probe** (`/readyz`) - Indicates if the service can handle traffic
+- **Liveness Probe** (`/healthz`) - Shows if the process is alive. Restart if failing.
+- **Readiness Probe** (`/readyz`) - Shows if the service can handle traffic.
 
 ## Basic Configuration
 
 ### Enable Health Endpoints
 
-Enable health endpoints with defaults:
+Enable health endpoints with defaults.
 
 ```go
 a, err := app.New(
@@ -44,7 +44,7 @@ a, err := app.New(
 
 ### Path Prefix
 
-Mount health endpoints under a prefix:
+Mount health endpoints under a prefix.
 
 ```go
 a, err := app.New(
@@ -77,7 +77,7 @@ a, err := app.New(
 
 ### Multiple Liveness Checks
 
-Add multiple liveness checks:
+Add multiple liveness checks.
 
 ```go
 a, err := app.New(

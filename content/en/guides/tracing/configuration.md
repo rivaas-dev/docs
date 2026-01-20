@@ -22,9 +22,9 @@ tracer := tracing.MustNew(
 ```
 
 **Best practices:**
-- Use descriptive, consistent names across services
-- Use kebab-case: `user-api`, `order-service`, `payment-gateway`
-- Avoid generic names like `api` or `service`
+- Use descriptive, consistent names across services.
+- Use kebab-case: `user-api`, `order-service`, `payment-gateway`.
+- Avoid generic names like `api` or `service`.
 
 ### Service Version
 
@@ -39,9 +39,9 @@ tracer := tracing.MustNew(
 ```
 
 **Best practices:**
-- Use semantic versioning: `v1.2.3`
-- Include in CI/CD builds
-- Track version across deployments
+- Use semantic versioning: `v1.2.3`.
+- Include in CI/CD builds.
+- Track version across deployments.
 
 ### Combined Example
 
@@ -74,10 +74,10 @@ tracer := tracing.MustNew(
 ```
 
 **Sample rates:**
-- `1.0`: 100% sampling (all requests traced)
-- `0.5`: 50% sampling
-- `0.1`: 10% sampling
-- `0.01`: 1% sampling
+- `1.0`: 100% sampling. All requests traced.
+- `0.5`: 50% sampling.
+- `0.1`: 10% sampling.
+- `0.01`: 1% sampling.
 - `0.0`: 0% sampling (no traces)
 
 ### Sampling Examples

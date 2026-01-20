@@ -8,7 +8,7 @@ Complete examples demonstrating real-world usage patterns for the OpenAPI packag
 
 ## Basic CRUD API
 
-A simple CRUD API with all HTTP methods:
+A simple CRUD API with all HTTP methods.
 
 ```go
 package main

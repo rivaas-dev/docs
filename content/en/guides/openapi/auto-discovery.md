@@ -14,10 +14,10 @@ The package automatically discovers parameters from struct tags. This eliminates
 
 The package supports four parameter locations:
 
-- **`path`** - Path parameters (always required)
-- **`query`** - Query parameters
-- **`header`** - Header parameters
-- **`cookie`** - Cookie parameters
+- **`path`** - Path parameters. Always required.
+- **`query`** - Query parameters.
+- **`header`** - Header parameters.
+- **`cookie`** - Cookie parameters.
 
 ## Basic Parameter Discovery
 

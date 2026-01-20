@@ -10,7 +10,7 @@ description: >
 
 ### Using New()
 
-The recommended way to create an app is with `app.New()`, which returns an error if configuration is invalid:
+The recommended way to create an app is with `app.New()`. It returns an error if configuration is invalid.
 
 ```go
 package main
@@ -52,13 +52,13 @@ func main() {
 }
 ```
 
-`MustNew()` panics if configuration is invalid, following the Go idiom of `Must*` constructors like `regexp.MustCompile()`.
+`MustNew()` panics if configuration is invalid. It follows the Go idiom of `Must*` constructors like `regexp.MustCompile()`.
 
 ## Registering Routes
 
 ### Basic Routes
 
-Register routes using HTTP method shortcuts:
+Register routes using HTTP method shortcuts.
 
 ```go
 a.GET("/", func(c *app.Context) {

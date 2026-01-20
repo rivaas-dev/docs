@@ -8,8 +8,8 @@ description: >
 
 ## Requirements
 
-- **Go 1.25 or higher**
-- Standard library only (no external dependencies for core routing)
+- **Go 1.25 or higher**.
+- Standard library only. No external dependencies for core routing.
 
 ## Install the Router
 

@@ -8,7 +8,7 @@ Explore advanced binding techniques for custom types, sources, and integration p
 
 ## Custom Type Converters
 
-Register converters for types not natively supported:
+Register converters for types not natively supported.
 
 ```go
 import (
@@ -53,7 +53,7 @@ binder := binding.MustNew(
 
 ## Custom ValueGetter
 
-Implement custom data sources:
+Implement custom data sources.
 
 ```go
 // ValueGetter interface

@@ -29,20 +29,20 @@ if err != nil {
 ## Why Validation is Disabled by Default
 
 Validation has a performance cost:
-- Schema compilation on first use
-- JSON schema validation for every generation
-- Not necessary for production spec generation
+- Schema compilation on first use.
+- JSON schema validation for every generation.
+- Not necessary for production spec generation.
 
 **When to enable:**
-- During development
-- In CI/CD pipelines
-- When debugging specification issues
-- When accepting external specifications
+- During development.
+- In CI/CD pipelines.
+- When debugging specification issues.
+- When accepting external specifications.
 
 **When to disable:**
-- Production spec generation
-- When performance is critical
-- After spec validation is confirmed
+- Production spec generation.
+- When performance is critical.
+- After spec validation is confirmed.
 
 ## Validation Errors
 
@@ -57,11 +57,11 @@ if err != nil {
 ```
 
 Common validation errors:
-- Missing required fields (`info`, `openapi`, `paths`)
-- Invalid field types
-- Invalid format values
-- Schema constraint violations
-- Invalid references
+- Missing required fields like `info`, `openapi`, `paths`.
+- Invalid field types.
+- Invalid format values.
+- Schema constraint violations.
+- Invalid references.
 
 ## Validating External Specifications
 

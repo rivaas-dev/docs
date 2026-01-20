@@ -6,7 +6,7 @@ weight: 8
 ---
 
 {{% pageinfo %}}
-The Rivaas Metrics package provides OpenTelemetry-based metrics collection with support for multiple exporters including Prometheus, OTLP, and stdout, enabling observability best practices with minimal configuration.
+The Rivaas Metrics package provides OpenTelemetry-based metrics collection. Supports multiple exporters including Prometheus, OTLP, and stdout. Enables observability best practices with minimal configuration.
 {{% /pageinfo %}}
 
 ## Features

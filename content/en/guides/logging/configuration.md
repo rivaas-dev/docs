@@ -4,7 +4,7 @@ description: "Configure loggers with all available options for production readin
 weight: 4
 ---
 
-This guide covers all configuration options available in the logging package, from handler selection to service metadata.
+This guide covers all configuration options available in the logging package. It covers handler selection to service metadata.
 
 ## Handler Configuration
 
@@ -13,13 +13,13 @@ Choose the appropriate handler type for your environment.
 ### Handler Types
 
 ```go
-// JSON structured logging (default, best for production)
+// JSON structured logging. Default and best for production.
 logging.WithJSONHandler()
 
-// Text key=value logging
+// Text key=value logging.
 logging.WithTextHandler()
 
-// Human-readable colored console (best for development)
+// Human-readable colored console. Best for development.
 logging.WithConsoleHandler()
 ```
 

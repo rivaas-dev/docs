@@ -3,57 +3,57 @@ title: "HTTP Router"
 linkTitle: "Router"
 weight: 2
 description: >
-  An HTTP router for Go, designed for cloud-native applications with comprehensive routing, middleware, and observability features.
+  An HTTP router for Go. Built for cloud-native applications with complete routing, middleware, and observability features.
 ---
 
 {{% pageinfo %}}
-The Rivaas Router provides a high-performance, feature-rich routing system with built-in middleware, OpenTelemetry support, and comprehensive request handling capabilities.
+The Rivaas Router provides a high-performance routing system. Includes built-in middleware, OpenTelemetry support, and complete request handling.
 {{% /pageinfo %}}
 
 ## Overview
 
-The Rivaas Router is a production-ready HTTP router designed for cloud-native applications. It combines exceptional performance (8.4M+ req/s, 119ns/op) with a rich feature set including automatic request binding, comprehensive validation, content negotiation, API versioning, and native OpenTelemetry tracing.
+The Rivaas Router is a production-ready HTTP router for cloud-native applications. It combines high performance with a rich feature set. It delivers 8.4M+ requests per second at 119ns per operation. It includes automatic request binding, validation, content negotiation, API versioning, and native OpenTelemetry tracing.
 
 ## Key Features
 
 ### Core Routing & Request Handling
 
-- **Radix tree routing** - Path matching with bloom filters for static route lookups
-- **Compiled route tables** - Pre-compiled routes for static and dynamic path matching
-- **Path Parameters**: `/users/:id`, `/posts/:id/:action` - Array-based storage for route parameters
-- **Wildcard Routes**: `/files/*filepath` - Catch-all routing for file serving
-- **Route Groups**: Organize routes with shared prefixes and middleware
-- **Middleware Chain**: Global, group-level, and route-level middleware support
-- **Route Constraints**: Numeric, UUID, Alpha, Alphanumeric, Custom regex validation
-- **Concurrent Safe**: Thread-safe for use by multiple goroutines
+- **Radix tree routing** - Path matching with bloom filters for static route lookups.
+- **Compiled route tables** - Pre-compiled routes for static and dynamic path matching.
+- **Path Parameters**: `/users/:id`, `/posts/:id/:action` - Array-based storage for route parameters.
+- **Wildcard Routes**: `/files/*filepath` - Catch-all routing for file serving.
+- **Route Groups**: Organize routes with shared prefixes and middleware.
+- **Middleware Chain**: Global, group-level, and route-level middleware support.
+- **Route Constraints**: Numeric, UUID, Alpha, Alphanumeric, Custom regex validation.
+- **Concurrent Safe**: Thread-safe for use by multiple goroutines.
 
 ### Request Binding
 
 Automatically bind request data to structs:
 
-- **Router Context**: Built-in `BindStrict()` for strict JSON binding with size limits
-- **Binding Package**: Full binding with `binding.Query()`, `binding.JSON()`, `binding.Form()`, `binding.Headers()`, `binding.Cookies()`
-- **15+ Type Categories**: Primitives, Time, Network types (net.IP, net.IPNet), Maps, Nested Structs, Slices
-- **Advanced Features**: Maps with dot/bracket notation, nested structs in query strings, enum validation, default values
+- **Router Context**: Built-in `BindStrict()` for strict JSON binding with size limits.
+- **Binding Package**: Full binding with `binding.Query()`, `binding.JSON()`, `binding.Form()`, `binding.Headers()`, `binding.Cookies()`.
+- **15+ Type Categories**: Primitives, Time, Network types like net.IP and net.IPNet, Maps, Nested Structs, Slices.
+- **Advanced Features**: Maps with dot or bracket notation, nested structs in query strings, enum validation, default values.
 
 ### Request Validation
 
-- **Multiple Strategies**: Interface validation, Tag validation (go-playground/validator), JSON Schema
-- **Partial Validation**: PATCH request support (validate only present fields)
-- **Structured Errors**: Machine-readable error codes and field paths
-- **Context-Aware**: Request-scoped validation rules
+- **Multiple Strategies**: Interface validation, Tag validation with go-playground/validator, JSON Schema.
+- **Partial Validation**: PATCH request support. Validate only present fields.
+- **Structured Errors**: Machine-readable error codes and field paths.
+- **Context-Aware**: Request-scoped validation rules.
 
 ### Response Rendering
 
-- **JSON Variants**: Standard, Indented, Pure, Secure, ASCII, JSONP
-- **Alternative Formats**: YAML, String, HTML
-- **Binary & Streaming**: Zero-copy streaming from io.Reader, file serving
+- **JSON Variants**: Standard, Indented, Pure, Secure, ASCII, JSONP.
+- **Alternative Formats**: YAML, String, HTML.
+- **Binary & Streaming**: Zero-copy streaming from io.Reader, file serving.
 
 ### Content Negotiation - RFC 7231 Compliant
 
-- Media type negotiation with quality values
-- Character set, encoding, and language negotiation
-- Wildcard support and specificity matching
+- Media type negotiation with quality values.
+- Character set, encoding, and language negotiation.
+- Wildcard support and specificity matching.
 
 ### API Versioning - Built-in
 
@@ -198,7 +198,7 @@ Handle requests effectively:
 
 ### 4. Advanced Features
 
-Leverage advanced capabilities:
+Use advanced capabilities:
 
 - [Content Negotiation](content-negotiation/) - Handle Accept headers and format negotiation
 - [API Versioning](api-versioning/) - Build versioned APIs with built-in support

@@ -6,7 +6,7 @@ weight: 6
 ---
 
 {{% pageinfo %}}
-The Rivaas OpenAPI package provides automatic OpenAPI 3.0.4 and 3.1.2 specification generation from Go code using struct tags and reflection, with a clean, type-safe API for building specifications with minimal boilerplate.
+The Rivaas OpenAPI package provides automatic OpenAPI 3.0.4 and 3.1.2 specification generation from Go code. Uses struct tags and reflection with a clean, type-safe API. Minimal boilerplate required.
 {{% /pageinfo %}}
 
 ## Features

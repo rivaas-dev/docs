@@ -8,7 +8,7 @@ Learn about advanced features including custom operation IDs, extensions, and st
 
 ## Custom Operation IDs
 
-By default, operation IDs are auto-generated from the HTTP method and path. You can override this behavior:
+By default, operation IDs are auto-generated from the HTTP method and path. You can override this behavior.
 
 ### Auto-Generated Operation IDs
 
@@ -48,10 +48,10 @@ openapi.POST("/users",
 
 ### Operation ID Best Practices
 
-- **Use camelCase** - Consistent with most API conventions
-- **Be descriptive** - `getUserById` rather than `getUser1`
-- **Avoid conflicts** - Ensure unique IDs across all operations
-- **Consider generation** - Some tools generate client code from operation IDs
+- **Use camelCase** - Consistent with most API conventions.
+- **Be descriptive** - `getUserById` rather than `getUser1`.
+- **Avoid conflicts** - Ensure unique IDs across all operations.
+- **Consider generation** - Some tools generate client code from operation IDs.
 
 ## Extensions
 
@@ -75,7 +75,7 @@ api := openapi.MustNew(
 
 ### Operation Extensions
 
-Add extensions to specific operations:
+Add extensions to specific operations.
 
 ```go
 openapi.GET("/users",

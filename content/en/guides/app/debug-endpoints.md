@@ -8,15 +8,15 @@ description: >
 
 ## Overview
 
-The app package provides optional debug endpoints for profiling and diagnostics using Go's `net/http/pprof` package.
+The app package provides optional debug endpoints for profiling and diagnostics. It uses Go's `net/http/pprof` package.
 
-⚠️ **Security Warning:** Debug endpoints expose sensitive runtime information and should NEVER be enabled in production without proper security measures.
+**Security Warning:** Debug endpoints expose sensitive runtime information. NEVER enable them in production without proper security measures.
 
 ## Basic Configuration
 
 ### Enable pprof Unconditionally
 
-Enable pprof endpoints (development only):
+Enable pprof endpoints. Use for development only.
 
 ```go
 a, err := app.New(
@@ -28,7 +28,7 @@ a, err := app.New(
 
 ### Enable pprof Conditionally
 
-Enable based on environment variable (recommended):
+Enable based on environment variable. This is recommended:
 
 ```go
 a, err := app.New(
@@ -40,7 +40,7 @@ a, err := app.New(
 
 ### Custom Prefix
 
-Mount debug endpoints under a custom prefix:
+Mount debug endpoints under a custom prefix.
 
 ```go
 a, err := app.New(
@@ -74,7 +74,7 @@ When pprof is enabled, the following endpoints are registered:
 
 ### Development
 
-Safe to enable unconditionally in development:
+Safe to enable unconditionally in development.
 
 ```go
 a, err := app.New(

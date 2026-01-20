@@ -4,7 +4,7 @@ description: "Complete reference for all supported data types and conversions"
 weight: 8
 ---
 
-Comprehensive guide to type support in the binding package, including automatic conversions, custom types, and edge cases.
+Comprehensive guide to type support in the binding package. This includes automatic conversions, custom types, and edge cases.
 
 ## Supported Types
 

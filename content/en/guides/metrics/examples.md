@@ -8,7 +8,7 @@ This guide provides complete, real-world examples of using the metrics package.
 
 ## Simple HTTP Server
 
-Basic HTTP server with Prometheus metrics:
+Basic HTTP server with Prometheus metrics.
 
 ```go
 package main

@@ -6,7 +6,7 @@ description: >
   Organize routes with groups, shared prefixes, and group-specific middleware.
 ---
 
-Route groups help organize related routes under a common prefix and apply middleware to specific sets of routes.
+Route groups help organize related routes. They share a common prefix. They can apply middleware to specific sets of routes.
 
 ## Basic Groups
 
@@ -70,8 +70,8 @@ func AuthRequired() router.HandlerFunc {
 
 **Middleware execution:**
 
-- `/api/public/health` → Logger only
-- `/api/private/profile` → Logger + AuthRequired
+- `/api/public/health` → Logger only.
+- `/api/private/profile` → Logger + AuthRequired.
 
 ## Nested Groups
 

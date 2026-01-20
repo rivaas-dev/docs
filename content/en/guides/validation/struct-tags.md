@@ -4,7 +4,7 @@ description: "Validate structs using go-playground/validator tags"
 weight: 3
 ---
 
-Use struct tags with go-playground/validator syntax to declaratively validate your structs. This is the most common validation strategy in the Rivaas validation package.
+Use struct tags with go-playground/validator syntax to validate your structs. This is the most common validation strategy in the Rivaas validation package.
 
 ## Basic Syntax
 

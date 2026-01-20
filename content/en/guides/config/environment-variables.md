@@ -4,7 +4,7 @@ description: "Master environment variable integration with hierarchical naming c
 weight: 4
 ---
 
-The config package provides powerful environment variable support that automatically maps environment variables to nested configuration structures. This follows the [Twelve-Factor App methodology](https://12factor.net/config) for configuration management.
+The config package provides powerful environment variable support. It automatically maps environment variables to nested configuration structures. This follows the [Twelve-Factor App methodology](https://12factor.net/config) for configuration management.
 
 ## Basic Usage
 
@@ -25,11 +25,11 @@ The config package uses a **hierarchical naming convention** where underscores (
 
 ### Transformation Rules
 
-1. **Strip prefix**: Remove the configured prefix (e.g., `MYAPP_`)
-2. **Convert to lowercase**: `DATABASE_HOST` → `database_host`
-3. **Split by underscores**: `database_host` → `["database", "host"]`
-4. **Filter empty parts**: Consecutive underscores create no extra levels
-5. **Create dot notation**: `["database", "host"]` → `database.host`
+1. **Strip prefix**: Remove the configured prefix like `MYAPP_`.
+2. **Convert to lowercase**: `DATABASE_HOST` → `database_host`.
+3. **Split by underscores**: `database_host` → `["database", "host"]`.
+4. **Filter empty parts**: Consecutive underscores create no extra levels.
+5. **Create dot notation**: `["database", "host"]` → `database.host`.
 
 ### Visualization
 

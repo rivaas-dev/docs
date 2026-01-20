@@ -63,12 +63,12 @@ database:
 
 ```yaml
 server:
-  host: 0.0.0.0      # Overridden
-  port: 8080         # From base
-  timeout: 30s       # From base
+  host: 0.0.0.0      # Overridden.
+  port: 8080         # From base.
+  timeout: 30s       # From base.
 database:
-  host: db.example.com  # Overridden
-  port: 5432            # From base
+  host: db.example.com  # Overridden.
+  port: 5432            # From base.
 ```
 
 ## File Sources

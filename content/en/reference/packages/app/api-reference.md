@@ -41,7 +41,7 @@ if err != nil {
 func MustNew(opts ...Option) *App
 ```
 
-Creates a new App instance or panics on error. Useful for initialization in `main()` functions.
+Creates a new App instance or panics on error. Use for initialization in `main()` functions.
 
 **Parameters:**
 - `opts` - Configuration options

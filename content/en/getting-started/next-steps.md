@@ -1,17 +1,17 @@
 ---
 title: Next Steps
-description: Continue your journey with Rivaas
+description: Continue learning Rivaas
 weight: 5
 ---
 
-Congratulations! You've completed the Getting Started guide. You now know how to install Rivaas, build applications, configure them, and use middleware.
+You've completed the Getting Started guide. You now know how to install Rivaas, build applications, configure them, and add middleware.
 
 ## What You've Learned
 
-✅ **Installation** — Set up Rivaas and verify it works  
+✅ **Installation** — Set up Rivaas and verified it works  
 ✅ **First Application** — Built a REST API with routes and JSON responses  
 ✅ **Configuration** — Configured service metadata, health checks, and observability  
-✅ **Middleware** — Added cross-cutting functionality like CORS and authentication
+✅ **Middleware** — Added functionality like CORS and authentication
 
 ## Choose Your Path
 
@@ -19,9 +19,9 @@ Congratulations! You've completed the Getting Started guide. You now know how to
 
 Learn advanced routing, error handling, and API patterns:
 
-- **[Routing Guide](/guides/router/)** — Advanced routing patterns, groups, constraints
-- **[Request Binding](/guides/binding/)** — Bind and validate JSON, XML, YAML, form data
-- **[OpenAPI Documentation](/guides/openapi/)** — Auto-generate API documentation
+- **[Routing Guide](/guides/router/)** — Advanced routing patterns, groups, and constraints
+- **[Request Binding](/guides/binding/)** — Bind and validate JSON, XML, YAML, and form data
+- **[OpenAPI Documentation](/guides/openapi/)** — Auto-generate API specs
 - **[Validation Guide](/guides/validation/)** — Input validation strategies
 
 **Recommended Example:** [Blog API](https://github.com/rivaas-dev/rivaas/tree/main/app/examples/02-blog) — Full-featured blog with CRUD operations, validation, and testing.
@@ -35,7 +35,7 @@ Understand your application in production:
 - **[Tracing Guide](/guides/tracing/)** — Distributed tracing with OpenTelemetry
 - **[Health Endpoints](/guides/app/health-endpoints/)** — Kubernetes-compatible liveness/readiness
 
-**Key Pattern:** The observability trinity (logs, metrics, traces) works together to give complete visibility.
+**Key Pattern:** The observability trinity (logs, metrics, traces) works together. They provide complete visibility into your application.
 
 ### 🔒 Security & Best Practices
 
@@ -239,11 +239,6 @@ func handler(c *app.Context) {
 
 ## What's Next?
 
-Pick the topic that interests you most and dive in. The documentation is designed to support both linear reading and jumping to specific topics as needed.
+Pick the topic that interests you most. The documentation works for both linear reading and jumping to specific topics.
 
-**Happy building with Rivaas! 🚀**
-
----
-
-**Feedback?** Help improve these docs — [open an issue](https://github.com/rivaas-dev/rivaas/issues) or [submit a PR](https://github.com/rivaas-dev/rivaas/pulls).
-
+**Happy building with Rivaas!**

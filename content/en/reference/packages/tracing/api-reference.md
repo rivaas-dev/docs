@@ -33,10 +33,10 @@ func New(opts ...Option) (*Tracer, error)
 Creates a new Tracer with the given options. Returns an error if the tracing provider fails to initialize.
 
 **Default configuration:**
-- Service name: `"rivaas-service"`
-- Service version: `"1.0.0"`
-- Sample rate: `1.0` (100%)
-- Provider: `NoopProvider`
+- Service name: `"rivaas-service"`.
+- Service version: `"1.0.0"`.
+- Sample rate: `1.0` (100%).
+- Provider: `NoopProvider`.
 
 **Example:**
 
@@ -58,7 +58,7 @@ defer tracer.Shutdown(context.Background())
 func MustNew(opts ...Option) *Tracer
 ```
 
-Creates a new Tracer with the given options. Panics if the tracing provider fails to initialize. Use this for convenience when you want to panic on initialization errors.
+Creates a new Tracer with the given options. Panics if the tracing provider fails to initialize. Use this when you want to panic on initialization errors.
 
 **Example:**
 

@@ -41,14 +41,14 @@ handler := metrics.Middleware(recorder,
 ```
 
 **Use Cases**:
-- Health check endpoints
-- Metrics endpoints
-- Readiness/liveness probes
+- Health check endpoints.
+- Metrics endpoints.
+- Readiness and liveness probes.
 
 **Behavior**:
-- Matches exact path only
-- Case-sensitive
-- Does not match path prefixes
+- Matches exact path only.
+- Case-sensitive.
+- Does not match path prefixes.
 
 **Examples**:
 

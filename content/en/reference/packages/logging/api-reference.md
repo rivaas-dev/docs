@@ -17,11 +17,11 @@ func New(opts ...Option) (*Logger, error)
 Creates a new Logger with the given options. Returns an error if configuration is invalid.
 
 **Parameters:**
-- `opts` - Variadic list of configuration options
+- `opts` - Variadic list of configuration options.
 
 **Returns:**
-- `*Logger` - Configured logger instance
-- `error` - Configuration error, if any
+- `*Logger` - Configured logger instance.
+- `error` - Configuration error, if any.
 
 **Example:**
 ```go
@@ -40,7 +40,7 @@ if err != nil {
 func MustNew(opts ...Option) *Logger
 ```
 
-Creates a new Logger or panics on error. Convenient for initialization where errors are fatal.
+Creates a new Logger or panics on error. Use for initialization where errors are fatal.
 
 **Parameters:**
 - `opts` - Variadic list of configuration options
@@ -68,11 +68,11 @@ func NewContextLogger(ctx context.Context, logger *Logger) *ContextLogger
 Creates a context-aware logger that automatically extracts trace and span IDs from OpenTelemetry context.
 
 **Parameters:**
-- `ctx` - Context to extract trace information from
-- `logger` - Base Logger instance
+- `ctx` - Context to extract trace information from.
+- `logger` - Base Logger instance.
 
 **Returns:**
-- `*ContextLogger` - Context-aware logger
+- `*ContextLogger` - Context-aware logger.
 
 **Example:**
 ```go

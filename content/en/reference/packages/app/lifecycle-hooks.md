@@ -44,7 +44,7 @@ Called during graceful shutdown. Hooks run in LIFO order with shutdown timeout.
 func (a *App) OnStop(fn func())
 ```
 
-Called after shutdown completes. Hooks run in best-effort mode (panics caught).
+Called after shutdown completes. Hooks run in best-effort mode and panics are caught.
 
 **Use for:** Final cleanup that doesn't need timeout.
 

@@ -12,9 +12,9 @@ Three helper functions are provided for testing:
 
 | Function | Purpose | Provider |
 |----------|---------|----------|
-| `TestingTracer()` | Create tracer for tests | Noop |
-| `TestingTracerWithStdout()` | Create tracer with output | Stdout |
-| `TestingMiddleware()` | Create test middleware | Noop |
+| `TestingTracer()` | Create tracer for tests. | Noop |
+| `TestingTracerWithStdout()` | Create tracer with output. | Stdout |
+| `TestingMiddleware()` | Create test middleware. | Noop |
 
 ## TestingTracer
 
@@ -38,17 +38,17 @@ func TestSomething(t *testing.T) {
 
 ### Features
 
-- **Noop provider**: No actual tracing, minimal overhead
-- **Automatic cleanup**: `Shutdown()` called via `t.Cleanup()`
-- **Safe for parallel tests**: Each test gets its own tracer
+- **Noop provider**: No actual tracing, minimal overhead.
+- **Automatic cleanup**: `Shutdown()` called via `t.Cleanup()`.
+- **Safe for parallel tests**: Each test gets its own tracer.
 - **Default configuration**:
-  - Service name: `"test-service"`
-  - Service version: `"v1.0.0"`
-  - Sample rate: `1.0` (100%)
+  - Service name: `"test-service"`.
+  - Service version: `"v1.0.0"`.
+  - Sample rate: `1.0` (100%).
 
 ### With Custom Options
 
-Override defaults with your own options:
+Override defaults with your own options.
 
 ```go
 func TestWithCustomConfig(t *testing.T) {

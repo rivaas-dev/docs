@@ -19,12 +19,12 @@ func JSON[T any](data []byte, opts ...Option) (T, error)
 Binds JSON data to a struct of type `T`.
 
 **Parameters:**
-- `data`: JSON bytes to parse
-- `opts`: Optional configuration options
+- `data`: JSON bytes to parse.
+- `opts`: Optional configuration options.
 
 **Returns:**
-- Populated struct of type `T`
-- Error if binding fails
+- Populated struct of type `T`.
+- Error if binding fails.
 
 **Example:**
 ```go
@@ -58,8 +58,8 @@ func Query[T any](values url.Values, opts ...Option) (T, error)
 Binds URL query parameters to a struct.
 
 **Parameters:**
-- `values`: URL query values (`r.URL.Query()`)
-- `opts`: Optional configuration options
+- `values`: URL query values. Use `r.URL.Query()`.
+- `opts`: Optional configuration options.
 
 **Example:**
 ```go

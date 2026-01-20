@@ -36,21 +36,21 @@ fmt.Printf("Current level: %s\n", currentLevel)
 
 **Possible causes:**
 
-1. **Logger shutdown:** Check if logger was shut down:
+1. **Logger shutdown:** Check if logger was shut down.
 ```go
 if !logger.IsEnabled() {
     fmt.Println("Logger is shut down")
 }
 ```
 
-2. **Wrong output:** Verify output destination:
+2. **Wrong output:** Verify output destination.
 ```go
 logger := logging.MustNew(
     logging.WithOutput(os.Stdout),  // Not stderr
 )
 ```
 
-3. **Sampling too aggressive:** Check sampling configuration:
+3. **Sampling too aggressive:** Check sampling configuration.
 ```go
 info := logger.DebugInfo()
 if sampling, ok := info["sampling"]; ok {

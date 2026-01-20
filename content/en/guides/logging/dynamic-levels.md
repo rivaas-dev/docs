@@ -4,21 +4,21 @@ description: "Change log levels at runtime without restarting your application"
 weight: 8
 ---
 
-This guide covers dynamic log level changes, allowing you to adjust logging verbosity at runtime for troubleshooting and performance tuning.
+This guide covers dynamic log level changes. You can adjust logging verbosity at runtime for troubleshooting and performance tuning.
 
 ## Overview
 
 Dynamic log levels enable changing the minimum log level without restarting your application.
 
 **Why dynamic log levels:**
-- Enable debug logging temporarily for troubleshooting
-- Reduce log volume during traffic spikes
-- Runtime configuration via HTTP endpoint or signal handler
-- Quick response to production issues without deployment
+- Enable debug logging temporarily for troubleshooting.
+- Reduce log volume during traffic spikes.
+- Runtime configuration via HTTP endpoint or signal handler.
+- Quick response to production issues without deployment.
 
 **Limitations:**
-- Not supported with custom loggers
-- Brief window where old/new levels may race during transition
+- Not supported with custom loggers.
+- Brief window where old and new levels may race during transition.
 
 ## Basic Usage
 

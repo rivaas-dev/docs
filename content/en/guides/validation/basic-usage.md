@@ -4,7 +4,7 @@ description: "Learn the fundamentals of validating structs"
 weight: 2
 ---
 
-Learn how to validate structs using the validation package, from simple package-level functions to customized validator instances.
+Learn how to validate structs using the validation package. This guide starts from simple package-level functions and progresses to customized validator instances.
 
 ## Package-Level Validation
 

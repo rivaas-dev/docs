@@ -11,10 +11,10 @@ This guide covers context-aware logging with automatic trace correlation for dis
 Context-aware logging automatically extracts trace and span IDs from OpenTelemetry contexts, enabling correlation between logs and distributed traces.
 
 **Why context-aware logging:**
-- Correlate logs with distributed traces
-- Track requests across service boundaries
-- Debug multi-service workflows
-- Automatically include trace IDs without manual passing
+- Correlate logs with distributed traces.
+- Track requests across service boundaries.
+- Debug multi-service workflows.
+- Include trace IDs automatically without manual passing.
 
 ## ContextLogger Basics
 

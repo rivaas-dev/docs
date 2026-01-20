@@ -17,7 +17,7 @@ if err != nil {
     log.Fatalf("Failed to create router: %v", err)
 }
 
-// Panics on invalid configuration (use at startup)
+// Panics on invalid configuration. Use at startup.
 r := router.MustNew(opts...)
 ```
 

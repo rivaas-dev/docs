@@ -3,47 +3,47 @@ title: "Application Framework"
 linkTitle: "App"
 weight: 1
 description: >
-  A batteries-included web framework built on the Rivaas router with integrated observability, lifecycle management, and sensible defaults for building production-ready applications.
+  A complete web framework built on the Rivaas router. Includes integrated observability, lifecycle management, and sensible defaults for production-ready applications.
 ---
 
 {{% pageinfo %}}
-The Rivaas App package provides a high-level, opinionated framework with pre-configured observability, graceful shutdown, and common middleware for rapid application development.
+The Rivaas App package provides a high-level framework with pre-configured observability, graceful shutdown, and common middleware for rapid application development.
 {{% /pageinfo %}}
 
 ## Overview
 
-The App package is a batteries-included web framework built on top of the Rivaas router. It provides a simple, opinionated API for building web applications with integrated observability (metrics, tracing, logging), lifecycle management, graceful shutdown, and common middleware patterns.
+The App package is a complete web framework built on top of the Rivaas router. It provides a simple API for building web applications. It includes integrated observability with metrics, tracing, and logging. It has lifecycle management, graceful shutdown, and common middleware patterns.
 
 ## Key Features
 
-- **Batteries-Included** - Pre-configured with sensible defaults for rapid development
-- **Integrated Observability** - Built-in metrics (Prometheus/OTLP), tracing (OpenTelemetry), and structured logging (slog)
-- **Request Binding & Validation** - Automatic request parsing with comprehensive validation strategies
-- **OpenAPI Generation** - Automatic OpenAPI spec generation with Swagger UI
-- **Lifecycle Hooks** - OnStart, OnReady, OnShutdown, OnStop for initialization and cleanup
-- **Health Endpoints** - Kubernetes-compatible liveness and readiness probes
-- **Graceful Shutdown** - Proper server shutdown with configurable timeouts
-- **Environment-Aware** - Development and production modes with appropriate defaults
+- **Complete Framework** - Pre-configured with sensible defaults for rapid development.
+- **Integrated Observability** - Built-in metrics with Prometheus/OTLP, tracing with OpenTelemetry, and structured logging with slog.
+- **Request Binding & Validation** - Automatic request parsing with validation strategies.
+- **OpenAPI Generation** - Automatic OpenAPI spec generation with Swagger UI.
+- **Lifecycle Hooks** - OnStart, OnReady, OnShutdown, OnStop for initialization and cleanup.
+- **Health Endpoints** - Kubernetes-compatible liveness and readiness probes.
+- **Graceful Shutdown** - Proper server shutdown with configurable timeouts.
+- **Environment-Aware** - Development and production modes with appropriate defaults.
 
 ## When to Use
 
 ### Use App Package When
 
-- **Building a complete web application** - Need a full-featured framework with batteries included
-- **Want integrated observability** - Metrics and tracing configured out of the box
-- **Need quick development** - Sensible defaults get you started immediately
-- **Building a REST API** - Pre-configured with common middleware and patterns
-- **Prefer convention over configuration** - Opinionated defaults that work well together
+- **Building a complete web application** - Need a full framework with all features included.
+- **Want integrated observability** - Metrics and tracing configured out of the box.
+- **Need quick development** - Sensible defaults help you start immediately.
+- **Building a REST API** - Pre-configured with common middleware and patterns.
+- **Prefer convention over configuration** - Defaults that work well together.
 
 ### Use Router Package Directly When
 
-- **Building a library or framework** - Need full control over the routing layer
-- **Have custom observability setup** - Already using specific metrics/tracing solutions
-- **Maximum performance is critical** - Want zero overhead from default middleware
-- **Need complete flexibility** - Don't want any opinions or defaults imposed
-- **Integrating into existing systems** - Need to fit into established patterns
+- **Building a library or framework** - Need full control over the routing layer.
+- **Have custom observability setup** - Already using specific metrics or tracing solutions.
+- **Maximum performance is critical** - Want zero overhead from default middleware.
+- **Need complete flexibility** - Don't want any opinions or defaults imposed.
+- **Integrating into existing systems** - Need to fit into established patterns.
 
-**Performance Note:** The app package adds approximately 1-2% latency overhead compared to using router directly (119ns → ~121-122ns), but provides significant development speed and maintainability benefits through integrated observability and sensible defaults.
+**Performance Note:** The app package adds about 1-2% latency compared to using router directly. Latency goes from 119ns to about 121-122ns. However, it provides significant development speed and maintainability benefits. This comes through integrated observability and sensible defaults.
 
 ## Quick Start
 

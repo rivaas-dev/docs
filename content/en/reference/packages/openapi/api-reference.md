@@ -19,12 +19,12 @@ type API struct {
 Main API configuration container. Holds the OpenAPI specification metadata and configuration.
 
 **Created by:**
-- `New(...Option) (*API, error)` - With error handling
-- `MustNew(...Option) *API` - Panics on error
+- `New(...Option) (*API, error)` - With error handling.
+- `MustNew(...Option) *API` - Panics on error.
 
 **Methods:**
-- `Generate(ctx context.Context, ...Operation) (*Result, error)` - Generate OpenAPI specification
-- `Version() string` - Get target OpenAPI version (e.g., "3.0.4" or "3.1.2")
+- `Generate(ctx context.Context, ...Operation) (*Result, error)` - Generate OpenAPI specification.
+- `Version() string` - Get target OpenAPI version like "3.0.4" or "3.1.2".
 
 ### Operation
 
@@ -59,9 +59,9 @@ type Result struct {
 Result of specification generation.
 
 **Fields:**
-- `JSON` - OpenAPI specification as JSON bytes
-- `YAML` - OpenAPI specification as YAML bytes
-- `Warnings` - Collection of generation warnings (see [Diagnostics](diagnostics/))
+- `JSON` - OpenAPI specification as JSON bytes.
+- `YAML` - OpenAPI specification as YAML bytes.
+- `Warnings` - Collection of generation warnings. Check [Diagnostics](diagnostics/) for details.
 
 ### Version
 
@@ -77,8 +77,8 @@ const (
 Type-safe OpenAPI version selection. Use with `WithVersion()` option.
 
 **Constants:**
-- `V30x` - Target OpenAPI 3.0.x family (generates 3.0.4 specification)
-- `V31x` - Target OpenAPI 3.1.x family (generates 3.1.2 specification)
+- `V30x` - Target OpenAPI 3.0.x family. Generates 3.0.4 specification.
+- `V31x` - Target OpenAPI 3.1.x family. Generates 3.1.2 specification.
 
 ### Option
 

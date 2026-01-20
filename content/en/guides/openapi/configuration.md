@@ -77,7 +77,7 @@ api := openapi.MustNew(
 )
 ```
 
-The constants `V30x` and `V31x` represent version **families** - internally they map to specific versions (3.0.4 and 3.1.2) in the generated specification.
+The constants `V30x` and `V31x` represent version **families**. Internally they map to specific versions. 3.0.4 and 3.1.2 are used in the generated specification.
 
 ### Version-Specific Features
 

@@ -4,11 +4,11 @@ description: "Combine multiple data sources with precedence rules for flexible r
 weight: 6
 ---
 
-Learn how to bind data from multiple sources (query parameters, JSON body, headers, etc.) with configurable precedence rules.
+Learn how to bind data from multiple sources. This includes query parameters, JSON body, and headers. Configure precedence rules for flexible request handling.
 
 ## Concept Overview
 
-Multi-source binding allows you to populate a single struct from multiple request sources, with clear precedence rules:
+Multi-source binding allows you to populate a single struct from multiple request sources. It uses clear precedence rules:
 
 ```mermaid
 graph LR

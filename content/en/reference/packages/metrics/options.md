@@ -19,8 +19,8 @@ func WithPrometheus(port, path string) Option
 Configures Prometheus provider with HTTP endpoint.
 
 **Parameters**:
-- `port string` - Listen address (e.g., `:9090`, `localhost:9090`)
-- `path string` - Metrics path (e.g., `/metrics`)
+- `port string` - Listen address like `:9090` or `localhost:9090`.
+- `path string` - Metrics path like `/metrics`.
 
 **Example**:
 
@@ -32,13 +32,13 @@ recorder := metrics.MustNew(
 ```
 
 **Behavior**:
-- Initializes immediately in `New()`
-- Starts HTTP server when `Start()` is called
-- Metrics available at `http://localhost:9090/metrics`
+- Initializes immediately in `New()`.
+- Starts HTTP server when `Start()` is called.
+- Metrics available at `http://localhost:9090/metrics`.
 
 **Related Options**:
-- `WithStrictPort()` - Fail if port unavailable
-- `WithServerDisabled()` - Manage HTTP server manually
+- `WithStrictPort()` - Fail if port unavailable.
+- `WithServerDisabled()` - Manage HTTP server manually.
 
 ### WithOTLP
 
@@ -49,7 +49,7 @@ func WithOTLP(endpoint string) Option
 Configures OTLP (OpenTelemetry Protocol) provider for sending metrics to a collector.
 
 **Parameters**:
-- `endpoint string` - OTLP collector HTTP endpoint (e.g., `http://localhost:4318`)
+- `endpoint string` - OTLP collector HTTP endpoint like `http://localhost:4318`.
 
 **Example**:
 
@@ -61,12 +61,12 @@ recorder := metrics.MustNew(
 ```
 
 **Behavior**:
-- Defers initialization until `Start()` is called
-- Uses lifecycle context for network connections
-- **Important**: Must call `Start()` before recording metrics
+- Defers initialization until `Start()` is called.
+- Uses lifecycle context for network connections.
+- **Important**: Must call `Start()` before recording metrics.
 
 **Related Options**:
-- `WithExportInterval()` - Configure export frequency
+- `WithExportInterval()` - Configure export frequency.
 
 ### WithStdout
 

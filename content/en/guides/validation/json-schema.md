@@ -4,7 +4,7 @@ description: "Validate structs using JSON Schema"
 weight: 4
 ---
 
-Validate structs using JSON Schema by implementing the `JSONSchemaProvider` interface. This provides RFC-compliant JSON Schema validation as an alternative to struct tags.
+Validate structs using JSON Schema. Implement the `JSONSchemaProvider` interface to use this feature. This provides RFC-compliant JSON Schema validation as an alternative to struct tags.
 
 ## JSONSchemaProvider Interface
 
@@ -17,8 +17,8 @@ type JSONSchemaProvider interface {
 ```
 
 The method returns:
-- **id**: Unique schema identifier for caching
-- **schema**: JSON Schema as a string (JSON format)
+- **id**: Unique schema identifier for caching.
+- **schema**: JSON Schema as a string in JSON format.
 
 ## Basic Example
 

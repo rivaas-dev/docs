@@ -4,18 +4,18 @@ description: "Test utilities and patterns for logging in unit and integration te
 weight: 10
 ---
 
-This guide covers testing with the logging package, including test utilities, assertions, and best practices.
+This guide covers testing with the logging package. It includes test utilities, assertions, and best practices.
 
 ## Overview
 
 The logging package provides comprehensive testing utilities:
 
-- **TestHelper** - High-level test utilities with assertions
-- **NewTestLogger** - Simple logger with in-memory buffer
-- **MockWriter** - Record and inspect write operations
-- **CountingWriter** - Track log volume without storing content
-- **SlowWriter** - Simulate slow I/O for timeout testing
-- **HandlerSpy** - Spy on slog.Handler operations
+- **TestHelper** - High-level test utilities with assertions.
+- **NewTestLogger** - Simple logger with in-memory buffer.
+- **MockWriter** - Record and inspect write operations.
+- **CountingWriter** - Track log volume without storing content.
+- **SlowWriter** - Simulate slow I/O for timeout testing.
+- **HandlerSpy** - Spy on slog.Handler operations.
 
 ## Quick Start
 

@@ -8,7 +8,7 @@ description: >
 
 ## Overview
 
-Middleware functions execute before and after route handlers, providing a way to add cross-cutting concerns like logging, authentication, and rate limiting.
+Middleware functions execute before and after route handlers. They add cross-cutting concerns like logging, authentication, and rate limiting.
 
 The app package provides access to high-quality middleware from the `router/middleware` subpackages.
 

@@ -4,7 +4,7 @@ description: "Learn the fundamentals of loading and accessing configuration with
 weight: 3
 ---
 
-This guide covers the essential operations for working with the config package: loading configuration files, accessing values, and handling errors.
+This guide covers the essential operations for working with the config package. Learn how to load configuration files, access values, and handle errors.
 
 ## Loading Configuration Files
 

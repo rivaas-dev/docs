@@ -1,15 +1,15 @@
 ---
 title: Getting Started
-description: Get up and running with Rivaas in minutes
+description: Start using Rivaas in minutes
 weight: 1
 sidebar_root_for: self
 ---
 
-Learn how to install Rivaas and build your first web application. This guide will take you from zero to a running API with production-ready features.
+Learn how to install Rivaas and build your first web application. This guide shows you how to create a running API with production-ready features.
 
 ## What You'll Learn
 
-By the end of this section, you'll be able to:
+This section shows you how to:
 
 - ✅ Install and verify Rivaas
 - ✅ Build a complete REST API with multiple routes
@@ -20,13 +20,13 @@ By the end of this section, you'll be able to:
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+Before you begin, you need:
 
 - **Go 1.25 or higher** installed ([Download Go](https://go.dev/dl/))
-- Basic understanding of Go programming
-- Familiarity with HTTP and REST API concepts
+- Basic Go programming knowledge
+- Basic HTTP and REST API knowledge
 
-You can verify your Go installation:
+Check your Go installation:
 
 ```bash
 go version
@@ -35,7 +35,7 @@ go version
 
 ## Learning Path
 
-Follow these steps in order for the best experience:
+Follow these steps in order:
 
 ### 1. [Installation](installation/)
 Install the Rivaas framework and verify your setup.
@@ -72,14 +72,14 @@ Learn essential configuration options for your application.
 ---
 
 ### 4. [Using Middleware](middleware/)
-Add cross-cutting functionality with middleware.
+Add functionality that works across all routes.
 
 **What you'll do:**
-- Understand middleware concepts
+- Learn middleware concepts
 - Use built-in middleware (CORS, request ID, auth)
 - Create custom middleware
 - Apply middleware globally or to specific routes
-- Understand execution order
+- Learn execution order
 
 ---
 
@@ -133,12 +133,12 @@ func main() {
 }
 ```
 
-This creates a basic API server. Continue through the guide to learn about configuration, middleware, and production best practices.
+This creates a basic API server. Continue through the guide to learn about configuration, middleware, and production practices.
 
 ## Need Help?
 
-- **Guides:** Check out the [Guides](/guides/) section for detailed tutorials
-- **API Reference:** See the [Reference](/reference/packages/) documentation for detailed options
+- **Guides:** Check the [Guides](/guides/) section for detailed tutorials
+- **API Reference:** Browse the [Reference](/reference/packages/) documentation for all options
 - **Issues:** Report problems on [GitHub Issues](https://github.com/rivaas-dev/rivaas/issues)
 - **Discussions:** Ask questions on [GitHub Discussions](https://github.com/rivaas-dev/rivaas/discussions)
 

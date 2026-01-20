@@ -35,11 +35,11 @@ func main() {
 
 **What's happening here:**
 
-1. `router.MustNew()` creates a new router instance (panics on invalid config)
-2. `r.GET("/", handler)` registers a handler for GET requests to `/`
-3. The handler function receives a `*router.Context` with request/response information
-4. `c.JSON()` sends a JSON response
-5. `http.ListenAndServe()` starts the HTTP server
+1. `router.MustNew()` creates a new router instance. Panics on invalid config.
+2. `r.GET("/", handler)` registers a handler for GET requests to `/`.
+3. The handler function receives a `*router.Context` with request and response information.
+4. `c.JSON()` sends a JSON response.
+5. `http.ListenAndServe()` starts the HTTP server.
 
 Test it:
 
@@ -88,9 +88,9 @@ func main() {
 
 **Parameter syntax:**
 
-- `:name` - Captures a path segment and stores it under the given name
-- Access with `c.Param("name")`
-- Parameters match any non-slash characters
+- `:name` - Captures a path segment and stores it under the given name.
+- Access with `c.Param("name")`.
+- Parameters match any non-slash characters.
 
 Test it:
 

@@ -8,7 +8,7 @@ The config package allows you to extend configuration support to any format by i
 
 ## Codec Interface
 
-A codec is responsible for encoding and decoding configuration data:
+A codec is responsible for encoding and decoding configuration data.
 
 ```go
 type Codec interface {
@@ -19,12 +19,12 @@ type Codec interface {
 
 **Methods:**
 
-- `Encode(v any) ([]byte, error)` - Convert Go data structures to bytes
-- `Decode(data []byte, v any) error` - Convert bytes to Go data structures
+- `Encode(v any) ([]byte, error)` - Convert Go data structures to bytes.
+- `Decode(data []byte, v any) error` - Convert bytes to Go data structures.
 
 ## Built-in Codecs
 
-The config package includes several built-in codecs:
+The config package includes several built-in codecs.
 
 ### Format Codecs
 
@@ -37,7 +37,7 @@ The config package includes several built-in codecs:
 
 ### Caster Codecs
 
-Caster codecs handle type conversion:
+Caster codecs handle type conversion.
 
 | Codec | Type | Converts To |
 |-------|------|-------------|
@@ -55,7 +55,7 @@ Caster codecs handle type conversion:
 
 ### Basic Example: INI Format
 
-Let's implement a simple INI file codec:
+Let's implement a simple INI file codec.
 
 ```go
 package inicodec

@@ -47,9 +47,9 @@ openapi.WithSwaggerUI("/docs",
 ```
 
 Available options:
-- `DocExpansionList` - Show endpoints, hide details (default)
-- `DocExpansionFull` - Show endpoints and details
-- `DocExpansionNone` - Hide everything
+- `DocExpansionList` - Show endpoints, hide details. This is the default.
+- `DocExpansionFull` - Show endpoints and details.
+- `DocExpansionNone` - Hide everything.
 
 ### Model Rendering
 
@@ -62,8 +62,8 @@ openapi.WithSwaggerUI("/docs",
 ```
 
 Options:
-- `ModelRenderingExample` - Show example values (default)
-- `ModelRenderingModel` - Show schema structure
+- `ModelRenderingExample` - Show example values. This is the default.
+- `ModelRenderingModel` - Show schema structure.
 
 ### Model Expand Depth
 

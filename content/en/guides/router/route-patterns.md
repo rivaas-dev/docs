@@ -21,10 +21,10 @@ r.GET("/admin/dashboard", dashboardHandler)
 
 **Characteristics:**
 
-- Exact string match required
-- Fastest route type (sub-microsecond lookups)
-- Use hash table lookups with bloom filters
-- No pattern matching overhead
+- Exact string match required.
+- Fastest route type. Sub-microsecond lookups.
+- Uses hash table lookups with bloom filters.
+- No pattern matching overhead.
 
 ```bash
 curl http://localhost:8080/about
@@ -54,9 +54,9 @@ r.GET("/users/:id", func(c *router.Context) {
 
 **Does NOT match:**
 
-- `/users` (missing parameter)
-- `/users/` (empty parameter)
-- `/users/123/posts` (too many segments)
+- `/users` - missing parameter
+- `/users/` - empty parameter
+- `/users/123/posts` - too many segments
 
 ### Multiple Parameters
 

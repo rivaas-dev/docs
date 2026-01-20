@@ -25,7 +25,7 @@ func WithServiceName(name string) Option
 Sets the service name for tracing. This name appears in span attributes as `service.name`.
 
 **Parameters:**
-- `name`: Service identifier (e.g., `"user-api"`, `"order-service"`)
+- `name`: Service identifier like `"user-api"` or `"order-service"`.
 
 **Default:** `"rivaas-service"`
 
@@ -46,7 +46,7 @@ func WithServiceVersion(version string) Option
 Sets the service version for tracing. This version appears in span attributes as `service.version`.
 
 **Parameters:**
-- `version`: Service version (e.g., `"v1.2.3"`, `"dev"`)
+- `version`: Service version like `"v1.2.3"` or `"dev"`.
 
 **Default:** `"1.0.0"`
 
@@ -69,7 +69,7 @@ Only one provider can be configured at a time. Configuring multiple providers re
 func WithNoop() Option
 ```
 
-Configures noop provider (default, no traces exported). Use for testing or when tracing is disabled.
+Configures noop provider. This is the default. No traces are exported. Use for testing or when tracing is disabled.
 
 **Example:**
 

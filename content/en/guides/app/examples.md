@@ -8,7 +8,7 @@ description: >
 
 ## Quick Start Example
 
-Minimal application to get started:
+Minimal application to get started.
 
 ```go
 package main
@@ -47,7 +47,7 @@ func main() {
 
 ## Full-Featured Production App
 
-Complete application with all features:
+Complete application with all features.
 
 ```go
 package main

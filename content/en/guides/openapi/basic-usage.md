@@ -29,7 +29,7 @@ api := openapi.MustNew(
 )
 ```
 
-The `MustNew()` function is convenient for initialization code where panicking on error is acceptable.
+The `MustNew()` function is convenient for initialization code. Use it where panicking on error is acceptable.
 
 ## Generating Specifications
 
@@ -60,9 +60,9 @@ if err != nil {
 
 The `Generate()` method returns a `Result` object containing:
 
-- **`JSON`** - The OpenAPI specification as JSON bytes
-- **`YAML`** - The OpenAPI specification as YAML bytes
-- **`Warnings`** - Any generation warnings (see [Diagnostics](../diagnostics/))
+- **`JSON`** - The OpenAPI specification as JSON bytes.
+- **`YAML`** - The OpenAPI specification as YAML bytes.
+- **`Warnings`** - Any generation warnings. See [Diagnostics](../diagnostics/) for details.
 
 ```go
 // Use the JSON specification

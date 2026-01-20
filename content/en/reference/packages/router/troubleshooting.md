@@ -12,12 +12,12 @@ This guide helps you troubleshoot common issues with the Rivaas Router.
 
 | Issue | Solution | Example |
 |-------|----------|---------|
-| **404 Route Not Found** | Check route syntax and order | `r.GET("/users/:id", handler)` |
-| **Middleware Not Running** | Register before routes | `r.Use(middleware); r.GET("/path", handler)` |
-| **Parameters Not Working** | Use `:param` syntax | `r.GET("/users/:id", handler)` |
-| **CORS Issues** | Add CORS middleware | `r.Use(cors.New())` |
-| **Memory Leaks** | Don't store context references | Extract data immediately |
-| **Slow Performance** | Use route groups | `api := r.Group("/api")` |
+| **404 Route Not Found** | Check route syntax and order. | `r.GET("/users/:id", handler)` |
+| **Middleware Not Running** | Register before routes. | `r.Use(middleware); r.GET("/path", handler)` |
+| **Parameters Not Working** | Use `:param` syntax. | `r.GET("/users/:id", handler)` |
+| **CORS Issues** | Add CORS middleware. | `r.Use(cors.New())` |
+| **Memory Leaks** | Don't store context references. | Extract data immediately. |
+| **Slow Performance** | Use route groups. | `api := r.Group("/api")` |
 
 ## Common Issues
 

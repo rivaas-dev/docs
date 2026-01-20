@@ -19,7 +19,7 @@ func WithHandlerType(t HandlerType) Option
 Sets the logging handler type directly.
 
 **Parameters:**
-- `t` - Handler type (JSONHandler, TextHandler, or ConsoleHandler)
+- `t` - Handler type. Use JSONHandler, TextHandler, or ConsoleHandler.
 
 **Example:**
 ```go
@@ -32,7 +32,7 @@ logging.WithHandlerType(logging.JSONHandler)
 func WithJSONHandler() Option
 ```
 
-Uses JSON structured logging (default). Best for production and log aggregation.
+Uses JSON structured logging. This is the default. Best for production and log aggregation.
 
 **Example:**
 ```go

@@ -10,7 +10,7 @@ description: >
 
 ### Service Name
 
-Set the service name used in observability metadata (metrics, traces, logs):
+Set the service name used in observability metadata. This includes metrics, traces, and logs:
 
 ```go
 a, err := app.New(
@@ -45,10 +45,10 @@ a, err := app.New(
 
 These values are automatically injected into:
 
-- **Metrics** - Service name/version labels on all metrics
-- **Tracing** - Service name/version attributes on all spans
-- **Logging** - Service name/version fields in all log entries
-- **OpenAPI** - API title and version in the specification
+- **Metrics** - Service name and version labels on all metrics.
+- **Tracing** - Service name and version attributes on all spans.
+- **Logging** - Service name and version fields in all log entries.
+- **OpenAPI** - API title and version in the specification.
 
 ## Environment Modes
 
@@ -64,10 +64,10 @@ a, err := app.New(
 
 **Development mode features:**
 
-- Verbose access logging (all requests)
-- Route table displayed in startup banner
-- More detailed error messages
-- Terminal colors enabled
+- Verbose access logging for all requests.
+- Route table displayed in startup banner.
+- More detailed error messages.
+- Terminal colors enabled.
 
 ### Production Mode
 
@@ -81,10 +81,10 @@ a, err := app.New(
 
 **Production mode features:**
 
-- Error-only access logging (reduces log volume)
-- Minimal startup banner
-- Sanitized error messages
-- Terminal colors stripped (for log aggregation)
+- Error-only access logging. Reduces log volume.
+- Minimal startup banner.
+- Sanitized error messages.
+- Terminal colors stripped for log aggregation.
 
 ### Environment from Environment Variables
 
@@ -122,10 +122,10 @@ a, err := app.New(
 
 **Timeout descriptions:**
 
-- **ReadTimeout** - Maximum time to read entire request (including body)
-- **WriteTimeout** - Maximum time to write response
-- **IdleTimeout** - Maximum time to wait for next request on keep-alive connection
-- **ReadHeaderTimeout** - Maximum time to read request headers
+- **ReadTimeout** - Maximum time to read entire request. Includes body.
+- **WriteTimeout** - Maximum time to write response.
+- **IdleTimeout** - Maximum time to wait for next request on keep-alive connection.
+- **ReadHeaderTimeout** - Maximum time to read request headers.
 
 **Default values:**
 
@@ -164,10 +164,10 @@ Default: `30s`. Must be at least `1s` or validation fails.
 
 The shutdown timeout controls how long the server waits for:
 
-1. In-flight requests to complete
-2. OnShutdown hooks to execute
-3. Observability components to flush
-4. Connections to close gracefully
+1. In-flight requests to complete.
+2. OnShutdown hooks to execute.
+3. Observability components to flush.
+4. Connections to close gracefully.
 
 ### Validation Rules
 
@@ -175,9 +175,9 @@ Server configuration is automatically validated:
 
 **Timeout validation:**
 
-- All timeouts must be positive
-- ReadTimeout should not exceed WriteTimeout (common misconfiguration)
-- ShutdownTimeout must be at least 1 second
+- All timeouts must be positive.
+- ReadTimeout should not exceed WriteTimeout. This is a common misconfiguration.
+- ShutdownTimeout must be at least 1 second.
 
 **Size validation:**
 

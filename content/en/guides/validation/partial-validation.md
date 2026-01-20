@@ -4,7 +4,7 @@ description: "Validate only provided fields in PATCH requests"
 weight: 6
 ---
 
-Partial validation is essential for PATCH requests where only provided fields should be validated, while absent fields (even with "required" constraints) should be ignored.
+Partial validation is essential for PATCH requests. Only provided fields should be validated. Absent fields are ignored even if they have "required" constraints.
 
 ## The Problem
 
@@ -18,7 +18,7 @@ type UpdateUserRequest struct {
 }
 ```
 
-With normal validation, a PATCH request like `{"email": "new@example.com"}` would fail because `name` is required but not provided. Partial validation solves this.
+With normal validation, a PATCH request like `{"email": "new@example.com"}` would fail. The `name` field is required but not provided. Partial validation solves this.
 
 ## PresenceMap
 

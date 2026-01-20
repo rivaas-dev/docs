@@ -14,11 +14,11 @@ description: >
 
 **Solution:** Check error message for specific field. Common issues:
 
-- Empty service name or version
-- Invalid environment (must be "development" or "production")
-- ReadTimeout > WriteTimeout
-- ShutdownTimeout < 1 second
-- MaxHeaderBytes < 1KB
+- Empty service name or version.
+- Invalid environment. Must be "development" or "production".
+- ReadTimeout greater than WriteTimeout.
+- ShutdownTimeout less than 1 second.
+- MaxHeaderBytes less than 1KB.
 
 **Example:**
 
@@ -64,10 +64,10 @@ Kill the process or use a different port.
 
 **Solution:**
 
-- Ensure routes registered before `Start()`
-- Check paths match exactly (case-sensitive)
-- Verify HTTP method matches
-- Router freezes on startup - can't add routes after
+- Ensure routes registered before `Start()`.
+- Check paths match exactly. They are case-sensitive.
+- Verify HTTP method matches.
+- Router freezes on startup. Can't add routes after.
 
 ### Graceful Shutdown Not Working
 
@@ -75,9 +75,9 @@ Kill the process or use a different port.
 
 **Solution:**
 
-- Increase shutdown timeout: `WithShutdownTimeout(60 * time.Second)`
-- Check OnShutdown hooks complete quickly
-- Verify handlers respect context cancellation
+- Increase shutdown timeout: `WithShutdownTimeout(60 * time.Second)`.
+- Check OnShutdown hooks complete quickly.
+- Verify handlers respect context cancellation.
 
 ## Observability Issues
 

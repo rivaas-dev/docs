@@ -8,29 +8,29 @@ Learn how to propagate trace context across service boundaries for distributed t
 
 ## What is Context Propagation?
 
-Context propagation transmits trace information between services so that related operations appear in the same trace, even across network boundaries.
+Context propagation transmits trace information between services. Related operations appear in the same trace, even across network boundaries.
 
 ### Why It Matters
 
 Without context propagation:
-- Each service creates independent traces
-- No visibility into end-to-end request flow
-- Can't trace requests across microservices
+- Each service creates independent traces.
+- No visibility into end-to-end request flow.
+- Can't trace requests across microservices.
 
 With context propagation:
-- All services contribute to the same trace
-- Complete visibility of distributed transactions
-- Track requests across service boundaries
+- All services contribute to the same trace.
+- Complete visibility of distributed transactions.
+- Track requests across service boundaries.
 
 ## W3C Trace Context
 
-The tracing package uses **W3C Trace Context** format by default, which is:
+The tracing package uses **W3C Trace Context** format by default. It is:
 
-- **Standard**: Widely supported across languages and tools
+- **Standard**: Widely supported across languages and tools.
 - **Propagated via HTTP headers**:
-  - `traceparent`: Contains trace ID, span ID, trace flags
-  - `tracestate`: Contains vendor-specific trace data
-- **Compatible**: Works with Jaeger, Zipkin, OpenTelemetry, and more
+  - `traceparent`: Contains trace ID, span ID, trace flags.
+  - `tracestate`: Contains vendor-specific trace data.
+- **Compatible**: Works with Jaeger, Zipkin, OpenTelemetry, and more.
 
 ## Extracting Trace Context
 

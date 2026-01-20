@@ -4,7 +4,7 @@ description: "Work with structured validation errors"
 weight: 7
 ---
 
-Validation errors in the Rivaas validation package are structured and detailed, providing field-level error information with codes, messages, and metadata.
+Validation errors in the Rivaas validation package are structured and detailed. They provide field-level error information with codes, messages, and metadata.
 
 ## Error Types
 
@@ -14,8 +14,8 @@ The main validation error type containing multiple field errors:
 
 ```go
 type Error struct {
-    Fields    []FieldError // List of field errors
-    Truncated bool         // True if errors were truncated due to maxErrors limit
+    Fields    []FieldError // List of field errors.
+    Truncated bool         // True if errors were truncated due to maxErrors limit.
 }
 ```
 
@@ -25,10 +25,10 @@ Individual field error with detailed information:
 
 ```go
 type FieldError struct {
-    Path    string         // JSON path (e.g., "items.2.price")
-    Code    string         // Stable code (e.g., "tag.required", "schema.type")
-    Message string         // Human-readable message
-    Meta    map[string]any // Additional metadata (tag, param, value, etc.)
+    Path    string         // JSON path like "items.2.price".
+    Code    string         // Stable code like "tag.required", "schema.type".
+    Message string         // Human-readable message.
+    Meta    map[string]any // Additional metadata like tag, param, value.
 }
 ```
 

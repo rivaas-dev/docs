@@ -10,21 +10,21 @@ The `router.Context` provides access to the request/response and various utility
 
 ## ⚠️ Memory Safety - CRITICAL
 
-**Context objects are pooled and reused across requests.** Understanding context lifecycle is essential for memory safety.
+**Context objects are pooled and reused across requests.** You must understand context lifecycle for memory safety.
 
 ### CRITICAL RULES
 
 1. **DO NOT retain references to Context objects beyond the request handler lifetime.**
 2. **For async operations**, copy needed data from Context before starting goroutines.
 3. **The router automatically returns contexts to the pool** after request completion.
-4. **DO NOT access Context concurrently** - it is NOT thread-safe.
+4. **DO NOT access Context concurrently**. It is NOT thread-safe.
 
 ### Why This Matters
 
-- **Memory leaks**: Retaining references prevents contexts from being garbage collected
-- **Data corruption**: Contexts are reused - old data may appear in new requests
-- **Security issues**: Sensitive request data may leak to other requests
-- **Undefined behavior**: Use-after-release causes unpredictable bugs
+- **Memory leaks**: Retaining references prevents contexts from being garbage collected.
+- **Data corruption**: Contexts are reused. Old data may appear in new requests.
+- **Security issues**: Sensitive request data may leak to other requests.
+- **Undefined behavior**: Use-after-release causes unpredictable bugs.
 
 ### Correct Usage
 

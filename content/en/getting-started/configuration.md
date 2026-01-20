@@ -6,16 +6,16 @@ weight: 3
 
 ## Overview
 
-Rivaas uses the **functional options pattern** for configuration, providing a clean, self-documenting, and backward-compatible API. This guide covers essential configuration options to get you started.
+Rivaas uses the **functional options pattern** for configuration. This provides a clean, self-documenting API. It's backward-compatible. This guide covers basic configuration options.
 
-💡 **First Time?** Focus on sections marked with ⭐. Advanced topics are clearly marked and can be skipped initially.
+💡 **First Time?** Focus on sections marked with ⭐. Skip advanced topics for now.
 
 ## Configuration Philosophy
 
-- **Sensible Defaults**: Works out of the box
-- **Progressive Disclosure**: Start simple, add complexity as needed
-- **Type Safety**: Configuration errors caught at startup
-- **Environment Aware**: Different defaults for dev/prod
+- **Sensible Defaults**: Works out of the box.
+- **Progressive Disclosure**: Start simple. Add complexity as needed.
+- **Type Safety**: Configuration errors are caught at startup.
+- **Environment Aware**: Different defaults for dev and prod.
 
 ---
 
@@ -33,11 +33,11 @@ a := app.MustNew(
 )
 ```
 
-These values are automatically propagated to all observability components (logging, metrics, tracing).
+These values are sent to all observability components. This includes logging, metrics, and tracing.
 
 ## Advanced: Server Configuration
 
-⚠️ **Advanced Topic**: Most applications don't need custom server configuration. The defaults are production-ready.
+⚠️ **Advanced Topic**: Most applications don't need custom server configuration. The defaults work for production.
 
 ### Timeouts
 

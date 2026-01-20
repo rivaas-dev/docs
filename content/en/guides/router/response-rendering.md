@@ -31,7 +31,7 @@ c.IndentedJSON(200, data) // Pretty-printed with indentation
 
 ### Pure JSON
 
-No HTML escaping - 35% faster:
+No HTML escaping. 35% faster:
 
 ```go
 c.PureJSON(200, data) // Best for HTML/markdown content

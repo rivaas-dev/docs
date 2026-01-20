@@ -16,15 +16,15 @@ All examples are available in the [GitHub repository](https://github.com/rivaas-
 
 **Path:** [`config/examples/basic/`](https://github.com/rivaas-dev/rivaas/tree/main/config/examples/basic)
 
-A simple example showing the most basic usage - loading configuration from a YAML file into a Go struct.
+A simple example showing the most basic usage. Load configuration from a YAML file into a Go struct.
 
 **Features:**
-- File source (YAML)
-- Struct binding
-- Type conversion
-- Nested structures
-- Arrays and slices
-- Time and URL types
+- File source using YAML.
+- Struct binding.
+- Type conversion.
+- Nested structures.
+- Arrays and slices.
+- Time and URL types.
 
 **Best for:** Getting started, understanding basic concepts
 
@@ -63,14 +63,14 @@ go run main.go
 
 **Path:** [`config/examples/mixed/`](https://github.com/rivaas-dev/rivaas/tree/main/config/examples/mixed)
 
-Shows how to combine YAML files and environment variables, with environment variables overriding YAML defaults.
+Shows how to combine YAML files and environment variables. Environment variables override YAML defaults.
 
 **Features:**
-- Mixed configuration sources
-- Configuration precedence
-- Environment variable mapping
-- Struct binding
-- Direct access
+- Mixed configuration sources.
+- Configuration precedence.
+- Environment variable mapping.
+- Struct binding.
+- Direct access.
 
 **Best for:** Applications that need both default configuration files and environment-specific overrides
 

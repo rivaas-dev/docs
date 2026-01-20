@@ -10,7 +10,7 @@ description: >
 
 The `app.Context` wraps `router.Context` and provides app-level features:
 
-- **Request Binding** - Automatic parsing of JSON, form, query, path, header, and cookie data
+- **Request Binding** - Parse JSON, form, query, path, header, and cookie data automatically
 - **Validation** - Comprehensive validation with multiple strategies
 - **Error Handling** - Structured error responses with content negotiation
 - **Logging** - Request-scoped logger with automatic context

@@ -8,7 +8,7 @@ description: >
 
 ## Overview
 
-The app package integrates with the `rivaas.dev/openapi` package to automatically generate OpenAPI specifications with Swagger UI.
+The app package integrates with the `rivaas.dev/openapi` package. It automatically generates OpenAPI specifications with Swagger UI.
 
 ## Basic Configuration
 

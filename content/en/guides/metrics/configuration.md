@@ -29,9 +29,9 @@ http_requests_total{service_name="my-api",method="GET"} 42
 ```
 
 **Best Practices**:
-- Use lowercase with hyphens: `user-service`, `payment-api`
-- Be consistent across services
-- Avoid changing names in production
+- Use lowercase with hyphens: `user-service`, `payment-api`.
+- Be consistent across services.
+- Avoid changing names in production.
 
 ### Service Version
 
@@ -46,13 +46,13 @@ recorder := metrics.MustNew(
 ```
 
 Use cases:
-- Track metrics across deployments
-- Compare performance between versions
-- Debug version-specific issues
+- Track metrics across deployments.
+- Compare performance between versions.
+- Debug version-specific issues.
 
 **Best Practices**:
-- Use semantic versioning: `v1.2.3`
-- Include in all production deployments
+- Use semantic versioning: `v1.2.3`.
+- Include in all production deployments.
 - Automate from CI/CD pipelines:
 
 ```go

@@ -6,7 +6,7 @@ weight: 7
 ---
 
 {{% pageinfo %}}
-The Rivaas Logging package provides production-ready structured logging with minimal dependencies, leveraging Go's built-in `log/slog` for high performance and native integration with the Go ecosystem.
+The Rivaas Logging package provides production-ready structured logging with minimal dependencies. Uses Go's built-in `log/slog` for high performance and native integration with the Go ecosystem.
 {{% /pageinfo %}}
 
 ## Features

@@ -6,7 +6,7 @@ description: >
   Add cross-cutting concerns like logging, authentication, and error handling with middleware.
 ---
 
-Middleware functions execute before route handlers and can perform cross-cutting concerns like authentication, logging, rate limiting, and more.
+Middleware functions execute before route handlers. They perform cross-cutting concerns like authentication, logging, and rate limiting.
 
 ## Basic Usage
 
@@ -38,9 +38,9 @@ func main() {
 
 **Key concepts:**
 
-- `c.Next()` - Continues to the next middleware/handler
-- Call `c.Next()` to proceed, or don't call it to stop the chain
-- Middleware runs in registration order
+- `c.Next()` - Continues to the next middleware or handler.
+- Call `c.Next()` to proceed. Don't call it to stop the chain.
+- Middleware runs in registration order.
 
 ## Middleware Scope
 

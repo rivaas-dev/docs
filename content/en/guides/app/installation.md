@@ -8,8 +8,8 @@ description: >
 
 ## Requirements
 
-- **Go 1.25 or later** - The app package requires Go 1.25+ for the latest language features and standard library improvements
-- **Module support** - Your project must use Go modules (`go.mod`)
+- **Go 1.25 or later** - The app package requires Go 1.25 or higher. It uses the latest language features and standard library.
+- **Module support** - Your project must use Go modules. It needs a `go.mod` file.
 
 ## Installation
 
@@ -19,16 +19,16 @@ Install the app package using `go get`:
 go get rivaas.dev/app
 ```
 
-This will download the app package and all its dependencies, including:
+This downloads the app package and all its dependencies. These include:
 
-- `rivaas.dev/router` - High-performance HTTP router
-- `rivaas.dev/binding` - Request binding and parsing
-- `rivaas.dev/validation` - Request validation
-- `rivaas.dev/errors` - Error formatting
-- `rivaas.dev/logging` - Structured logging (optional)
-- `rivaas.dev/metrics` - Metrics collection (optional)
-- `rivaas.dev/tracing` - OpenTelemetry tracing (optional)
-- `rivaas.dev/openapi` - OpenAPI generation (optional)
+- `rivaas.dev/router` - High-performance HTTP router.
+- `rivaas.dev/binding` - Request binding and parsing.
+- `rivaas.dev/validation` - Request validation.
+- `rivaas.dev/errors` - Error formatting.
+- `rivaas.dev/logging` - Structured logging (optional).
+- `rivaas.dev/metrics` - Metrics collection (optional).
+- `rivaas.dev/tracing` - OpenTelemetry tracing (optional).
+- `rivaas.dev/openapi` - OpenAPI generation (optional).
 
 ## Verify Installation
 

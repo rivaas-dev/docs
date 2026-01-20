@@ -4,21 +4,21 @@ description: Install Rivaas and verify your setup
 weight: 1
 ---
 
-Installing Rivaas is straightforward. You can use it as a complete framework with the `app` package or use individual packages as needed.
+Installing Rivaas is easy. Use it as a complete framework with the `app` package or use individual packages as needed.
 
 ## Install the Full Framework
 
-The `app` package provides a batteries-included web framework with everything you need to build production-ready APIs:
+The `app` package provides a complete web framework. It includes everything you need to build production-ready APIs:
 
 ```bash
 go get rivaas.dev/app
 ```
 
-This installs the main framework along with all integrated packages (router, logging, metrics, tracing, etc.).
+This installs the main framework with all packages (router, logging, metrics, tracing, etc.).
 
 ## Install Individual Packages
 
-Rivaas packages can be used independently. Install only what you need:
+Rivaas packages work independently. Install only what you need:
 
 {{< cardpane >}}
 {{< card header="**Core**" code=true lang="bash" >}}
@@ -177,7 +177,7 @@ export GOPROXY=https://goproxy.io,direct
 
 ## Next Steps
 
-Now that you have Rivaas installed, let's build your first application:
+Now that you have Rivaas installed, build your first application:
 
 **[Build Your First Application →](../first-application/)**
 

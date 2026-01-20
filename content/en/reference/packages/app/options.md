@@ -14,7 +14,7 @@ description: >
 func WithServiceName(name string) Option
 ```
 
-Sets the service name used in observability metadata (metrics, traces, logs). Must be non-empty or validation fails.
+Sets the service name used in observability metadata. This includes metrics, traces, and logs. If empty, validation fails.
 
 **Default:** `"rivaas-app"`
 
@@ -34,7 +34,7 @@ Sets the service version used in observability and API documentation. Must be no
 func WithEnvironment(env string) Option
 ```
 
-Sets the environment mode. Valid values: `"development"`, `"production"`. Invalid values cause validation failure.
+Sets the environment mode. Valid values: `"development"`, `"production"`. Invalid values cause validation to fail.
 
 **Default:** `"development"`
 

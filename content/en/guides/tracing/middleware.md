@@ -62,11 +62,11 @@ Identical to `Middleware()` - provided for API consistency with `MustNew()`.
 
 The middleware automatically:
 
-1. **Extracts** trace context from incoming request headers
-2. **Creates** a span for the request with standard attributes
-3. **Propagates** context to downstream handlers
-4. **Records** HTTP method, URL, status code, and duration
-5. **Finishes** the span when the request completes
+1. **Extracts** trace context from incoming request headers.
+2. **Creates** a span for the request with standard attributes.
+3. **Propagates** context to downstream handlers.
+4. **Records** HTTP method, URL, status code, and duration.
+5. **Finishes** the span when the request completes.
 
 ### Standard Attributes
 
