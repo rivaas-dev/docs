@@ -6,6 +6,10 @@ description: >
   API reference for the Rivaas App package - a batteries-included web framework with integrated observability.
 ---
 
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/app` package. For learning-focused documentation, see the [App Guide](/guides/app/).
+{{% /pageinfo %}}
+
 ## Overview
 
 The App package provides a high-level, opinionated framework built on top of the Rivaas router. It includes:

@@ -6,7 +6,9 @@ weight: 5
 sidebar_root_for: self
 ---
 
-Complete API reference for the `rivaas.dev/tracing` package.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/tracing` package. For learning-focused documentation, see the [Tracing Guide](/guides/tracing/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -142,40 +144,36 @@ traceID := ct.TraceID()
 
 ## Reference Pages
 
-### [API Reference](api-reference/)
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Tracer type, span management, and context propagation.
 
-Complete documentation of the Tracer type and all methods including:
-- Tracer lifecycle methods
-- Span management methods
-- Context propagation methods
-- ContextTracing helper type
-- Event types and handlers
-- Error handling
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+Configuration options for providers and sampling.
 
-### [Options](options/)
+[View →](options/)
+{{< /card >}}
+{{< card header="**Middleware Options**" >}}
+HTTP middleware configuration and path exclusion.
 
-Comprehensive list of all configuration options:
-- Provider options (`WithOTLP`, `WithStdout`, `WithNoop`)
-- Service options (`WithServiceName`, `WithServiceVersion`)
-- Sampling options (`WithSampleRate`)
-- Hook options (`WithSpanStartHook`, `WithSpanFinishHook`)
-- Advanced options (propagators, custom providers, logging)
+[View →](middleware-options/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### [Middleware Options](middleware-options/)
+{{< cardpane >}}
+{{< card header="**Troubleshooting**" >}}
+Common tracing issues and solutions.
 
-HTTP middleware configuration options:
-- Path exclusion options
-- Header recording options
-- Parameter recording options
-- Security considerations
+[View →](troubleshooting/)
+{{< /card >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
 
-### [Troubleshooting](troubleshooting/)
-
-Common issues and solutions:
-- Traces not appearing
-- Context propagation issues
-- Performance considerations
-- Provider configuration problems
+[View →](/guides/tracing/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Type Reference
 

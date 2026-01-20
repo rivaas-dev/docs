@@ -1,11 +1,13 @@
 ---
 title: "Request Validation"
+linkTitle: "Validation"
 description: "Flexible, multi-strategy validation for Go structs with support for struct tags, JSON Schema, and custom interfaces"
-weight: 7
-sidebar_root_for: self
+weight: 4
 ---
 
-Flexible, multi-strategy validation for Go structs with support for struct tags, JSON Schema, and custom interfaces. Validate incoming requests with detailed error messages and built-in security features.
+{{% pageinfo %}}
+The Rivaas Validation package provides flexible, multi-strategy validation for Go structs with support for struct tags, JSON Schema, and custom interfaces, including detailed error messages and built-in security features.
+{{% /pageinfo %}}
 
 ## Features
 

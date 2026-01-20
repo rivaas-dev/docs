@@ -38,6 +38,14 @@ Like its namesake, Rivaas is:
 
 ## Quick Start
 
+**Installation** (requires Go 1.25+):
+
+```bash
+go get rivaas.dev/app
+```
+
+**Hello World:**
+
 ```go
 package main
 
@@ -53,7 +61,10 @@ import (
 )
 
 func main() {
-    a := app.MustNew()
+    a, err := app.New()
+    if err != nil {
+        log.Fatal(err)
+    }
 
     a.GET("/", func(c *app.Context) {
         c.JSON(http.StatusOK, map[string]string{
@@ -76,34 +87,89 @@ func main() {
 New to Rivaas? Start here to learn the basics and get your first application running.
 
 ### Guides
-Step-by-step tutorials covering common tasks like setting up observability, configuring middleware, and deploying to production.
+Step-by-step tutorials covering common tasks like setting up observability, configuring middleware, and deploying to production. Each package guide includes practical examples.
 
 ### Reference
 Detailed API documentation for all packages, configuration options, and advanced features.
-
-### Examples
-Real-world examples and patterns for building production applications.
 
 ## Package Overview
 
 Rivaas is organized into independent, standalone packages:
 
 ### Core Packages
-- **[app](/docs/packages/app/)** — Batteries-included web framework
-- **[router](/docs/packages/router/)** — High-performance HTTP router
+
+{{< cardpane >}}
+{{< card header="**App**" >}}
+Batteries-included web framework with integrated observability, lifecycle management, and graceful shutdown.
+
+[Learn more →](/reference/packages/app/)
+{{< /card >}}
+{{< card header="**Router**" >}}
+High-performance HTTP router with 8.4M+ req/s throughput and 119ns latency.
+
+[Learn more →](/reference/packages/router/)
+{{< /card >}}
+{{< /cardpane >}}
+
+### Configuration
+
+{{< cardpane >}}
+{{< card header="**Config**" >}}
+Configuration management supporting files, environment variables, Consul, and built-in validation.
+
+[Learn more →](/reference/packages/config/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ### Data Handling
-- **[binding](/docs/packages/binding/)** — Request binding (JSON, XML, YAML, MsgPack, Proto)
-- **[validation](/docs/packages/validation/)** — Struct validation with tags and JSON Schema
+
+{{< cardpane >}}
+{{< card header="**Binding**" >}}
+Request binding from multiple sources: JSON, XML, YAML, TOML, MessagePack, Protocol Buffers.
+
+[Learn more →](/reference/packages/binding/)
+{{< /card >}}
+{{< card header="**Validation**" >}}
+Struct validation with tags, JSON Schema, and custom interfaces for flexible validation strategies.
+
+[Learn more →](/reference/packages/validation/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ### Observability
-- **[logging](/docs/packages/logging/)** — Structured logging with slog
-- **[metrics](/docs/packages/metrics/)** — OpenTelemetry metrics (Prometheus, OTLP)
-- **[tracing](/docs/packages/tracing/)** — Distributed tracing (OTLP, Jaeger, stdout)
+
+{{< cardpane >}}
+{{< card header="**Logging**" >}}
+Structured logging with Go's standard log/slog, featuring trace correlation and sensitive data redaction.
+
+[Learn more →](/reference/packages/logging/)
+{{< /card >}}
+{{< card header="**Metrics**" >}}
+OpenTelemetry metrics collection with Prometheus, OTLP, and stdout exporters.
+
+[Learn more →](/reference/packages/metrics/)
+{{< /card >}}
+{{< card header="**Tracing**" >}}
+Distributed tracing with OpenTelemetry, supporting OTLP, Jaeger, and stdout.
+
+[Learn more →](/reference/packages/tracing/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ### API & Errors
-- **[openapi](/docs/packages/openapi/)** — Automatic OpenAPI 3.0/3.1 generation
-- **[errors](/docs/packages/errors/)** — Error formatting (RFC 9457, JSON:API)
+
+{{< cardpane >}}
+{{< card header="**OpenAPI**" >}}
+Automatic OpenAPI 3.0/3.1 specification generation from Go code with Swagger UI support.
+
+[Learn more →](/reference/packages/openapi/)
+{{< /card >}}
+{{< card header="**Errors**" >}}
+Error formatting supporting RFC 9457 (Problem Details) and JSON:API specifications.
+
+[Learn more →](/reference/packages/errors/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Philosophy
 
@@ -123,5 +189,5 @@ Every package in Rivaas follows these design principles:
 ## Next Steps
 
 - **[Installation Guide →](/getting-started/)** — Get Rivaas up and running
-- **[Core Concepts →](/guides/concepts/)** — Understand the framework architecture
+- **[App Guide →](/guides/app/)** — Understand the framework architecture
 - **[API Reference →](/reference/)** — Explore the complete API documentation

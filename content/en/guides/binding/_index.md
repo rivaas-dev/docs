@@ -1,11 +1,13 @@
 ---
 title: "Request Data Binding"
+linkTitle: "Binding"
 description: "Learn how to bind HTTP request data to Go structs with type safety and performance"
-weight: 2
-sidebar_root_for: self
+weight: 3
 ---
 
-High-performance request data binding for Go web applications. Maps values from various sources (query parameters, form data, JSON bodies, headers, cookies, path parameters) into Go structs using struct tags.
+{{% pageinfo %}}
+The Rivaas Binding package provides high-performance request data binding for Go web applications, mapping values from various sources (query parameters, form data, JSON bodies, headers, cookies, path parameters) into Go structs using struct tags.
+{{% /pageinfo %}}
 
 ## Features
 
@@ -20,9 +22,8 @@ High-performance request data binding for Go web applications. Maps values from 
 
 ## Quick Start
 
-### JSON Binding
-
-```go
+{{< tabpane persist=header >}}
+{{< tab header="JSON" lang="go" >}}
 import "rivaas.dev/binding"
 
 type CreateUserRequest struct {
@@ -36,11 +37,10 @@ user, err := binding.JSON[CreateUserRequest](body)
 if err != nil {
     // Handle error
 }
-```
+{{< /tab >}}
+{{< tab header="Query" lang="go" >}}
+import "rivaas.dev/binding"
 
-### Query Parameters
-
-```go
 type ListParams struct {
     Page   int      `query:"page" default:"1"`
     Limit  int      `query:"limit" default:"20"`
@@ -49,13 +49,10 @@ type ListParams struct {
 }
 
 params, err := binding.Query[ListParams](r.URL.Query())
-```
+{{< /tab >}}
+{{< tab header="Multi-Source" lang="go" >}}
+import "rivaas.dev/binding"
 
-### Multi-Source Binding
-
-Combine data from multiple sources:
-
-```go
 type CreateOrderRequest struct {
     // From path parameters
     UserID int `path:"user_id"`
@@ -77,7 +74,8 @@ req, err := binding.Bind[CreateOrderRequest](
     binding.FromHeader(r.Header),
     binding.FromJSON(body),
 )
-```
+{{< /tab >}}
+{{< /tabpane >}}
 
 ## Learning Path
 

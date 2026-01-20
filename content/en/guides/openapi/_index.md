@@ -1,13 +1,13 @@
 ---
-title: "OpenAPI Specification Generation"
+title: "OpenAPI Specification"
+linkTitle: "OpenAPI"
 description: "Learn how to generate OpenAPI specifications from Go code with automatic parameter discovery and schema generation"
-weight: 3
-sidebar_root_for: self
+weight: 6
 ---
 
-Automatic OpenAPI 3.0.4 and 3.1.2 specification generation for Go applications.
-
-This package enables automatic generation of OpenAPI specifications from Go code using struct tags and reflection. It provides a clean, type-safe API for building specifications with minimal boilerplate.
+{{% pageinfo %}}
+The Rivaas OpenAPI package provides automatic OpenAPI 3.0.4 and 3.1.2 specification generation from Go code using struct tags and reflection, with a clean, type-safe API for building specifications with minimal boilerplate.
+{{% /pageinfo %}}
 
 ## Features
 

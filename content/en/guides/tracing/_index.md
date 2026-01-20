@@ -1,13 +1,13 @@
 ---
 title: "Distributed Tracing"
+linkTitle: "Tracing"
 description: "Learn how to implement distributed tracing with Rivaas tracing package"
-weight: 5
-sidebar_root_for: self
+weight: 9
 ---
 
-A distributed tracing package for Go applications using OpenTelemetry. This package provides easy-to-use tracing functionality with support for various exporters and seamless integration with HTTP frameworks.
-
-> Tracing is designed to help Go applications implement observability best practices with minimal configuration, providing out-of-the-box request tracing and flexible custom span management.
+{{% pageinfo %}}
+The Rivaas Tracing package provides OpenTelemetry-based distributed tracing with support for various exporters and seamless integration with HTTP frameworks, enabling observability best practices with minimal configuration.
+{{% /pageinfo %}}
 
 ## Features
 
@@ -22,27 +22,22 @@ A distributed tracing package for Go applications using OpenTelemetry. This pack
 
 ## Quick Start
 
-Here's a 30-second example to get you started:
-
-```go
+{{< tabpane persist=header >}}
+{{< tab header="OTLP (gRPC)" lang="go" >}}
 package main
 
 import (
     "context"
     "log"
-    "net/http"
-    "os"
     "os/signal"
     
     "rivaas.dev/tracing"
 )
 
 func main() {
-    // Create context for application lifecycle
     ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
     defer cancel()
 
-    // Create tracer with OTLP provider
     tracer, err := tracing.New(
         tracing.WithServiceName("my-service"),
         tracing.WithServiceVersion("v1.0.0"),
@@ -52,30 +47,74 @@ func main() {
         log.Fatal(err)
     }
     
-    // Start tracer (required for OTLP providers)
     if err := tracer.Start(ctx); err != nil {
         log.Fatal(err)
     }
-    
-    // Ensure traces are flushed on exit
     defer tracer.Shutdown(context.Background())
 
-    // Create HTTP handler with tracing middleware
-    mux := http.NewServeMux()
-    mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        w.Write([]byte(`{"message": "Hello"}`))
-    })
-
-    // Wrap with tracing middleware
-    handler := tracing.MustMiddleware(tracer,
-        tracing.WithExcludePaths("/health", "/metrics"),
-        tracing.WithHeaders("X-Request-ID"),
-    )(mux)
-
-    log.Fatal(http.ListenAndServe(":8080", handler))
+    // Traces exported via OTLP gRPC
+    ctx, span := tracer.StartSpan(ctx, "operation")
+    defer tracer.FinishSpan(span, 200)
 }
-```
+{{< /tab >}}
+{{< tab header="OTLP (HTTP)" lang="go" >}}
+package main
+
+import (
+    "context"
+    "log"
+    "os/signal"
+    
+    "rivaas.dev/tracing"
+)
+
+func main() {
+    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+    defer cancel()
+
+    tracer, err := tracing.New(
+        tracing.WithServiceName("my-service"),
+        tracing.WithServiceVersion("v1.0.0"),
+        tracing.WithOTLPHTTP("http://localhost:4318"),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    if err := tracer.Start(ctx); err != nil {
+        log.Fatal(err)
+    }
+    defer tracer.Shutdown(context.Background())
+
+    // Traces exported via OTLP HTTP
+    ctx, span := tracer.StartSpan(ctx, "operation")
+    defer tracer.FinishSpan(span, 200)
+}
+{{< /tab >}}
+{{< tab header="Stdout" lang="go" >}}
+package main
+
+import (
+    "context"
+    
+    "rivaas.dev/tracing"
+)
+
+func main() {
+    tracer := tracing.MustNew(
+        tracing.WithServiceName("my-service"),
+        tracing.WithStdout(),
+    )
+    defer tracer.Shutdown(context.Background())
+
+    ctx := context.Background()
+    
+    // Traces printed to stdout
+    ctx, span := tracer.StartSpan(ctx, "operation")
+    defer tracer.FinishSpan(span, 200)
+}
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### How It Works
 

@@ -1,13 +1,13 @@
 ---
 title: "Structured Logging"
+linkTitle: "Logging"
 description: "Learn how to implement structured logging with Rivaas using Go's standard log/slog"
-weight: 4
-sidebar_root_for: self
+weight: 7
 ---
 
-Structured logging for Rivaas using Go's standard `log/slog` package.
-
-> The logging package provides production-ready structured logging with minimal dependencies, leveraging Go's built-in `log/slog` for high performance and native integration with the Go ecosystem.
+{{% pageinfo %}}
+The Rivaas Logging package provides production-ready structured logging with minimal dependencies, leveraging Go's built-in `log/slog` for high performance and native integration with the Go ecosystem.
+{{% /pageinfo %}}
 
 ## Features
 
@@ -23,9 +23,8 @@ Structured logging for Rivaas using Go's standard `log/slog` package.
 
 ## Quick Start
 
-Here's a 30-second example to get you started:
-
-```go
+{{< tabpane persist=header >}}
+{{< tab header="Console" lang="go" >}}
 package main
 
 import (
@@ -43,21 +42,46 @@ func main() {
     log.Debug("debugging information", "key", "value")
     log.Error("operation failed", "error", "connection timeout")
 }
-```
+{{< /tab >}}
+{{< tab header="JSON" lang="go" >}}
+package main
 
-### JSON Output for Production
-
-```go
-log := logging.MustNew(
-    logging.WithJSONHandler(),
-    logging.WithServiceName("my-api"),
-    logging.WithServiceVersion("v1.0.0"),
-    logging.WithEnvironment("production"),
+import (
+    "rivaas.dev/logging"
 )
 
-log.Info("user action", "user_id", "123", "action", "login")
-// Output: {"time":"2024-01-15T10:30:45.123Z","level":"INFO","msg":"user action","service":"my-api","version":"v1.0.0","env":"production","user_id":"123","action":"login"}
-```
+func main() {
+    // Create a logger with JSON output
+    log := logging.MustNew(
+        logging.WithJSONHandler(),
+        logging.WithServiceName("my-api"),
+        logging.WithServiceVersion("v1.0.0"),
+        logging.WithEnvironment("production"),
+    )
+
+    log.Info("user action", "user_id", "123", "action", "login")
+    // Output: {"time":"2024-01-15T10:30:45.123Z","level":"INFO","msg":"user action","service":"my-api","version":"v1.0.0","env":"production","user_id":"123","action":"login"}
+}
+{{< /tab >}}
+{{< tab header="Text" lang="go" >}}
+package main
+
+import (
+    "rivaas.dev/logging"
+)
+
+func main() {
+    // Create a logger with text output
+    log := logging.MustNew(
+        logging.WithTextHandler(),
+        logging.WithServiceName("my-api"),
+    )
+
+    log.Info("service started", "port", 8080)
+    // Output: time=2024-01-15T10:30:45.123Z level=INFO msg="service started" service=my-api port=8080
+}
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### How It Works
 

@@ -1,13 +1,13 @@
 ---
 title: "Metrics Collection"
+linkTitle: "Metrics"
 description: "Learn how to collect and export application metrics with Rivaas metrics package"
-weight: 4
-sidebar_root_for: self
+weight: 8
 ---
 
-A metrics collection package for Go applications using OpenTelemetry. This package provides metrics functionality with support for multiple exporters including Prometheus, OTLP, and stdout.
-
-> Metrics is designed to help Go applications implement observability best practices with minimal configuration, providing out-of-the-box HTTP metrics and flexible custom metrics collection.
+{{% pageinfo %}}
+The Rivaas Metrics package provides OpenTelemetry-based metrics collection with support for multiple exporters including Prometheus, OTLP, and stdout, enabling observability best practices with minimal configuration.
+{{% /pageinfo %}}
 
 ## Features
 
@@ -22,9 +22,8 @@ A metrics collection package for Go applications using OpenTelemetry. This packa
 
 ## Quick Start
 
-Here's a 30-second example to get you started:
-
-```go
+{{< tabpane persist=header >}}
+{{< tab header="Prometheus" lang="go" >}}
 package main
 
 import (
@@ -32,17 +31,14 @@ import (
     "log"
     "net/http"
     "os/signal"
-    "time"
     
     "rivaas.dev/metrics"
 )
 
 func main() {
-    // Create context for application lifecycle
     ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
     defer cancel()
 
-    // Create metrics recorder with Prometheus
     recorder, err := metrics.New(
         metrics.WithPrometheus(":9090", "/metrics"),
         metrics.WithServiceName("my-api"),
@@ -52,35 +48,73 @@ func main() {
         log.Fatal(err)
     }
     
-    // Start metrics server (required for Prometheus, OTLP)
     if err := recorder.Start(ctx); err != nil {
         log.Fatal(err)
     }
+    defer recorder.Shutdown(context.Background())
+
+    // Record custom metrics
+    _ = recorder.IncrementCounter(ctx, "requests_total")
     
-    // Ensure metrics are flushed on exit
-    defer func() {
-        shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
-        defer shutdownCancel()
-        if err := recorder.Shutdown(shutdownCtx); err != nil {
-            log.Printf("Metrics shutdown error: %v", err)
-        }
-    }()
-
-    // Create HTTP handler with metrics middleware
-    mux := http.NewServeMux()
-    mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        w.Write([]byte(`{"message": "Hello"}`))
-    })
-
-    // Wrap with metrics middleware
-    handler := metrics.Middleware(recorder,
-        metrics.WithExcludePaths("/health", "/metrics"),
-    )(mux)
-
-    log.Fatal(http.ListenAndServe(":8080", handler))
+    // Prometheus metrics available at http://localhost:9090/metrics
 }
-```
+{{< /tab >}}
+{{< tab header="OTLP" lang="go" >}}
+package main
+
+import (
+    "context"
+    "log"
+    "os/signal"
+    
+    "rivaas.dev/metrics"
+)
+
+func main() {
+    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+    defer cancel()
+
+    recorder, err := metrics.New(
+        metrics.WithOTLP("http://localhost:4318"),
+        metrics.WithServiceName("my-api"),
+        metrics.WithServiceVersion("v1.0.0"),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    if err := recorder.Start(ctx); err != nil {
+        log.Fatal(err)
+    }
+    defer recorder.Shutdown(context.Background())
+
+    // Metrics pushed to OTLP collector
+    _ = recorder.IncrementCounter(ctx, "requests_total")
+}
+{{< /tab >}}
+{{< tab header="Stdout" lang="go" >}}
+package main
+
+import (
+    "context"
+    "log"
+    
+    "rivaas.dev/metrics"
+)
+
+func main() {
+    recorder := metrics.MustNew(
+        metrics.WithStdout(),
+        metrics.WithServiceName("my-api"),
+    )
+
+    ctx := context.Background()
+    
+    // Metrics printed to stdout
+    _ = recorder.IncrementCounter(ctx, "requests_total")
+}
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### How It Works
 

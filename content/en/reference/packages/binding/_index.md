@@ -6,7 +6,9 @@ weight: 2
 sidebar_root_for: self
 ---
 
-Complete API reference documentation for the `rivaas.dev/binding` package - high-performance request data binding for Go web applications.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/binding` package. For learning-focused documentation, see the [Binding Guide](/guides/binding/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -66,21 +68,36 @@ graph TB
 
 ## Quick Navigation
 
-### API Documentation
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Core types, functions, and interfaces for request binding.
 
-- **[API Reference](api-reference/)** - Core types, functions, and interfaces
-- **[Options](options/)** - Configuration options and settings
-- **[Sub-Packages](sub-packages/)** - YAML, TOML, MessagePack, Protocol Buffers
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+Configuration options and binding settings.
 
-### Performance and Troubleshooting
+[View →](options/)
+{{< /card >}}
+{{< card header="**Sub-Packages**" >}}
+YAML, TOML, MessagePack, and Protocol Buffers support.
 
-- **[Performance](performance/)** - Benchmarks and optimization guide
-- **[Troubleshooting](troubleshooting/)** - Common issues and solutions
+[View →](sub-packages/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### Learning Resources
+{{< cardpane >}}
+{{< card header="**Troubleshooting**" >}}
+Common issues and solutions for binding problems.
 
-- **[User Guide](/guides/binding/)** - Step-by-step tutorials
-- **[Examples](/guides/binding/examples/)** - Real-world code examples
+[View →](troubleshooting/)
+{{< /card >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
+
+[View →](/guides/binding/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Core API
 

@@ -6,7 +6,9 @@ weight: 1
 sidebar_root_for: self
 ---
 
-Complete API reference for the `rivaas.dev/config` package.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/config` package. For learning-focused documentation, see the [Config Guide](/guides/config/).
+{{% /pageinfo %}}
 
 ## Package Information
 

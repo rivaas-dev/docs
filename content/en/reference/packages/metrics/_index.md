@@ -6,7 +6,9 @@ weight: 4
 sidebar_root_for: self
 ---
 
-Complete API reference for the `rivaas.dev/metrics` package.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/metrics` package. For learning-focused documentation, see the [Metrics Guide](/guides/metrics/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -117,38 +119,36 @@ err := metrics.WaitForMetricsServer(t, address, timeout)
 
 ## Reference Pages
 
-### [API Reference](api-reference/)
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Recorder type, lifecycle methods, and custom metrics API.
 
-Complete documentation of the Recorder type and all methods including:
-- Recorder lifecycle methods
-- Custom metrics methods
-- Provider-specific methods
-- Event types and handlers
-- Error handling
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+Configuration options for providers and service metadata.
 
-### [Options](options/)
+[View →](options/)
+{{< /card >}}
+{{< card header="**Middleware Options**" >}}
+HTTP middleware configuration and path exclusion.
 
-Comprehensive list of all configuration options:
-- Provider options (`WithPrometheus`, `WithOTLP`, `WithStdout`)
-- Service options (`WithServiceName`, `WithServiceVersion`)
-- Histogram bucket options
-- Advanced options (logging, limits, intervals)
+[View →](middleware-options/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### [Middleware Options](middleware-options/)
+{{< cardpane >}}
+{{< card header="**Troubleshooting**" >}}
+Common metrics issues and solutions.
 
-HTTP middleware configuration options:
-- Path exclusion options
-- Header recording options
-- Security considerations
+[View →](troubleshooting/)
+{{< /card >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
 
-### [Troubleshooting](troubleshooting/)
-
-Common issues and solutions:
-- Metrics not appearing
-- Port conflicts
-- Custom metric limits
-- Performance considerations
-- Global state management
+[View →](/guides/metrics/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Type Reference
 

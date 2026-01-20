@@ -6,7 +6,9 @@ weight: 3
 sidebar_root_for: self
 ---
 
-Complete API reference for the `rivaas.dev/logging` package.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/logging` package. For learning-focused documentation, see the [Logging Guide](/guides/logging/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -99,43 +101,36 @@ logger.Shutdown(ctx context.Context) error
 
 ## Reference Pages
 
-### [API Reference](api-reference/)
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Logger and ContextLogger types with all methods.
 
-Complete documentation of all types and methods:
-- Logger type and methods
-- ContextLogger type and methods
-- Convenience methods
-- Configuration methods
-- Error types
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+Configuration options for handlers and output.
 
-### [Options](options/)
+[View →](options/)
+{{< /card >}}
+{{< card header="**Testing Utilities**" >}}
+Test helpers and mocking utilities.
 
-Comprehensive list of all configuration options:
-- Handler options (`WithJSONHandler`, `WithTextHandler`, `WithConsoleHandler`)
-- Level options (`WithLevel`, `WithDebugLevel`)
-- Output options (`WithOutput`)
-- Service metadata options (`WithServiceName`, `WithServiceVersion`, `WithEnvironment`)
-- Feature options (`WithSource`, `WithSampling`, `WithGlobalLogger`)
-- Advanced options (`WithReplaceAttr`, `WithCustomLogger`)
+[View →](testing-utilities/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### [Testing Utilities](testing-utilities/)
+{{< cardpane >}}
+{{< card header="**Troubleshooting**" >}}
+Common logging issues and solutions.
 
-Testing helper functions and types:
-- `TestHelper` - High-level test utilities
-- `NewTestLogger` - Simple test logger creation
-- `MockWriter` - Write operation inspection
-- `CountingWriter` - Volume tracking
-- `SlowWriter` - I/O simulation
-- `HandlerSpy` - Handler operation inspection
+[View →](troubleshooting/)
+{{< /card >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
 
-### [Troubleshooting](troubleshooting/)
-
-Common issues and solutions:
-- Logs not appearing
-- Sensitive data not redacted
-- Missing trace IDs
-- Performance issues
-- Error types and handling
+[View →](/guides/logging/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Type Reference
 

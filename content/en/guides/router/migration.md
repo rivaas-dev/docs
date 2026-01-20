@@ -8,112 +8,128 @@ description: >
 
 This guide helps you migrate from other popular Go routers.
 
-## Migrating from Gin
+## Route Registration
 
-### Route Registration
+{{< tabpane text=true >}}
+{{% tab header="Gin" %}}
 
 ```go
-// Gin
 gin := gin.Default()
 gin.GET("/users/:id", getUserHandler)
 gin.POST("/users", createUserHandler)
+```
 
-// Rivaas Router
+{{% /tab %}}
+{{% tab header="Echo" %}}
+
+```go
+e := echo.New()
+e.GET("/users/:id", getUserHandler)
+e.POST("/users", createUserHandler)
+```
+
+{{% /tab %}}
+{{% tab header="http.ServeMux" %}}
+
+```go
+mux := http.NewServeMux()
+mux.HandleFunc("/users/", usersHandler)
+mux.HandleFunc("/posts/", postsHandler)
+```
+
+{{% /tab %}}
+{{% tab header="Rivaas Router" %}}
+
+```go
 r := router.MustNew()
 r.GET("/users/:id", getUserHandler)
 r.POST("/users", createUserHandler)
 ```
 
-### Context Usage
+{{% /tab %}}
+{{< /tabpane >}}
+
+## Context Usage
+
+{{< tabpane text=true >}}
+{{% tab header="Gin" %}}
 
 ```go
-// Gin
 func ginHandler(c *gin.Context) {
     id := c.Param("id")
     c.JSON(200, gin.H{"user_id": id})
 }
-
-// Rivaas Router
-func rivaasHandler(c *router.Context) {
-    id := c.Param("id")
-    c.JSON(200, map[string]string{"user_id": id})
-}
 ```
 
-### Middleware
+{{% /tab %}}
+{{% tab header="Echo" %}}
 
 ```go
-// Gin
-gin.Use(gin.Logger(), gin.Recovery())
-
-// Rivaas Router
-r.Use(Logger(), Recovery())
-```
-
-## Migrating from Echo
-
-### Route Registration
-
-```go
-// Echo
-e := echo.New()
-e.GET("/users/:id", getUserHandler)
-e.POST("/users", createUserHandler)
-
-// Rivaas Router
-r := router.MustNew()
-r.GET("/users/:id", getUserHandler)
-r.POST("/users", createUserHandler)
-```
-
-### Context Usage
-
-```go
-// Echo
 func echoHandler(c echo.Context) error {
     id := c.Param("id")
     return c.JSON(200, map[string]string{"user_id": id})
 }
+```
 
-// Rivaas Router
+{{% /tab %}}
+{{% tab header="http.ServeMux" %}}
+
+```go
+func usersHandler(w http.ResponseWriter, r *http.Request) {
+    path := strings.TrimPrefix(r.URL.Path, "/users/")
+    userID := strings.Split(path, "/")[0]
+    // Manual parameter extraction
+}
+```
+
+{{% /tab %}}
+{{% tab header="Rivaas Router" %}}
+
+```go
 func rivaasHandler(c *router.Context) {
     id := c.Param("id")
     c.JSON(200, map[string]string{"user_id": id})
 }
 ```
 
-## Migrating from http.ServeMux
+{{% /tab %}}
+{{< /tabpane >}}
 
-### Basic Routes
+## Middleware
 
-```go
-// http.ServeMux
-mux := http.NewServeMux()
-mux.HandleFunc("/users/", usersHandler)
-mux.HandleFunc("/posts/", postsHandler)
-
-// Rivaas Router
-r := router.MustNew()
-r.GET("/users/:id", getUserHandler)
-r.GET("/posts/:id", getPostHandler)
-```
-
-### Parameter Extraction
+{{< tabpane text=true >}}
+{{% tab header="Gin" %}}
 
 ```go
-// http.ServeMux (manual parsing)
-func usersHandler(w http.ResponseWriter, r *http.Request) {
-    path := strings.TrimPrefix(r.URL.Path, "/users/")
-    userID := strings.Split(path, "/")[0]
-    // ...
-}
-
-// Rivaas Router (automatic)
-func getUserHandler(c *router.Context) {
-    userID := c.Param("id")
-    // ...
-}
+gin.Use(gin.Logger(), gin.Recovery())
 ```
+
+{{% /tab %}}
+{{% tab header="Echo" %}}
+
+```go
+e.Use(middleware.Logger())
+e.Use(middleware.Recover())
+```
+
+{{% /tab %}}
+{{% tab header="http.ServeMux" %}}
+
+```go
+// Manual middleware chaining
+handler := Logger(Recovery(mux))
+http.ListenAndServe(":8080", handler)
+```
+
+{{% /tab %}}
+{{% tab header="Rivaas Router" %}}
+
+```go
+r.Use(Logger(), Recovery())
+```
+
+{{% /tab %}}
+{{< /tabpane >}}
 
 ## Key Differences
 

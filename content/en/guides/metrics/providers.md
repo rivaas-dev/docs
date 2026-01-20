@@ -16,22 +16,31 @@ The metrics package supports three provider types for exporting metrics. Each pr
 
 **Important**: Only one provider can be used per `Recorder` instance. Using multiple provider options will result in a validation error.
 
-## Prometheus Provider
+## Basic Configuration
 
-The Prometheus provider exposes metrics via an HTTP endpoint that Prometheus can scrape.
-
-### Basic Configuration
-
-```go
+{{< tabpane persist=header >}}
+{{< tab header="Prometheus" lang="go" >}}
 recorder := metrics.MustNew(
     metrics.WithPrometheus(":9090", "/metrics"),
     metrics.WithServiceName("my-service"),
 )
-```
+{{< /tab >}}
+{{< tab header="OTLP" lang="go" >}}
+recorder := metrics.MustNew(
+    metrics.WithOTLP("http://localhost:4318"),
+    metrics.WithServiceName("my-service"),
+    metrics.WithServiceVersion("v1.0.0"),
+)
+{{< /tab >}}
+{{< tab header="Stdout" lang="go" >}}
+recorder := metrics.MustNew(
+    metrics.WithStdout(),
+    metrics.WithServiceName("my-service"),
+)
+{{< /tab >}}
+{{< /tabpane >}}
 
-Parameters:
-- **Address**: Listen address (e.g., `:9090`, `localhost:9090`, `0.0.0.0:9090`)
-- **Path**: HTTP path for metrics endpoint (e.g., `/metrics`)
+## Prometheus Provider
 
 ### Initialization Behavior
 

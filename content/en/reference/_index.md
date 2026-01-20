@@ -8,6 +8,4 @@ Complete API reference documentation for all Rivaas packages. Find detailed info
 
 ## Package Reference
 
-Explore the technical reference for Rivaas packages:
-
-- [Config Package](/reference/packages/config/) - Complete API reference for `rivaas.dev/config`
+Explore the [complete package reference](/reference/packages/) for detailed API documentation on all Rivaas packages including App, Router, Config, Binding, Validation, Logging, Metrics, Tracing, and OpenAPI.

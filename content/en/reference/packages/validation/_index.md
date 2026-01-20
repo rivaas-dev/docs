@@ -6,7 +6,9 @@ weight: 8
 sidebar_root_for: self
 ---
 
-Complete API reference documentation for the `rivaas.dev/validation` package - flexible, multi-strategy validation for Go structs.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/validation` package. For learning-focused documentation, see the [Validation Guide](/guides/validation/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -72,21 +74,41 @@ graph TB
 
 ## Quick Navigation
 
-### API Documentation
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Core types, functions, and validation methods.
 
-- **[API Reference](api-reference/)** - Core types, functions, and methods
-- **[Options](options/)** - Configuration options (`With*` functions)
-- **[Interfaces](interfaces/)** - ValidatorInterface, ValidatorWithContext, JSONSchemaProvider
-- **[Strategies](strategies/)** - Validation strategy selection and priority
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+Configuration options and validator settings.
 
-### Troubleshooting
+[View →](options/)
+{{< /card >}}
+{{< card header="**Interfaces**" >}}
+Custom validation interfaces and providers.
 
-- **[Troubleshooting](troubleshooting/)** - Common issues and solutions
+[View →](interfaces/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### Learning Resources
+{{< cardpane >}}
+{{< card header="**Strategies**" >}}
+Validation strategy selection and priority.
 
-- **[User Guide](/guides/validation/)** - Step-by-step tutorials
-- **[Examples](/guides/validation/examples/)** - Real-world code examples
+[View →](strategies/)
+{{< /card >}}
+{{< card header="**Troubleshooting**" >}}
+Common validation issues and solutions.
+
+[View →](troubleshooting/)
+{{< /card >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
+
+[View →](/guides/validation/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Core API
 

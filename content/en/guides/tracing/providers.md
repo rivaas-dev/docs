@@ -15,6 +15,47 @@ The tracing package supports multiple providers for exporting traces. Choose the
 | **OTLP (gRPC)** | OpenTelemetry collector | Yes | Production (preferred) |
 | **OTLP (HTTP)** | OpenTelemetry collector | Yes | Production (alternative) |
 
+## Basic Configuration
+
+{{< tabpane persist=header >}}
+{{< tab header="Noop" lang="go" >}}
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithNoop(),
+)
+defer tracer.Shutdown(context.Background())
+{{< /tab >}}
+{{< tab header="Stdout" lang="go" >}}
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithStdout(),
+)
+defer tracer.Shutdown(context.Background())
+{{< /tab >}}
+{{< tab header="OTLP (gRPC)" lang="go" >}}
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithServiceVersion("v1.0.0"),
+    tracing.WithOTLP("localhost:4317"),
+)
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
+{{< /tab >}}
+{{< tab header="OTLP (HTTP)" lang="go" >}}
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithServiceVersion("v1.0.0"),
+    tracing.WithOTLPHTTP("http://localhost:4318"),
+)
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
+{{< /tab >}}
+{{< /tabpane >}}
+
 ## Noop Provider
 
 The noop provider doesn't export any traces. It's the default when no provider is configured.

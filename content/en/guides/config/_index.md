@@ -1,13 +1,13 @@
 ---
 title: "Configuration Management"
+linkTitle: "Config"
 description: "Learn how to manage application configuration with Rivaas config package"
-weight: 1
-sidebar_root_for: self
+weight: 5
 ---
 
-A powerful and versatile configuration management package for Go that simplifies handling application settings across different environments and formats.
-
-> Config is designed to help Go applications follow best practices for configuration management as recommended by the [Twelve-Factor App methodology](https://12factor.net/), especially [Factor III: Config](https://12factor.net/config).
+{{% pageinfo %}}
+The Rivaas Config package provides powerful and versatile configuration management for Go applications, simplifying handling of settings across different environments and formats following the [Twelve-Factor App methodology](https://12factor.net/).
+{{% /pageinfo %}}
 
 ## Features
 

@@ -1,7 +1,7 @@
 ---
-title: "App"
+title: "Application Framework"
 linkTitle: "App"
-weight: 10
+weight: 1
 description: >
   A batteries-included web framework built on the Rivaas router with integrated observability, lifecycle management, and sensible defaults for building production-ready applications.
 ---

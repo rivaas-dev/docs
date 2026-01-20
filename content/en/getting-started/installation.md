@@ -20,23 +20,42 @@ This installs the main framework along with all integrated packages (router, log
 
 Rivaas packages can be used independently. Install only what you need:
 
-```bash
-# High-performance router only
+{{< cardpane >}}
+{{< card header="**Core**" code=true lang="bash" >}}
+# High-performance router
 go get rivaas.dev/router
 
-# Request binding and validation
+# Full framework
+go get rivaas.dev/app
+{{< /card >}}
+{{< card header="**Data**" code=true lang="bash" >}}
+# Request binding
 go get rivaas.dev/binding
+
+# Validation
 go get rivaas.dev/validation
 
-# Observability packages
+# Configuration
+go get rivaas.dev/config
+{{< /card >}}
+{{< card header="**Observability**" code=true lang="bash" >}}
+# Structured logging
 go get rivaas.dev/logging
-go get rivaas.dev/metrics
-go get rivaas.dev/tracing
 
-# API documentation and error handling
+# Metrics collection
+go get rivaas.dev/metrics
+
+# Distributed tracing
+go get rivaas.dev/tracing
+{{< /card >}}
+{{< card header="**API & Errors**" code=true lang="bash" >}}
+# OpenAPI generation
 go get rivaas.dev/openapi
+
+# Error formatting
 go get rivaas.dev/errors
-```
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Verify Installation
 

@@ -1,7 +1,7 @@
 ---
-title: "Router"
+title: "HTTP Router"
 linkTitle: "Router"
-weight: 50
+weight: 2
 description: >
   An HTTP router for Go, designed for cloud-native applications with comprehensive routing, middleware, and observability features.
 ---

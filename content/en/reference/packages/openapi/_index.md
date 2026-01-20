@@ -6,7 +6,9 @@ weight: 3
 sidebar_root_for: self
 ---
 
-Complete API reference for the `rivaas.dev/openapi` package.
+{{% pageinfo %}}
+This is the API reference for the `rivaas.dev/openapi` package. For learning-focused documentation, see the [OpenAPI Guide](/guides/openapi/).
+{{% /pageinfo %}}
 
 ## Package Information
 
@@ -97,61 +99,49 @@ result.Warnings  // Generation warnings
 
 ## Reference Pages
 
-### [API Reference](api-reference/)
+{{< cardpane >}}
+{{< card header="**API Reference**" >}}
+Core types, HTTP method constructors, and generation API.
 
-Complete documentation of types, functions, and methods:
-- API struct and methods
-- HTTP method constructors
-- Result type
-- Version type
-- Operation type
+[View →](api-reference/)
+{{< /card >}}
+{{< card header="**Options**" >}}
+API-level configuration for info, servers, and security.
 
-### [Options](options/)
+[View →](options/)
+{{< /card >}}
+{{< card header="**Operation Options**" >}}
+Operation-level configuration for endpoints.
 
-API-level configuration options:
-- Info options (`WithTitle`, `WithInfoDescription`, etc.)
-- Server options (`WithServer`, `WithServerVariable`)
-- Security options (`WithBearerAuth`, `WithAPIKey`, etc.)
-- Tag options (`WithTag`)
-- Version options (`WithVersion`)
-- Validation options (`WithValidation`, `WithStrictDownlevel`)
-- Swagger UI options (`WithSwaggerUI`, `WithoutSwaggerUI`)
-- Extension options (`WithExtension`)
+[View →](operation-options/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### [Operation Options](operation-options/)
+{{< cardpane >}}
+{{< card header="**Swagger UI Options**" >}}
+Customize the Swagger UI interface.
 
-Operation-level configuration options:
-- Metadata options (`WithSummary`, `WithDescription`, `WithOperationID`)
-- Request/Response options (`WithRequest`, `WithResponse`)
-- Tag and security options (`WithTags`, `WithSecurity`)
-- Content type options (`WithConsumes`, `WithProduces`)
-- Miscellaneous options (`WithDeprecated`, `WithOperationExtension`)
+[View →](swagger-ui-options/)
+{{< /card >}}
+{{< card header="**Diagnostics**" >}}
+Warning system and diagnostic codes.
 
-### [Swagger UI Options](swagger-ui-options/)
+[View →](diagnostics/)
+{{< /card >}}
+{{< card header="**Troubleshooting**" >}}
+Common issues and solutions.
 
-Swagger UI customization options:
-- Display options
-- Try-it-out features
-- Filtering and sorting
-- Syntax highlighting
-- Authentication persistence
+[View →](troubleshooting/)
+{{< /card >}}
+{{< /cardpane >}}
 
-### [Diagnostics](diagnostics/)
+{{< cardpane >}}
+{{< card header="**User Guide**" >}}
+Step-by-step tutorials and examples.
 
-Warning system reference:
-- `Warning` interface
-- `Warnings` collection type
-- Warning codes
-- Warning categories
-- Helper methods
-
-### [Troubleshooting](troubleshooting/)
-
-Common issues and solutions:
-- Schema name collisions
-- Extension validation
-- Version compatibility
-- Performance considerations
+[View →](/guides/openapi/)
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Type Reference
 
