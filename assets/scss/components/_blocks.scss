@@ -9,22 +9,34 @@
 .td-cover-block {
   position: relative;
   padding: var(--rivaas-space-16) 0;
+  background: var(--rivaas-gradient-hero);
+  overflow: hidden;
   
+  // Radial glow effect behind content
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: inherit;
-    z-index: -1;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 200%;
+    background: var(--rivaas-gradient-glow);
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  // Ensure content is above the glow
+  > * {
+    position: relative;
+    z-index: 1;
   }
   
   h1, .h1 {
     font-size: var(--rivaas-text-5xl);
     font-weight: var(--rivaas-font-bold);
     margin-bottom: var(--rivaas-space-6);
+    letter-spacing: -0.02em;
     
     @media (max-width: 767.98px) {
       font-size: var(--rivaas-text-4xl);
@@ -36,17 +48,21 @@
     margin-bottom: var(--rivaas-space-8);
   }
   
+  // Enhanced CTA buttons with colored shadows
   .btn {
     margin: var(--rivaas-space-2);
     padding: var(--rivaas-space-3) var(--rivaas-space-8);
     font-size: var(--rivaas-text-lg);
     font-weight: var(--rivaas-font-semibold);
     border-radius: var(--rivaas-radius);
-    transition: all var(--rivaas-transition-normal);
+    @include hover-lift-spring(-3px, 1.02);
     
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--rivaas-shadow-md);
+      box-shadow: var(--rivaas-shadow-colored-hover);
+    }
+    
+    &.btn-primary {
+      box-shadow: var(--rivaas-shadow-colored);
     }
   }
 }
@@ -69,12 +85,14 @@
   container-type: inline-size;
   padding: var(--rivaas-space-8);
   text-align: center;
-  transition: all var(--rivaas-transition-slow);
+  @include hover-lift-spring(-4px, 1.01);
   border-radius: var(--rivaas-radius);
+  border: 1px solid transparent;
   
   &:hover {
-    transform: translateY(-4px);
-    background: var(--rivaas-interactive-muted);
+    @include glass-surface(10px, 0.6);
+    border-color: var(--rivaas-border-subtle);
+    box-shadow: var(--rivaas-shadow-md);
   }
   
   i, .fa, .fab, .fas {
@@ -82,6 +100,15 @@
     color: var(--rivaas-accent);
     margin-bottom: var(--rivaas-space-4);
     display: block;
+    transition: transform var(--rivaas-transition-normal);
+    filter: drop-shadow(0 2px 8px rgba(30, 111, 92, 0.2));
+  }
+  
+  &:hover i,
+  &:hover .fa,
+  &:hover .fab,
+  &:hover .fas {
+    transform: scale(1.1);
   }
   
   h3, .h3 {

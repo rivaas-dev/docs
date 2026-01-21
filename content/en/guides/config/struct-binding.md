@@ -30,7 +30,9 @@ if err := cfg.Load(context.Background()); err != nil {
 log.Printf("Server: %s:%d", c.Host, c.Port)
 ```
 
-> **Important:** Always pass a **pointer** to your struct with `WithBinding(&c)`, not the struct value itself.
+{{< alert title="Important" color="warning" >}}
+Always pass a **pointer** to your struct with `WithBinding(&c)`, not the struct value itself.
+{{< /alert >}}
 
 ## Config Tags
 

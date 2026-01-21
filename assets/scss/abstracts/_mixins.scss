@@ -58,3 +58,49 @@
     box-shadow: var(--rivaas-shadow-md);
   }
 }
+
+// ========================================
+// Modern Visual Effect Mixins
+// ========================================
+
+// Glassmorphism effect (frosted glass)
+@mixin glass-surface($blur: 12px, $opacity: 0.7) {
+  background: rgba(var(--rivaas-surface-primary-rgb), $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  @include dark-mode {
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+// Animated focus ring for accessibility
+@mixin focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 
+      0 0 0 2px var(--rivaas-surface-primary),
+      0 0 0 4px var(--rivaas-accent);
+    transition: box-shadow var(--rivaas-duration-fast);
+  }
+}
+
+// Gradient border effect
+@mixin gradient-border($gradient: var(--rivaas-gradient-primary), $border-width: 1px) {
+  border: $border-width solid transparent;
+  background: 
+    linear-gradient(var(--rivaas-card-bg), var(--rivaas-card-bg)) padding-box,
+    $gradient border-box;
+}
+
+// Standardized hover animation with spring easing
+@mixin hover-lift-spring($y: -6px, $scale: 1.01) {
+  transition: 
+    transform var(--rivaas-duration-normal) var(--rivaas-easing-spring),
+    box-shadow var(--rivaas-duration-slow) var(--rivaas-easing-smooth);
+  
+  &:hover {
+    transform: translateY($y) scale($scale);
+  }
+}

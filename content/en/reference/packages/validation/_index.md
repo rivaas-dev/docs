@@ -45,13 +45,13 @@ err := validation.Validate(ctx, &user)
 
 ```mermaid
 graph TB
-    User[User Code] --> API[Public API]
+    User[User Code] --> API[Public API]:::info
     
     API --> Validate[Validate Functions]
     API --> Validator[Validator Type]
     API --> Presence[Presence Tracking]
     
-    Validate --> Strategy[Strategy Selection]
+    Validate --> Strategy[Strategy Selection]:::warning
     Validator --> Strategy
     
     Strategy --> Tags[Struct Tags]
@@ -62,53 +62,54 @@ graph TB
     Schema --> Errors
     Interface --> Errors
     
-    Errors --> ErrorType[Error/FieldError]
+    Errors --> ErrorType[Error/FieldError]:::danger
     
     Presence --> Partial[Partial Validation]
     Partial --> Strategy
     
-    style API fill:#e1f5ff
-    style Strategy fill:#fff3cd
-    style ErrorType fill:#f8d7da
+    classDef default fill:#F8FAF9,stroke:#1E6F5C,color:#1F2A27
+    classDef info fill:#D1ECF1,stroke:#17A2B8,color:#1F2A27
+    classDef warning fill:#FFF3CD,stroke:#FFC107,color:#1F2A27
+    classDef danger fill:#F8D7DA,stroke:#DC3545,color:#1F2A27
 ```
 
 ## Quick Navigation
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Core types, functions, and validation methods.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 Configuration options and validator settings.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Interfaces**" >}}
+{{% /card %}}
+{{% card header="**Interfaces**" %}}
 Custom validation interfaces and providers.
 
 [View →](interfaces/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Strategies**" >}}
+{{% cardpane %}}
+{{% card header="**Strategies**" %}}
 Validation strategy selection and priority.
 
 [View →](strategies/)
-{{< /card >}}
-{{< card header="**Troubleshooting**" >}}
+{{% /card %}}
+{{% card header="**Troubleshooting**" %}}
 Common validation issues and solutions.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< card header="**User Guide**" >}}
+{{% /card %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/validation/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Core API
 

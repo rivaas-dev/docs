@@ -98,78 +98,78 @@ Rivaas is organized into independent, standalone packages:
 
 ### Core Packages
 
-{{< cardpane >}}
-{{< card header="**App**" >}}
+{{% cardpane %}}
+{{% card header="**App**" %}}
 Web framework with integrated observability, lifecycle management, and graceful shutdown.
 
 [Learn more →](/reference/packages/app/)
-{{< /card >}}
-{{< card header="**Router**" >}}
+{{% /card %}}
+{{% card header="**Router**" %}}
 High-performance HTTP router. Handles 8.4M+ requests/sec with 119ns latency.
 
 [Learn more →](/reference/packages/router/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ### Configuration
 
-{{< cardpane >}}
-{{< card header="**Config**" >}}
+{{% cardpane %}}
+{{% card header="**Config**" %}}
 Configuration management. Supports files, environment variables, Consul, and built-in validation.
 
 [Learn more →](/reference/packages/config/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ### Data Handling
 
-{{< cardpane >}}
-{{< card header="**Binding**" >}}
+{{% cardpane %}}
+{{% card header="**Binding**" %}}
 Request binding from multiple sources. Supports JSON, XML, YAML, TOML, MessagePack, and Protocol Buffers.
 
 [Learn more →](/reference/packages/binding/)
-{{< /card >}}
-{{< card header="**Validation**" >}}
+{{% /card %}}
+{{% card header="**Validation**" %}}
 Struct validation with tags, JSON Schema, and custom interfaces.
 
 [Learn more →](/reference/packages/validation/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ### Observability
 
-{{< cardpane >}}
-{{< card header="**Logging**" >}}
+{{% cardpane %}}
+{{% card header="**Logging**" %}}
 Structured logging with Go's standard log/slog. Includes trace correlation and sensitive data redaction.
 
 [Learn more →](/reference/packages/logging/)
-{{< /card >}}
-{{< card header="**Metrics**" >}}
+{{% /card %}}
+{{% card header="**Metrics**" %}}
 OpenTelemetry metrics collection. Supports Prometheus, OTLP, and stdout exporters.
 
 [Learn more →](/reference/packages/metrics/)
-{{< /card >}}
-{{< card header="**Tracing**" >}}
+{{% /card %}}
+{{% card header="**Tracing**" %}}
 Distributed tracing with OpenTelemetry. Supports OTLP, Jaeger, and stdout.
 
 [Learn more →](/reference/packages/tracing/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ### API & Errors
 
-{{< cardpane >}}
-{{< card header="**OpenAPI**" >}}
+{{% cardpane %}}
+{{% card header="**OpenAPI**" %}}
 Automatic OpenAPI 3.0/3.1 specification generation from Go code. Includes Swagger UI support.
 
 [Learn more →](/reference/packages/openapi/)
-{{< /card >}}
-{{< card header="**Errors**" >}}
+{{% /card %}}
+{{% card header="**Errors**" %}}
 Error formatting. Supports RFC 9457 (Problem Details) and JSON:API specifications.
 
 [Learn more →](/reference/packages/errors/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Philosophy
 

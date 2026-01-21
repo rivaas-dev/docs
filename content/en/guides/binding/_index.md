@@ -18,7 +18,9 @@ The Rivaas Binding package provides high-performance request data binding for Go
 - **Error Context** - Detailed field-level error information
 - **Extensible** - Custom type converters and value getters
 
-> **Note:** For validation (required fields, enum constraints, etc.), use the `rivaas.dev/validation` package separately after binding.
+{{< alert color="info" >}}
+For validation (required fields, enum constraints, etc.), use the `rivaas.dev/validation` package separately after binding.
+{{< /alert >}}
 
 ## Quick Start
 

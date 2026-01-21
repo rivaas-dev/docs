@@ -44,7 +44,9 @@ cfg := config.MustNew(
 )
 ```
 
-> **Note:** Files are processed in order. Later files override values from earlier ones, enabling environment-specific overrides.
+{{< alert color="info" >}}
+Files are processed in order. Later files override values from earlier ones, enabling environment-specific overrides.
+{{< /alert >}}
 
 ### Built-in Format Support
 

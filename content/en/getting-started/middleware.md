@@ -201,7 +201,9 @@ a.Use(ratelimit.New(
 ))
 ```
 
-⚠️ **Production Note**: This uses in-memory storage. For multi-instance deployments, use a distributed rate limiter (Redis, etc.).
+{{< alert title="Production Note" color="warning" >}}
+This uses in-memory storage. For multi-instance deployments, use a distributed rate limiter (Redis, etc.).
+{{< /alert >}}
 
 ## Middleware Execution Order
 

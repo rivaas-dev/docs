@@ -57,7 +57,9 @@ if err := tracer.Start(context.Background()); err != nil {
 defer tracer.Shutdown(context.Background())
 ```
 
-> **Note**: For Stdout and Noop providers, `Start()` is optional (they initialize immediately in `New()`).
+{{< alert color="info" >}}
+For Stdout and Noop providers, `Start()` is optional (they initialize immediately in `New()`).
+{{< /alert >}}
 
 ### Shutting Down
 

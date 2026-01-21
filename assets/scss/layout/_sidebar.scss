@@ -53,6 +53,11 @@
 .td-sidebar {
   background: var(--rivaas-sidebar-bg);
   border-right: 1px solid var(--rivaas-sidebar-border);
+  
+  // Subtle glassmorphism effect
+  @include dark-mode {
+    @include glass-surface(8px, 0.9);
+  }
 }
 
 // ========================================
@@ -68,13 +73,13 @@
   
   // Section headers (top-level items like "DOCS", "CORE TASKS", etc.)
   .td-sidebar-link__section {
-    font-weight: var(--rivaas-font-semibold);
-    font-size: var(--rivaas-text-sm);
+    font-weight: var(--rivaas-font-medium);
+    font-size: var(--rivaas-text-xs);  // 12px - readable section labels
     text-transform: uppercase;
-    letter-spacing: 0.025em;
+    letter-spacing: 0.06em;
     color: var(--rivaas-text-muted);
     padding: var(--rivaas-space-2) var(--rivaas-space-3);
-    margin-top: var(--rivaas-space-2);
+    margin-top: var(--rivaas-space-3);
     margin-bottom: var(--rivaas-space-1);
     
     &:first-child {
@@ -95,22 +100,51 @@
     margin: var(--rivaas-space-0-5) 0;
     border-radius: var(--rivaas-radius-sm);
     color: var(--rivaas-sidebar-link-color);
-    font-size: 0.9rem;
-    line-height: var(--rivaas-leading-normal);
+    font-size: 0.875rem;  // 14px - readable navigation
+    line-height: 1.4;
     border-left: 3px solid transparent;
     transition: all var(--rivaas-transition-fast);
+    position: relative;
+    
+    // Animated accent indicator on hover
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(0);
+      width: 3px;
+      height: 60%;
+      background: var(--rivaas-accent);
+      border-radius: 0 2px 2px 0;
+      transition: transform var(--rivaas-duration-fast) var(--rivaas-easing-spring);
+    }
     
     &:hover {
       background: var(--rivaas-sidebar-link-hover-bg);
       color: var(--rivaas-sidebar-link-hover-color);
       text-decoration: none;
+      
+      &::before {
+        transform: translateY(-50%) scaleY(1);
+      }
     }
     
+    // Gradient active state with fade-out
     &.active {
-      background: var(--rivaas-sidebar-link-active-bg);
+      background: linear-gradient(90deg, 
+        var(--rivaas-sidebar-link-active-bg) 0%, 
+        transparent 100%
+      );
       color: var(--rivaas-sidebar-link-active-color);
+      border-left-width: 3px;
+      border-left-style: solid;
       border-left-color: var(--rivaas-sidebar-link-active-border);
       font-weight: var(--rivaas-font-medium);
+      
+      &::before {
+        display: none;
+      }
     }
   }
   

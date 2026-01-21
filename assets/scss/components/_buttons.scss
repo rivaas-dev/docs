@@ -10,10 +10,16 @@
   background-color: var(--rivaas-interactive-primary);
   border-color: var(--rivaas-interactive-primary);
   color: var(--rivaas-interactive-primary-text);
+  box-shadow: var(--rivaas-shadow-colored);
   
   &:hover {
     background-color: var(--rivaas-interactive-primary-hover);
     border-color: var(--rivaas-interactive-primary-hover);
+    box-shadow: var(--rivaas-shadow-colored-hover);
+  }
+  
+  &:active:not(:disabled) {
+    box-shadow: var(--rivaas-shadow-colored);
   }
 }
 
@@ -78,10 +84,23 @@
 .btn-outline-primary {
   color: var(--rivaas-accent);
   border-color: var(--rivaas-accent);
+  @include glass-surface(8px, 0.5);
   
   &:hover:not(:disabled) {
     background-color: var(--rivaas-interactive-primary);
     border-color: var(--rivaas-interactive-primary);
     color: var(--rivaas-interactive-primary-text);
+    box-shadow: var(--rivaas-shadow-colored);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.btn-outline-secondary {
+  @include glass-surface(8px, 0.5);
+  
+  &:hover:not(:disabled) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }

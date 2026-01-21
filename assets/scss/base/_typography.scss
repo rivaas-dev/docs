@@ -18,7 +18,7 @@
   // ========================================
   h1, h2, h3, h4, h5, h6 {
     font-weight: var(--rivaas-font-bold);
-    line-height: var(--rivaas-leading-snug);
+    line-height: var(--rivaas-leading-tight);  // Tighter for modern look
     color: var(--rivaas-text-heading);
     margin-top: var(--rivaas-space-8);
     margin-bottom: var(--rivaas-space-4);
@@ -40,6 +40,11 @@
     &:hover .td-heading-anchor {
       opacity: 1;
     }
+  }
+  
+  // Tighter letter-spacing for modern look
+  h1, h2, h3 {
+    letter-spacing: -0.025em;
   }
   
   h1 {
@@ -281,13 +286,39 @@
   text-decoration-color: rgba($primary, 0.3);
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
-  transition: color var(--rivaas-transition-normal), text-decoration-color var(--rivaas-transition-normal);
+  transition: 
+    color var(--rivaas-transition-normal), 
+    text-decoration-color var(--rivaas-transition-normal),
+    text-decoration-thickness var(--rivaas-transition-fast);
   
   &:hover {
     color: var(--rivaas-text-link-hover);
     text-decoration-color: var(--rivaas-text-link-hover);
     text-decoration-thickness: 3px;
   }
+}
+
+// ========================================
+// Hero Title - Gradient Text Effect
+// ========================================
+.hero-title {
+  background: var(--rivaas-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  
+  @include dark-mode {
+    // Ensure gradient works in dark mode
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+// ========================================
+// Global Focus States
+// ========================================
+a, button, input, textarea, select, [tabindex]:not([tabindex="-1"]) {
+  @include focus-ring;
 }
 
 // Code in headings

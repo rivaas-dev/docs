@@ -17,15 +17,16 @@ graph LR
     A --> D[Headers]
     A --> E[Path Params]
     
-    B --> F[Multi-Source Binder]
+    B --> F[Multi-Source Binder]:::info
     C --> F
     D --> F
     E --> F
     
-    F --> G[Merged Struct]
+    F --> G[Merged Struct]:::success
     
-    style F fill:#e1f5ff
-    style G fill:#d4edda
+    classDef default fill:#F8FAF9,stroke:#1E6F5C,color:#1F2A27
+    classDef info fill:#D1ECF1,stroke:#17A2B8,color:#1F2A27
+    classDef success fill:#D4EDDA,stroke:#28A745,color:#1F2A27
 ```
 
 ## Basic Multi-Source Binding

@@ -7,18 +7,35 @@
 // Tab Panes - Alpine Tab Styling
 // ========================================
 .nav-tabs {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
   border-bottom: 2px solid var(--rivaas-border-default);
   margin-bottom: var(--rivaas-space-6);
-  gap: var(--rivaas-space-2);
+  gap: var(--rivaas-space-1);
+  display: flex;
+  
+  // Remove list item markers
+  .nav-item {
+    list-style: none;
+    
+    &::marker {
+      display: none;
+      content: '';
+    }
+  }
   
   .nav-link {
     border: none;
     border-bottom: 3px solid transparent;
-    border-radius: 0;
-    color: var(--rivaas-text-muted);
+    border-radius: var(--rivaas-radius-sm) var(--rivaas-radius-sm) 0 0;
+    color: var(--rivaas-text-secondary);
     font-weight: var(--rivaas-font-medium);
     padding: var(--rivaas-space-3) var(--rivaas-space-5);
-    transition: all var(--rivaas-transition-normal);
+    transition: 
+      color var(--rivaas-duration-fast),
+      background-color var(--rivaas-duration-fast),
+      border-color var(--rivaas-duration-normal) var(--rivaas-easing-spring);
     position: relative;
     
     &:hover {
@@ -38,6 +55,14 @@
       color: var(--rivaas-text-disabled);
       cursor: not-allowed;
       opacity: 0.6;
+    }
+    
+    // Focus state for accessibility
+    &:focus-visible {
+      outline: none;
+      box-shadow: 
+        0 0 0 2px var(--rivaas-surface-primary),
+        0 0 0 4px var(--rivaas-accent);
     }
   }
 }

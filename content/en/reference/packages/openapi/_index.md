@@ -99,49 +99,49 @@ result.Warnings  // Generation warnings
 
 ## Reference Pages
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Core types, HTTP method constructors, and generation API.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 API-level configuration for info, servers, and security.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Operation Options**" >}}
+{{% /card %}}
+{{% card header="**Operation Options**" %}}
 Operation-level configuration for endpoints.
 
 [View →](operation-options/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Swagger UI Options**" >}}
+{{% cardpane %}}
+{{% card header="**Swagger UI Options**" %}}
 Customize the Swagger UI interface.
 
 [View →](swagger-ui-options/)
-{{< /card >}}
-{{< card header="**Diagnostics**" >}}
+{{% /card %}}
+{{% card header="**Diagnostics**" %}}
 Warning system and diagnostic codes.
 
 [View →](diagnostics/)
-{{< /card >}}
-{{< card header="**Troubleshooting**" >}}
+{{% /card %}}
+{{% card header="**Troubleshooting**" %}}
 Common issues and solutions.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**User Guide**" >}}
+{{% cardpane %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/openapi/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Type Reference
 

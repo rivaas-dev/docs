@@ -280,7 +280,9 @@ if err != nil {
 
 ## Validation
 
-> **Note:** The binding package focuses on type conversion. For validation (required fields, value ranges, etc.), use `rivaas.dev/validation` after binding:
+{{< alert color="info" >}}
+The binding package focuses on type conversion. For validation (required fields, value ranges, etc.), use `rivaas.dev/validation` after binding.
+{{< /alert >}}
 
 ```go
 params, err := binding.Query[SearchParams](r.URL.Query())

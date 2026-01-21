@@ -7,13 +7,13 @@
 // Card Enhancements
 // ========================================
 .td-card {
-  transition: transform var(--rivaas-transition-normal), box-shadow var(--rivaas-transition-normal);
+  @include hover-lift-spring(-4px, 1.005);
   border-radius: var(--rivaas-radius-lg);
   border-color: var(--rivaas-card-border);
+  box-shadow: var(--rivaas-shadow-sm);
   
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--rivaas-card-shadow-hover);
+    box-shadow: var(--rivaas-shadow-colored-hover);
   }
 }
 
@@ -50,16 +50,23 @@
   border-radius: var(--rivaas-radius);
   box-shadow: var(--rivaas-card-shadow);
   margin-bottom: var(--rivaas-space-6);
-  transition: all var(--rivaas-transition-normal);
+  @include hover-lift-spring(-6px, 1.01);
   
   &:hover {
-    box-shadow: var(--rivaas-card-shadow-hover);
+    box-shadow: var(--rivaas-shadow-colored-hover);
     border-color: var(--rivaas-border-interactive);
+    
+    @include dark-mode {
+      box-shadow: 
+        0 0 0 1px rgba(79, 209, 181, 0.1),
+        0 16px 40px rgba(0, 0, 0, 0.4),
+        0 0 60px rgba(79, 209, 181, 0.05);
+    }
   }
   
-  // Card header
+  // Card header with subtle gradient
   .card-header {
-    background: var(--rivaas-card-header-bg);
+    background: linear-gradient(180deg, var(--rivaas-card-header-bg) 0%, var(--rivaas-card-bg) 100%);
     border-bottom: 1px solid var(--rivaas-border-default);
     padding: var(--rivaas-space-4) var(--rivaas-space-5);
     font-weight: var(--rivaas-font-semibold);
@@ -71,10 +78,15 @@
   
   // Card body
   .card-body {
-    padding: var(--rivaas-space-5);
+    padding: var(--rivaas-space-3) var(--rivaas-space-4);  // Compact: 12px top/bottom, 16px sides
     
-    p:last-child {
-      margin-bottom: 0;
+    p {
+      margin-bottom: var(--rivaas-space-1-5);  // 6px between paragraphs
+      
+      &:last-child,
+      &:only-child {
+        margin-bottom: 0;
+      }
     }
   }
   
@@ -99,7 +111,7 @@
     margin-bottom: var(--rivaas-space-2);
   }
   
-  // Card with code
+  // Card with code (class on card element)
   &.card-code {
     .card-body {
       padding: 0;
@@ -122,6 +134,78 @@
 }
 
 // ========================================
+// Code Card - Docsy Pattern (high specificity)
+// Handles .card-header.code and .card-body.code
+// ========================================
+.td-card .card-header.code,
+.card .card-header.code,
+.card-header.code {
+  background: linear-gradient(180deg, var(--rivaas-code-bg) 0%, var(--rivaas-surface-code) 100%) !important;
+  padding: var(--rivaas-space-3) var(--rivaas-space-5) !important;
+  font-family: $font-family-monospace;
+  font-weight: var(--rivaas-font-semibold);
+  font-size: var(--rivaas-text-sm);
+  color: var(--rivaas-text-primary);
+  border-bottom: 1px solid var(--rivaas-border-default);
+  position: relative;
+  
+  // Accent glow line at top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rivaas-accent), transparent);
+    opacity: 0.5;
+  }
+}
+
+.td-card .card-body.code,
+.card .card-body.code,
+.card-body.code {
+  background: var(--rivaas-code-bg) !important;
+  padding: 0 !important;
+  
+  .highlight {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    
+    &::before {
+      display: none; // Hide accent glow in card context (already on header)
+    }
+    
+    &::after {
+      display: none; // Hide language badge in card context
+    }
+  }
+  
+  pre.chroma,
+  pre {
+    padding: var(--rivaas-space-4) var(--rivaas-space-5) !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+}
+
+// ========================================
+// Featured Card - Gradient Border
+// ========================================
+.card-featured {
+  @include gradient-border(var(--rivaas-gradient-primary));
+  box-shadow: var(--rivaas-shadow-colored);
+  
+  &:hover {
+    box-shadow: var(--rivaas-shadow-colored-lg);
+  }
+}
+
+// ========================================
 // Card Group Spacing
 // ========================================
 .card-group {
@@ -130,6 +214,41 @@
   .card {
     flex: 1 0 0%;
     margin-bottom: 0;
+  }
+}
+
+// ========================================
+// Docsy Card Group - Equal Height Cards
+// ========================================
+.td-card-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  
+  .td-card,
+  .card {
+    display: flex;
+    flex-direction: column;
+    
+    .card-body {
+      flex: 1 1 auto; // Body expands to fill remaining space
+    }
+    
+    .card-body.code {
+      display: flex;
+      flex-direction: column;
+      
+      .highlight {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        
+        pre.chroma,
+        pre {
+          flex: 1 1 auto;
+        }
+      }
+    }
   }
 }
 

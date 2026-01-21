@@ -101,36 +101,36 @@ logger.Shutdown(ctx context.Context) error
 
 ## Reference Pages
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Logger and ContextLogger types with all methods.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 Configuration options for handlers and output.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Testing Utilities**" >}}
+{{% /card %}}
+{{% card header="**Testing Utilities**" %}}
 Test helpers and mocking utilities.
 
 [View →](testing-utilities/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Troubleshooting**" >}}
+{{% cardpane %}}
+{{% card header="**Troubleshooting**" %}}
 Common logging issues and solutions.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< card header="**User Guide**" >}}
+{{% /card %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/logging/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Type Reference
 

@@ -1,0 +1,203 @@
+/*
+ * Rivaas Documentation - Search (DocSearch/Algolia)
+ * Component styling for DocSearch elements
+ * 
+ * Note: CSS custom properties (--docsearch-*) are defined in
+ * layouts/partials/algolia/head.html to ensure proper load order
+ */
+
+// ========================================
+// DocSearch Modal
+// ========================================
+.DocSearch-Modal {
+  border-radius: var(--rivaas-radius-lg);
+  box-shadow: var(--rivaas-shadow-xl);
+  border: 1px solid var(--rivaas-border-default);
+  
+  @include dark-mode {
+    border-color: var(--rivaas-border-subtle);
+  }
+}
+
+// ========================================
+// DocSearch Form & Input
+// ========================================
+.DocSearch-Form {
+  border-radius: var(--rivaas-radius);
+  background: var(--docsearch-searchbox-background);
+  border: 2px solid transparent;
+  transition: 
+    border-color var(--rivaas-transition-normal),
+    box-shadow var(--rivaas-transition-normal);
+  
+  &:focus-within {
+    border-color: var(--rivaas-accent);
+    box-shadow: 0 0 0 3px rgba(var(--rivaas-accent-rgb, 30, 111, 92), 0.15);
+  }
+}
+
+.DocSearch-Input {
+  font-family: inherit;
+  font-size: var(--rivaas-text-base);
+  color: var(--rivaas-text-primary);
+  
+  // Remove default focus outline - handled by parent .DocSearch-Form
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  &::placeholder {
+    color: var(--rivaas-text-muted);
+  }
+}
+
+// ========================================
+// DocSearch Button (trigger in navbar)
+// ========================================
+.DocSearch-Button {
+  border-radius: var(--rivaas-radius);
+  background: var(--rivaas-surface-secondary);
+  border: 1px solid var(--rivaas-border-default);
+  color: var(--rivaas-text-secondary);
+  transition: 
+    background var(--rivaas-transition-normal),
+    border-color var(--rivaas-transition-normal),
+    box-shadow var(--rivaas-transition-normal);
+  
+  &:hover {
+    background: var(--rivaas-surface-primary);
+    border-color: var(--rivaas-border-strong);
+    box-shadow: var(--rivaas-shadow-sm);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--rivaas-accent);
+    box-shadow: 0 0 0 3px rgba(var(--rivaas-accent-rgb, 30, 111, 92), 0.15);
+  }
+  
+  .DocSearch-Button-Placeholder {
+    color: var(--rivaas-text-muted);
+  }
+  
+  .DocSearch-Button-Keys {
+    .DocSearch-Button-Key {
+      background: var(--rivaas-surface-primary);
+      border: 1px solid var(--rivaas-border-default);
+      border-radius: var(--rivaas-radius-xs);
+      box-shadow: none;
+      color: var(--rivaas-text-muted);
+      font-size: var(--rivaas-text-xs);
+    }
+  }
+}
+
+// ========================================
+// DocSearch Hits (Search Results)
+// ========================================
+.DocSearch-Hit {
+  border-radius: var(--rivaas-radius);
+  
+  a {
+    border-radius: var(--rivaas-radius);
+    background: var(--docsearch-hit-background);
+    box-shadow: var(--rivaas-shadow-xs);
+    border: 1px solid var(--rivaas-border-subtle);
+    
+    &:hover,
+    &:focus {
+      background: var(--rivaas-surface-secondary);
+      border-color: var(--rivaas-border-default);
+    }
+  }
+  
+  &[aria-selected="true"] a {
+    background: var(--rivaas-accent);
+    border-color: var(--rivaas-accent);
+    
+    .DocSearch-Hit-title,
+    .DocSearch-Hit-path {
+      color: var(--rivaas-white);
+    }
+  }
+}
+
+.DocSearch-Hit-title {
+  font-weight: var(--rivaas-font-semibold);
+  color: var(--rivaas-text-primary);
+}
+
+.DocSearch-Hit-path {
+  color: var(--rivaas-text-muted);
+  font-size: var(--rivaas-text-sm);
+}
+
+// Highlight matches
+.DocSearch-Hit-title mark,
+.DocSearch-Hit-path mark {
+  background: transparent;
+  color: var(--rivaas-accent);
+  font-weight: var(--rivaas-font-bold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+// ========================================
+// DocSearch Footer
+// ========================================
+.DocSearch-Footer {
+  border-radius: 0 0 var(--rivaas-radius-lg) var(--rivaas-radius-lg);
+  border-top: 1px solid var(--rivaas-border-default);
+}
+
+// ========================================
+// DocSearch Cancel/Reset
+// ========================================
+.DocSearch-Reset {
+  color: var(--rivaas-text-muted);
+  
+  &:hover {
+    color: var(--rivaas-accent);
+  }
+}
+
+// ========================================
+// DocSearch Loading
+// ========================================
+.DocSearch-LoadingIndicator svg {
+  color: var(--rivaas-accent);
+}
+
+// ========================================
+// DocSearch No Results
+// ========================================
+.DocSearch-NoResults {
+  .DocSearch-NoResults-Prefill-List {
+    li {
+      color: var(--rivaas-text-secondary);
+    }
+  }
+}
+
+// ========================================
+// DocSearch Label (accessibility)
+// ========================================
+.DocSearch-Label {
+  color: var(--rivaas-text-muted);
+}
+
+// ========================================
+// Responsive Adjustments
+// ========================================
+@media (max-width: 767.98px) {
+  .DocSearch-Modal {
+    border-radius: 0;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .DocSearch-Form {
+    border-radius: var(--rivaas-radius-sm);
+  }
+}

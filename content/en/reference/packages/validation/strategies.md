@@ -117,13 +117,13 @@ When `StrategyAuto` is used (default), the validator checks strategies in priori
 graph TD
     Start[Start Validation] --> CheckInterface{Implements<br/>ValidatorInterface or<br/>ValidatorWithContext?}
     
-    CheckInterface -->|Yes| UseInterface[Use Interface Strategy]
+    CheckInterface -->|Yes| UseInterface[Use Interface Strategy]:::success
     CheckInterface -->|No| CheckTags{Has validate<br/>tags?}
     
-    CheckTags -->|Yes| UseTags[Use Tags Strategy]
+    CheckTags -->|Yes| UseTags[Use Tags Strategy]:::warning
     CheckTags -->|No| CheckSchema{Implements<br/>JSONSchemaProvider?}
     
-    CheckSchema -->|Yes| UseSchema[Use JSON Schema Strategy]
+    CheckSchema -->|Yes| UseSchema[Use JSON Schema Strategy]:::info
     CheckSchema -->|No| DefaultTags[Default to Tags]
     
     UseInterface --> Done[Validate]
@@ -131,9 +131,10 @@ graph TD
     UseSchema --> Done
     DefaultTags --> Done
     
-    style UseInterface fill:#d4edda
-    style UseTags fill:#fff3cd
-    style UseSchema fill:#cce5ff
+    classDef default fill:#F8FAF9,stroke:#1E6F5C,color:#1F2A27
+    classDef info fill:#D1ECF1,stroke:#17A2B8,color:#1F2A27
+    classDef success fill:#D4EDDA,stroke:#28A745,color:#1F2A27
+    classDef warning fill:#FFF3CD,stroke:#FFC107,color:#1F2A27
 ```
 
 ### Applicability Checks

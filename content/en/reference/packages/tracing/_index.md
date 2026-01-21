@@ -144,36 +144,36 @@ traceID := ct.TraceID()
 
 ## Reference Pages
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Tracer type, span management, and context propagation.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 Configuration options for providers and sampling.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Middleware Options**" >}}
+{{% /card %}}
+{{% card header="**Middleware Options**" %}}
 HTTP middleware configuration and path exclusion.
 
 [View →](middleware-options/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Troubleshooting**" >}}
+{{% cardpane %}}
+{{% card header="**Troubleshooting**" %}}
 Common tracing issues and solutions.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< card header="**User Guide**" >}}
+{{% /card %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/tracing/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Type Reference
 

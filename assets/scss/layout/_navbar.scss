@@ -7,10 +7,15 @@
 // Navbar - Mountain Air Effect
 // ========================================
 .td-navbar {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: var(--rivaas-navbar-bg);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   min-height: 3.75rem;
-  transition: background-color var(--rivaas-transition-slow), box-shadow var(--rivaas-transition-slow);
+  transition: 
+    background-color var(--rivaas-transition-slow), 
+    box-shadow var(--rivaas-transition-slow),
+    backdrop-filter var(--rivaas-transition-slow);
   padding: var(--rivaas-space-2) 0;
 
   // Brand (logo + site name)
@@ -18,11 +23,7 @@
     display: flex;
     align-items: center;
     gap: var(--rivaas-space-3);
-    transition: transform var(--rivaas-transition-normal);
-
-    &:hover {
-      transform: translateY(-1px);
-    }
+    @include hover-lift-spring(-1px, 1.01);
 
     svg {
       height: 30px;
@@ -63,14 +64,18 @@
     padding: var(--rivaas-space-2) var(--rivaas-space-4) !important;
     margin: 0 var(--rivaas-space-0-5);
     border-radius: var(--rivaas-radius-sm);
-    transition: background-color var(--rivaas-transition-normal), color var(--rivaas-transition-normal), transform var(--rivaas-transition-normal);
+    transition: 
+      background-color var(--rivaas-transition-normal), 
+      color var(--rivaas-transition-normal), 
+      transform var(--rivaas-transition-normal);
     position: relative;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.15);
       transform: translateY(-1px);
     }
 
+    // Animated underline for active state
     &.active {
       background-color: rgba(255, 255, 255, 0.15);
       
@@ -79,11 +84,12 @@
         position: absolute;
         bottom: -0.5rem;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) scaleX(1);
         width: 24px;
         height: 2px;
         background-color: currentColor;
         border-radius: 1px;
+        animation: underlineSlide 0.3s var(--rivaas-easing-spring);
       }
     }
   }
@@ -93,11 +99,11 @@
     padding-inline-end: var(--rivaas-space-0-5);
   }
 
-  // Dropdown menus
+  // Dropdown menus with glassmorphism
   .dropdown-menu {
-    border: 1px solid var(--rivaas-border-default);
+    @include glass-surface(12px, 0.8);
     border-radius: var(--rivaas-radius);
-    box-shadow: var(--rivaas-shadow-lg);
+    box-shadow: var(--rivaas-shadow-xl);
     padding: var(--rivaas-space-2);
     margin-top: var(--rivaas-space-2);
 
@@ -127,8 +133,8 @@
       transition: all var(--rivaas-transition-normal);
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        transform: scale(1.05);
+        background-color: rgba(255, 255, 255, 0.15);
+        transform: scale(1.08);
       }
     }
   }
@@ -140,8 +146,8 @@
     transition: all var(--rivaas-transition-normal);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      transform: scale(1.05);
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: scale(1.08);
     }
   }
 
@@ -152,7 +158,7 @@
     transition: all var(--rivaas-transition-normal);
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.15);
       border-color: rgba(255, 255, 255, 0.3);
     }
 
@@ -163,8 +169,22 @@
 
   // On scroll shadow effect - enhanced
   &.navbar-bg-onscroll {
-    box-shadow: var(--rivaas-shadow-md);
+    box-shadow: var(--rivaas-shadow-lg);
     background-color: var(--rivaas-navbar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+// Underline animation keyframes
+@keyframes underlineSlide {
+  from {
+    transform: translateX(-50%) scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
   }
 }
 

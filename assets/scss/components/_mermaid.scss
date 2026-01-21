@@ -1,0 +1,371 @@
+/*
+ * Rivaas Documentation - Mermaid Diagrams
+ * Custom styling for Mermaid diagram containers and elements
+ *
+ * Usage in diagrams:
+ *   ```mermaid
+ *   flowchart LR
+ *     A[Input]:::primary --> B[Process]:::secondary --> C[Output]:::success
+ *   ```
+ */
+
+// ========================================
+// Mermaid CSS Variables for Node Colors
+// ========================================
+:root {
+  // Node fill colors (light mode)
+  --mermaid-node-default: #F8FAF9;
+  --mermaid-node-primary: #E4F0EC;      // Alpine green tint
+  --mermaid-node-secondary: #F1F4F3;    // Neutral gray
+  --mermaid-node-success: #D4EDDA;      // Green
+  --mermaid-node-warning: #FFF3CD;      // Yellow
+  --mermaid-node-danger: #F8D7DA;       // Red
+  --mermaid-node-info: #D1ECF1;         // Blue
+  --mermaid-node-highlight: #E1F5FF;    // Light blue highlight
+  
+  // Node stroke colors
+  --mermaid-stroke-default: #1E6F5C;
+  --mermaid-stroke-primary: #1E6F5C;
+  --mermaid-stroke-secondary: #6C757D;
+  --mermaid-stroke-success: #28A745;
+  --mermaid-stroke-warning: #FFC107;
+  --mermaid-stroke-danger: #DC3545;
+  --mermaid-stroke-info: #17A2B8;
+  
+  // Text colors
+  --mermaid-text-default: #1F2A27;
+  --mermaid-text-light: #FFFFFF;
+}
+
+// Dark mode overrides
+[data-bs-theme="dark"] {
+  // Node fill colors (dark mode - darker, muted versions)
+  --mermaid-node-default: #252F2C;
+  --mermaid-node-primary: #1A3D35;      // Dark alpine green
+  --mermaid-node-secondary: #2E3B39;    // Dark gray
+  --mermaid-node-success: #1E4620;      // Dark green
+  --mermaid-node-warning: #4D3F1A;      // Dark yellow/amber
+  --mermaid-node-danger: #4A1A1D;       // Dark red
+  --mermaid-node-info: #1A3A4A;         // Dark blue
+  --mermaid-node-highlight: #1A3545;    // Dark blue highlight
+  
+  // Node stroke colors (brighter for contrast)
+  --mermaid-stroke-default: #4FD1B5;
+  --mermaid-stroke-primary: #4FD1B5;
+  --mermaid-stroke-secondary: #A3B1AB;
+  --mermaid-stroke-success: #48D368;
+  --mermaid-stroke-warning: #FFD93D;
+  --mermaid-stroke-danger: #FF6B6B;
+  --mermaid-stroke-info: #4FC3F7;
+  
+  // Text colors
+  --mermaid-text-default: #E6ECE9;
+  --mermaid-text-light: #E6ECE9;
+}
+
+// ========================================
+// Mermaid Container
+// ========================================
+pre.mermaid {
+  background: linear-gradient(180deg, var(--rivaas-surface-secondary) 0%, var(--rivaas-surface-primary) 100%);
+  border: 1px solid var(--rivaas-border-default);
+  border-radius: var(--rivaas-radius-lg);
+  padding: var(--rivaas-space-8);
+  margin: var(--rivaas-space-8) 0;
+  box-shadow: var(--rivaas-shadow-sm);
+  text-align: center;
+  overflow-x: auto;
+  
+  @include dark-mode {
+    background: linear-gradient(180deg, var(--rivaas-surface-code) 0%, var(--rivaas-surface-secondary) 100%);
+    border-color: var(--rivaas-border-subtle);
+    
+    // Apply color inversion filter for dark mode diagrams
+    svg {
+      filter: invert(0.88) hue-rotate(180deg);
+    }
+  }
+  
+  // Ensure SVG scales properly
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// ========================================
+// Mermaid SVG Elements - Alpine Theme
+// ========================================
+.mermaid {
+  // ========================================
+  // Node Styling (boxes, shapes)
+  // ========================================
+  .node rect,
+  .node circle,
+  .node ellipse,
+  .node polygon,
+  .node path {
+    fill: var(--mermaid-node-default) !important;
+    stroke: var(--mermaid-stroke-default) !important;
+    stroke-width: 2px !important;
+  }
+  
+  // Node labels
+  .nodeLabel,
+  .label {
+    font-family: inherit !important;
+    font-size: var(--rivaas-text-sm) !important;
+    fill: var(--mermaid-text-default) !important;
+    color: var(--mermaid-text-default) !important;
+  }
+  
+  // ========================================
+  // Semantic Node Classes (:::info, :::success, etc.)
+  // ========================================
+  
+  // Primary - Alpine green
+  .node.primary rect,
+  .node.primary circle,
+  .node.primary polygon {
+    fill: var(--mermaid-node-primary) !important;
+    stroke: var(--mermaid-stroke-primary) !important;
+  }
+  
+  // Secondary - Neutral
+  .node.secondary rect,
+  .node.secondary circle,
+  .node.secondary polygon {
+    fill: var(--mermaid-node-secondary) !important;
+    stroke: var(--mermaid-stroke-secondary) !important;
+  }
+  
+  // Info - Blue (for informational nodes)
+  .node.info rect,
+  .node.info circle,
+  .node.info polygon {
+    fill: var(--mermaid-node-info) !important;
+    stroke: var(--mermaid-stroke-info) !important;
+  }
+  
+  // Success - Green (for completed/output nodes)
+  .node.success rect,
+  .node.success circle,
+  .node.success polygon {
+    fill: var(--mermaid-node-success) !important;
+    stroke: var(--mermaid-stroke-success) !important;
+  }
+  
+  // Warning - Yellow/Amber (for caution nodes)
+  .node.warning rect,
+  .node.warning circle,
+  .node.warning polygon {
+    fill: var(--mermaid-node-warning) !important;
+    stroke: var(--mermaid-stroke-warning) !important;
+  }
+  
+  // Danger - Red (for error nodes)
+  .node.danger rect,
+  .node.danger circle,
+  .node.danger polygon {
+    fill: var(--mermaid-node-danger) !important;
+    stroke: var(--mermaid-stroke-danger) !important;
+  }
+  
+  // Highlight - Light blue (for emphasis)
+  .node.highlight rect,
+  .node.highlight circle,
+  .node.highlight polygon {
+    fill: var(--mermaid-node-highlight) !important;
+    stroke: var(--mermaid-stroke-info) !important;
+  }
+  
+  // ========================================
+  // Edge/Arrow Styling
+  // ========================================
+  .edgePath path.path {
+    stroke: var(--rivaas-accent) !important;
+    stroke-width: 2px !important;
+  }
+  
+  .arrowheadPath {
+    fill: var(--rivaas-accent) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  // Edge labels
+  .edgeLabel {
+    background-color: var(--rivaas-surface-primary) !important;
+    
+    .label {
+      fill: var(--rivaas-text-secondary) !important;
+      color: var(--rivaas-text-secondary) !important;
+    }
+  }
+  
+  // ========================================
+  // Cluster/Subgraph Styling
+  // ========================================
+  .cluster rect {
+    fill: var(--rivaas-surface-secondary) !important;
+    stroke: var(--rivaas-border-default) !important;
+    stroke-width: 1px !important;
+    rx: 8px !important;
+    ry: 8px !important;
+  }
+  
+  .cluster text {
+    fill: var(--rivaas-text-secondary) !important;
+    font-weight: var(--rivaas-font-semibold) !important;
+  }
+  
+  // ========================================
+  // Flowchart Specific
+  // ========================================
+  .flowchart-link {
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  // ========================================
+  // Sequence Diagram Specific
+  // ========================================
+  .actor {
+    fill: var(--rivaas-surface-secondary) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  .actor-line {
+    stroke: var(--rivaas-border-default) !important;
+  }
+  
+  text.actor {
+    fill: var(--rivaas-text-primary) !important;
+    font-weight: var(--rivaas-font-semibold) !important;
+  }
+  
+  .messageLine0,
+  .messageLine1 {
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  .messageText {
+    fill: var(--rivaas-text-primary) !important;
+    font-size: var(--rivaas-text-sm) !important;
+  }
+  
+  .activation0,
+  .activation1,
+  .activation2 {
+    fill: rgba(30, 111, 92, 0.15) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  // ========================================
+  // Gantt Chart Specific
+  // ========================================
+  .section0,
+  .section1 {
+    fill: var(--rivaas-surface-secondary) !important;
+  }
+  
+  .task {
+    fill: var(--rivaas-accent) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  .taskText {
+    fill: var(--rivaas-white) !important;
+    font-weight: var(--rivaas-font-medium) !important;
+  }
+  
+  // ========================================
+  // Pie Chart Specific
+  // ========================================
+  .pieTitleText {
+    fill: var(--rivaas-text-primary) !important;
+    font-weight: var(--rivaas-font-bold) !important;
+  }
+  
+  .legend text {
+    fill: var(--rivaas-text-secondary) !important;
+  }
+  
+  // ========================================
+  // Class Diagram Specific
+  // ========================================
+  .classGroup rect {
+    fill: var(--rivaas-surface-primary) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  .classGroup text {
+    fill: var(--rivaas-text-primary) !important;
+  }
+  
+  .classLabel .box {
+    fill: var(--rivaas-surface-secondary) !important;
+    stroke: var(--rivaas-border-default) !important;
+  }
+  
+  // ========================================
+  // State Diagram Specific
+  // ========================================
+  .stateGroup rect {
+    fill: var(--rivaas-surface-primary) !important;
+    stroke: var(--rivaas-accent) !important;
+  }
+  
+  .stateGroup text {
+    fill: var(--rivaas-text-primary) !important;
+  }
+  
+  // Start/end markers
+  .start-state {
+    fill: var(--rivaas-accent) !important;
+  }
+  
+  .end-state-outer {
+    fill: var(--rivaas-accent) !important;
+  }
+  
+  .end-state-inner {
+    fill: var(--rivaas-surface-primary) !important;
+  }
+}
+
+// ========================================
+// Dark Mode Adjustments
+// ========================================
+[data-bs-theme="dark"] .mermaid {
+  .node rect,
+  .node circle,
+  .node ellipse,
+  .node polygon,
+  .node path {
+    fill: var(--rivaas-surface-secondary) !important;
+  }
+  
+  .edgeLabel {
+    background-color: var(--rivaas-surface-code) !important;
+  }
+  
+  .cluster rect {
+    fill: var(--rivaas-surface-code) !important;
+  }
+  
+  .activation0,
+  .activation1,
+  .activation2 {
+    fill: rgba(79, 209, 181, 0.2) !important;
+  }
+}
+
+// ========================================
+// Responsive
+// ========================================
+@media (max-width: 767.98px) {
+  pre.mermaid {
+    padding: var(--rivaas-space-4);
+    margin: var(--rivaas-space-6) 0;
+    border-radius: var(--rivaas-radius);
+  }
+}

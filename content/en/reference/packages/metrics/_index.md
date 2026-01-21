@@ -119,36 +119,36 @@ err := metrics.WaitForMetricsServer(t, address, timeout)
 
 ## Reference Pages
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Recorder type, lifecycle methods, and custom metrics API.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 Configuration options for providers and service metadata.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Middleware Options**" >}}
+{{% /card %}}
+{{% card header="**Middleware Options**" %}}
 HTTP middleware configuration and path exclusion.
 
 [View →](middleware-options/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Troubleshooting**" >}}
+{{% cardpane %}}
+{{% card header="**Troubleshooting**" %}}
 Common metrics issues and solutions.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< card header="**User Guide**" >}}
+{{% /card %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/metrics/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Type Reference
 

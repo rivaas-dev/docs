@@ -173,7 +173,9 @@ cfg := config.MustNew(
 )
 ```
 
-> **Note:** The Consul source automatically looks up `CONSUL_HTTP_ADDR` and `CONSUL_HTTP_TOKEN` environment variables. You can override these by setting the appropriate environment variables.
+{{< alert color="info" >}}
+The Consul source automatically looks up `CONSUL_HTTP_ADDR` and `CONSUL_HTTP_TOKEN` environment variables. You can override these by setting the appropriate environment variables.
+{{< /alert >}}
 
 **Environment variables for Consul:**
 

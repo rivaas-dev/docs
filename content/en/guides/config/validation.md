@@ -164,7 +164,9 @@ if err := cfg.Load(context.Background()); err != nil {
 }
 ```
 
-> **Note:** JSON Schema validation is applied to the merged configuration map (`map[string]any`), not directly to Go structs. It happens before struct binding.
+{{< alert color="info" >}}
+JSON Schema validation is applied to the merged configuration map (`map[string]any`), not directly to Go structs. It happens before struct binding.
+{{< /alert >}}
 
 ### Example Schema
 

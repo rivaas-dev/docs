@@ -48,8 +48,8 @@ user, err := binding.JSON[CreateUserRequest](body)
 
 ```mermaid
 graph TB
-    A[binding] --> B[Core API]
-    A --> C[Sub-Packages]
+    A[binding]:::info --> B[Core API]:::warning
+    A --> C[Sub-Packages]:::success
     
     B --> B1[JSON/XML/Form]
     B --> B2[Query/Header/Cookie]
@@ -61,43 +61,44 @@ graph TB
     C --> C3[msgpack]
     C --> C4[proto]
     
-    style A fill:#e1f5ff
-    style B fill:#fff3cd
-    style C fill:#d4edda
+    classDef default fill:#F8FAF9,stroke:#1E6F5C,color:#1F2A27
+    classDef info fill:#D1ECF1,stroke:#17A2B8,color:#1F2A27
+    classDef success fill:#D4EDDA,stroke:#28A745,color:#1F2A27
+    classDef warning fill:#FFF3CD,stroke:#FFC107,color:#1F2A27
 ```
 
 ## Quick Navigation
 
-{{< cardpane >}}
-{{< card header="**API Reference**" >}}
+{{% cardpane %}}
+{{% card header="**API Reference**" %}}
 Core types, functions, and interfaces for request binding.
 
 [View →](api-reference/)
-{{< /card >}}
-{{< card header="**Options**" >}}
+{{% /card %}}
+{{% card header="**Options**" %}}
 Configuration options and binding settings.
 
 [View →](options/)
-{{< /card >}}
-{{< card header="**Sub-Packages**" >}}
+{{% /card %}}
+{{% card header="**Sub-Packages**" %}}
 YAML, TOML, MessagePack, and Protocol Buffers support.
 
 [View →](sub-packages/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
-{{< cardpane >}}
-{{< card header="**Troubleshooting**" >}}
+{{% cardpane %}}
+{{% card header="**Troubleshooting**" %}}
 Common issues and solutions for binding problems.
 
 [View →](troubleshooting/)
-{{< /card >}}
-{{< card header="**User Guide**" >}}
+{{% /card %}}
+{{% card header="**User Guide**" %}}
 Step-by-step tutorials and examples.
 
 [View →](/guides/binding/)
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Core API
 

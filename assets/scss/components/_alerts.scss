@@ -8,17 +8,24 @@
 // ========================================
 .pageinfo {
   position: relative;
+  max-width: 100%;
+  box-sizing: border-box;
   font-weight: var(--rivaas-font-normal);
-  font-size: var(--rivaas-text-sm);
+  font-size: var(--rivaas-text-base);  // 17px - match body text for readability
   line-height: 1.6;
   background: var(--bs-alert-bg);
-  color: inherit;
+  color: var(--rivaas-text-primary);
   margin: var(--rivaas-space-8) 0;
   padding: var(--rivaas-space-5) var(--rivaas-space-6);
   border-radius: var(--rivaas-radius);
   box-shadow: var(--rivaas-shadow-sm);
   border-left: 4px solid transparent;
   padding-left: 3rem;
+  
+  @include dark-mode {
+    background: var(--rivaas-surface-secondary);
+    color: var(--rivaas-text-primary);
+  }
   
   &::before {
     content: '';
@@ -187,7 +194,7 @@
   .pageinfo {
     padding: var(--rivaas-space-4) var(--rivaas-space-5);
     padding-left: 2.5rem;
-    font-size: var(--rivaas-text-sm);
+    font-size: 0.9375rem;  // 15px - slightly smaller on mobile
     margin: var(--rivaas-space-6) 0;
     
     &::before {
@@ -217,15 +224,22 @@
 .alert {
   border-radius: var(--rivaas-radius);
   border-left-width: 4px;
-  font-size: var(--rivaas-text-sm);
+  font-size: var(--rivaas-text-base);  // 17px - match body text
   line-height: 1.6;
   box-shadow: var(--rivaas-shadow-sm);
+  padding: var(--rivaas-space-4) var(--rivaas-space-5);
   
-  // Alert heading
+  // Alert heading - reset Bootstrap .h4 margins
   .alert-heading {
     font-weight: var(--rivaas-font-semibold);
-    margin-bottom: var(--rivaas-space-3);
-    font-size: var(--rivaas-text-lg);
+    margin-top: 0;
+    margin-bottom: var(--rivaas-space-2);
+    font-size: var(--rivaas-text-base);
+  }
+  
+  // Reset paragraph margins
+  p {
+    margin-bottom: 0;
   }
   
   // Alert links

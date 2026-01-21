@@ -20,15 +20,15 @@ This installs the main framework with all packages (router, logging, metrics, tr
 
 Rivaas packages work independently. Install only what you need:
 
-{{< cardpane >}}
-{{< card header="**Core**" code=true lang="bash" >}}
+{{% cardpane %}}
+{{% card header="**Core**" code=true lang="bash" %}}
 # High-performance router
 go get rivaas.dev/router
 
 # Full framework
 go get rivaas.dev/app
-{{< /card >}}
-{{< card header="**Data**" code=true lang="bash" >}}
+{{% /card %}}
+{{% card header="**Data**" code=true lang="bash" %}}
 # Request binding
 go get rivaas.dev/binding
 
@@ -37,8 +37,8 @@ go get rivaas.dev/validation
 
 # Configuration
 go get rivaas.dev/config
-{{< /card >}}
-{{< card header="**Observability**" code=true lang="bash" >}}
+{{% /card %}}
+{{% card header="**Observability**" code=true lang="bash" %}}
 # Structured logging
 go get rivaas.dev/logging
 
@@ -47,15 +47,15 @@ go get rivaas.dev/metrics
 
 # Distributed tracing
 go get rivaas.dev/tracing
-{{< /card >}}
-{{< card header="**API & Errors**" code=true lang="bash" >}}
+{{% /card %}}
+{{% card header="**API & Errors**" code=true lang="bash" %}}
 # OpenAPI generation
 go get rivaas.dev/openapi
 
 # Error formatting
 go get rivaas.dev/errors
-{{< /card >}}
-{{< /cardpane >}}
+{{% /card %}}
+{{% /cardpane %}}
 
 ## Verify Installation
 
