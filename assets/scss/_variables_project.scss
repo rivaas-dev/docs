@@ -447,8 +447,9 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-card-shadow-hover: var(--rivaas-shadow-lg);
   --rivaas-card-header-bg: var(--rivaas-surface-secondary);
 
-  // Navbar
-  --rivaas-navbar-bg: #{$primary};
+  // Navbar - Glassmorphism (more transparent at top, solidifies on scroll)
+  --rivaas-navbar-bg: #{rgba($primary, 0.78)};  // 78% - more glass effect at top
+  --rivaas-navbar-bg-scroll: #{rgba($primary, 0.94)};  // 94% - more solid on scroll
   --rivaas-navbar-text: #{$white};
   --rivaas-navbar-link-hover-bg: #{rgba($white, 0.1)};
 
@@ -559,7 +560,8 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-card-shadow: var(--rivaas-shadow-sm);
   --rivaas-card-shadow-hover: var(--rivaas-shadow-lg);
 
-  --rivaas-navbar-bg: #{$dark-bg};
+  --rivaas-navbar-bg: #{rgba($dark-bg, 0.75)};  // 75% - more glass effect at top
+  --rivaas-navbar-bg-scroll: #{rgba($dark-bg, 0.92)};  // 92% - more solid on scroll
   --rivaas-navbar-text: #{$dark-text};
 
   --rivaas-footer-bg: #{$black};

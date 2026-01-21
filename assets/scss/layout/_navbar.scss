@@ -7,10 +7,10 @@
 // Navbar - Mountain Air Effect
 // ========================================
 .td-navbar {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   background: var(--rivaas-navbar-bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   min-height: 3.75rem;
   transition: 
     background-color var(--rivaas-transition-slow), 
@@ -167,12 +167,14 @@
     }
   }
 
-  // On scroll shadow effect - enhanced
+  // On scroll - solidify the glass effect
   &.navbar-bg-onscroll {
-    box-shadow: var(--rivaas-shadow-lg);
-    background-color: var(--rivaas-navbar-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--rivaas-navbar-bg-scroll);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 
+      var(--rivaas-shadow-lg),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);  // Subtle bottom highlight
   }
 }
 
