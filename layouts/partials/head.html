@@ -61,6 +61,7 @@
 {{ partial "opengraph.html" . -}}
 {{ partial "schema.html" . -}}
 {{ partial "twitter_cards.html" . -}}
+{{ with .Permalink }}<link rel="canonical" href="{{ . }}">{{ end }}
 {{ partialCached "head-css.html" . "head-css-cache-key" -}}
 <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
