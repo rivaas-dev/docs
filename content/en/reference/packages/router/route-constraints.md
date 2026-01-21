@@ -1,6 +1,11 @@
 ---
 title: "Route Constraints"
 linkTitle: "Route Constraints"
+keywords:
+  - route constraints
+  - path constraints
+  - validation rules
+  - parameter validation
 weight: 40
 description: >
   Type-safe parameter validation with route constraints.

@@ -2,6 +2,11 @@
 title: "Testing"
 linkTitle: "Testing"
 weight: 140
+keywords:
+  - router testing
+  - test helpers
+  - mock requests
+  - httptest
 description: >
   Test your routes and middleware with httptest.
 ---

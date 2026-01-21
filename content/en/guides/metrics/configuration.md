@@ -2,6 +2,11 @@
 title: "Configuration"
 description: "Configure service metadata, histograms, and advanced options"
 weight: 4
+keywords:
+  - metrics configuration
+  - exporters
+  - providers
+  - options
 ---
 
 This guide covers all configuration options for the metrics package beyond basic provider setup.

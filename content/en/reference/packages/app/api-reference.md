@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 linkTitle: "API Reference"
+keywords:
+  - app api
+  - app reference
+  - api documentation
+  - type reference
 weight: 1
 description: >
   Complete API reference for the App package.

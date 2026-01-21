@@ -2,6 +2,12 @@
 title: "Testing"
 linkTitle: "Testing"
 weight: 13
+keywords:
+  - app testing
+  - unit tests
+  - integration tests
+  - test helpers
+  - testing
 description: >
   Test routes and handlers without starting a server.
 ---

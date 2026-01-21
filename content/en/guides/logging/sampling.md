@@ -2,6 +2,11 @@
 title: "Log Sampling"
 description: "Reduce log volume in high-traffic scenarios with intelligent sampling"
 weight: 7
+keywords:
+  - log sampling
+  - rate limiting
+  - high volume
+  - sampling
 ---
 
 This guide covers log sampling to reduce log volume in high-throughput production environments while maintaining visibility.

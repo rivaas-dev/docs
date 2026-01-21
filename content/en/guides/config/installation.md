@@ -2,6 +2,11 @@
 title: "Installation"
 description: "Install and set up the Rivaas config package for your Go application"
 weight: 2
+keywords:
+  - config installation
+  - install
+  - go get
+  - setup
 ---
 
 Get started with the Rivaas config package by installing it in your Go project.

@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues and solutions"
+keywords:
+  - validation troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 5
 ---
 

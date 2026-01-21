@@ -2,6 +2,11 @@
 title: "Route Groups"
 linkTitle: "Route Groups"
 weight: 40
+keywords:
+  - route groups
+  - prefixes
+  - nested routes
+  - group middleware
 description: >
   Organize routes with groups, shared prefixes, and group-specific middleware.
 ---

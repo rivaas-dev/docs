@@ -2,6 +2,11 @@
 title: "HTTP Middleware"
 description: "Automatically trace HTTP requests with middleware"
 weight: 5
+keywords:
+  - tracing middleware
+  - http tracing
+  - request tracing
+  - automatic tracing
 ---
 
 The tracing package provides HTTP middleware for automatic request tracing with any HTTP framework.

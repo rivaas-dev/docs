@@ -1,6 +1,11 @@
 ---
 title: "Server Options"
 linkTitle: "Server Options"
+keywords:
+  - server options
+  - http server
+  - tls configuration
+  - server configuration
 weight: 3
 description: >
   Server configuration options reference.

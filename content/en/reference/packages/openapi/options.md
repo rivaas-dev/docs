@@ -1,6 +1,11 @@
 ---
 title: "API Options"
 description: "Complete reference for API-level configuration options"
+keywords:
+  - openapi options
+  - configuration
+  - options reference
+  - functional options
 weight: 2
 ---
 

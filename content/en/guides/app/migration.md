@@ -2,6 +2,12 @@
 title: "Migration"
 linkTitle: "Migration"
 weight: 14
+keywords:
+  - app migration
+  - upgrading
+  - breaking changes
+  - migration guide
+  - router to app
 description: >
   Migrate from the router package to the app package.
 ---

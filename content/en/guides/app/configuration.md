@@ -2,6 +2,12 @@
 title: "Configuration"
 linkTitle: "Configuration"
 weight: 3
+keywords:
+  - app configuration
+  - options
+  - settings
+  - service metadata
+  - environment modes
 description: >
   Configure your application with service metadata, environment modes, and server settings.
 ---

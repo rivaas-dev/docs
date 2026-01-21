@@ -2,6 +2,11 @@
 title: "Validation"
 description: "Validate OpenAPI specifications against official meta-schemas"
 weight: 9
+keywords:
+  - openapi validation
+  - request validation
+  - schema validation
+  - spec validation
 ---
 
 Learn how to validate OpenAPI specifications using built-in validation against official meta-schemas.

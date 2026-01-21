@@ -2,6 +2,12 @@
 title: "Request Binding"
 linkTitle: "Request Binding"
 weight: 70
+keywords:
+  - router binding
+  - json
+  - form
+  - query parameters
+  - request parsing
 description: >
   Parse and bind request data to Go structs.
 ---

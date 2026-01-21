@@ -1,6 +1,11 @@
 ---
 title: "Context API"
 linkTitle: "Context API"
+keywords:
+  - context api
+  - request context
+  - response methods
+  - context methods
 weight: 7
 description: >
   Context methods for request handling.

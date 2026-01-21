@@ -2,6 +2,13 @@
 title: Installation
 description: Install Rivaas and verify your setup
 weight: 1
+keywords:
+  - installation
+  - install
+  - go get
+  - setup
+  - requirements
+  - dependencies
 ---
 
 Installing Rivaas is easy. Use it as a complete framework with the `app` package or use individual packages as needed.

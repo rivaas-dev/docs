@@ -1,6 +1,11 @@
 ---
 title: "Validation Strategies"
 description: "Strategy selection and priority"
+keywords:
+  - validation strategies
+  - struct tags
+  - json schema
+  - validation methods
 weight: 4
 ---
 

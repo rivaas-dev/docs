@@ -2,6 +2,11 @@
 title: "HTTP Middleware"
 description: "Integrate automatic HTTP metrics collection with middleware"
 weight: 6
+keywords:
+  - metrics middleware
+  - http metrics
+  - request metrics
+  - automatic metrics
 ---
 
 This guide covers using the metrics middleware to automatically collect HTTP metrics.

@@ -3,6 +3,13 @@ title: "OpenAPI Specification"
 linkTitle: "OpenAPI"
 description: "Learn how to generate OpenAPI specifications from Go code with automatic parameter discovery and schema generation"
 weight: 6
+no_list: true
+keywords:
+  - openapi
+  - swagger
+  - api documentation
+  - openapi 3.0
+  - openapi 3.1
 ---
 
 {{% pageinfo %}}

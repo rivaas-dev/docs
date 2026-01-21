@@ -2,6 +2,11 @@
 title: "Configuration"
 description: "Configure service metadata, sampling, hooks, and logging"
 weight: 4
+keywords:
+  - tracing configuration
+  - exporters
+  - sampling
+  - options
 ---
 
 Configure your tracer with service information, sampling rates, lifecycle hooks, and logging integration.

@@ -2,6 +2,11 @@
 title: "Advanced Usage"
 description: "Custom operation IDs, extensions, and strict downlevel mode"
 weight: 11
+keywords:
+  - openapi advanced
+  - customization
+  - extensions
+  - operation ids
 ---
 
 Learn about advanced features including custom operation IDs, extensions, and strict downlevel mode.

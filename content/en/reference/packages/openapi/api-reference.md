@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API reference for types, functions, and methods"
+keywords:
+  - openapi api
+  - openapi reference
+  - api documentation
+  - type reference
 weight: 1
 ---
 

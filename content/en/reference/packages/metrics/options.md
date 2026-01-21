@@ -1,6 +1,11 @@
 ---
 title: "Configuration Options"
 description: "Complete reference of all configuration options"
+keywords:
+  - metrics options
+  - configuration
+  - options reference
+  - functional options
 weight: 2
 ---
 

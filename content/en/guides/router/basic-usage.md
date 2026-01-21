@@ -2,6 +2,11 @@
 title: "Basic Usage"
 linkTitle: "Basic Usage"
 weight: 20
+keywords:
+  - router basic usage
+  - route registration
+  - handlers
+  - getting started
 description: >
   Learn the fundamentals of the Rivaas Router - from your first router to handling requests.
 ---

@@ -2,6 +2,11 @@
 title: "Advanced Usage"
 description: "Advanced techniques including custom converters, binders, and extension patterns"
 weight: 10
+keywords:
+  - binding advanced
+  - custom binders
+  - nested structs
+  - custom converters
 ---
 
 Explore advanced binding techniques for custom types, sources, and integration patterns.

@@ -3,6 +3,13 @@ title: "Structured Logging"
 linkTitle: "Logging"
 description: "Learn how to implement structured logging with Rivaas using Go's standard log/slog"
 weight: 7
+no_list: true
+keywords:
+  - logging
+  - structured logging
+  - slog
+  - log levels
+  - observability
 ---
 
 {{% pageinfo %}}

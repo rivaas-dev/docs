@@ -4,6 +4,12 @@ linkTitle: "Validation"
 description: "Complete API reference for the rivaas.dev/validation package"
 weight: 8
 sidebar_root_for: self
+no_list: true
+keywords:
+  - validation api
+  - validation package
+  - rivaas.dev/validation
+  - validator interface
 ---
 
 {{% pageinfo %}}

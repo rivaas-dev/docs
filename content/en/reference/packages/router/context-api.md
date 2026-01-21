@@ -1,6 +1,11 @@
 ---
 title: "Context API"
 linkTitle: "Context API"
+keywords:
+  - router context
+  - context api
+  - request handling
+  - response methods
 weight: 30
 description: >
   Complete reference for Context methods.

@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of generating OpenAPI specifications"
 weight: 2
+keywords:
+  - openapi basic usage
+  - spec generation
+  - simple api
+  - getting started
 ---
 
 Learn how to generate OpenAPI specifications from Go code using the openapi package.

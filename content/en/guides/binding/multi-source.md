@@ -2,6 +2,11 @@
 title: "Multi-Source Binding"
 description: "Combine multiple data sources with precedence rules for flexible request handling"
 weight: 6
+keywords:
+  - multi-source binding
+  - combined binding
+  - multiple sources
+  - data precedence
 ---
 
 Learn how to bind data from multiple sources. This includes query parameters, JSON body, and headers. Configure precedence rules for flexible request handling.

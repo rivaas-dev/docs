@@ -2,6 +2,11 @@
 title: "Configuration"
 description: "Configure API metadata, version selection, servers, and tags"
 weight: 3
+keywords:
+  - openapi configuration
+  - spec options
+  - metadata
+  - api info
 ---
 
 Learn how to configure your OpenAPI specification with metadata, servers, and version selection.

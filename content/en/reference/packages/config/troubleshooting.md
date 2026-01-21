@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues, solutions, and frequently asked questions"
+keywords:
+  - config troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 5
 ---
 

@@ -2,6 +2,13 @@
 title: Your First Application
 description: Build a complete REST API quickly
 weight: 2
+keywords:
+  - first application
+  - hello world
+  - tutorial
+  - beginner
+  - rest api
+  - getting started
 ---
 
 Build a simple REST API to learn Rivaas basics. You'll create a working application with multiple routes, JSON responses, and graceful shutdown.

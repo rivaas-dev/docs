@@ -2,6 +2,11 @@
 title: "Validation"
 linkTitle: "Validation"
 weight: 80
+keywords:
+  - router validation
+  - input validation
+  - request validation
+  - struct tags
 description: >
   Validate requests with multiple strategies: interface methods, struct tags, or JSON Schema.
 ---

@@ -1,6 +1,11 @@
 ---
 title: "Debug Options"
 linkTitle: "Debug Options"
+keywords:
+  - debug options
+  - pprof
+  - profiling
+  - debug configuration
 weight: 6
 description: >
   Debug endpoint configuration options reference.

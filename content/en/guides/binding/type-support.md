@@ -2,6 +2,11 @@
 title: "Type Support"
 description: "Complete reference for all supported data types and conversions"
 weight: 8
+keywords:
+  - binding type support
+  - custom types
+  - type conversion
+  - data types
 ---
 
 Comprehensive guide to type support in the binding package. This includes automatic conversions, custom types, and edge cases.

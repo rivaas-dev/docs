@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Real-world tracing configurations and patterns"
 weight: 8
+keywords:
+  - tracing examples
+  - code samples
+  - patterns
+  - use cases
 ---
 
 Explore complete examples and best practices for production-ready tracing configurations.

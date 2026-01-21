@@ -3,6 +3,12 @@ title: "Request Validation"
 linkTitle: "Validation"
 description: "Flexible, multi-strategy validation for Go structs. Supports struct tags, JSON Schema, and custom interfaces"
 weight: 4
+no_list: true
+keywords:
+  - validation
+  - struct validation
+  - input validation
+  - request validation
 ---
 
 {{% pageinfo %}}

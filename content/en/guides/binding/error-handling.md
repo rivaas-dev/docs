@@ -2,6 +2,11 @@
 title: "Error Handling"
 description: "Master error handling patterns for robust request validation and debugging"
 weight: 9
+keywords:
+  - binding errors
+  - validation errors
+  - error messages
+  - error handling
 ---
 
 Comprehensive guide to error handling in the binding package. This includes error types, validation patterns, and debugging strategies.

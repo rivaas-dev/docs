@@ -2,6 +2,11 @@
 title: "Best Practices"
 description: "Production-ready logging patterns, performance tips, and recommended practices"
 weight: 11
+keywords:
+  - logging best practices
+  - patterns
+  - guidelines
+  - production logging
 ---
 
 This guide covers best practices for using the logging package in production environments.

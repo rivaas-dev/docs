@@ -2,6 +2,11 @@
 title: "Installation"
 description: "Install and set up the Rivaas binding package for your Go application"
 weight: 2
+keywords:
+  - binding installation
+  - install
+  - go get
+  - setup
 ---
 
 Get started with the Rivaas binding package by installing it in your Go project.

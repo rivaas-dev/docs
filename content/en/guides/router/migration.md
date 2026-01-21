@@ -2,6 +2,12 @@
 title: "Migration"
 linkTitle: "Migration"
 weight: 150
+keywords:
+  - router migration
+  - upgrading
+  - breaking changes
+  - gin migration
+  - echo migration
 description: >
   Migrate from Gin, Echo, or http.ServeMux to Rivaas Router.
 ---

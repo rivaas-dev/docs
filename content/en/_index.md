@@ -2,6 +2,15 @@
 title: Documentation
 linkTitle: Docs
 type: docs
+no_list: true
+keywords:
+  - go web framework
+  - golang http
+  - api development
+  - opentelemetry
+  - cloud native
+  - rest api
+  - microservices
 # menu: { main: { weight: 20 } }
 cascade:
   - _target:

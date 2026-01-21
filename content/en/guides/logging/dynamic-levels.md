@@ -2,6 +2,10 @@
 title: "Dynamic Log Levels"
 description: "Change log levels at runtime without restarting your application"
 weight: 8
+keywords:
+  - dynamic log levels
+  - runtime configuration
+  - log level control
 ---
 
 This guide covers dynamic log level changes. You can adjust logging verbosity at runtime for troubleshooting and performance tuning.

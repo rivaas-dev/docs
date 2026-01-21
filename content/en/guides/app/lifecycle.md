@@ -2,6 +2,12 @@
 title: "Lifecycle"
 linkTitle: "Lifecycle"
 weight: 8
+keywords:
+  - app lifecycle
+  - hooks
+  - startup
+  - shutdown
+  - lifecycle events
 description: >
   Use lifecycle hooks for initialization, cleanup, and event handling.
 ---

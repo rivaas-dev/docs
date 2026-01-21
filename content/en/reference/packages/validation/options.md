@@ -1,6 +1,11 @@
 ---
 title: "Options"
 description: "Configuration options for validators"
+keywords:
+  - validation options
+  - configuration
+  - options reference
+  - functional options
 weight: 2
 ---
 

@@ -2,6 +2,11 @@
 title: "Struct Binding"
 description: "Automatically map configuration data to Go structs with type safety"
 weight: 5
+keywords:
+  - config struct binding
+  - unmarshal
+  - type-safe config
+  - struct mapping
 ---
 
 Struct binding allows you to automatically map configuration data to your own Go structs. This provides type safety and a clean, idiomatic way to work with configuration.

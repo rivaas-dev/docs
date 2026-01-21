@@ -2,6 +2,11 @@
 title: "Context"
 linkTitle: "Context"
 weight: 60
+keywords:
+  - router context
+  - request context
+  - response writer
+  - context api
 description: >
   Understand the Context API, request/response methods, and critical memory safety rules.
 ---

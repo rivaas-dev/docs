@@ -2,6 +2,12 @@
 title: "Examples"
 linkTitle: "Examples"
 weight: 15
+keywords:
+  - app examples
+  - code samples
+  - use cases
+  - working examples
+  - sample applications
 description: >
   Complete working examples of Rivaas applications.
 ---

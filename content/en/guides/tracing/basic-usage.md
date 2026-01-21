@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of creating tracers and managing spans"
 weight: 2
+keywords:
+  - tracing basic usage
+  - create spans
+  - simple tracing
+  - getting started
 ---
 
 Learn how to create tracers, manage spans, and add tracing to your Go applications.

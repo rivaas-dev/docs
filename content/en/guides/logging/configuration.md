@@ -2,6 +2,11 @@
 title: "Configuration"
 description: "Configure loggers with all available options for production readiness"
 weight: 4
+keywords:
+  - logging configuration
+  - log format
+  - output
+  - log options
 ---
 
 This guide covers all configuration options available in the logging package. It covers handler selection to service metadata.

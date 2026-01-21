@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of validating structs"
 weight: 2
+keywords:
+  - validation basic usage
+  - validate struct
+  - simple validation
+  - getting started
 ---
 
 Learn how to validate structs using the validation package. This guide starts from simple package-level functions and progresses to customized validator instances.

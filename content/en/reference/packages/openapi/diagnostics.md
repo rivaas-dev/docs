@@ -1,6 +1,11 @@
 ---
 title: "Diagnostics"
 description: "Warning system reference with codes and categories"
+keywords:
+  - openapi diagnostics
+  - warnings
+  - diagnostic messages
+  - troubleshooting
 weight: 5
 ---
 

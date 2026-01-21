@@ -1,6 +1,11 @@
 ---
 title: "Options Reference"
 description: "Complete reference for all logger configuration options"
+keywords:
+  - logging options
+  - configuration
+  - options reference
+  - functional options
 weight: 3
 ---
 

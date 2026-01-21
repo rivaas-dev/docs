@@ -2,6 +2,11 @@
 title: "Observability"
 linkTitle: "Observability"
 weight: 120
+keywords:
+  - router observability
+  - tracing
+  - metrics
+  - opentelemetry
 description: >
   Native OpenTelemetry tracing support with zero overhead when disabled, plus diagnostic events.
 ---

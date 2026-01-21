@@ -2,6 +2,11 @@
 title: "JSON Schema Validation"
 description: "Validate structs using JSON Schema"
 weight: 4
+keywords:
+  - json schema validation
+  - schema validation
+  - jsonschema
+  - json schema
 ---
 
 Validate structs using JSON Schema. Implement the `JSONSchemaProvider` interface to use this feature. This provides RFC-compliant JSON Schema validation as an alternative to struct tags.

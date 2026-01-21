@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Real-world examples and production-ready patterns for configuration management"
 weight: 9
+keywords:
+  - config examples
+  - code samples
+  - patterns
+  - production config
 ---
 
 Learn from practical examples that demonstrate different configuration patterns and use cases.

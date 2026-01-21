@@ -3,6 +3,13 @@ title: "Configuration Management"
 linkTitle: "Config"
 description: "Learn how to manage application configuration with the Rivaas config package"
 weight: 5
+no_list: true
+keywords:
+  - config
+  - configuration
+  - twelve-factor
+  - environment variables
+  - config management
 ---
 
 {{% pageinfo %}}

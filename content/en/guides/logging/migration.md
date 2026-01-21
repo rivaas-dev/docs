@@ -2,6 +2,11 @@
 title: "Migration Guides"
 description: "Switch from other popular Go logging libraries to Rivaas logging"
 weight: 12
+keywords:
+  - logging migration
+  - upgrading
+  - breaking changes
+  - migration guide
 ---
 
 This guide helps you migrate from other popular Go logging libraries to Rivaas logging.

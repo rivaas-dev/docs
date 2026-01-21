@@ -2,6 +2,12 @@
 title: "Multiple Sources"
 description: "Combine configuration from files, environment variables, and remote sources"
 weight: 7
+keywords:
+  - config sources
+  - file
+  - env
+  - consul
+  - layered config
 ---
 
 The config package supports loading configuration from multiple sources simultaneously. This enables powerful patterns like base configuration with environment-specific overrides.

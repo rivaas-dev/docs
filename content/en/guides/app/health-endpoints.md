@@ -2,6 +2,12 @@
 title: "Health Endpoints"
 linkTitle: "Health Endpoints"
 weight: 9
+keywords:
+  - health checks
+  - liveness
+  - readiness
+  - kubernetes
+  - health probes
 description: >
   Configure Kubernetes-compatible liveness and readiness probes.
 ---

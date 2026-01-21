@@ -2,6 +2,11 @@
 title: "Error Handling"
 description: "Work with structured validation errors"
 weight: 7
+keywords:
+  - validation errors
+  - error messages
+  - error formatting
+  - error handling
 ---
 
 Validation errors in the Rivaas validation package are structured and detailed. They provide field-level error information with codes, messages, and metadata.

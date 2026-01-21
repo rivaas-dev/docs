@@ -2,6 +2,11 @@
 title: "Security"
 description: "Add authentication and authorization schemes to your OpenAPI specification"
 weight: 4
+keywords:
+  - openapi security
+  - authentication
+  - oauth
+  - api keys
 ---
 
 Learn how to add security schemes to your OpenAPI specification for authentication and authorization.

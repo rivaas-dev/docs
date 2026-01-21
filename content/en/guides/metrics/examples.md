@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Real-world examples of metrics collection patterns"
 weight: 8
+keywords:
+  - metrics examples
+  - code samples
+  - patterns
+  - use cases
 ---
 
 This guide provides complete, real-world examples of using the metrics package.

@@ -4,6 +4,12 @@ linkTitle: "Metrics"
 description: "API reference for rivaas.dev/metrics - Metrics collection for Go applications"
 weight: 4
 sidebar_root_for: self
+no_list: true
+keywords:
+  - metrics api
+  - metrics package
+  - rivaas.dev/metrics
+  - meter provider
 ---
 
 {{% pageinfo %}}

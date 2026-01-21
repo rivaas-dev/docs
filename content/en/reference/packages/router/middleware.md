@@ -1,6 +1,11 @@
 ---
 title: "Middleware Reference"
 linkTitle: "Middleware"
+keywords:
+  - router middleware
+  - middleware api
+  - middleware chain
+  - custom middleware
 weight: 50
 description: >
   Built-in middleware catalog with configuration options.

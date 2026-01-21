@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 linkTitle: "API Reference"
+keywords:
+  - router api
+  - router reference
+  - api documentation
+  - type reference
 weight: 10
 description: >
   Core types and methods for the router package.

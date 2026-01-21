@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of structured logging with handler types and output formats"
 weight: 3
+keywords:
+  - logging basic usage
+  - log messages
+  - simple logging
+  - getting started
 ---
 
 This guide covers the essential operations for working with the logging package. Learn to choose handler types, set log levels, and produce structured log output.

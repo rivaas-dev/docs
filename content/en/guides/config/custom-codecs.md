@@ -2,6 +2,12 @@
 title: "Custom Codecs"
 description: "Extend configuration support to custom formats with codec implementation"
 weight: 8
+keywords:
+  - config codecs
+  - yaml
+  - json
+  - toml
+  - custom formats
 ---
 
 The config package allows you to extend configuration support to any format by implementing and registering custom codecs.

@@ -2,6 +2,12 @@
 title: "Middleware"
 linkTitle: "Middleware"
 weight: 50
+keywords:
+  - router middleware
+  - middleware chain
+  - interceptors
+  - authentication
+  - logging
 description: >
   Add cross-cutting concerns like logging, authentication, and error handling with middleware.
 ---

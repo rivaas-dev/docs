@@ -1,6 +1,11 @@
 ---
 title: "Swagger UI Options"
 description: "Complete reference for Swagger UI configuration options"
+keywords:
+  - swagger ui options
+  - swagger configuration
+  - ui customization
+  - swagger ui
 weight: 4
 ---
 

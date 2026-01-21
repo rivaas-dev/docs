@@ -1,6 +1,11 @@
 ---
 title: "Configuration Options"
 linkTitle: "Options"
+keywords:
+  - app options
+  - configuration
+  - options reference
+  - functional options
 weight: 2
 description: >
   App-level configuration options reference.

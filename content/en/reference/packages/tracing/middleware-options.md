@@ -1,6 +1,11 @@
 ---
 title: "Middleware Options"
 description: "All configuration options for HTTP middleware"
+keywords:
+  - middleware options
+  - http tracing
+  - request tracing
+  - tracing middleware
 weight: 3
 ---
 

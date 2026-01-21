@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API documentation for the Config type and methods"
+keywords:
+  - config api
+  - config reference
+  - api documentation
+  - type reference
 weight: 2
 ---
 

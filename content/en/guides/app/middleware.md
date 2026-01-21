@@ -2,6 +2,12 @@
 title: "Middleware"
 linkTitle: "Middleware"
 weight: 6
+keywords:
+  - app middleware
+  - request handling
+  - interceptors
+  - cross-cutting concerns
+  - middleware chain
 description: >
   Add cross-cutting concerns with built-in and custom middleware.
 ---

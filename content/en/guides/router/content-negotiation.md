@@ -2,6 +2,12 @@
 title: "Content Negotiation"
 linkTitle: "Content Negotiation"
 weight: 100
+keywords:
+  - content negotiation
+  - accept header
+  - media types
+  - charset
+  - encoding
 description: >
   RFC 7231 compliant content negotiation for media types, charsets, encodings, and languages.
 ---

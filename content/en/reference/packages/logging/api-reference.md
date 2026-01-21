@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API reference for all types and methods in the logging package"
+keywords:
+  - logging api
+  - logging reference
+  - api documentation
+  - type reference
 weight: 2
 ---
 

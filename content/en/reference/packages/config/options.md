@@ -1,6 +1,11 @@
 ---
 title: "Options Reference"
 description: "Complete reference for all configuration option functions"
+keywords:
+  - config options
+  - configuration
+  - options reference
+  - functional options
 weight: 3
 ---
 

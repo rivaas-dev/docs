@@ -2,6 +2,10 @@
 title: "Convenience Methods"
 description: "Use helper methods for common logging patterns like HTTP requests and errors"
 weight: 6
+keywords:
+  - logging convenience
+  - helper methods
+  - logging patterns
 ---
 
 This guide covers convenience methods that simplify common logging patterns with pre-structured fields.

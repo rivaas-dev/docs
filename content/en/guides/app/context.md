@@ -2,6 +2,12 @@
 title: "Context"
 linkTitle: "Context"
 weight: 5
+keywords:
+  - app context
+  - request context
+  - context api
+  - request handling
+  - response
 description: >
   Use the app context for request binding, validation, error handling, and logging.
 ---

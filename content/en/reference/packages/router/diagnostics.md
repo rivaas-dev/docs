@@ -1,6 +1,11 @@
 ---
 title: "Diagnostics"
 linkTitle: "Diagnostics"
+keywords:
+  - router diagnostics
+  - debugging
+  - diagnostic events
+  - troubleshooting
 weight: 60
 description: >
   Diagnostic event types and handling.

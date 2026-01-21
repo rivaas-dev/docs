@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues and solutions for the tracing package"
+keywords:
+  - tracing troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 4
 ---
 

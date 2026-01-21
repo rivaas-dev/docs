@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API documentation for all types, functions, and interfaces"
+keywords:
+  - binding api
+  - binding reference
+  - api documentation
+  - type reference
 weight: 1
 ---
 

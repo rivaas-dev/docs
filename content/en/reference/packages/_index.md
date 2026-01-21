@@ -2,6 +2,13 @@
 title: "Package Reference"
 description: "API reference documentation for Rivaas packages"
 weight: 1
+no_list: true
+keywords:
+  - packages
+  - modules
+  - api
+  - library
+  - package reference
 ---
 
 Detailed API reference for all Rivaas packages. Each package reference includes complete documentation of types, methods, options, and technical details.

@@ -2,6 +2,11 @@
 title: "Custom Validators"
 description: "Register custom validation tags and functions"
 weight: 8
+keywords:
+  - custom validators
+  - custom rules
+  - validation functions
+  - custom tags
 ---
 
 Extend the validation package with custom validation tags and functions to handle domain-specific validation rules.

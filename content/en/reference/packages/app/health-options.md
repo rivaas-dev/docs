@@ -1,6 +1,11 @@
 ---
 title: "Health Options"
 linkTitle: "Health Options"
+keywords:
+  - health options
+  - health checks
+  - liveness
+  - readiness
 weight: 5
 description: >
   Health endpoint configuration options reference.

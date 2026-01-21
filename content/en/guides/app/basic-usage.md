@@ -2,6 +2,12 @@
 title: "Basic Usage"
 linkTitle: "Basic Usage"
 weight: 2
+keywords:
+  - app basic usage
+  - getting started
+  - hello world
+  - create app
+  - first app
 description: >
   Learn the fundamentals of creating and running Rivaas applications.
 ---

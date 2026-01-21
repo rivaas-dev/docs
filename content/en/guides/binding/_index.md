@@ -3,6 +3,13 @@ title: "Request Data Binding"
 linkTitle: "Binding"
 description: "Learn how to bind HTTP request data to Go structs with type safety and performance"
 weight: 3
+no_list: true
+keywords:
+  - binding
+  - request binding
+  - data binding
+  - struct binding
+  - json binding
 ---
 
 {{% pageinfo %}}

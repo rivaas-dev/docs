@@ -2,6 +2,11 @@
 title: "Custom Metrics"
 description: "Create counters, histograms, and gauges with proper naming conventions"
 weight: 5
+keywords:
+  - custom metrics
+  - application metrics
+  - business metrics
+  - metric types
 ---
 
 This guide covers recording custom metrics beyond the built-in HTTP metrics.

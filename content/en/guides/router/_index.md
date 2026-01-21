@@ -2,6 +2,13 @@
 title: "HTTP Router"
 linkTitle: "Router"
 weight: 2
+no_list: true
+keywords:
+  - router
+  - http routing
+  - radix tree
+  - high performance
+  - http router
 description: >
   An HTTP router for Go. Built for cloud-native applications with complete routing, middleware, and observability features.
 ---

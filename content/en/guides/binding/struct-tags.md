@@ -2,6 +2,11 @@
 title: "Struct Tags"
 description: "Master struct tag syntax for precise control over data binding"
 weight: 7
+keywords:
+  - binding struct tags
+  - field mapping
+  - annotations
+  - tag syntax
 ---
 
 Comprehensive guide to struct tag syntax, options, and conventions for the binding package.

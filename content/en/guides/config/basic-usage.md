@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of loading and accessing configuration with Rivaas"
 weight: 3
+keywords:
+  - config basic usage
+  - load config
+  - simple config
+  - getting started
 ---
 
 This guide covers the essential operations for working with the config package. Learn how to load configuration files, access values, and handle errors.

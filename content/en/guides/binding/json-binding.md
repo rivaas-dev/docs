@@ -2,6 +2,11 @@
 title: "JSON Binding"
 description: "Bind and parse JSON request bodies with automatic type conversion and validation"
 weight: 5
+keywords:
+  - json binding
+  - json parsing
+  - request body
+  - json deserialization
 ---
 
 Learn how to bind JSON request bodies to Go structs with proper error handling, nested objects, and integration with validators.

@@ -2,6 +2,11 @@
 title: "Swagger UI"
 description: "Customize the Swagger UI interface for API documentation"
 weight: 8
+keywords:
+  - swagger ui
+  - api explorer
+  - interactive docs
+  - swagger
 ---
 
 Learn how to configure and customize the Swagger UI interface for your OpenAPI specification.

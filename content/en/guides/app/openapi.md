@@ -2,6 +2,12 @@
 title: "OpenAPI"
 linkTitle: "OpenAPI"
 weight: 12
+keywords:
+  - app openapi
+  - swagger
+  - api documentation
+  - openapi generation
+  - swagger ui
 description: >
   Automatically generate OpenAPI specifications and Swagger UI.
 ---

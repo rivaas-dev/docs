@@ -3,6 +3,13 @@ title: "Metrics Collection"
 linkTitle: "Metrics"
 description: "Learn how to collect and export application metrics with Rivaas metrics package"
 weight: 8
+no_list: true
+keywords:
+  - metrics
+  - prometheus
+  - opentelemetry
+  - observability
+  - monitoring
 ---
 
 {{% pageinfo %}}

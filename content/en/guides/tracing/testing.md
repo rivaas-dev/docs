@@ -2,6 +2,11 @@
 title: "Testing"
 description: "Test your tracing implementation with provided utilities"
 weight: 7
+keywords:
+  - tracing testing
+  - test helpers
+  - span assertions
+  - testing
 ---
 
 The tracing package provides testing utilities to help you write tests for traced applications.

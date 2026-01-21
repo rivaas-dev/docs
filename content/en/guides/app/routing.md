@@ -2,6 +2,12 @@
 title: "Routing"
 linkTitle: "Routing"
 weight: 7
+keywords:
+  - app routing
+  - routes
+  - handlers
+  - endpoints
+  - route groups
 description: >
   Organize routes with groups, versioning, and static files.
 ---

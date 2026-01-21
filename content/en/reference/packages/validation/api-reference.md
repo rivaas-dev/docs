@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Core types, functions, and methods"
+keywords:
+  - validation api
+  - validation reference
+  - api documentation
+  - type reference
 weight: 1
 ---
 

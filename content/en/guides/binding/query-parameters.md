@@ -2,6 +2,11 @@
 title: "Query Parameters"
 description: "Master URL query string binding with slices, defaults, and type conversion"
 weight: 4
+keywords:
+  - query parameters
+  - url parameters
+  - query string
+  - parameter binding
 ---
 
 Learn how to bind URL query parameters to Go structs with automatic type conversion, default values, and slice handling.

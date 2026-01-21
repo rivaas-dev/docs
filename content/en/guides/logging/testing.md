@@ -2,6 +2,11 @@
 title: "Testing"
 description: "Test utilities and patterns for logging in unit and integration tests"
 weight: 10
+keywords:
+  - logging testing
+  - test helpers
+  - log capture
+  - testing
 ---
 
 This guide covers testing with the logging package. It includes test utilities, assertions, and best practices.

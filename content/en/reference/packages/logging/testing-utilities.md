@@ -1,6 +1,11 @@
 ---
 title: "Testing Utilities"
 description: "Complete reference for logging test utilities and helpers"
+keywords:
+  - testing utilities
+  - test helpers
+  - log capture
+  - test logging
 weight: 4
 ---
 

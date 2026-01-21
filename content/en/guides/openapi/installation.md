@@ -2,6 +2,11 @@
 title: "Installation"
 description: "Install and set up the OpenAPI package for Go"
 weight: 1
+keywords:
+  - openapi installation
+  - install
+  - go get
+  - setup
 ---
 
 Get started with the OpenAPI package by adding it to your Go project.

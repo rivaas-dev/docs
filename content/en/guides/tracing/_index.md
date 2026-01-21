@@ -3,6 +3,13 @@ title: "Distributed Tracing"
 linkTitle: "Tracing"
 description: "Learn how to implement distributed tracing with Rivaas tracing package"
 weight: 9
+no_list: true
+keywords:
+  - tracing
+  - distributed tracing
+  - opentelemetry
+  - spans
+  - observability
 ---
 
 {{% pageinfo %}}

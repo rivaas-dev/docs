@@ -2,6 +2,11 @@
 title: "Context-Aware Logging"
 description: "Add trace correlation and contextual information to logs with ContextLogger"
 weight: 5
+keywords:
+  - context logging
+  - request id
+  - trace correlation
+  - contextual logging
 ---
 
 This guide covers context-aware logging with automatic trace correlation for distributed tracing integration.

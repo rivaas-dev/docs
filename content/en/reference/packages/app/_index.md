@@ -2,6 +2,13 @@
 title: "App"
 linkTitle: "App"
 weight: 10
+no_list: true
+keywords:
+  - app api
+  - app package
+  - rivaas.dev/app
+  - framework api
+  - app reference
 description: >
   API reference for the Rivaas App package - a batteries-included web framework with integrated observability.
 ---

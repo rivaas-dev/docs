@@ -1,6 +1,11 @@
 ---
 title: "Interfaces"
 description: "Custom validation interfaces"
+keywords:
+  - validation interfaces
+  - validator interface
+  - validatable
+  - custom validation
 weight: 3
 ---
 

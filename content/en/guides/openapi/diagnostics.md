@@ -2,6 +2,11 @@
 title: "Diagnostics"
 description: "Handle warnings with type-safe diagnostics"
 weight: 10
+keywords:
+  - openapi diagnostics
+  - debugging
+  - troubleshooting
+  - warnings
 ---
 
 Learn how to work with warnings using the type-safe diagnostics package.

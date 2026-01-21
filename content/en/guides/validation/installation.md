@@ -2,6 +2,11 @@
 title: "Installation"
 description: "Install and set up the validation package"
 weight: 1
+keywords:
+  - validation installation
+  - install
+  - go get
+  - setup
 ---
 
 Get started with the Rivaas validation package by installing it in your Go project.

@@ -2,6 +2,13 @@
 title: "Server"
 linkTitle: "Server"
 weight: 11
+keywords:
+  - app server
+  - http server
+  - tls
+  - https
+  - mtls
+  - graceful shutdown
 description: >
   Start HTTP, HTTPS, and mTLS servers with graceful shutdown.
 ---

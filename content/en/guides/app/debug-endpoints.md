@@ -2,6 +2,12 @@
 title: "Debug Endpoints"
 linkTitle: "Debug Endpoints"
 weight: 10
+keywords:
+  - debug endpoints
+  - pprof
+  - profiling
+  - debugging
+  - performance analysis
 description: >
   Enable pprof profiling endpoints for performance analysis and debugging.
 ---

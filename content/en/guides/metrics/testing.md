@@ -2,6 +2,11 @@
 title: "Testing"
 description: "Test utilities for metrics collection"
 weight: 7
+keywords:
+  - metrics testing
+  - test helpers
+  - assertions
+  - testing
 ---
 
 This guide covers testing utilities provided by the metrics package.

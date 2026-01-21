@@ -2,6 +2,11 @@
 title: "Static Files"
 linkTitle: "Static Files"
 weight: 130
+keywords:
+  - static files
+  - file server
+  - assets
+  - serve files
 description: >
   Serve static files and directories efficiently.
 ---

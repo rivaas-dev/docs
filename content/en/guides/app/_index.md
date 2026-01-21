@@ -2,6 +2,14 @@
 title: "Application Framework"
 linkTitle: "App"
 weight: 1
+no_list: true
+keywords:
+  - app
+  - web framework
+  - application
+  - lifecycle
+  - observability
+  - production-ready
 description: >
   A complete web framework built on the Rivaas router. Includes integrated observability, lifecycle management, and sensible defaults for production-ready applications.
 ---

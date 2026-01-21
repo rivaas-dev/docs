@@ -2,6 +2,11 @@
 title: "Tracing Providers"
 description: "Choose and configure trace exporters for your application"
 weight: 3
+keywords:
+  - tracing providers
+  - jaeger
+  - otlp
+  - stdout
 ---
 
 The tracing package supports multiple providers for exporting traces. Choose the provider that best fits your environment and infrastructure.

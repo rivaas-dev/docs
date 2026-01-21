@@ -1,6 +1,11 @@
 ---
 title: "Tracer Options"
 description: "All configuration options for Tracer initialization"
+keywords:
+  - tracing options
+  - configuration
+  - options reference
+  - functional options
 weight: 2
 ---
 

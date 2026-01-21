@@ -2,6 +2,12 @@
 title: "Response Rendering"
 linkTitle: "Response Rendering"
 weight: 90
+keywords:
+  - response rendering
+  - json
+  - xml
+  - html
+  - templates
 description: >
   Render JSON, YAML, HTML, binary responses with performance optimizations.
 ---

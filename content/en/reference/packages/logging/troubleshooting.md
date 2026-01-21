@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues and solutions for the logging package"
+keywords:
+  - logging troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 5
 ---
 

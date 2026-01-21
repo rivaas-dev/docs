@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of metrics collection with Rivaas"
 weight: 2
+keywords:
+  - metrics basic usage
+  - counters
+  - gauges
+  - histograms
 ---
 
 This guide covers the basic patterns for using the metrics package in your Go applications.

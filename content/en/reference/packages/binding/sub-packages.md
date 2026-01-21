@@ -1,6 +1,11 @@
 ---
 title: "Sub-Packages"
 description: "YAML, TOML, MessagePack, and Protocol Buffers support"
+keywords:
+  - sub packages
+  - binder packages
+  - binding modules
+  - package structure
 weight: 3
 ---
 

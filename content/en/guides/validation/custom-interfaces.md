@@ -2,6 +2,11 @@
 title: "Custom Validation Interfaces"
 description: "Implement custom validation methods with Validate() and ValidateContext()"
 weight: 5
+keywords:
+  - validation interfaces
+  - validatable interface
+  - custom validation
+  - validate method
 ---
 
 Implement custom validation logic by adding `Validate()` or `ValidateContext()` methods to your structs. This provides the most flexible validation approach for complex business rules.

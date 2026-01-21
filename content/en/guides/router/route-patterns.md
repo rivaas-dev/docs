@@ -2,6 +2,12 @@
 title: "Route Patterns"
 linkTitle: "Route Patterns"
 weight: 30
+keywords:
+  - route patterns
+  - path parameters
+  - wildcards
+  - constraints
+  - route matching
 description: >
   Learn about static routes, parameter routes, wildcards, and route matching priority.
 ---

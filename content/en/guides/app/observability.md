@@ -2,6 +2,12 @@
 title: "Observability"
 linkTitle: "Observability"
 weight: 4
+keywords:
+  - app observability
+  - metrics
+  - tracing
+  - logging
+  - opentelemetry
 description: >
   Integrate metrics, tracing, and logging for complete application observability.
 ---

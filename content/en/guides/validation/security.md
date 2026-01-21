@@ -2,6 +2,11 @@
 title: "Security"
 description: "Protect sensitive data and prevent validation attacks"
 weight: 9
+keywords:
+  - validation security
+  - input sanitization
+  - xss prevention
+  - security
 ---
 
 The validation package includes built-in security features to protect sensitive data and prevent various attacks through validation.

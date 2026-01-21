@@ -1,6 +1,11 @@
 ---
 title: "Router Options"
 linkTitle: "Options"
+keywords:
+  - router options
+  - configuration
+  - options reference
+  - functional options
 weight: 20
 description: >
   Configuration options for Router initialization.

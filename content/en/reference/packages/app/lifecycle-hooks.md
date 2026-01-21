@@ -1,6 +1,11 @@
 ---
 title: "Lifecycle Hooks"
 linkTitle: "Lifecycle Hooks"
+keywords:
+  - lifecycle hooks
+  - startup hooks
+  - shutdown hooks
+  - lifecycle events
 weight: 8
 description: >
   Lifecycle hook APIs and execution order.

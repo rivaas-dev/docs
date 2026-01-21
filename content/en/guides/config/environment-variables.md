@@ -2,6 +2,11 @@
 title: "Environment Variables"
 description: "Master environment variable integration with hierarchical naming conventions"
 weight: 4
+keywords:
+  - environment variables
+  - env vars
+  - os.Getenv
+  - env config
 ---
 
 The config package provides powerful environment variable support. It automatically maps environment variables to nested configuration structures. This follows the [Twelve-Factor App methodology](https://12factor.net/config) for configuration management.

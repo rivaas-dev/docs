@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Complete examples and real-world usage patterns"
 weight: 12
+keywords:
+  - openapi examples
+  - code samples
+  - patterns
+  - use cases
 ---
 
 Complete examples demonstrating real-world usage patterns for the OpenAPI package.

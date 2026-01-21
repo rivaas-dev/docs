@@ -2,6 +2,13 @@
 title: Configuration
 description: Configure your Rivaas application
 weight: 3
+keywords:
+  - configuration
+  - setup
+  - options
+  - environment
+  - functional options
+  - settings
 ---
 
 ## Overview

@@ -2,6 +2,11 @@
 title: "Struct Tags"
 description: "Validate structs using go-playground/validator tags"
 weight: 3
+keywords:
+  - validation tags
+  - field validation
+  - go-playground validator
+  - struct tags
 ---
 
 Use struct tags with go-playground/validator syntax to validate your structs. This is the most common validation strategy in the Rivaas validation package.

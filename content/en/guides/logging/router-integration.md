@@ -2,6 +2,11 @@
 title: "Router Integration"
 description: "Integrate logging with Rivaas router and the app package for full observability"
 weight: 9
+keywords:
+  - logging router
+  - http logging
+  - access logs
+  - router integration
 ---
 
 This guide covers integrating the logging package with the Rivaas router and the app package for comprehensive observability.

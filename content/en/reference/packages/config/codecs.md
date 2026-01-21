@@ -1,6 +1,12 @@
 ---
 title: "Codecs Reference"
 description: "Built-in codecs for configuration format support and type conversion"
+keywords:
+  - codecs
+  - file formats
+  - yaml
+  - json
+  - toml
 weight: 4
 ---
 

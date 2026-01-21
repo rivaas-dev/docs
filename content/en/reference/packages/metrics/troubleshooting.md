@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues and solutions for the metrics package"
+keywords:
+  - metrics troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 4
 ---
 

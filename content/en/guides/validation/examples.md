@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Real-world validation patterns and integration examples"
 weight: 10
+keywords:
+  - validation examples
+  - code samples
+  - patterns
+  - integration
 ---
 
 Complete examples showing how to use the validation package in real-world scenarios.

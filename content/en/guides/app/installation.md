@@ -2,6 +2,12 @@
 title: "Installation"
 linkTitle: "Installation"
 weight: 1
+keywords:
+  - app installation
+  - install
+  - go get
+  - setup
+  - requirements
 description: >
   Install the Rivaas App package and set up your development environment.
 ---

@@ -2,6 +2,11 @@
 title: "Examples"
 linkTitle: "Examples"
 weight: 160
+keywords:
+  - router examples
+  - code samples
+  - patterns
+  - use cases
 description: >
   Complete working examples and common use cases.
 ---

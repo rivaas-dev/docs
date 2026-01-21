@@ -2,6 +2,11 @@
 title: "API Versioning"
 linkTitle: "API Versioning"
 weight: 110
+keywords:
+  - api versioning
+  - version headers
+  - url versioning
+  - version detection
 description: >
   Built-in API versioning with header-based, query-based, and custom detection strategies.
 ---

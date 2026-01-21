@@ -2,6 +2,12 @@
 title: Next Steps
 description: Continue learning Rivaas
 weight: 5
+keywords:
+  - next steps
+  - learning path
+  - advanced topics
+  - further reading
+  - continue learning
 ---
 
 You've completed the Getting Started guide. You now know how to install Rivaas, build applications, configure them, and add middleware.

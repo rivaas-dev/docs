@@ -2,6 +2,11 @@
 title: "Context Propagation"
 description: "Propagate traces across service boundaries"
 weight: 6
+keywords:
+  - context propagation
+  - trace context
+  - w3c
+  - distributed tracing
 ---
 
 Learn how to propagate trace context across service boundaries for distributed tracing.

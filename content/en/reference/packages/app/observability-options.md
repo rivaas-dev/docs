@@ -1,6 +1,11 @@
 ---
 title: "Observability Options"
 linkTitle: "Observability Options"
+keywords:
+  - observability options
+  - metrics configuration
+  - tracing configuration
+  - logging configuration
 weight: 4
 description: >
   Observability configuration options reference (metrics, tracing, logging).

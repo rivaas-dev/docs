@@ -2,6 +2,11 @@
 title: "Schema Generation"
 description: "Understand how Go types are converted to OpenAPI schemas"
 weight: 7
+keywords:
+  - openapi schema
+  - type generation
+  - models
+  - schema generation
 ---
 
 Learn how the package automatically converts Go types to OpenAPI schemas.

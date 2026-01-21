@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 description: "Common issues, solutions, and FAQs"
+keywords:
+  - binding troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 5
 ---
 

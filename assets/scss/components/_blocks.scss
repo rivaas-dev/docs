@@ -187,3 +187,68 @@
     transform: translateY(-5px);
   }
 }
+
+// ========================================
+// Section Index - Child Page Listings
+// ========================================
+.section-index {
+  margin-top: var(--rivaas-space-2);
+  
+  // Panel line separator
+  hr.panel-line {
+    margin: 0 0 var(--rivaas-space-2) 0;  // Tight spacing
+    border: none;
+    border-top: 1px solid var(--rivaas-border-subtle);
+  }
+  
+  // Entry items
+  .entry {
+    margin-top: 0;
+    padding: var(--rivaas-space-3) 0;
+    border-bottom: 1px solid var(--rivaas-border-subtle);
+    
+    &:first-of-type {
+      padding-top: 0;
+    }
+    
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+  
+  // Section headings (page titles)
+  h5 {
+    font-size: var(--rivaas-text-lg);
+    font-weight: var(--rivaas-font-semibold);
+    margin: 0 0 var(--rivaas-space-1) 0;
+    
+    a {
+      color: var(--rivaas-text-primary);
+      text-decoration: none;
+      transition: color var(--rivaas-transition-fast);
+      
+      &:hover {
+        color: var(--rivaas-accent);
+      }
+      
+      // Arrow indicator
+      &::after {
+        content: ' →';
+        opacity: 0;
+        transition: opacity var(--rivaas-transition-fast);
+      }
+      
+      &:hover::after {
+        opacity: 0.7;
+      }
+    }
+  }
+  
+  // Description text
+  p {
+    color: var(--rivaas-text-secondary);
+    font-size: 0.9375rem;  // 15px
+    margin: 0;
+    line-height: 1.5;
+  }
+}

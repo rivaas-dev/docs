@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API documentation for the Recorder type and methods"
+keywords:
+  - metrics api
+  - metrics reference
+  - api documentation
+  - type reference
 weight: 1
 ---
 

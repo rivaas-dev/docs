@@ -2,6 +2,11 @@
 title: "Operations"
 description: "Define HTTP operations with methods, options, and composable configurations"
 weight: 5
+keywords:
+  - openapi operations
+  - endpoints
+  - request response
+  - http operations
 ---
 
 Learn how to define HTTP operations using method constructors and operation options.

@@ -2,6 +2,11 @@
 title: "Examples"
 description: "Complete real-world examples of using the logging package"
 weight: 13
+keywords:
+  - logging examples
+  - code samples
+  - patterns
+  - use cases
 ---
 
 This guide provides complete, real-world examples of using the logging package in various scenarios.

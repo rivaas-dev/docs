@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 linkTitle: "Troubleshooting"
+keywords:
+  - app troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 9
 description: >
   Common issues and solutions for the App package.

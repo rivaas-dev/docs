@@ -2,6 +2,12 @@
 title: "Router Package"
 linkTitle: "Router"
 weight: 40
+no_list: true
+keywords:
+  - router api
+  - router package
+  - rivaas.dev/router
+  - router reference
 description: >
   Complete API reference for the rivaas.dev/router package.
 ---

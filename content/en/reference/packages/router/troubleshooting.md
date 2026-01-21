@@ -1,6 +1,11 @@
 ---
 title: "Troubleshooting"
 linkTitle: "Troubleshooting"
+keywords:
+  - router troubleshooting
+  - common issues
+  - debugging
+  - faq
 weight: 70
 description: >
   Common issues and solutions for the router package.

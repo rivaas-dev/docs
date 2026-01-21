@@ -2,6 +2,11 @@
 title: "Auto-Discovery"
 description: "Use struct tags for automatic parameter discovery"
 weight: 6
+keywords:
+  - openapi auto discovery
+  - route scanning
+  - automatic
+  - struct tags
 ---
 
 Learn how the package automatically discovers API parameters from struct tags.

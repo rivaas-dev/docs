@@ -1,6 +1,11 @@
 ---
 title: "Operation Options"
 description: "Complete reference for operation-level configuration options"
+keywords:
+  - operation options
+  - endpoint configuration
+  - operation configuration
+  - request response
 weight: 3
 ---
 

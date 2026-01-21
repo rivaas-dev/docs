@@ -2,6 +2,11 @@
 title: "Partial Validation"
 description: "Validate only provided fields in PATCH requests"
 weight: 6
+keywords:
+  - partial validation
+  - selective validation
+  - field groups
+  - patch validation
 ---
 
 Partial validation is essential for PATCH requests. Only provided fields should be validated. Absent fields are ignored even if they have "required" constraints.

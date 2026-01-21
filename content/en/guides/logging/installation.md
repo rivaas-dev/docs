@@ -2,6 +2,11 @@
 title: "Installation"
 description: "How to install and set up the Rivaas logging package"
 weight: 2
+keywords:
+  - logging installation
+  - install
+  - go get
+  - setup
 ---
 
 This guide covers how to install the logging package and understand its dependencies.

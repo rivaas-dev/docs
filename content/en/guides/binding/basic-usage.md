@@ -2,6 +2,11 @@
 title: "Basic Usage"
 description: "Learn the fundamentals of binding request data to Go structs"
 weight: 3
+keywords:
+  - binding basic usage
+  - json binding
+  - form binding
+  - getting started
 ---
 
 This guide covers the essential operations for working with the binding package. Learn how to bind from different sources, understand the API variants, and handle errors.

@@ -1,6 +1,11 @@
 ---
 title: "API Reference"
 description: "Complete API documentation for the Tracer type and all methods"
+keywords:
+  - tracing api
+  - tracing reference
+  - api documentation
+  - type reference
 weight: 1
 ---
 

@@ -2,6 +2,11 @@
 title: "Installation"
 linkTitle: "Installation"
 weight: 10
+keywords:
+  - router installation
+  - install
+  - go get
+  - setup
 description: >
   Install the Rivaas Router in your Go project.
 ---

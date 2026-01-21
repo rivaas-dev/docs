@@ -2,6 +2,11 @@
 title: "Installation"
 description: "Install and set up the tracing package"
 weight: 1
+keywords:
+  - tracing installation
+  - install
+  - go get
+  - setup
 ---
 
 Get started with the Rivaas tracing package by installing it in your Go project.

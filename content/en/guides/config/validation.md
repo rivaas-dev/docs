@@ -2,6 +2,11 @@
 title: "Validation"
 description: "Validate configuration to catch errors early and ensure application correctness"
 weight: 6
+keywords:
+  - config validation
+  - required fields
+  - validate config
+  - configuration validation
 ---
 
 The config package supports multiple validation strategies. These help catch configuration errors early. They ensure your application runs with correct settings.

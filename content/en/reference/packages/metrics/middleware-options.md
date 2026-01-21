@@ -1,6 +1,11 @@
 ---
 title: "Middleware Options"
 description: "HTTP middleware configuration options reference"
+keywords:
+  - middleware options
+  - http metrics
+  - request metrics
+  - metrics middleware
 weight: 3
 ---
 

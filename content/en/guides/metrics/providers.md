@@ -2,6 +2,11 @@
 title: "Metrics Providers"
 description: "Understand Prometheus, OTLP, and stdout metrics exporters"
 weight: 3
+keywords:
+  - metrics providers
+  - prometheus
+  - otlp
+  - stdout
 ---
 
 The metrics package supports three provider types for exporting metrics. Each provider has different characteristics and use cases.

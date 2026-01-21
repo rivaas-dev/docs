@@ -3,6 +3,14 @@ title: Getting Started
 description: Start using Rivaas in minutes
 weight: 1
 sidebar_root_for: self
+no_list: true
+keywords:
+  - getting started
+  - quickstart
+  - installation
+  - beginner
+  - tutorial
+  - setup
 ---
 
 Learn how to install Rivaas and build your first web application. This guide shows you how to create a running API with production-ready features.

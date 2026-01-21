@@ -2,6 +2,13 @@
 title: Using Middleware
 description: Add functionality to your application with middleware
 weight: 4
+keywords:
+  - middleware
+  - cors
+  - authentication
+  - request handling
+  - interceptors
+  - http middleware
 ---
 
 Middleware functions intercept HTTP requests. They add functionality like logging, authentication, and error recovery to your Rivaas application.

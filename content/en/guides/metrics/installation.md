@@ -2,6 +2,11 @@
 title: "Installation"
 description: "How to install and set up the Rivaas metrics package"
 weight: 1
+keywords:
+  - metrics installation
+  - install
+  - go get
+  - setup
 ---
 
 This guide covers installing the metrics package and verifying your setup.
