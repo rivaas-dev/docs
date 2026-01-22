@@ -11,7 +11,7 @@
   padding-left: 0;
   margin: 0;
   border-bottom: 2px solid var(--rivaas-border-default);
-  margin-bottom: var(--rivaas-space-6);
+  margin-bottom: var(--rivaas-space-3);  // Reduced from space-6 for tighter layout
   gap: var(--rivaas-space-1);
   display: flex;
   
@@ -27,15 +27,19 @@
   
   .nav-link {
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     border-radius: var(--rivaas-radius-sm) var(--rivaas-radius-sm) 0 0;
     color: var(--rivaas-text-secondary);
     font-weight: var(--rivaas-font-medium);
-    padding: var(--rivaas-space-3) var(--rivaas-space-5);
+    font-family: $font-family-monospace;
+    font-size: 0.8125rem;  // 13px - compact for technical labels
+    letter-spacing: 0.01em;
+    padding: var(--rivaas-space-2) var(--rivaas-space-4);  // Compact: 8px 16px
     transition: 
       color var(--rivaas-duration-fast),
       background-color var(--rivaas-duration-fast),
-      border-color var(--rivaas-duration-normal) var(--rivaas-easing-spring);
+      border-color var(--rivaas-duration-normal) var(--rivaas-easing-spring),
+      box-shadow var(--rivaas-duration-fast);
     position: relative;
     
     &:hover {
@@ -46,9 +50,10 @@
     
     &.active {
       color: var(--rivaas-accent);
-      background: transparent;
+      background: var(--rivaas-surface-secondary);
       border-bottom-color: var(--rivaas-accent);
       font-weight: var(--rivaas-font-semibold);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);  // Subtle lift
     }
     
     &.disabled {
@@ -68,10 +73,25 @@
 }
 
 .tab-content {
-  padding: var(--rivaas-space-6) 0;
+  padding: var(--rivaas-space-2) 0;  // Reduced from space-6
   
   .tab-pane {
     animation: fadeIn var(--rivaas-duration-slow) var(--rivaas-easing-smooth);
+    
+    // Override Docsy/Bootstrap defaults
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    background: transparent;
+    
+    // Remove extra margins from first/last code blocks
+    > .highlight:first-child {
+      margin-top: 0;
+    }
+    
+    > .highlight:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

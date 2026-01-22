@@ -33,7 +33,7 @@ html {
   color: var(--rivaas-text-primary);
 }
 
-[data-bs-theme="dark"] ::selection {
+html[data-bs-theme="dark"] ::selection {
   background: rgba($dark-accent, 0.3);
 }
 

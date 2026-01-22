@@ -1,7 +1,21 @@
 /*
  * Rivaas Documentation - Footer
- * Mountain foundation footer with sections
+ * Mountain foundation footer with alpine visual enhancements
  */
+
+// ========================================
+// Footer Animations
+// ========================================
+@keyframes footerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 // ========================================
 // Footer - Mountain Foundation
@@ -14,42 +28,103 @@
   color: var(--rivaas-footer-text);
   padding: var(--rivaas-space-5) var(--rivaas-space-6);
   min-height: 70px;
-  border-top: 3px solid var(--rivaas-footer-border);
-  font-size: 0.8125rem;
+  border-top: none; // Replaced with gradient pseudo-element
+  font-size: var(--rivaas-text-sm);
   text-align: center;
   line-height: 1.6;
+  position: relative;
+  overflow: visible;
+  animation: footerFadeIn 0.6s var(--rivaas-easing-smooth) both;
   
-  // Links in footer
+  // Gradient border-top (fading ridgeline effect)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--rivaas-accent) 15%,
+      var(--rivaas-accent) 85%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  
+  // Subtle mountain glow effect above footer
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 50px;
+    background: radial-gradient(
+      ellipse at 50% 100%,
+      rgba(30, 111, 92, 0.08) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  // Subtle top shadow for depth separation
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
+  
+  // Links in footer (text links like "Apache License 2.0")
   a {
     color: var(--rivaas-footer-link);
     text-decoration: none;
     transition: all var(--rivaas-transition-normal);
     position: relative;
+    padding: 0.125rem 0.5rem;
+    margin: -0.125rem -0.5rem;
+    border-radius: var(--rivaas-radius-xs);
     
     &:hover {
       color: var(--rivaas-footer-link-hover);
-      transform: translateY(-1px);
+      background: rgba(30, 111, 92, 0.1);  // Subtle alpine tint highlight
+      font-weight: var(--rivaas-font-medium);
     }
     
-    // Underline on hover
-    &:not([class*="btn"])::after {
+    // Underline on hover with accent color
+    &:not([class*="btn"]):not(.td-footer__icon)::after {
       content: '';
       position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
+      bottom: 0;
+      left: 0.5rem;
+      right: 0.5rem;
+      width: auto;
       height: 1px;
-      background: currentColor;
-      transition: width var(--rivaas-transition-normal);
+      background: var(--rivaas-accent);
+      transform: scaleX(0);
+      transition: transform var(--rivaas-transition-normal);
     }
     
-    &:hover:not([class*="btn"])::after {
-      width: 100%;
+    &:hover:not([class*="btn"]):not(.td-footer__icon)::after {
+      transform: scaleX(1);
     }
   }
   
-  // Separator pipes - more subtle
-  span, .px-2 {
+  // Separator - styled accent dot
+  .td-footer__separator {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--rivaas-accent);
+    border-radius: var(--rivaas-radius-full);
+    margin: 0 var(--rivaas-space-3);
+    opacity: 0.5;
+    vertical-align: middle;
+  }
+  
+  // Legacy separator pipes - more subtle
+  span:not(.td-footer__separator):not(.td-footer__copyright):not(.td-footer__authors), 
+  .px-2 {
     color: var(--rivaas-text-disabled);
     margin: 0 0.375rem;
     opacity: 0.6;
@@ -78,6 +153,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: var(--rivaas-space-3);
+  animation: footerFadeIn 0.6s var(--rivaas-easing-smooth) 0.1s both;
   
   a {
     display: flex;
@@ -86,15 +162,17 @@
     width: 36px;
     height: 36px;
     border-radius: var(--rivaas-radius-full);
-    background: var(--rivaas-interactive-muted);
+    background: rgba(255, 255, 255, 0.7);  // Light translucent for light mode
     color: var(--rivaas-footer-text);
+    border: 1px solid var(--rivaas-border-subtle);
     transition: all var(--rivaas-transition-normal);
     
     &:hover {
-      background: var(--rivaas-interactive-muted-hover);
-      color: var(--rivaas-footer-link-hover);
+      background: var(--rivaas-interactive-primary);
+      color: var(--rivaas-interactive-primary-text);
+      border-color: var(--rivaas-interactive-primary);
       transform: translateY(-2px) scale(1.05);
-      box-shadow: var(--rivaas-shadow-md);
+      box-shadow: 0 4px 16px rgba(30, 111, 92, 0.25); // Alpine green glow
     }
     
     // Remove underline effect for icon links
@@ -119,6 +197,7 @@
   justify-content: center;
   align-items: center;
   gap: var(--rivaas-space-2);
+  animation: footerFadeIn 0.6s var(--rivaas-easing-smooth) 0.2s both;
   
   // Remove Bootstrap margin utilities
   .ms-2, .me-2 {
@@ -150,6 +229,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--rivaas-space-3);
+  animation: footerFadeIn 0.6s var(--rivaas-easing-smooth) 0.3s both;
   
   a {
     display: flex;
@@ -158,15 +238,17 @@
     width: 36px;
     height: 36px;
     border-radius: var(--rivaas-radius-full);
-    background: var(--rivaas-interactive-muted);
+    background: rgba(255, 255, 255, 0.7);  // Light translucent for light mode
     color: var(--rivaas-footer-text);
+    border: 1px solid var(--rivaas-border-subtle);
     transition: all var(--rivaas-transition-normal);
     
     &:hover {
-      background: var(--rivaas-interactive-muted-hover);
-      color: var(--rivaas-footer-link-hover);
+      background: var(--rivaas-interactive-primary);
+      color: var(--rivaas-interactive-primary-text);
+      border-color: var(--rivaas-interactive-primary);
       transform: translateY(-2px) scale(1.05);
-      box-shadow: var(--rivaas-shadow-md);
+      box-shadow: 0 4px 16px rgba(30, 111, 92, 0.25); // Alpine green glow
     }
     
     // Remove underline effect for icon links
@@ -191,16 +273,53 @@
   gap: 0.375rem;
 }
 
+// ========================================
+// Footer Icon Links (Docsy Structure)
+// ========================================
 .td-footer__links-list {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: var(--rivaas-space-3);
+  gap: var(--rivaas-space-2);
   list-style: none;
   padding: 0;
   margin: 0;
   
   li {
     margin: 0;
+  }
+  
+  // Icon button styling for links in lists
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;  // Override text link padding
+    margin: 0 !important;   // Override text link margin
+    border-radius: var(--rivaas-radius-full);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--rivaas-border-subtle);
+    color: var(--rivaas-footer-text);
+    transition: all var(--rivaas-transition-normal);
+    
+    &:hover {
+      background: var(--rivaas-interactive-primary) !important;
+      color: var(--rivaas-interactive-primary-text);
+      border-color: var(--rivaas-interactive-primary);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 16px rgba(30, 111, 92, 0.25);
+    }
+    
+    // Remove underline effect for icon links
+    &::after {
+      display: none !important;
+    }
+    
+    i, .fa, .fab, .fas {
+      font-size: var(--rivaas-text-base);
+      line-height: 1;
+    }
   }
 }
 
@@ -226,13 +345,19 @@
     min-height: auto;
     font-size: var(--rivaas-text-xs);
     
+    // Hide the glow effect on mobile for performance
+    &::after {
+      display: none;
+    }
+    
     .td-footer__center {
       line-height: 2;
     }
   }
   
   .td-footer__left,
-  .td-footer__right {
+  .td-footer__right,
+  .td-footer__links-list {
     a {
       width: 32px;
       height: 32px;
@@ -240,6 +365,69 @@
       i, .fa, .fab, .fas {
         font-size: var(--rivaas-text-sm);
       }
+    }
+  }
+}
+
+// Reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .td-footer,
+  .td-footer__left,
+  .td-footer__center,
+  .td-footer__right {
+    animation: none;
+  }
+  
+  .td-footer a {
+    transition: none;
+  }
+}
+
+// ========================================
+// Footer Dark Mode Enhancements
+// ========================================
+html[data-bs-theme="dark"] {
+  .td-footer {
+    // Enhanced surface with subtle gradient
+    background: linear-gradient(
+      180deg,
+      rgba(26, 34, 32, 0.95) 0%,
+      var(--rivaas-footer-bg) 100%
+    );
+    
+    // Subtle top glow in dark mode
+    box-shadow: 0 -4px 24px rgba(79, 209, 181, 0.04);
+    
+    // Brighter glow effect for dark mode
+    &::after {
+      background: radial-gradient(
+        ellipse at 50% 100%,
+        rgba(79, 209, 181, 0.08) 0%,
+        transparent 70%
+      );
+    }
+  }
+  
+  // Dark mode icon buttons
+  .td-footer__left a,
+  .td-footer__right a,
+  .td-footer__links-list a {
+    background: var(--rivaas-interactive-muted);
+    border-color: var(--rivaas-border-subtle);
+    color: var(--rivaas-footer-text);
+    
+    &:hover {
+      background: var(--rivaas-interactive-primary) !important;
+      color: var(--rivaas-interactive-primary-text);
+      border-color: var(--rivaas-interactive-primary);
+      box-shadow: var(--rivaas-shadow-colored); // Accent glow in dark mode
+    }
+  }
+  
+  // Dark mode text link hover
+  .td-footer a:not(.td-footer__links-list a) {
+    &:hover {
+      background: rgba(79, 209, 181, 0.12);  // Lighter accent for dark mode
     }
   }
 }

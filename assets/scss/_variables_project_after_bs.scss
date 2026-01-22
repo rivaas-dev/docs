@@ -19,7 +19,8 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // Dark Mode Theme Colors
 // ========================================
 // Override primary in dark mode for better contrast
-[data-bs-theme="dark"] {
+// Use html[...] to scope to page-level theme, not component-level
+html[data-bs-theme="dark"] {
   --bs-primary: #3FAF98;
   --bs-primary-rgb: 63, 175, 152;
   

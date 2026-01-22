@@ -71,19 +71,27 @@
     padding-left: var(--rivaas-space-3) !important;
   }
   
-  // Section headers (top-level items like "DOCS", "CORE TASKS", etc.)
+  // ----------------------------------------
+  // Section Headers - Minimal Typography
+  // ----------------------------------------
+  // Clean, typography-only hierarchy - no backgrounds or dividers
   .td-sidebar-link__section {
-    font-weight: var(--rivaas-font-medium);
-    font-size: var(--rivaas-text-xs);  // 12px - readable section labels
+    font-weight: var(--rivaas-font-bold);
+    font-size: var(--rivaas-text-2xs);  // 11px
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     color: var(--rivaas-text-muted);
-    padding: var(--rivaas-space-2) var(--rivaas-space-3);
-    margin-top: var(--rivaas-space-3);
+    padding: var(--rivaas-space-1) var(--rivaas-space-3);
+    margin-top: var(--rivaas-space-5);
     margin-bottom: var(--rivaas-space-1);
     
     &:first-child {
       margin-top: 0;
+    }
+    
+    // Subtle hover - just color change
+    &:hover {
+      color: var(--rivaas-text-secondary);
     }
   }
   
@@ -148,15 +156,26 @@
     }
   }
   
-  // Nested items (child pages)
+  // ----------------------------------------
+  // Nested Items - Clean Indentation
+  // ----------------------------------------
+  // Simple indentation, no borders
   .with-child {
     > ul {
       margin-left: 0;
+      padding-left: var(--rivaas-space-4);
+      margin-top: var(--rivaas-space-0-5);
+    }
+    
+    // Deeper nesting - progressive indent
+    .with-child > ul {
       padding-left: var(--rivaas-space-3);
     }
   }
   
-  // Expand/collapse toggle
+  // ----------------------------------------
+  // Expand/Collapse Toggle
+  // ----------------------------------------
   .td-sidebar-nav-toggle {
     padding: var(--rivaas-space-1);
     margin-right: var(--rivaas-space-1);
@@ -168,6 +187,18 @@
       background: var(--rivaas-sidebar-link-hover-bg);
       color: var(--rivaas-accent);
     }
+  }
+  
+  // Chevron rotation on expand
+  [aria-expanded="true"] > .td-sidebar-nav-toggle {
+    svg, .fa-chevron-right {
+      transform: rotate(90deg);
+    }
+  }
+  
+  // Smooth expand/collapse
+  .collapse {
+    transition: height var(--rivaas-duration-normal) var(--rivaas-easing-smooth);
   }
 }
 

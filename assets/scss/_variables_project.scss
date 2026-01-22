@@ -381,7 +381,7 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-gradient-primary: linear-gradient(135deg, #{$primary} 0%, #{$primary-dark} 100%);
   --rivaas-gradient-hero: linear-gradient(135deg, #{$primary} 0%, #0D4A3F 100%);
   --rivaas-gradient-surface: linear-gradient(180deg, #{$gray-50} 0%, #{$white} 100%);
-  --rivaas-gradient-glow: radial-gradient(ellipse at 50% 0%, #{rgba($primary, 0.15)} 0%, transparent 70%);
+  --rivaas-gradient-glow: radial-gradient(ellipse at 50% 0%, #{rgba($primary, 0.15)} 0%, #{rgba($primary, 0)} 70%);
 
   // ========================================
   // Colored Shadows (Brand-Aware Depth)
@@ -396,6 +396,8 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-surface-primary-rgb: 248, 250, 249;
   --rivaas-surface-secondary-rgb: 241, 244, 243;
   --rivaas-white-rgb: 248, 250, 249;
+  --rivaas-white: #{$white};
+  --rivaas-accent-rgb: 30, 111, 92;
 
   // ========================================
   // Z-Index Scale
@@ -453,18 +455,20 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-navbar-text: #{$white};
   --rivaas-navbar-link-hover-bg: #{rgba($white, 0.1)};
 
-  // Footer
-  --rivaas-footer-bg: #{$gray-900};
-  --rivaas-footer-text: #{$gray-400};
-  --rivaas-footer-link: #{$gray-300};
-  --rivaas-footer-link-hover: #{$white};
+  // Footer (Light mode - Pale green mist theme)
+  --rivaas-footer-bg: #{$gray-200};  // Pale green mist - cohesive with page
+  --rivaas-footer-text: #{$gray-600};  // Muted slate - readable secondary text
+  --rivaas-footer-link: #{$primary};  // Alpine green - brand link color
+  --rivaas-footer-link-hover: #{$primary-dark};  // Deep forest on hover
   --rivaas-footer-border: var(--rivaas-accent);
 }
 
 // ========================================
 // Dark Mode Token Overrides
 // ========================================
-[data-bs-theme="dark"] {
+// Use html[...] to scope to page-level theme, not component-level
+// (navbar has data-bs-theme="dark" for text contrast but shouldn't trigger these overrides)
+html[data-bs-theme="dark"] {
   // Brand - Brighter for dark mode visibility
   --rivaas-accent: #4FD1B5;
 
@@ -535,12 +539,13 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-gradient-primary: linear-gradient(135deg, #4FD1B5 0%, #3FAF98 100%);
   --rivaas-gradient-hero: linear-gradient(135deg, #3FAF98 0%, #2D8A72 100%);
   --rivaas-gradient-surface: linear-gradient(180deg, #{$dark-surface} 0%, #{$dark-bg} 100%);
-  --rivaas-gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(79, 209, 181, 0.15) 0%, transparent 70%);
+  --rivaas-gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(79, 209, 181, 0.15) 0%, rgba(79, 209, 181, 0) 70%);
 
   // RGB variants for dark mode glassmorphism
   --rivaas-surface-primary-rgb: 15, 20, 19;
   --rivaas-surface-secondary-rgb: 26, 34, 32;
   --rivaas-white-rgb: 230, 236, 233;
+  --rivaas-accent-rgb: 79, 209, 181;
 
   // Component-Specific
   --rivaas-sidebar-bg: var(--rivaas-surface-secondary);

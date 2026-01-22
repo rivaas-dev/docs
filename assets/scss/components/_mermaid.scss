@@ -14,9 +14,9 @@
 // ========================================
 :root {
   // Node fill colors (light mode)
-  --mermaid-node-default: #F8FAF9;
-  --mermaid-node-primary: #E4F0EC;      // Alpine green tint
-  --mermaid-node-secondary: #F1F4F3;    // Neutral gray
+  --mermaid-node-default: #{$white};
+  --mermaid-node-primary: #{$gray-200};      // Alpine green tint (Pale green mist)
+  --mermaid-node-secondary: #{$gray-100};    // Neutral gray (Soft stone)
   --mermaid-node-success: #D4EDDA;      // Green
   --mermaid-node-warning: #FFF3CD;      // Yellow
   --mermaid-node-danger: #F8D7DA;       // Red
@@ -24,8 +24,8 @@
   --mermaid-node-highlight: #E1F5FF;    // Light blue highlight
   
   // Node stroke colors
-  --mermaid-stroke-default: #1E6F5C;
-  --mermaid-stroke-primary: #1E6F5C;
+  --mermaid-stroke-default: #{$primary};
+  --mermaid-stroke-primary: #{$primary};
   --mermaid-stroke-secondary: #6C757D;
   --mermaid-stroke-success: #28A745;
   --mermaid-stroke-warning: #FFC107;
@@ -33,16 +33,16 @@
   --mermaid-stroke-info: #17A2B8;
   
   // Text colors
-  --mermaid-text-default: #1F2A27;
+  --mermaid-text-default: #{$gray-900};
   --mermaid-text-light: #FFFFFF;
 }
 
 // Dark mode overrides
-[data-bs-theme="dark"] {
+html[data-bs-theme="dark"] {
   // Node fill colors (dark mode - darker, muted versions)
-  --mermaid-node-default: #252F2C;
+  --mermaid-node-default: #{$gray-800};
   --mermaid-node-primary: #1A3D35;      // Dark alpine green
-  --mermaid-node-secondary: #2E3B39;    // Dark gray
+  --mermaid-node-secondary: #{$secondary};    // Dark gray (Basalt gray)
   --mermaid-node-success: #1E4620;      // Dark green
   --mermaid-node-warning: #4D3F1A;      // Dark yellow/amber
   --mermaid-node-danger: #4A1A1D;       // Dark red
@@ -50,17 +50,17 @@
   --mermaid-node-highlight: #1A3545;    // Dark blue highlight
   
   // Node stroke colors (brighter for contrast)
-  --mermaid-stroke-default: #4FD1B5;
-  --mermaid-stroke-primary: #4FD1B5;
-  --mermaid-stroke-secondary: #A3B1AB;
+  --mermaid-stroke-default: #{$dark-accent};
+  --mermaid-stroke-primary: #{$dark-accent};
+  --mermaid-stroke-secondary: #{$dark-text-muted};
   --mermaid-stroke-success: #48D368;
   --mermaid-stroke-warning: #FFD93D;
   --mermaid-stroke-danger: #FF6B6B;
   --mermaid-stroke-info: #4FC3F7;
   
   // Text colors
-  --mermaid-text-default: #E6ECE9;
-  --mermaid-text-light: #E6ECE9;
+  --mermaid-text-default: #{$dark-text};
+  --mermaid-text-light: #{$dark-text};
 }
 
 // ========================================
@@ -335,7 +335,7 @@ pre.mermaid {
 // ========================================
 // Dark Mode Adjustments
 // ========================================
-[data-bs-theme="dark"] .mermaid {
+html[data-bs-theme="dark"] .mermaid {
   .node rect,
   .node circle,
   .node ellipse,

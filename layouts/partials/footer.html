@@ -1,0 +1,32 @@
+{{/*
+  Rivaas Documentation Footer
+  Alpine-inspired footer with visual enhancements
+*/}}
+<footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row align-items-center w-100">
+      {{/* Left Section - Social Icons */}}
+      <div class="col-md-3 td-footer__left">
+        <a href="https://github.com/rivaas-dev" target="_blank" rel="noopener" aria-label="Rivaas on GitHub" class="td-footer__icon">
+          <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      {{/* Center Section - Copyright & License */}}
+      <div class="col-md-6 td-footer__center">
+        <span class="td-footer__copyright">&copy; {{ now.Year }} Rivaas Authors</span>
+        
+        <span class="td-footer__separator"></span>
+        
+        <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache License 2.0</a>
+      </div>
+
+      {{/* Right Section - Additional Links */}}
+      <div class="col-md-3 td-footer__right">
+        <a href="#top" aria-label="Back to top" class="td-footer__icon">
+          <i class="fas fa-arrow-up" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

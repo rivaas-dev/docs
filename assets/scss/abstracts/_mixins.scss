@@ -6,8 +6,10 @@
 // ========================================
 // Dark Mode Mixin (Utility)
 // ========================================
+// Use html[...] to scope to page-level theme, not component-level
+// (prevents navbar's data-bs-theme="dark" from triggering dark mode styles)
 @mixin dark-mode {
-  [data-bs-theme="dark"] & {
+  html[data-bs-theme="dark"] & {
     @content;
   }
 }

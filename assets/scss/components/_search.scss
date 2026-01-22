@@ -81,16 +81,8 @@
     color: var(--rivaas-text-muted);
   }
   
-  .DocSearch-Button-Keys {
-    .DocSearch-Button-Key {
-      background: var(--rivaas-surface-primary);
-      border: 1px solid var(--rivaas-border-default);
-      border-radius: var(--rivaas-radius-xs);
-      box-shadow: none;
-      color: var(--rivaas-text-muted);
-      font-size: var(--rivaas-text-xs);
-    }
-  }
+  // Note: .DocSearch-Button-Keys styles are in layouts/partials/algolia/head.html
+  // for proper specificity override of the DocSearch CDN CSS
 }
 
 // ========================================

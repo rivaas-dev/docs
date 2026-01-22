@@ -209,11 +209,13 @@
 // Card Group Spacing
 // ========================================
 .card-group {
-  gap: var(--rivaas-space-6);
+  gap: var(--rivaas-space-4);
   
   .card {
     flex: 1 0 0%;
     margin-bottom: 0;
+    margin-right: 0 !important;  // Override Bootstrap me-* utilities
+    margin-left: 0 !important;
   }
 }
 
@@ -224,11 +226,15 @@
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  gap: var(--rivaas-space-4);  // Use gap for consistent spacing
   
+  // Override Docsy's me-4 margin utility on cards
   .td-card,
   .card {
     display: flex;
     flex-direction: column;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
     
     .card-body {
       flex: 1 1 auto; // Body expands to fill remaining space
