@@ -114,12 +114,16 @@ a.GET("/protected", protectedHandler, authMiddleware)
 
 ### Request ID
 
-Track requests across distributed systems:
+Track requests across distributed systems with unique, time-ordered IDs:
 
 ```go
 import "rivaas.dev/router/middleware/requestid"
 
+// UUID v7 by default (36 chars, time-ordered, RFC 9562)
 a.Use(requestid.New())
+
+// Or use ULID for shorter IDs (26 chars)
+a.Use(requestid.New(requestid.WithULID()))
 
 // In your handler
 a.GET("/", func(c *app.Context) {
@@ -134,8 +138,10 @@ a.GET("/", func(c *app.Context) {
 
 ```bash
 curl -i http://localhost:8080/
-# X-Request-ID: 550e8400-e29b-41d4-a716-446655440000
+# X-Request-ID: 018f3e9a-1b2c-7def-8000-abcdef123456  (UUID v7)
 ```
+
+Both UUID v7 and ULID are lexicographically sortable, making them ideal for debugging and log correlation.
 
 ### CORS
 

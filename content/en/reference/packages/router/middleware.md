@@ -85,19 +85,29 @@ r.Use(accesslog.New(
 
 **Package:** `rivaas.dev/router/middleware/requestid`
 
+Generates unique, time-ordered request IDs for distributed tracing and log correlation.
+
 ```go
 import "rivaas.dev/router/middleware/requestid"
 
-r.Use(requestid.New(
-    requestid.WithHeader("X-Request-ID"),
-    requestid.WithGenerator(requestid.UUIDGenerator),
-))
+// UUID v7 by default (36 chars, time-ordered, RFC 9562)
+r.Use(requestid.New())
+
+// Use ULID for shorter IDs (26 chars)
+r.Use(requestid.New(requestid.WithULID()))
+
+// Custom header name
+r.Use(requestid.New(requestid.WithHeader("X-Correlation-ID")))
 
 // Get request ID in handlers
 func handler(c *router.Context) {
     id := requestid.Get(c)
 }
 ```
+
+**ID Formats:**
+- UUID v7 (default): `018f3e9a-1b2c-7def-8000-abcdef123456`
+- ULID: `01ARZ3NDEKTSV4RRFFQ69G5FAV`
 
 ## Reliability
 

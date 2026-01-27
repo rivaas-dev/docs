@@ -164,10 +164,14 @@ r.Use(accesslog.New(
 ```go
 import "rivaas.dev/router/middleware/requestid"
 
-r.Use(requestid.New(
-    requestid.WithHeader("X-Request-ID"),
-    requestid.WithGenerator(requestid.UUIDGenerator),
-))
+// UUID v7 by default (36 chars, time-ordered, RFC 9562)
+r.Use(requestid.New())
+
+// Use ULID for shorter IDs (26 chars)
+r.Use(requestid.New(requestid.WithULID()))
+
+// Custom header name
+r.Use(requestid.New(requestid.WithHeader("X-Correlation-ID")))
 
 // Later in handlers:
 func handler(c *router.Context) {
@@ -470,14 +474,34 @@ func JWTAuth(secret string) router.HandlerFunc {
 
 ### Pattern: Request ID Middleware
 
+The built-in `requestid` middleware handles this pattern with UUID v7 or ULID:
+
+```go
+import "rivaas.dev/router/middleware/requestid"
+
+// UUID v7 (default) - time-ordered, 36 chars
+r.Use(requestid.New())
+
+// ULID - shorter, 26 chars
+r.Use(requestid.New(requestid.WithULID()))
+
+// Access in handlers
+func handler(c *router.Context) {
+    id := requestid.Get(c)  // Get from context
+    // Or from header: c.Response.Header().Get("X-Request-ID")
+}
+```
+
+If you need a custom implementation:
+
 ```go
 func RequestID() router.HandlerFunc {
     return func(c *router.Context) {
         // Check for existing request ID
         requestID := c.Request.Header.Get("X-Request-ID")
         if requestID == "" {
-            // Generate new UUID
-            requestID = uuid.New().String()
+            // Generate new UUID v7
+            requestID = uuid.Must(uuid.NewV7()).String()
         }
         
         // Store in request context and response header
