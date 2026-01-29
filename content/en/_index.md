@@ -195,6 +195,11 @@ Every package in Rivaas follows these design principles:
 - **Issue Tracker:** [Report bugs or request features](https://github.com/rivaas-dev/rivaas/issues)
 - **License:** Apache License 2.0
 
+## Learn More
+
+- **[About Rivaas →](/about/)** — Learn about our design philosophy and principles
+- **[Contributing →](/contributing/)** — Help improve Rivaas with your contributions
+
 ## Next Steps
 
 - **[Installation Guide →](/getting-started/)** — Install Rivaas and start building
