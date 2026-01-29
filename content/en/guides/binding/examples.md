@@ -393,6 +393,248 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
+## API with Converter Factories
+
+Using built-in converter factories for common patterns:
+
+```go
+package main
+
+import (
+    "net/http"
+    "time"
+    "github.com/google/uuid"
+    "rivaas.dev/binding"
+)
+
+type TaskStatus string
+
+const (
+    TaskPending   TaskStatus = "pending"
+    TaskActive    TaskStatus = "active"
+    TaskCompleted TaskStatus = "completed"
+)
+
+type Priority string
+
+const (
+    PriorityLow    Priority = "low"
+    PriorityMedium Priority = "medium"
+    PriorityHigh   Priority = "high"
+)
+
+// Global binder with converter factories
+var TaskBinder = binding.MustNew(
+    // UUID for task IDs
+    binding.WithConverter[uuid.UUID](uuid.Parse),
+    
+    // Status enum with validation
+    binding.WithConverter(binding.EnumConverter(
+        TaskPending,
+        TaskActive,
+        TaskCompleted,
+    )),
+    
+    // Priority enum with validation
+    binding.WithConverter(binding.EnumConverter(
+        PriorityLow,
+        PriorityMedium,
+        PriorityHigh,
+    )),
+    
+    // Friendly duration aliases
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "urgent":   1 * time.Hour,
+        "today":    8 * time.Hours,
+        "thisweek": 5 * 24 * time.Hour,
+        "nextweek": 14 * 24 * time.Hour,
+    })),
+    
+    // US date format for deadlines
+    binding.WithConverter(binding.TimeConverter("01/02/2006", "2006-01-02")),
+    
+    // Boolean with friendly values
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on", "enabled"},
+        []string{"no", "off", "disabled"},
+    )),
+)
+
+type CreateTaskRequest struct {
+    Title       string     `json:"title" validate:"required,min=3,max=100"`
+    Description string     `json:"description"`
+    Priority    Priority   `json:"priority" validate:"required"`
+    Deadline    time.Time  `json:"deadline"`
+    Estimate    time.Duration `json:"estimate"`
+    Assignee    uuid.UUID  `json:"assignee"`
+}
+
+type UpdateTaskRequest struct {
+    Title       *string        `json:"title,omitempty"`
+    Description *string        `json:"description,omitempty"`
+    Status      *TaskStatus    `json:"status,omitempty"`
+    Priority    *Priority      `json:"priority,omitempty"`
+    Deadline    *time.Time     `json:"deadline,omitempty"`
+    Completed   *bool          `json:"completed,omitempty"`
+}
+
+type ListTasksParams struct {
+    Status    TaskStatus `query:"status"`
+    Priority  Priority   `query:"priority"`
+    Assignee  uuid.UUID  `query:"assignee"`
+    DueIn     time.Duration `query:"due_in"`
+    Page      int        `query:"page" default:"1"`
+    PageSize  int        `query:"page_size" default:"20"`
+    ShowDone  bool       `query:"show_done"`
+}
+
+func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
+    // Bind and validate
+    req, err := TaskBinder.JSON[CreateTaskRequest](r.Body)
+    if err != nil {
+        respondError(w, http.StatusBadRequest, "Invalid request", err)
+        return
+    }
+    
+    if err := validation.Validate(req); err != nil {
+        respondError(w, http.StatusUnprocessableEntity, "Validation failed", err)
+        return
+    }
+    
+    // Create task
+    task := &Task{
+        ID:          uuid.New(),
+        Title:       req.Title,
+        Description: req.Description,
+        Priority:    req.Priority,
+        Status:      TaskPending,
+        Deadline:    req.Deadline,
+        Estimate:    req.Estimate,
+        Assignee:    req.Assignee,
+        CreatedAt:   time.Now(),
+    }
+    
+    if err := db.Create(task); err != nil {
+        respondError(w, http.StatusInternalServerError, "Failed to create task", err)
+        return
+    }
+    
+    respondJSON(w, http.StatusCreated, task)
+}
+
+func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
+    // Get task ID from path
+    taskID, err := uuid.Parse(chi.URLParam(r, "id"))
+    if err != nil {
+        respondError(w, http.StatusBadRequest, "Invalid task ID", err)
+        return
+    }
+    
+    // Bind partial update
+    req, err := TaskBinder.JSON[UpdateTaskRequest](r.Body)
+    if err != nil {
+        respondError(w, http.StatusBadRequest, "Invalid request", err)
+        return
+    }
+    
+    // Fetch existing task
+    task, err := db.GetTask(taskID)
+    if err != nil {
+        respondError(w, http.StatusNotFound, "Task not found", err)
+        return
+    }
+    
+    // Apply updates (only non-nil fields)
+    if req.Title != nil {
+        task.Title = *req.Title
+    }
+    if req.Description != nil {
+        task.Description = *req.Description
+    }
+    if req.Status != nil {
+        task.Status = *req.Status
+    }
+    if req.Priority != nil {
+        task.Priority = *req.Priority
+    }
+    if req.Deadline != nil {
+        task.Deadline = *req.Deadline
+    }
+    if req.Completed != nil && *req.Completed {
+        task.Status = TaskCompleted
+        task.CompletedAt = time.Now()
+    }
+    
+    task.UpdatedAt = time.Now()
+    
+    if err := db.Update(task); err != nil {
+        respondError(w, http.StatusInternalServerError, "Failed to update task", err)
+        return
+    }
+    
+    respondJSON(w, http.StatusOK, task)
+}
+
+func ListTasksHandler(w http.ResponseWriter, r *http.Request) {
+    // Bind query parameters with enum/duration validation
+    params, err := TaskBinder.Query[ListTasksParams](r.URL.Query())
+    if err != nil {
+        respondError(w, http.StatusBadRequest, "Invalid query parameters", err)
+        return
+    }
+    
+    // Build query
+    query := db.NewQuery()
+    
+    if params.Status != "" {
+        query = query.Where("status = ?", params.Status)
+    }
+    if params.Priority != "" {
+        query = query.Where("priority = ?", params.Priority)
+    }
+    if params.Assignee != uuid.Nil {
+        query = query.Where("assignee = ?", params.Assignee)
+    }
+    if params.DueIn > 0 {
+        dueDate := time.Now().Add(params.DueIn)
+        query = query.Where("deadline <= ?", dueDate)
+    }
+    if !params.ShowDone {
+        query = query.Where("status != ?", TaskCompleted)
+    }
+    
+    // Execute with pagination
+    tasks, total, err := query.Paginate(params.Page, params.PageSize).Execute()
+    if err != nil {
+        respondError(w, http.StatusInternalServerError, "Failed to list tasks", err)
+        return
+    }
+    
+    response := map[string]interface{}{
+        "data":        tasks,
+        "total":       total,
+        "page":        params.Page,
+        "page_size":   params.PageSize,
+        "total_pages": (total + params.PageSize - 1) / params.PageSize,
+    }
+    
+    respondJSON(w, http.StatusOK, response)
+}
+
+// Example requests that work with the converter factories:
+// POST /tasks
+// {
+//   "title": "Fix bug #123",
+//   "priority": "high",
+//   "deadline": "01/31/2026",
+//   "estimate": "urgent",
+//   "assignee": "550e8400-e29b-41d4-a716-446655440000"
+// }
+//
+// GET /tasks?status=active&priority=HIGH&due_in=today&show_done=yes
+// Note: enums are case-insensitive, duration uses friendly aliases, bool uses "yes"
+```
+
 ## Webhook Handler with Signature Verification
 
 Process webhooks with headers:

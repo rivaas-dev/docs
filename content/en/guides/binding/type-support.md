@@ -570,6 +570,123 @@ type Params struct {
 // URL: ?status=active
 ```
 
+### Using Converter Factories
+
+The binding package provides ready-made converter factories that make it easier to handle common custom type patterns.
+
+#### Time Parsing with Custom Formats
+
+```go
+import "rivaas.dev/binding"
+
+binder := binding.MustNew(
+    binding.WithConverter(binding.TimeConverter(
+        "01/02/2006",      // US format
+        "2006-01-02",      // ISO format
+        "02-Jan-2006",     // Short month
+    )),
+)
+
+type Event struct {
+    Date time.Time `query:"date"`
+}
+
+// Works with any of these formats:
+// ?date=01/28/2026
+// ?date=2026-01-28
+// ?date=28-Jan-2026
+event, err := binder.Query[Event](values)
+```
+
+#### Duration with Friendly Aliases
+
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "quick":  5 * time.Minute,
+        "normal": 30 * time.Minute,
+        "long":   2 * time.Hour,
+    })),
+)
+
+type Config struct {
+    Timeout time.Duration `query:"timeout"`
+}
+
+// All of these work:
+// ?timeout=quick   → 5 minutes
+// ?timeout=30m     → 30 minutes (standard Go format)
+// ?timeout=2h30m   → 2 hours 30 minutes
+config, err := binder.Query[Config](values)
+```
+
+#### String Enums with Validation
+
+```go
+type Priority string
+
+const (
+    PriorityLow    Priority = "low"
+    PriorityMedium Priority = "medium"
+    PriorityHigh   Priority = "high"
+)
+
+binder := binding.MustNew(
+    binding.WithConverter(binding.EnumConverter(
+        PriorityLow,
+        PriorityMedium,
+        PriorityHigh,
+    )),
+)
+
+type Task struct {
+    Priority Priority `query:"priority"`
+}
+
+// ?priority=high    ✓ Works
+// ?priority=HIGH    ✓ Works (case-insensitive)
+// ?priority=urgent  ✗ Error: must be one of: low, medium, high
+task, err := binder.Query[Task](values)
+```
+
+#### Custom Boolean Values
+
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on", "enabled"},    // truthy values
+        []string{"no", "off", "disabled"},   // falsy values
+    )),
+)
+
+type Settings struct {
+    Feature bool `query:"feature"`
+}
+
+// ?feature=yes      → true
+// ?feature=enabled  → true
+// ?feature=OFF      → false (case-insensitive)
+// ?feature=no       → false
+settings, err := binder.Query[Settings](values)
+```
+
+#### Third-Party Types
+
+```go
+import "github.com/google/uuid"
+
+binder := binding.MustNew(
+    binding.WithConverter[uuid.UUID](uuid.Parse),
+)
+
+type User struct {
+    ID uuid.UUID `query:"id"`
+}
+
+// ?id=550e8400-e29b-41d4-a716-446655440000
+user, err := binder.Query[User](values)
+```
+
 ## Type Conversion Matrix
 
 | Source Type | Target Type | Conversion | Example |

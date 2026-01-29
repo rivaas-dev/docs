@@ -410,6 +410,122 @@ binder := binding.MustNew(
 )
 ```
 
+## Converter Factory Functions
+
+Ready-to-use converter factories for common type patterns.
+
+### TimeConverter
+
+```go
+func TimeConverter(layouts ...string) func(string) (time.Time, error)
+```
+
+Creates a converter that tries parsing time strings using the provided formats in order.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.TimeConverter(
+        "2006-01-02",      // ISO format
+        "01/02/2006",      // US format
+        "02-Jan-2006",     // Short month
+    )),
+)
+
+type Event struct {
+    Date time.Time `query:"date"`
+}
+
+// Works with: ?date=2026-01-28 or ?date=01/28/2026 or ?date=28-Jan-2026
+event, err := binder.Query[Event](values)
+```
+
+### DurationConverter
+
+```go
+func DurationConverter(aliases map[string]time.Duration) func(string) (time.Duration, error)
+```
+
+Creates a converter that parses duration strings. It supports both standard Go duration format (like `"30m"`, `"2h30m"`) and custom aliases you define.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "quick":  5 * time.Minute,
+        "normal": 30 * time.Minute,
+        "long":   2 * time.Hour,
+    })),
+)
+
+type Config struct {
+    Timeout time.Duration `query:"timeout"`
+}
+
+// Works with: ?timeout=quick or ?timeout=30m or ?timeout=2h30m
+config, err := binder.Query[Config](values)
+```
+
+### EnumConverter
+
+```go
+func EnumConverter[T ~string](allowed ...T) func(string) (T, error)
+```
+
+Creates a converter that checks if a string value is one of the allowed options. Matching is case-insensitive.
+
+**Example:**
+```go
+type Status string
+
+const (
+    StatusActive   Status = "active"
+    StatusPending  Status = "pending"
+    StatusDisabled Status = "disabled"
+)
+
+binder := binding.MustNew(
+    binding.WithConverter(binding.EnumConverter(
+        StatusActive,
+        StatusPending,
+        StatusDisabled,
+    )),
+)
+
+type User struct {
+    Status Status `query:"status"`
+}
+
+// Works with: ?status=active or ?status=ACTIVE (case-insensitive)
+// Returns error for: ?status=invalid
+user, err := binder.Query[User](values)
+```
+
+### BoolConverter
+
+```go
+func BoolConverter(truthy, falsy []string) func(string) (bool, error)
+```
+
+Creates a converter that parses boolean values using your custom truthy and falsy strings. Matching is case-insensitive.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on", "enabled", "1"},   // truthy
+        []string{"no", "off", "disabled", "0"},  // falsy
+    )),
+)
+
+type Settings struct {
+    Notifications bool `query:"notifications"`
+}
+
+// Works with: ?notifications=yes, ?notifications=ON, ?notifications=off
+settings, err := binder.Query[Settings](values)
+```
+
 ## Helper Functions
 
 ### MapGetter

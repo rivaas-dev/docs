@@ -221,6 +221,183 @@ user, err := binder.Query[User](values)
 - Domain-specific types
 - Third-party types
 
+### Converter Factories
+
+The binding package provides ready-to-use converter factories for common patterns. These are functions that return converter functions you can use with `WithConverter`.
+
+#### TimeConverter
+
+```go
+func TimeConverter(layouts ...string) func(string) (time.Time, error)
+```
+
+Creates a converter that parses time strings using the provided date formats. Tries each format in order until one succeeds.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    // Try ISO format first, then US format
+    binding.WithConverter(binding.TimeConverter(
+        "2006-01-02",
+        "01/02/2006",
+    )),
+)
+
+type Event struct {
+    Date time.Time `query:"date"`
+}
+
+// Works with: ?date=2026-01-28 or ?date=01/28/2026
+event, err := binder.Query[Event](values)
+```
+
+**Common layouts:**
+- `"2006-01-02"` - ISO date (YYYY-MM-DD)
+- `"01/02/2006"` - US format (MM/DD/YYYY)
+- `"02-Jan-2006"` - Short month name
+- `"2006-01-02 15:04:05"` - DateTime with seconds
+
+#### DurationConverter
+
+```go
+func DurationConverter(aliases map[string]time.Duration) func(string) (time.Duration, error)
+```
+
+Creates a converter that parses duration strings. Supports both standard Go duration format (like `"30m"`, `"2h30m"`) and custom aliases you define.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "quick":   5 * time.Minute,
+        "normal":  30 * time.Minute,
+        "long":    2 * time.Hour,
+    })),
+)
+
+type Config struct {
+    Timeout time.Duration `query:"timeout"`
+}
+
+// All of these work:
+// ?timeout=quick      → 5 minutes
+// ?timeout=30m        → 30 minutes
+// ?timeout=2h30m      → 2 hours 30 minutes
+config, err := binder.Query[Config](values)
+```
+
+**Use Cases:**
+- User-friendly duration aliases
+- Cache TTL presets
+- Timeout configurations
+- Fallback to standard durations
+
+#### EnumConverter
+
+```go
+func EnumConverter[T ~string](allowed ...T) func(string) (T, error)
+```
+
+Creates a converter that validates string values against a set of allowed options. Matching is case-insensitive.
+
+**Example:**
+```go
+type Status string
+
+const (
+    StatusActive   Status = "active"
+    StatusPending  Status = "pending"
+    StatusDisabled Status = "disabled"
+)
+
+binder := binding.MustNew(
+    binding.WithConverter(binding.EnumConverter(
+        StatusActive,
+        StatusPending,
+        StatusDisabled,
+    )),
+)
+
+type User struct {
+    Status Status `query:"status"`
+}
+
+// ?status=active   ✓ OK
+// ?status=ACTIVE   ✓ OK (case-insensitive)
+// ?status=invalid  ✗ Error: must be one of: active, pending, disabled
+user, err := binder.Query[User](values)
+```
+
+**Use Cases:**
+- String enums with validation
+- Status fields
+- Category/type fields
+- Prevent invalid values
+
+#### BoolConverter
+
+```go
+func BoolConverter(truthy, falsy []string) func(string) (bool, error)
+```
+
+Creates a converter that parses boolean values using custom truthy and falsy strings. Matching is case-insensitive.
+
+**Example:**
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on", "enabled", "1"},   // truthy
+        []string{"no", "off", "disabled", "0"},  // falsy
+    )),
+)
+
+type Settings struct {
+    Notifications bool `query:"notifications"`
+}
+
+// ?notifications=yes       → true
+// ?notifications=enabled   → true
+// ?notifications=OFF       → false (case-insensitive)
+// ?notifications=0         → false
+settings, err := binder.Query[Settings](values)
+```
+
+**Use Cases:**
+- User-friendly boolean inputs
+- Feature flags
+- Toggle settings
+- Forms with yes/no options
+
+### Combining Converters
+
+You can use multiple converters together, including both factories and custom converters:
+
+```go
+binder := binding.MustNew(
+    // Time with custom formats
+    binding.WithConverter(binding.TimeConverter("01/02/2006", "2006-01-02")),
+    
+    // Duration with friendly names
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "short": 5 * time.Minute,
+        "long":  1 * time.Hour,
+    })),
+    
+    // Status enum
+    binding.WithConverter(binding.EnumConverter("active", "pending", "disabled")),
+    
+    // Boolean with custom values
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on"},
+        []string{"no", "off"},
+    )),
+    
+    // Third-party types
+    binding.WithConverter[uuid.UUID](uuid.Parse),
+    binding.WithConverter[decimal.Decimal](decimal.NewFromString),
+)
+```
+
 ### WithTimeLayouts
 
 ```go

@@ -56,6 +56,147 @@ binder := binding.MustNew(
 )
 ```
 
+### Built-in Converter Factories
+
+The binding package provides ready-to-use converter factories for common patterns. These make it easier to handle dates, durations, enums, and custom boolean values.
+
+#### TimeConverter
+
+Parse time strings with custom date formats.
+
+```go
+binder := binding.MustNew(
+    // US date format: 01/15/2026
+    binding.WithConverter(binding.TimeConverter("01/02/2006")),
+)
+
+type Event struct {
+    Date time.Time `query:"date"`
+}
+
+// URL: ?date=01/15/2026
+event, err := binder.Query[Event](values)
+```
+
+You can also provide multiple formats as fallbacks:
+
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.TimeConverter(
+        "2006-01-02",           // ISO date
+        "01/02/2006",           // US format
+        "02-Jan-2006",          // Short month
+        "2006-01-02 15:04:05",  // DateTime
+    )),
+)
+```
+
+#### DurationConverter
+
+Parse duration strings with friendly aliases.
+
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "short":  5 * time.Minute,
+        "medium": 30 * time.Minute,
+        "long":   2 * time.Hour,
+    })),
+)
+
+type CacheConfig struct {
+    TTL time.Duration `query:"ttl"`
+}
+
+// URL: ?ttl=short  → 5 minutes
+// URL: ?ttl=30m    → 30 minutes (standard Go duration)
+// URL: ?ttl=2h30m  → 2 hours 30 minutes
+config, err := binder.Query[CacheConfig](values)
+```
+
+#### EnumConverter
+
+Validate string values against a set of allowed options.
+
+```go
+type Status string
+
+const (
+    StatusActive   Status = "active"
+    StatusPending  Status = "pending"
+    StatusDisabled Status = "disabled"
+)
+
+binder := binding.MustNew(
+    binding.WithConverter(binding.EnumConverter(
+        StatusActive,
+        StatusPending,
+        StatusDisabled,
+    )),
+)
+
+type User struct {
+    Status Status `query:"status"`
+}
+
+// URL: ?status=active  ✓ OK
+// URL: ?status=ACTIVE  ✓ OK (case-insensitive)
+// URL: ?status=invalid ✗ Error: must be one of: active, pending, disabled
+user, err := binder.Query[User](values)
+```
+
+#### BoolConverter
+
+Parse boolean values with custom truthy/falsy strings.
+
+```go
+binder := binding.MustNew(
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on", "enabled", "1"},   // truthy values
+        []string{"no", "off", "disabled", "0"},  // falsy values
+    )),
+)
+
+type Settings struct {
+    Notifications bool `query:"notifications"`
+}
+
+// URL: ?notifications=yes      → true
+// URL: ?notifications=enabled  → true
+// URL: ?notifications=no       → false
+// URL: ?notifications=OFF      → false (case-insensitive)
+settings, err := binder.Query[Settings](values)
+```
+
+#### Combining Converter Factories
+
+You can use multiple converter factories together:
+
+```go
+binder := binding.MustNew(
+    // Custom time formats
+    binding.WithConverter(binding.TimeConverter("01/02/2006")),
+    
+    // Duration with aliases
+    binding.WithConverter(binding.DurationConverter(map[string]time.Duration{
+        "quick": 5 * time.Minute,
+        "slow":  1 * time.Hour,
+    })),
+    
+    // Status enum
+    binding.WithConverter(binding.EnumConverter("active", "pending", "disabled")),
+    
+    // Boolean with custom values
+    binding.WithConverter(binding.BoolConverter(
+        []string{"yes", "on"},
+        []string{"no", "off"},
+    )),
+    
+    // Third-party types
+    binding.WithConverter[uuid.UUID](uuid.Parse),
+)
+```
+
 ## Custom ValueGetter
 
 Implement custom data sources.

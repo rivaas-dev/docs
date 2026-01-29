@@ -32,6 +32,39 @@ type ValidationError struct {
 }
 ```
 
+### Enhanced Error Messages
+
+The binding package now provides helpful hints when type conversion fails. These hints suggest what might have gone wrong and how to fix it.
+
+**Example error messages with hints:**
+
+```go
+type Request struct {
+    Age   int       `query:"age"`
+    Price float64   `query:"price"`
+    When  time.Time `query:"when"`
+    Active bool     `query:"active"`
+}
+
+// URL: ?age=10.5
+// Error: cannot bind field "Age" from query: strconv.ParseInt: parsing "10.5": invalid syntax
+//        Hint: value looks like a floating-point number; use float32 or float64 instead
+
+// URL: ?price=twenty
+// Error: cannot bind field "Price" from query: strconv.ParseFloat: parsing "twenty": invalid syntax
+//        Hint: value "twenty" doesn't look like a number
+
+// URL: ?when=yesterday
+// Error: cannot bind field "When" from query: unable to parse time "yesterday" (tried 8 layouts)
+//        Hint: common formats: "2006-01-02T15:04:05Z07:00", "2006-01-02", "01/02/2006"
+
+// URL: ?active=maybe
+// Error: cannot bind field "Active" from query: strconv.ParseBool: parsing "maybe": invalid syntax
+//        Hint: use one of: true, false, 1, 0, t, f, yes, no, y, n
+```
+
+These contextual hints make it easier to understand what went wrong and fix the issue quickly.
+
 ## Basic Error Handling
 
 ### Simple Pattern
