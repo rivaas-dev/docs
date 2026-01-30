@@ -53,6 +53,20 @@ cfg := config.MustNew(
 Files are processed in order. Later files override values from earlier ones, enabling environment-specific overrides.
 {{< /alert >}}
 
+### Environment Variables in Paths
+
+You can use environment variables in file paths. This is useful when different environments use different directories:
+
+```go
+// Use ${VAR} or $VAR in paths
+cfg := config.MustNew(
+    config.WithFile("${CONFIG_DIR}/app.yaml"),      // Expands to actual directory
+    config.WithFile("${APP_ENV}/overrides.yaml"),   // e.g., "production/overrides.yaml"
+)
+```
+
+This works with all path-based options: `WithFile`, `WithFileAs`, `WithConsul`, `WithConsulAs`, `WithFileDumper`, and `WithFileDumperAs`.
+
 ### Built-in Format Support
 
 The config package includes built-in codecs for common formats:

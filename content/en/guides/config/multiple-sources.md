@@ -284,7 +284,25 @@ cfg := config.MustNew(
 
 ## Multi-Environment Pattern
 
-A common pattern for handling multiple environments:
+There are two ways to handle environment-specific configuration.
+
+### Using Path Expansion (Recommended)
+
+The simplest approach is to use environment variables directly in paths:
+
+```go
+cfg := config.MustNew(
+    config.WithFile("config.yaml"),              // Base config
+    config.WithFile("${APP_ENV}/config.yaml"),   // Environment-specific (e.g., "production/config.yaml")
+    config.WithEnv("MYAPP_"),                    // Environment variables
+)
+```
+
+This is cleaner and works great when your config files are in environment-named folders.
+
+### Using String Concatenation
+
+If you need more control or want to set a default, use Go code:
 
 ```go
 package main

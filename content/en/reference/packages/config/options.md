@@ -19,6 +19,54 @@ type Option func(*Config) error
 
 Options are functions that configure a Config instance during initialization. They are passed to `New()` or `MustNew()`.
 
+## Environment Variable Expansion
+
+All path-based options (`WithFile`, `WithFileAs`, `WithConsul`, `WithConsulAs`, `WithFileDumper`, `WithFileDumperAs`) support environment variable expansion in paths. This makes it easy to use different paths based on your environment.
+
+**Supported syntax:**
+- `${VAR}` - Braced variable name
+- `$VAR` - Simple variable name
+
+**Note:** Shell-style defaults like `${VAR:-default}` are NOT supported. Set defaults in your code before calling the option.
+
+**Examples:**
+
+```go
+// Environment-based Consul path
+config.WithConsul("${APP_ENV}/service.yaml")
+// When APP_ENV=production, expands to: "production/service.yaml"
+
+// Config directory from environment
+config.WithFile("${CONFIG_DIR}/app.yaml")
+// When CONFIG_DIR=/etc/myapp, expands to: "/etc/myapp/app.yaml"
+
+// Multiple variables
+config.WithFile("${REGION}/${ENV}/settings.yaml")
+// When REGION=us-west and ENV=staging, expands to: "us-west/staging/settings.yaml"
+
+// Output directory
+config.WithFileDumper("${LOG_DIR}/effective-config.yaml")
+// When LOG_DIR=/var/log, expands to: "/var/log/effective-config.yaml"
+```
+
+**Handling unset variables:**
+
+If an environment variable is not set, it expands to an empty string:
+
+```go
+// If APP_ENV is not set:
+config.WithConsul("${APP_ENV}/service.yaml")  // Expands to: "/service.yaml"
+```
+
+To provide defaults, set them in your code:
+
+```go
+if os.Getenv("APP_ENV") == "" {
+    os.Setenv("APP_ENV", "development")
+}
+config.WithConsul("${APP_ENV}/service.yaml")  // Uses "development" if not set
+```
+
 ## Source Options
 
 Source options specify where configuration data comes from.

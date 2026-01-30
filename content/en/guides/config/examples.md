@@ -110,6 +110,59 @@ go test -v
 go run main.go
 ```
 
+## Dynamic Paths with Environment Variables
+
+You can use environment variables in file and Consul paths. This makes it easy to use different configurations based on your environment.
+
+### Basic Path Expansion
+
+```go
+// Set APP_ENV=production in your environment
+cfg := config.MustNew(
+    config.WithFile("config.yaml"),            // Base config
+    config.WithFile("${APP_ENV}/config.yaml"), // Becomes "production/config.yaml"
+)
+```
+
+### Multiple Variables
+
+You can use several variables in one path:
+
+```go
+// Set REGION=us-west and ENV=staging
+cfg := config.MustNew(
+    config.WithFile("${REGION}/${ENV}/app.yaml"), // Becomes "us-west/staging/app.yaml"
+)
+```
+
+### Consul Paths
+
+This also works with Consul:
+
+```go
+// Set APP_ENV=production
+cfg := config.MustNew(
+    config.WithFile("config.yaml"),
+    config.WithConsul("${APP_ENV}/service.yaml"), // Fetches from Consul: "production/service.yaml"
+)
+```
+
+### Output Paths
+
+You can also use variables in dumper paths:
+
+```go
+// Set LOG_DIR=/var/log/myapp
+cfg := config.MustNew(
+    config.WithFile("config.yaml"),
+    config.WithFileDumper("${LOG_DIR}/effective-config.yaml"), // Writes to /var/log/myapp/
+)
+```
+
+{{< alert color="warning" >}}
+**Important:** Shell-style defaults like `${VAR:-default}` are NOT supported. If a variable is not set, it expands to an empty string. Set defaults in your code before calling the config options.
+{{< /alert >}}
+
 ## Production Configuration Example
 
 Here's a complete production-ready configuration pattern:

@@ -20,6 +20,7 @@ The Rivaas Config package provides configuration management for Go applications.
 
 - **Easy Integration**: Simple and intuitive API
 - **Flexible Sources**: Load from files, environment variables (with custom prefixes), Consul, and easily extend with custom sources
+- **Dynamic Paths**: Use `${VAR}` in file and Consul paths for environment-based configuration
 - **Format Agnostic**: Supports JSON, YAML, TOML, and other formats via extensible codecs
 - **Type Casting**: Built-in caster codecs for automatic type conversion (bool, int, float, time, duration, etc.)
 - **Hierarchical Merging**: Configurations from multiple sources are merged, with later sources overriding earlier ones
