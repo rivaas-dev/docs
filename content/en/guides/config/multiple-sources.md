@@ -102,11 +102,11 @@ config.WithFile("app.toml")  // TOML
 
 ### Explicit Format
 
-Specify format explicitly when needed:
+Use explicit format when the file name doesn't have an extension:
 
 ```go
-config.WithFileSource("config.txt", codec.TypeYAML)
-config.WithFileSource("data.conf", codec.TypeJSON)
+config.WithFileAs("config.txt", codec.TypeYAML)
+config.WithFileAs("data.conf", codec.TypeJSON)
 ```
 
 ## Environment Variable Sources
@@ -124,7 +124,7 @@ Environment variables override file-based configuration. See [Environment Variab
 
 ## Content Sources
 
-Load configuration from byte slices (useful for testing or dynamic configuration):
+Load configuration from byte slices. This is useful for testing or when you have dynamic configuration:
 
 ```go
 configData := []byte(`{
@@ -135,7 +135,7 @@ configData := []byte(`{
 }`)
 
 cfg := config.MustNew(
-    config.WithContentSource(configData, codec.TypeJSON),
+    config.WithContent(configData, codec.TypeJSON),
 )
 ```
 
@@ -147,7 +147,7 @@ cfg := config.MustNew(
 func TestConfig(t *testing.T) {
     testConfig := []byte(`port: 8080`)
     cfg := config.MustNew(
-        config.WithContentSource(testConfig, codec.TypeYAML),
+        config.WithContent(testConfig, codec.TypeYAML),
     )
     cfg.Load(context.Background())
     
@@ -163,7 +163,7 @@ resp, _ := http.Get("https://config-server/config.json")
 configBytes, _ := io.ReadAll(resp.Body)
 
 cfg := config.MustNew(
-    config.WithContentSource(configBytes, codec.TypeJSON),
+    config.WithContent(configBytes, codec.TypeJSON),
 )
 ```
 
@@ -175,15 +175,15 @@ Load configuration from HashiCorp Consul:
 
 ```go
 cfg := config.MustNew(
-    config.WithConsul("production/service"),
+    config.WithConsul("production/service.yaml"),
 )
 ```
 
 {{< alert color="info" >}}
-The Consul source automatically looks up `CONSUL_HTTP_ADDR` and `CONSUL_HTTP_TOKEN` environment variables. You can override these by setting the appropriate environment variables.
+**Works without Consul:** If `CONSUL_HTTP_ADDR` isn't set, `WithConsul` does nothing. This means you can run your app locally without Consul. When you deploy to production, just set the environment variable and Consul will be used.
 {{< /alert >}}
 
-**Environment variables for Consul:**
+**Environment variables:**
 
 ```bash
 export CONSUL_HTTP_ADDR=consul.example.com:8500
@@ -200,7 +200,7 @@ cfg := config.MustNew(
 )
 ```
 
-The format is auto-detected from the key path extension (`.json`, `.yaml`, `.toml`).
+The format is detected from the key path extension (`.json`, `.yaml`, `.toml`).
 
 ## Custom Sources
 
@@ -339,7 +339,7 @@ cfg := config.MustNew(
     config.WithFile("config.yaml"),
     config.WithFile("config.prod.yaml"),
     config.WithEnv("MYAPP_"),
-    config.WithFileDumper("effective-config.yaml", codec.TypeYAML),
+    config.WithFileDumper("effective-config.yaml"),
 )
 
 cfg.Load(context.Background())
@@ -353,7 +353,7 @@ cfg.Dump(context.Background())  // Writes merged config to effective-config.yaml
 See the final merged configuration:
 
 ```go
-config.WithFileDumper("debug-config.json", codec.TypeJSON)
+config.WithFileDumper("debug-config.json")
 ```
 
 **Configuration Snapshots:**
@@ -363,7 +363,7 @@ Save configuration state for auditing:
 ```go
 timestamp := time.Now().Format("20060102-150405")
 filename := fmt.Sprintf("config-snapshot-%s.yaml", timestamp)
-config.WithFileDumper(filename, codec.TypeYAML)
+config.WithFileDumper(filename)
 ```
 
 **Configuration Templates:**
@@ -373,7 +373,7 @@ Generate configuration files:
 ```go
 cfg := config.MustNew(
     config.WithEnv("MYAPP_"),
-    config.WithFileDumper("generated-config.yaml", codec.TypeYAML),
+    config.WithFileDumper("generated-config.yaml"),
 )
 ```
 
@@ -509,7 +509,7 @@ func main() {
         config.WithBinding(&appConfig),
         
         // Dump effective config for debugging
-        config.WithFileDumper("effective-config.yaml", codec.TypeYAML),
+        config.WithFileDumper("effective-config.yaml"),
     )
 
     if err := cfg.Load(context.Background()); err != nil {

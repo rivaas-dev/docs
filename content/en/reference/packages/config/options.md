@@ -110,7 +110,9 @@ cfg := config.MustNew(
 func WithConsul(path string) Option
 ```
 
-Loads configuration from HashiCorp Consul with automatic format detection.
+Loads configuration from HashiCorp Consul. The format is detected from the file extension.
+
+**Works without Consul:** If `CONSUL_HTTP_ADDR` isn't set, this option does nothing. This means you can run your app locally without Consul. When you deploy to production, just set the environment variable and Consul will be used.
 
 **Parameters:**
 - `path` - Consul key path (format detected from extension)
@@ -119,14 +121,14 @@ Loads configuration from HashiCorp Consul with automatic format detection.
 
 ```go
 cfg := config.MustNew(
-    config.WithConsul("production/service.json"),  // Auto-detects JSON
-    config.WithConsul("staging/config.yaml"),      // Auto-detects YAML
+    config.WithFile("config.yaml"),
+    config.WithConsul("production/service.json"),  // Skipped in dev, used in prod
 )
 ```
 
-**Configuration:**
-- Uses `CONSUL_HTTP_ADDR` environment variable for Consul address
-- Uses `CONSUL_HTTP_TOKEN` environment variable for authentication
+**Environment variables:**
+- `CONSUL_HTTP_ADDR` - Consul server address (required for Consul to work)
+- `CONSUL_HTTP_TOKEN` - Access token for authentication (optional)
 
 ### WithConsulAs
 
@@ -134,19 +136,26 @@ cfg := config.MustNew(
 func WithConsulAs(path string, codecType codec.Type) Option
 ```
 
-Loads configuration from Consul with explicit format specification.
+Loads configuration from Consul with explicit format. Use this when the key path doesn't have an extension.
+
+**Works without Consul:** Like `WithConsul`, this option does nothing if `CONSUL_HTTP_ADDR` isn't set. Your code works the same in dev and prod.
 
 **Parameters:**
 - `path` - Consul key path
-- `codecType` - Codec type
+- `codecType` - Codec type (like `codec.TypeYAML` or `codec.TypeJSON`)
 
 **Example:**
 
 ```go
 cfg := config.MustNew(
-    config.WithConsulAs("config/app", codec.TypeYAML),
+    config.WithFile("config.yaml"),
+    config.WithConsulAs("config/app", codec.TypeYAML),  // No extension in key
 )
 ```
+
+**Environment variables:**
+- `CONSUL_HTTP_ADDR` - Consul server address (required for Consul to work)
+- `CONSUL_HTTP_TOKEN` - Access token for authentication (optional)
 
 ### WithContent
 
@@ -206,42 +215,6 @@ cfg := config.MustNew(
     config.WithSource(&CustomSource{}),
 )
 ```
-
-### Legacy Source Options
-
-These options are older aliases maintained for compatibility:
-
-#### WithFileSource
-
-```go
-func WithFileSource(path string, codecType codec.Type) Option
-```
-
-Equivalent to `WithFileAs`. Use `WithFileAs` for new code.
-
-#### WithContentSource
-
-```go
-func WithContentSource(data []byte, codecType codec.Type) Option
-```
-
-Equivalent to `WithContent`. Use `WithContent` for new code.
-
-#### WithOSEnvVarSource
-
-```go
-func WithOSEnvVarSource(prefix string) Option
-```
-
-Equivalent to `WithEnv`. Use `WithEnv` for new code.
-
-#### WithConsulSource
-
-```go
-func WithConsulSource(path string, codecType codec.Type) Option
-```
-
-Equivalent to `WithConsulAs`. Use `WithConsulAs` for new code.
 
 ## Validation Options
 

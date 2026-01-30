@@ -459,7 +459,7 @@ database:
     var appConfig AppConfig
     
     cfg := config.MustNew(
-        config.WithContentSource(testConfig, codec.TypeYAML),
+        config.WithContent(testConfig, codec.TypeYAML),
         config.WithBinding(&appConfig),
     )
     
@@ -486,7 +486,7 @@ server:
     var appConfig AppConfig
     
     cfg := config.MustNew(
-        config.WithContentSource(invalidConfig, codec.TypeYAML),
+        config.WithContent(invalidConfig, codec.TypeYAML),
         config.WithBinding(&appConfig),
     )
     

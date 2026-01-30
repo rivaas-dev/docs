@@ -173,7 +173,7 @@ import (
 
 func main() {
     cfg := config.MustNew(
-        config.WithFileSource("config.ini", "ini"),
+        config.WithFileAs("config.ini", "ini"),
     )
     
     if err := cfg.Load(context.Background()); err != nil {
@@ -442,7 +442,7 @@ Include usage examples:
 //   import _ "yourmodule/mycodec"
 //
 //   cfg := config.MustNew(
-//       config.WithFileSource("config.xyz", "xyz"),
+//       config.WithFileAs("config.xyz", "xyz"),
 //   )
 //
 type MyCodec struct{}
@@ -464,8 +464,8 @@ import (
 func main() {
     cfg := config.MustNew(
         config.WithFile("config.yaml"),           // Built-in YAML
-        config.WithFileSource("config.xml", "xml"), // Custom XML
-        config.WithFileSource("config.ini", "ini"), // Custom INI
+        config.WithFileAs("config.xml", "xml"), // Custom XML
+        config.WithFileAs("config.ini", "ini"), // Custom INI
         config.WithEnv("MYAPP_"),                  // Built-in EnvVar
     )
 

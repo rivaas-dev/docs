@@ -159,7 +159,7 @@ Writes the current configuration state to all configured dumpers.
 ```go
 cfg := config.MustNew(
     config.WithFile("config.yaml"),
-    config.WithFileDumper("output.yaml", codec.TypeYAML),
+    config.WithFileDumper("output.yaml"),
 )
 cfg.Load(context.Background())
 cfg.Dump(context.Background())  // Writes to output.yaml
