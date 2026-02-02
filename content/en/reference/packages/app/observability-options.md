@@ -23,6 +23,8 @@ app.WithObservability(
 )
 ```
 
+You can also configure observability using environment variables. See [Environment Variables Guide](/guides/app/environment-variables/) for details.
+
 ## Component Options
 
 ### WithLogging
@@ -33,6 +35,12 @@ func WithLogging(opts ...logging.Option) ObservabilityOption
 
 Enables structured logging with slog. Service name/version automatically injected.
 
+**Environment variable alternative:**
+```bash
+export RIVAAS_LOG_LEVEL=info      # debug, info, warn, error
+export RIVAAS_LOG_FORMAT=json     # json, text, console
+```
+
 ### WithMetrics
 
 ```go
@@ -41,6 +49,13 @@ func WithMetrics(opts ...metrics.Option) ObservabilityOption
 
 Enables metrics collection (Prometheus by default). Service name/version automatically injected.
 
+**Environment variable alternative:**
+```bash
+export RIVAAS_METRICS_EXPORTER=prometheus  # or otlp, stdout
+export RIVAAS_METRICS_ADDR=:9090          # Optional: custom Prometheus address
+export RIVAAS_METRICS_PATH=/metrics        # Optional: custom Prometheus path
+```
+
 ### WithTracing
 
 ```go
@@ -48,6 +63,12 @@ func WithTracing(opts ...tracing.Option) ObservabilityOption
 ```
 
 Enables distributed tracing. Service name/version automatically injected.
+
+**Environment variable alternative:**
+```bash
+export RIVAAS_TRACING_EXPORTER=otlp        # or otlp-http, stdout
+export RIVAAS_TRACING_ENDPOINT=localhost:4317  # Required for otlp/otlp-http
+```
 
 ## Metrics Server Options
 

@@ -22,6 +22,31 @@ The app package provides unified configuration for the three pillars of observab
 
 All three pillars use the same functional options pattern. They automatically receive service metadata (name and version) from app-level configuration.
 
+## Environment Variable Configuration
+
+You can configure observability using environment variables. This is useful for container deployments and following 12-factor app principles.
+
+See [Environment Variables](../environment-variables/) for the complete guide.
+
+Quick example:
+
+```bash
+export RIVAAS_METRICS_EXPORTER=prometheus
+export RIVAAS_TRACING_EXPORTER=otlp
+export RIVAAS_TRACING_ENDPOINT=localhost:4317
+export RIVAAS_LOG_LEVEL=info
+export RIVAAS_LOG_FORMAT=json
+```
+
+```go
+app, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithEnv(), // Reads environment variables
+)
+```
+
+Environment variables override code configuration, making it easy to deploy the same code to different environments.
+
 ## Unified Observability Configuration
 
 Configure all three pillars in one place.
