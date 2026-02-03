@@ -18,7 +18,8 @@ The Rivaas Binding package provides high-performance request data binding for Go
 
 ## Features
 
-- **Multiple Sources** - Query, path, form, header, cookie, JSON, XML, YAML, TOML, MessagePack, Protocol Buffers
+- **Multiple Sources** - Query, path, form, multipart, header, cookie, JSON, XML, YAML, TOML, MessagePack, Protocol Buffers
+- **File Uploads** - Handle file uploads with multipart forms seamlessly
 - **Type Safe** - Generic API for compile-time type safety
 - **Zero Allocation** - Struct reflection info cached for performance
 - **Flexible** - Nested structs, slices, maps, pointers, custom types
@@ -94,12 +95,13 @@ Follow these guides to master request data binding with Rivaas:
 2. [**Basic Usage**](basic-usage/) - Learn the fundamentals of binding data
 3. [**Query Parameters**](query-parameters/) - Work with URL query strings
 4. [**JSON Binding**](json-binding/) - Handle JSON request bodies
-5. [**Multi-Source**](multi-source/) - Combine data from multiple sources
-6. [**Struct Tags**](struct-tags/) - Master struct tag syntax and options
-7. [**Type Support**](type-support/) - Built-in and custom type conversion
-8. [**Error Handling**](error-handling/) - Handle binding errors gracefully
-9. [**Advanced Usage**](advanced-usage/) - Custom getters, streaming, and more
-10. [**Examples**](examples/) - Real-world integration patterns
+5. [**Multipart Forms**](multipart-forms/) - Handle file uploads with form data
+6. [**Multi-Source**](multi-source/) - Combine data from multiple sources
+7. [**Struct Tags**](struct-tags/) - Master struct tag syntax and options
+8. [**Type Support**](type-support/) - Built-in and custom type conversion
+9. [**Error Handling**](error-handling/) - Handle binding errors gracefully
+10. [**Advanced Usage**](advanced-usage/) - Custom getters, streaming, and more
+11. [**Examples**](examples/) - Real-world integration patterns
 
 ## Supported Sources
 
@@ -108,6 +110,7 @@ Follow these guides to master request data binding with Rivaas:
 | Query | `Query[T]()` | URL query parameters (`?name=value`) |
 | Path | `Path[T]()` | URL path parameters (`/users/:id`) |
 | Form | `Form[T]()` | Form data (`application/x-www-form-urlencoded`) |
+| Multipart | `Multipart[T]()` | Multipart form data with file uploads |
 | Header | `Header[T]()` | HTTP headers |
 | Cookie | `Cookie[T]()` | HTTP cookies |
 | JSON | `JSON[T]()` | JSON body |

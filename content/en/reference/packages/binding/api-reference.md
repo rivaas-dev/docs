@@ -99,6 +99,80 @@ type LoginForm struct {
 form, err := binding.Form[LoginForm](r.PostForm)
 ```
 
+#### Multipart
+
+```go
+func Multipart[T any](form *multipart.Form, opts ...Option) (T, error)
+```
+
+Binds multipart form data including file uploads to a struct. Use `*binding.File` type for file fields.
+
+**Parameters:**
+- `form`: Multipart form from `r.MultipartForm` after calling `r.ParseMultipartForm()`
+- `opts`: Optional configuration options
+
+**Returns:**
+- Populated struct of type `T` with form fields and files
+- Error if binding fails
+
+**Example:**
+```go
+type UploadRequest struct {
+    File        *binding.File `form:"file"`
+    Title       string        `form:"title"`
+    Description string        `form:"description"`
+    Tags        []string      `form:"tags"`
+}
+
+// Parse multipart form first (32MB limit)
+if err := r.ParseMultipartForm(32 << 20); err != nil {
+    return err
+}
+
+req, err := binding.Multipart[UploadRequest](r.MultipartForm)
+if err != nil {
+    return err
+}
+
+// Save the uploaded file
+if err := req.File.Save("/uploads/" + req.File.Name); err != nil {
+    return err
+}
+```
+
+**Multiple files:**
+```go
+type GalleryUpload struct {
+    Photos []*binding.File `form:"photos"`
+    Title  string          `form:"title"`
+}
+
+req, err := binding.Multipart[GalleryUpload](r.MultipartForm)
+for _, photo := range req.Photos {
+    photo.Save("/uploads/" + photo.Name)
+}
+```
+
+**JSON in form fields:**
+
+Multipart binding automatically parses JSON strings from form fields into nested structs:
+
+```go
+type Settings struct {
+    Theme         string `json:"theme"`
+    Notifications bool   `json:"notifications"`
+}
+
+type ProfileUpdate struct {
+    Avatar   *binding.File `form:"avatar"`
+    Settings Settings      `form:"settings"` // JSON automatically parsed
+}
+
+// Form field "settings" contains: {"theme":"dark","notifications":true}
+req, err := binding.Multipart[ProfileUpdate](r.MultipartForm)
+// req.Settings is now populated from the JSON string
+```
+
 #### Header
 
 ```go
@@ -220,6 +294,7 @@ err := binding.JSONTo(jsonData, &user)
 Similar non-generic functions exist for all sources:
 - `QueryTo(values url.Values, target interface{}, opts ...Option) error`
 - `FormTo(values url.Values, target interface{}, opts ...Option) error`
+- `MultipartTo(form *multipart.Form, target interface{}, opts ...Option) error`
 - `HeaderTo(headers http.Header, target interface{}, opts ...Option) error`
 - `CookieTo(cookies []*http.Cookie, target interface{}, opts ...Option) error`
 - `PathTo(params map[string]string, target interface{}, opts ...Option) error`
@@ -233,10 +308,26 @@ For multi-source binding:
 func FromJSON(r io.Reader) Source
 func FromQuery(values url.Values) Source
 func FromForm(values url.Values) Source
+func FromMultipart(form *multipart.Form) Source
 func FromHeader(headers http.Header) Source
 func FromCookie(cookies []*http.Cookie) Source
 func FromPath(params map[string]string) Source
 func FromXML(r io.Reader) Source
+```
+
+**Example with multipart:**
+```go
+type Request struct {
+    UserID int           `path:"user_id"`
+    File   *binding.File `form:"file"`
+    Token  string        `header:"X-Token"`
+}
+
+req, err := binding.Bind[Request](
+    binding.FromPath(pathParams),
+    binding.FromMultipart(r.MultipartForm),
+    binding.FromHeader(r.Header),
+)
 ```
 
 ## Binder Type

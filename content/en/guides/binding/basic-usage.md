@@ -142,6 +142,42 @@ type SessionCookies struct {
 cookies, err := binding.Cookie[SessionCookies](r.Cookies())
 ```
 
+### Multipart Forms
+
+For file uploads with form data, use multipart forms:
+
+```go
+type UploadRequest struct {
+    File        *binding.File `form:"file"`
+    Title       string        `form:"title"`
+    Description string        `form:"description"`
+}
+
+// Parse multipart form first (32MB max)
+if err := r.ParseMultipartForm(32 << 20); err != nil {
+    // Handle parse error
+}
+
+// Bind form and files
+req, err := binding.Multipart[UploadRequest](r.MultipartForm)
+if err != nil {
+    // Handle binding error
+}
+
+// Work with the uploaded file
+if err := req.File.Save("/uploads/" + req.File.Name); err != nil {
+    // Handle save error
+}
+```
+
+The `binding.File` type provides methods to work with uploaded files:
+- `Save(path)` - Save file to disk
+- `Bytes()` - Read file contents into memory
+- `Open()` - Open file for streaming
+- `Ext()` - Get file extension
+
+See [Multipart Forms](../multipart-forms/) for detailed examples and security considerations.
+
 ## Error Handling Basics
 
 All binding functions return an error that provides context about what went wrong:
@@ -327,9 +363,10 @@ See [Type Support](../type-support/) for complete type conversion details.
 
 ## Next Steps
 
-- Learn about [Query Parameters](../query-parameters/) in detail
-- Explore [JSON Binding](../json-binding/) for request bodies
-- See [Multi-Source](../multi-source/) for combining data
+- Learn about [Multipart Forms](../multipart-forms/) for file uploads
+- Explore [Query Parameters](../query-parameters/) in detail
+- See [JSON Binding](../json-binding/) for request bodies
+- Check [Multi-Source](../multi-source/) for combining data
 - Master [Struct Tags](../struct-tags/) syntax and options
 
 For complete API documentation, see [API Reference](/reference/packages/binding/api-reference/).

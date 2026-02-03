@@ -322,14 +322,20 @@ func CreateResourceHandler(w http.ResponseWriter, r *http.Request) {
 
 ## File Upload with Metadata
 
-Handle multipart form data:
+Handle file uploads with form data using the new multipart binding:
 
 ```go
 type FileUploadRequest struct {
-    Title       string   `form:"title" validate:"required"`
-    Description string   `form:"description"`
-    Tags        []string `form:"tags"`
-    Public      bool     `form:"public"`
+    File        *binding.File `form:"file" validate:"required"`
+    Title       string        `form:"title" validate:"required"`
+    Description string        `form:"description"`
+    Tags        []string      `form:"tags"`
+    Public      bool          `form:"public"`
+    // JSON settings in form field (automatically parsed)
+    Settings    struct {
+        Quality     int    `json:"quality"`
+        Compression string `json:"compression"`
+    } `form:"settings"`
 }
 
 func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
@@ -339,8 +345,8 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     
-    // Bind form fields
-    req, err := binding.Form[FileUploadRequest](r.Form)
+    // Bind form fields and file
+    req, err := binding.Multipart[FileUploadRequest](r.MultipartForm)
     if err != nil {
         respondError(w, http.StatusBadRequest, "Invalid form data", err)
         return
@@ -352,36 +358,44 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     
-    // Get uploaded file
-    file, header, err := r.FormFile("file")
-    if err != nil {
-        respondError(w, http.StatusBadRequest, "Missing or invalid file", err)
-        return
-    }
-    defer file.Close()
-    
     // Validate file type
-    if !isAllowedFileType(header.Header.Get("Content-Type")) {
+    allowedTypes := []string{".jpg", ".jpeg", ".png", ".gif", ".pdf"}
+    ext := req.File.Ext()
+    if !contains(allowedTypes, ext) {
         respondError(w, http.StatusBadRequest, "Invalid file type", nil)
         return
     }
     
+    // Validate file size (10MB max)
+    if req.File.Size > 10*1024*1024 {
+        respondError(w, http.StatusBadRequest, "File too large (max 10MB)", nil)
+        return
+    }
+    
+    // Generate safe filename
+    filename := fmt.Sprintf("%s_%d%s", 
+        sanitizeFilename(req.Title),
+        time.Now().Unix(),
+        ext,
+    )
+    
     // Save file
-    savedFile, err := storage.SaveFile(file, header.Filename)
-    if err != nil {
+    uploadPath := "/var/uploads/" + filename
+    if err := req.File.Save(uploadPath); err != nil {
         respondError(w, http.StatusInternalServerError, "Failed to save file", err)
         return
     }
     
     // Create database record
     record := &FileRecord{
+        Filename:    filename,
         Title:       req.Title,
         Description: req.Description,
         Tags:        req.Tags,
         Public:      req.Public,
-        Filename:    savedFile.Name,
-        Size:        savedFile.Size,
-        ContentType: header.Header.Get("Content-Type"),
+        Size:        req.File.Size,
+        ContentType: req.File.ContentType,
+        Settings:    req.Settings,
     }
     
     if err := db.Create(record); err != nil {
@@ -389,7 +403,95 @@ func UploadFileHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     
-    respondJSON(w, http.StatusCreated, record)
+    respondJSON(w, http.StatusCreated, map[string]interface{}{
+        "id":       record.ID,
+        "filename": filename,
+        "url":      "/uploads/" + filename,
+    })
+}
+
+func sanitizeFilename(name string) string {
+    // Remove special characters
+    re := regexp.MustCompile(`[^a-zA-Z0-9_-]`)
+    return re.ReplaceAllString(name, "_")
+}
+
+func contains(slice []string, item string) bool {
+    for _, s := range slice {
+        if s == item {
+            return true
+        }
+    }
+    return false
+}
+```
+
+**Multiple file uploads:**
+
+```go
+type GalleryUpload struct {
+    Photos      []*binding.File `form:"photos" validate:"required,min=1,max=10"`
+    AlbumTitle  string          `form:"album_title" validate:"required"`
+    Description string          `form:"description"`
+}
+
+func UploadGalleryHandler(w http.ResponseWriter, r *http.Request) {
+    if err := r.ParseMultipartForm(100 << 20); err != nil { // 100MB for multiple files
+        respondError(w, http.StatusBadRequest, "Failed to parse form", err)
+        return
+    }
+    
+    req, err := binding.Multipart[GalleryUpload](r.MultipartForm)
+    if err != nil {
+        respondError(w, http.StatusBadRequest, "Invalid form data", err)
+        return
+    }
+    
+    if err := validation.Validate(req); err != nil {
+        respondError(w, http.StatusUnprocessableEntity, "Validation failed", err)
+        return
+    }
+    
+    // Process each photo
+    uploadedFiles := make([]string, 0, len(req.Photos))
+    for i, photo := range req.Photos {
+        // Validate each file
+        if photo.Size > 10*1024*1024 {
+            respondError(w, http.StatusBadRequest, 
+                fmt.Sprintf("Photo %d too large", i+1), nil)
+            return
+        }
+        
+        // Generate filename
+        filename := fmt.Sprintf("%s_%d_%d%s",
+            sanitizeFilename(req.AlbumTitle),
+            time.Now().Unix(),
+            i,
+            photo.Ext(),
+        )
+        
+        // Save file
+        if err := photo.Save("/var/uploads/" + filename); err != nil {
+            respondError(w, http.StatusInternalServerError, "Failed to save photo", err)
+            return
+        }
+        
+        uploadedFiles = append(uploadedFiles, filename)
+    }
+    
+    // Create album record
+    album := &Album{
+        Title:       req.AlbumTitle,
+        Description: req.Description,
+        Photos:      uploadedFiles,
+    }
+    
+    if err := db.Create(album); err != nil {
+        respondError(w, http.StatusInternalServerError, "Failed to create album", err)
+        return
+    }
+    
+    respondJSON(w, http.StatusCreated, album)
 }
 ```
 

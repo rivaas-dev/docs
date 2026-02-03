@@ -104,6 +104,90 @@ a.PUT("/users/:id", func(c *app.Context) {
 })
 ```
 
+### Multipart Forms with Files
+
+For file uploads, use the `*binding.File` type. The context automatically detects and handles multipart form data:
+
+```go
+type UploadRequest struct {
+    File        *binding.File `form:"file"`
+    Title       string        `form:"title"`
+    Description string        `form:"description"`
+    // JSON in form fields is automatically parsed
+    Settings    struct {
+        Quality int    `json:"quality"`
+        Format  string `json:"format"`
+    } `form:"settings"`
+}
+
+a.POST("/upload", func(c *app.Context) {
+    var req UploadRequest
+    if err := c.Bind(&req); err != nil {
+        c.Error(err)
+        return
+    }
+    
+    // Validate file type
+    allowedTypes := []string{".jpg", ".png", ".gif"}
+    if !slices.Contains(allowedTypes, req.File.Ext()) {
+        c.BadRequest("Invalid file type")
+        return
+    }
+    
+    // Save the file
+    filename := fmt.Sprintf("/uploads/%d_%s", time.Now().Unix(), req.File.Name)
+    if err := req.File.Save(filename); err != nil {
+        c.InternalError(err)
+        return
+    }
+    
+    c.JSON(http.StatusCreated, map[string]interface{}{
+        "filename": filepath.Base(filename),
+        "size":     req.File.Size,
+        "url":      "/uploads/" + filepath.Base(filename),
+    })
+})
+```
+
+**Multiple file uploads:**
+
+```go
+type GalleryUpload struct {
+    Photos []*binding.File `form:"photos"`
+    Title  string          `form:"title"`
+}
+
+a.POST("/gallery", func(c *app.Context) {
+    var req GalleryUpload
+    if err := c.Bind(&req); err != nil {
+        c.Error(err)
+        return
+    }
+    
+    // Process each photo
+    for i, photo := range req.Photos {
+        filename := fmt.Sprintf("/uploads/%s_%d%s", req.Title, i, photo.Ext())
+        if err := photo.Save(filename); err != nil {
+            c.InternalError(err)
+            return
+        }
+    }
+    
+    c.JSON(http.StatusCreated, map[string]int{
+        "uploaded": len(req.Photos),
+    })
+})
+```
+
+**File security best practices:**
+- Always validate file types using `file.Ext()` or check magic bytes
+- Limit file sizes (check `file.Size`)
+- Generate safe filenames (don't use user-provided names directly)
+- Store files outside your web root
+- Scan for malware in production environments
+
+See [Multipart Forms](/guides/binding/multipart-forms/) for detailed examples and security patterns.
+
 ## Validation
 
 ### Bind and Validate
