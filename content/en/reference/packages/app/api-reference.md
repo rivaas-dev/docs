@@ -195,11 +195,16 @@ Test helper that asserts response status and decodes JSON.
 ### Generic Binding
 
 ```go
-func BindAndValidateInto[T any](c *Context, opts ...validation.Option) (T, error)
-func MustBindAndValidateInto[T any](c *Context, opts ...validation.Option) (T, bool)
+func Bind[T any](c *Context, opts ...BindOption) (T, error)
+func MustBind[T any](c *Context, opts ...BindOption) (T, bool)
+func BindOnly[T any](c *Context, opts ...BindOption) (T, error)
+func BindPatch[T any](c *Context, opts ...BindOption) (T, error)
+func MustBindPatch[T any](c *Context, opts ...BindOption) (T, bool)
+func BindStrict[T any](c *Context, opts ...BindOption) (T, error)
+func MustBindStrict[T any](c *Context, opts ...BindOption) (T, bool)
 ```
 
-Type-safe binding with generics.
+Type-safe binding with generics. These functions provide a more concise API compared to the Context methods.
 
 ## Types
 

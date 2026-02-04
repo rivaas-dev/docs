@@ -175,11 +175,10 @@ type Context struct {
 ### Request Binding
 
 ```go
-c.Bind(out any) error
-c.BindJSONStrict(out any) error
-c.BindAndValidate(out any, opts ...validation.Option) error
-c.BindAndValidateStrict(out any, opts ...validation.Option) error
-c.MustBindAndValidate(out any, opts ...validation.Option) bool
+c.Bind(out any, opts ...BindOption) error
+c.MustBind(out any, opts ...BindOption) bool
+c.BindOnly(out any, opts ...BindOption) error
+c.Validate(v any, opts ...validation.Option) error
 ```
 
 ### Error Handling

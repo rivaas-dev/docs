@@ -167,18 +167,18 @@ func init() {
     router.RegisterTag("custom", validatorFunc)
 }
 
-// ✅ Use correct strategy
-func createUser(c *router.Context) {
+// ✅ Use app.Context for binding and validation
+func createUser(c *app.Context) {
     var req CreateUserRequest
-    if !c.MustBindAndValidate(&req) {
+    if !c.MustBind(&req) {
         return
     }
 }
 
 // ✅ Partial validation for PATCH
-func updateUser(c *router.Context) {
-    var req UpdateUserRequest
-    if !c.MustBindAndValidate(&req, router.WithPartial(true)) {
+func updateUser(c *app.Context) {
+    req, ok := app.MustBindPatch[UpdateUserRequest](c)
+    if !ok {
         return
     }
 }

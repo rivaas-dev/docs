@@ -203,7 +203,7 @@ func CreateUser(c *app.Context) {
         Email string `json:"email"`
     }
     
-    if !c.MustBindAndValidate(&req) {
+    if !c.MustBind(&req) {
         return // Error response already sent
     }
     
@@ -406,7 +406,7 @@ func main() {
     a.POST("/echo", func(c *app.Context) {
         var req map[string]any
         
-        if !c.MustBindAndValidate(&req) {
+        if !c.MustBind(&req) {
             return
         }
         

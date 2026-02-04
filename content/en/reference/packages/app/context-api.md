@@ -16,42 +16,50 @@ description: >
 ### Bind
 
 ```go
-func (c *Context) Bind(out any) error
+func (c *Context) Bind(out any, opts ...BindOption) error
 ```
 
-Automatically binds from all relevant sources based on struct tags (path, query, header, cookie, json, form).
+Binds request data and validates it. This is the main method for handling requests.
 
-### BindJSONStrict
+Reads data from all sources (path, query, headers, cookies, JSON, forms) based on struct tags. Then validates the data using the configured strategy.
+
+**Returns:** Error if binding or validation fails.
+
+### MustBind
 
 ```go
-func (c *Context) BindJSONStrict(out any) error
+func (c *Context) MustBind(out any, opts ...BindOption) bool
 ```
 
-Binds JSON with unknown field rejection.
+Binds and validates, automatically sending error responses on failure.
 
-### BindAndValidate
+Use this when you want simple error handling. If binding or validation fails, it sends the error response and returns false.
+
+**Returns:** True if successful, false if error was sent.
+
+### BindOnly
 
 ```go
-func (c *Context) BindAndValidate(out any, opts ...validation.Option) error
+func (c *Context) BindOnly(out any, opts ...BindOption) error
 ```
 
-Binds and validates in one call.
+Binds request data without validation.
 
-### BindAndValidateStrict
+Use this when you need to process data before validating it.
+
+**Returns:** Error if binding fails.
+
+### Validate
 
 ```go
-func (c *Context) BindAndValidateStrict(out any, opts ...validation.Option) error
+func (c *Context) Validate(v any, opts ...validation.Option) error
 ```
 
-Binds JSON strictly (rejects unknown fields) and validates.
+Validates a struct using the configured strategy.
 
-### MustBindAndValidate
+Use this after `BindOnly()` when you need fine-grained control.
 
-```go
-func (c *Context) MustBindAndValidate(out any, opts ...validation.Option) bool
-```
-
-Binds and validates, automatically sending error responses on failure. Returns true if successful.
+**Returns:** Validation error if validation fails.
 
 ## Error Handling
 

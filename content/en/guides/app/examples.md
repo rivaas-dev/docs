@@ -194,8 +194,8 @@ func main() {
     
     // Create user
     a.POST("/users", func(c *app.Context) {
-        var req CreateUserRequest
-        if !c.MustBindAndValidate(&req) {
+        req, ok := app.MustBind[CreateUserRequest](c)
+        if !ok {
             return
         }
         
@@ -219,8 +219,8 @@ func main() {
     a.PUT("/users/:id", func(c *app.Context) {
         id := c.Param("id")
         
-        var req CreateUserRequest
-        if !c.MustBindAndValidate(&req) {
+        req, ok := app.MustBind[CreateUserRequest](c)
+        if !ok {
             return
         }
         

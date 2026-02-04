@@ -23,16 +23,42 @@ The `app.Context` wraps `router.Context` and provides app-level features:
 
 ## Request Binding
 
-### Automatic Binding
+### Binding and Validation
 
-`Bind()` automatically detects struct tags and binds from all relevant sources:
+`Bind()` reads your request data and checks if it's valid. It handles JSON, forms, query parameters, and more.
+
+Use `Bind()` for most cases. It automatically validates your data:
+
+```go
+type CreateUserRequest struct {
+    Name  string `json:"name" validate:"required,min=3"`
+    Email string `json:"email" validate:"required,email"`
+    Age   int    `json:"age" validate:"gte=18"`
+}
+
+a.POST("/users", func(c *app.Context) {
+    var req CreateUserRequest
+    if err := c.Bind(&req); err != nil {
+        c.Error(err) // Handles binding and validation errors
+        return
+    }
+    
+    // req is valid and ready to use
+})
+```
+
+The `Bind()` method does two things: it reads the request data and validates it. If either step fails, you get an error.
+
+### Binding from Multiple Sources
+
+You can bind data from different places at once. Use struct tags to tell Rivaas where to look:
 
 ```go
 type GetUserRequest struct {
-    ID      int    `path:"id"`           // Path parameter
-    Expand  string `query:"expand"`      // Query parameter
-    APIKey  string `header:"X-API-Key"`  // HTTP header
-    Session string `cookie:"session"`    // Cookie
+    ID      int    `path:"id"`           // From URL path
+    Expand  string `query:"expand"`      // From query string
+    APIKey  string `header:"X-API-Key"`  // From HTTP header
+    Session string `cookie:"session"`    // From cookie
 }
 
 a.GET("/users/:id", func(c *app.Context) {
@@ -42,41 +68,28 @@ a.GET("/users/:id", func(c *app.Context) {
         return
     }
     
-    // req is populated from path, query, headers, and cookies
+    // All fields are populated from their sources
 })
 ```
 
-### JSON Binding
+### Binding Without Validation
 
-For JSON request bodies:
+Sometimes you need to process data before validating it. Use `BindOnly()` for this:
 
 ```go
-type CreateUserRequest struct {
-    Name  string `json:"name"`
-    Email string `json:"email"`
-    Age   int    `json:"age"`
-}
-
 a.POST("/users", func(c *app.Context) {
     var req CreateUserRequest
-    if err := c.Bind(&req); err != nil {
+    if err := c.BindOnly(&req); err != nil {
         c.Error(err)
         return
     }
     
-    // req is populated from JSON body
-})
-```
-
-### Strict JSON Binding
-
-Reject unknown fields to catch typos and API drift:
-
-```go
-a.POST("/users", func(c *app.Context) {
-    var req CreateUserRequest
-    if err := c.BindJSONStrict(&req); err != nil {
-        c.Error(err) // Returns error if unknown fields present
+    // Clean up the data
+    req.Email = strings.ToLower(req.Email)
+    
+    // Now validate
+    if err := c.Validate(&req); err != nil {
+        c.Error(err)
         return
     }
 })
@@ -84,11 +97,11 @@ a.POST("/users", func(c *app.Context) {
 
 ### Multi-Source Binding
 
-Bind from multiple sources simultaneously:
+Bind from multiple sources in one call. This is useful when your request needs data from different places:
 
 ```go
 type UpdateUserRequest struct {
-    ID    int    `path:"id"`          // From path
+    ID    int    `path:"id"`          // From URL path
     Name  string `json:"name"`        // From JSON body
     Token string `header:"X-Token"`   // From header
 }
@@ -100,7 +113,7 @@ a.PUT("/users/:id", func(c *app.Context) {
         return
     }
     
-    // req.ID from path, req.Name from JSON, req.Token from header
+    // All fields populated: ID from path, Name from JSON, Token from header
 })
 ```
 
@@ -190,9 +203,9 @@ See [Multipart Forms](/guides/binding/multipart-forms/) for detailed examples an
 
 ## Validation
 
-### Bind and Validate
+### The Must Pattern
 
-Combine binding and validation in one call:
+The easiest way to handle requests is with `MustBind()`. It reads the data, validates it, and sends an error response if something is wrong:
 
 ```go
 type CreateUserRequest struct {
@@ -203,105 +216,165 @@ type CreateUserRequest struct {
 
 a.POST("/users", func(c *app.Context) {
     var req CreateUserRequest
-    if err := c.BindAndValidate(&req); err != nil {
+    if !c.MustBind(&req) {
+        return // Error already sent to client
+    }
+    
+    // req is valid, continue with your logic
+})
+```
+
+This is the recommended approach. It keeps your code clean and handles errors automatically.
+
+### Type-Safe Binding with Generics
+
+If you prefer working with return values instead of pointers, use the generic functions:
+
+```go
+a.POST("/users", func(c *app.Context) {
+    req, ok := app.MustBind[CreateUserRequest](c)
+    if !ok {
+        return // Error already sent
+    }
+    
+    // req is type CreateUserRequest, not a pointer
+})
+```
+
+This approach is more concise. You don't need to declare the variable first.
+
+### Manual Error Handling
+
+When you need more control over error handling, use `Bind()` directly:
+
+```go
+a.POST("/users", func(c *app.Context) {
+    var req CreateUserRequest
+    if err := c.Bind(&req); err != nil {
+        // Handle the error your way
+        c.Logger().Error("binding failed", "error", err)
         c.Error(err)
         return
     }
     
-    // req is validated
+    // Continue processing
 })
 ```
 
-### Strict Bind and Validate
-
-Reject unknown fields AND validate:
+Or with generics:
 
 ```go
 a.POST("/users", func(c *app.Context) {
-    var req CreateUserRequest
-    if err := c.BindAndValidateStrict(&req); err != nil {
-        c.Error(err) // Returns error if unknown fields OR validation fails
-        return
-    }
-})
-```
-
-### Must Bind and Validate
-
-Automatically send error responses on binding/validation failure:
-
-```go
-a.POST("/users", func(c *app.Context) {
-    var req CreateUserRequest
-    if !c.MustBindAndValidate(&req) {
-        return // Error response already sent
-    }
-    
-    // Continue with validated request
-})
-```
-
-### Generic Bind and Validate
-
-Use generics for type-safe binding:
-
-```go
-a.POST("/users", func(c *app.Context) {
-    req, err := app.BindAndValidateInto[CreateUserRequest](c)
+    req, err := app.Bind[CreateUserRequest](c)
     if err != nil {
         c.Error(err)
         return
     }
     
-    // req is of type CreateUserRequest
-})
-
-// Or with automatic error handling
-a.POST("/users", func(c *app.Context) {
-    req, ok := app.MustBindAndValidateInto[CreateUserRequest](c)
-    if !ok {
-        return // Error response already sent
-    }
-    
-    // Continue with req
+    // Continue processing
 })
 ```
 
-### Partial Validation (PATCH)
+### Partial Validation for PATCH Requests
 
-Validate only fields present in the request:
+PATCH requests only update some fields. Use `WithPartial()` to validate only the fields that are present:
 
 ```go
-type PatchUserRequest struct {
+type UpdateUserRequest struct {
     Name  *string `json:"name" validate:"omitempty,min=3,max=50"`
     Email *string `json:"email" validate:"omitempty,email"`
 }
 
 a.PATCH("/users/:id", func(c *app.Context) {
-    var req PatchUserRequest
-    if err := c.BindAndValidate(&req, validation.WithPartial(true)); err != nil {
-        c.Error(err)
+    req, ok := app.MustBind[UpdateUserRequest](c, app.WithPartial())
+    if !ok {
         return
     }
     
-    // Only present fields are validated
+    // Only fields in the request are validated
 })
+```
+
+You can also use the shortcut function `BindPatch()`:
+
+```go
+a.PATCH("/users/:id", func(c *app.Context) {
+    req, ok := app.MustBindPatch[UpdateUserRequest](c)
+    if !ok {
+        return
+    }
+    
+    // Same as above, but shorter
+})
+```
+
+### Strict Mode (Reject Unknown Fields)
+
+Catch typos and API mismatches by rejecting unknown fields:
+
+```go
+a.POST("/users", func(c *app.Context) {
+    req, ok := app.MustBind[CreateUserRequest](c, app.WithStrict())
+    if !ok {
+        return // Error sent if client sends unknown fields
+    }
+})
+```
+
+Or use the shortcut:
+
+```go
+a.POST("/users", func(c *app.Context) {
+    req, ok := app.MustBindStrict[CreateUserRequest](c)
+    if !ok {
+        return
+    }
+})
+```
+
+This is helpful during development to catch mistakes early.
+
+### Binding Options
+
+You can customize how binding and validation work:
+
+| Option | What it does |
+|--------|-------------|
+| `app.WithStrict()` | Reject unknown JSON fields |
+| `app.WithPartial()` | Only validate fields that are present |
+| `app.WithoutValidation()` | Skip validation (bind only) |
+| `app.WithBindingOptions(...)` | Advanced binding settings |
+| `app.WithValidationOptions(...)` | Advanced validation settings |
+
+Example with multiple options:
+
+```go
+req, err := app.Bind[Request](c, 
+    app.WithStrict(),
+    app.WithValidationOptions(validation.WithMaxErrors(10)),
+)
 ```
 
 ### Validation Strategies
 
-Choose different validation strategies:
+Choose how validation works:
 
 ```go
-// Interface validation (default)
-c.BindAndValidate(&req)
+// Tag validation (default, uses struct tags)
+c.Bind(&req)
 
-// Tag validation (go-playground/validator)
-c.BindAndValidate(&req, validation.WithStrategy(validation.StrategyTags))
+// Explicit strategy selection
+c.Bind(&req, app.WithValidationOptions(
+    validation.WithStrategy(validation.StrategyTags),
+))
 
 // JSON Schema validation
-c.BindAndValidate(&req, validation.WithStrategy(validation.StrategyJSONSchema))
+c.Bind(&req, app.WithValidationOptions(
+    validation.WithStrategy(validation.StrategyJSONSchema),
+))
 ```
+
+Most apps use tag validation. It's simple and works well.
 
 ## Error Handling
 
@@ -425,8 +498,8 @@ Use structured logging with key-value pairs:
 
 ```go
 a.POST("/orders", func(c *app.Context) {
-    var req CreateOrderRequest
-    if !c.MustBindAndValidate(&req) {
+    req, ok := app.MustBind[CreateOrderRequest](c)
+    if !ok {
         return
     }
     
@@ -504,6 +577,8 @@ accepts := c.Accepts("application/json", "text/html")
 
 ## Complete Example
 
+Here's a complete example showing binding, validation, and logging:
+
 ```go
 package main
 
@@ -513,7 +588,6 @@ import (
     "net/http"
     
     "rivaas.dev/app"
-    "rivaas.dev/validation"
 )
 
 type CreateOrderRequest struct {
@@ -528,20 +602,20 @@ func main() {
     )
     
     a.POST("/orders", func(c *app.Context) {
-        // Bind and validate
-        var req CreateOrderRequest
-        if !c.MustBindAndValidate(&req) {
-            return // Error response already sent
+        // Bind and validate in one step
+        req, ok := app.MustBind[CreateOrderRequest](c)
+        if !ok {
+            return // Error already sent
         }
         
-        // Log with context
+        // Log what's happening
         c.Logger().Info("creating order",
             slog.String("customer.id", req.CustomerID),
             slog.Int("item.count", len(req.Items)),
             slog.Float64("order.total", req.Total),
         )
         
-        // Business logic...
+        // Your business logic here...
         orderID := "order-123"
         
         // Log success
@@ -549,7 +623,7 @@ func main() {
             slog.String("order.id", orderID),
         )
         
-        // Return response
+        // Send response
         c.JSON(http.StatusCreated, map[string]string{
             "order_id": orderID,
         })

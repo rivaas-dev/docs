@@ -62,8 +62,8 @@ rivaas.dev/router/
 ### Request Handling
 
 - **Parameters**: `Param()`, `Query()`, `PostForm()`
-- **Binding**: `Bind()`, `BindQuery()`, `BindJSON()`, etc.
-- **Validation**: `Validate()`, `BindAndValidate()`, `MustBindAndValidate()`
+- **Headers**: `Header()`, `GetHeader()`
+- **Cookies**: `Cookie()`, `SetCookie()`
 
 ### Response Rendering
 
