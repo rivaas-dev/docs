@@ -125,6 +125,20 @@ recorder := metrics.MustNew(
 )
 ```
 
+**Where It Appears**:
+
+The service name shows up in two places in your metrics output:
+
+1. **Metric labels** - Every metric gets a `service_name` label:
+   ```
+   http_requests_total{service_name="payment-api",method="GET"} 42
+   ```
+
+2. **Target info** - OpenTelemetry resource metadata:
+   ```
+   target_info{service_name="payment-api",service_version="1.0.0"} 1
+   ```
+
 **Best Practices**:
 - Use lowercase with hyphens: `user-service`, `payment-api`
 - Be consistent across services

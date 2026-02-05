@@ -26,12 +26,21 @@ recorder := metrics.MustNew(
 )
 ```
 
-The service name appears as a resource attribute in all metrics:
+The service name appears in two places in your metrics output:
+
+**1. Metric labels** - Every metric includes the service name:
 
 ```
-# Service name in Prometheus labels
 http_requests_total{service_name="my-api",method="GET"} 42
 ```
+
+**2. Target info metric** - OpenTelemetry resource information:
+
+```
+target_info{service_name="my-api",service_version="v1.2.3"} 1
+```
+
+The `target_info` metric is useful for service discovery and correlating metrics across your infrastructure.
 
 **Best Practices**:
 - Use lowercase with hyphens: `user-service`, `payment-api`.

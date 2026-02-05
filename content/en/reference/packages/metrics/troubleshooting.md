@@ -11,6 +11,70 @@ weight: 4
 
 Solutions to common issues when using the metrics package.
 
+## Service Name Not Correct
+
+### Symptoms
+
+- `service_name="rivaas-service"` instead of your configured name
+- `service_name="unknown_service:main"` in `target_info` metric
+- Wrong service name in dashboards
+
+### Solutions
+
+#### 1. Use WithServiceName Option
+
+Always specify your service name when creating the recorder:
+
+```go
+recorder := metrics.MustNew(
+    metrics.WithPrometheus(":9090", "/metrics"),
+    metrics.WithServiceName("my-actual-service"),  // Set your service name
+)
+```
+
+#### 2. Check target_info Metric
+
+The `target_info` metric shows OpenTelemetry resource information:
+
+```
+target_info{service_name="my-actual-service",service_version="1.0.0"} 1
+```
+
+If you see `unknown_service:main`, make sure you're using the latest version of the metrics package.
+
+#### 3. Verify Configuration Order
+
+Options can be passed in any order. The service name will be applied correctly:
+
+```go
+// Both work the same
+recorder := metrics.MustNew(
+    metrics.WithServiceName("my-service"),
+    metrics.WithPrometheus(":9090", "/metrics"),
+)
+
+recorder := metrics.MustNew(
+    metrics.WithPrometheus(":9090", "/metrics"),
+    metrics.WithServiceName("my-service"),
+)
+```
+
+#### 4. Check Where Service Name Appears
+
+The service name shows up in two places:
+
+1. **Metric labels**: Every metric has a `service_name` label
+   ```
+   http_requests_total{service_name="my-service",method="GET"} 42
+   ```
+
+2. **Target info**: Resource metadata metric
+   ```
+   target_info{service_name="my-service",service_version="1.0.0"} 1
+   ```
+
+---
+
 ## Metrics Not Appearing
 
 ### OTLP Provider

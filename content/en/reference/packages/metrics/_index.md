@@ -293,6 +293,7 @@ When using HTTP middleware, these metrics are automatically collected:
 | `http_response_size_bytes` | Histogram | Response body size distribution |
 | `http_errors_total` | Counter | HTTP errors by status code |
 | `custom_metric_failures_total` | Counter | Failed custom metric creations |
+| `target_info` | Gauge | OpenTelemetry resource metadata (service name, version) |
 
 ## Version Compatibility
 
