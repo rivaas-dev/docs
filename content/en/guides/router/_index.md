@@ -38,8 +38,8 @@ The Rivaas Router is a production-ready HTTP router for cloud-native application
 
 Automatically bind request data to structs:
 
-- **Router Context**: Built-in `BindStrict()` for strict JSON binding with size limits.
 - **Binding Package**: Full binding with `binding.Query()`, `binding.JSON()`, `binding.Form()`, `binding.Headers()`, `binding.Cookies()`.
+- **App Package**: Integrated binding + validation with `app.Bind[T]()`, `app.BindStrict[T]()`.
 - **15+ Type Categories**: Primitives, Time, Network types like net.IP and net.IPNet, Maps, Nested Structs, Slices.
 - **Advanced Features**: Maps with dot or bracket notation, nested structs in query strings, enum validation, default values.
 
@@ -134,15 +134,16 @@ func main() {
         })
     })
     
-    // POST with strict JSON binding
+    // POST with JSON binding
     r.POST("/users", func(c *router.Context) {
         var req struct {
             Name  string `json:"name"`
             Email string `json:"email"`
         }
         
-        if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-            return // Error response already written
+        if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+            c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+            return
         }
         
         c.JSON(http.StatusCreated, req)

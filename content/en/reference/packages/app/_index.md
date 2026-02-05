@@ -184,13 +184,18 @@ c.Validate(v any, opts ...validation.Option) error
 ### Error Handling
 
 ```go
-c.Error(err error)
-c.ErrorStatus(err error, status int)
-c.NotFound(message string)
-c.BadRequest(message string)
-c.Unauthorized(message string)
-c.Forbidden(message string)
+c.Fail(err error)
+c.FailStatus(status int, err error)
+c.NotFound(err error)
+c.BadRequest(err error)
+c.Unauthorized(err error)
+c.Forbidden(err error)
+c.Conflict(err error)
+c.Gone(err error)
+c.UnprocessableEntity(err error)
+c.TooManyRequests(err error)
 c.InternalError(err error)
+c.ServiceUnavailable(err error)
 ```
 
 ### Logging

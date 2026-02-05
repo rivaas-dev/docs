@@ -79,26 +79,8 @@ c.ResponseHeaders() map[string]string
 ## Request Binding
 
 {{% alert title="Note" color="info" %}}
-For full request binding (`Bind`, `BindQuery`, `BindJSON`, etc.), use the separate [binding package](/reference/packages/binding/). The router Context provides only strict JSON binding.
+For request binding, use the separate [binding package](/reference/packages/binding/) or the [app package](/guides/app/) for integrated binding with validation.
 {{% /alert %}}
-
-### Strict JSON Binding
-
-```go
-c.BindStrict(dst any, opt BindOptions) error
-```
-
-Binds JSON with strict validation:
-- Rejects unknown fields (catches typos)
-- Enforces size limits
-- Distinguishes 400 (malformed) vs 422 (type errors)
-
-```go
-var req CreateUserRequest
-if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-    return // Error response already written
-}
-```
 
 ### Content Type Validation
 
@@ -304,6 +286,10 @@ c.Error(err error)      // Collect error without writing response
 c.Errors() []error      // Get all collected errors
 c.HasErrors() bool      // Check if errors were collected
 ```
+
+> **Note:** `router.Context.Error()` collects errors without writing a response or aborting the handler chain. This is useful for gathering multiple errors before deciding how to respond.
+>
+> To send an error response immediately, use `app.Context.Fail()` which formats the error, writes the response, and stops the handler chain.
 
 ```go
 if err := validateUser(c); err != nil {

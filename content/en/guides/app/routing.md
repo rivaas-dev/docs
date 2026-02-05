@@ -256,7 +256,7 @@ func main() {
     
     // Custom 404
     a.NoRoute(func(c *app.Context) {
-        c.NotFound("route not found")
+        c.NotFound(fmt.Errorf("route not found"))
     })
     
     // Start server...

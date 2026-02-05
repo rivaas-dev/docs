@@ -169,7 +169,7 @@ func TestWithDatabase(t *testing.T) {
         id := c.Param("id")
         user, err := db.GetUser(id)
         if err != nil {
-            c.NotFound("user not found")
+            c.NotFound(fmt.Errorf("user not found"))
             return
         }
         c.JSON(http.StatusOK, user)

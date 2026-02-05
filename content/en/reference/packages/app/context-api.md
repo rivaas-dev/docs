@@ -63,53 +63,128 @@ Use this after `BindOnly()` when you need fine-grained control.
 
 ## Error Handling
 
-### Error
+All error handling methods automatically format the error response and abort the handler chain. No further handlers will run after calling these methods.
+
+### Fail
 
 ```go
-func (c *Context) Error(err error)
+func (c *Context) Fail(err error)
 ```
 
-Sends a formatted error response using the configured formatter.
+Sends a formatted error response using the configured formatter. The HTTP status code is determined from the error (if it implements `HTTPStatus() int`) or defaults to 500.
 
-### ErrorStatus
+**Parameters:**
+- `err`: The error to send. If `nil`, the method returns without doing anything.
+
+**Behavior:**
+- Formats the error using content negotiation
+- Writes the HTTP response
+- Aborts the handler chain
+
+### FailStatus
 
 ```go
-func (c *Context) ErrorStatus(err error, status int)
+func (c *Context) FailStatus(status int, err error)
 ```
 
-Sends an error response with explicit status code.
+Sends an error response with an explicit HTTP status code.
+
+**Parameters:**
+- `status`: The HTTP status code to use
+- `err`: The error to send
+
+**Behavior:**
+- Wraps the error with the specified status code
+- Formats and sends the response
+- Aborts the handler chain
 
 ### NotFound
 
 ```go
-func (c *Context) NotFound(message string)
+func (c *Context) NotFound(err error)
 ```
 
-Sends a 404 Not Found error.
+Sends a 404 Not Found error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Not Found" message
 
 ### BadRequest
 
 ```go
-func (c *Context) BadRequest(message string)
+func (c *Context) BadRequest(err error)
 ```
 
-Sends a 400 Bad Request error.
+Sends a 400 Bad Request error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Bad Request" message
 
 ### Unauthorized
 
 ```go
-func (c *Context) Unauthorized(message string)
+func (c *Context) Unauthorized(err error)
 ```
 
-Sends a 401 Unauthorized error.
+Sends a 401 Unauthorized error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Unauthorized" message
 
 ### Forbidden
 
 ```go
-func (c *Context) Forbidden(message string)
+func (c *Context) Forbidden(err error)
 ```
 
-Sends a 403 Forbidden error.
+Sends a 403 Forbidden error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Forbidden" message
+
+### Conflict
+
+```go
+func (c *Context) Conflict(err error)
+```
+
+Sends a 409 Conflict error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Conflict" message
+
+### Gone
+
+```go
+func (c *Context) Gone(err error)
+```
+
+Sends a 410 Gone error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Gone" message
+
+### UnprocessableEntity
+
+```go
+func (c *Context) UnprocessableEntity(err error)
+```
+
+Sends a 422 Unprocessable Entity error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Unprocessable Entity" message
+
+### TooManyRequests
+
+```go
+func (c *Context) TooManyRequests(err error)
+```
+
+Sends a 429 Too Many Requests error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Too Many Requests" message
 
 ### InternalError
 
@@ -117,7 +192,21 @@ Sends a 403 Forbidden error.
 func (c *Context) InternalError(err error)
 ```
 
-Sends a 500 Internal Server Error.
+Sends a 500 Internal Server Error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Internal Server Error" message
+
+### ServiceUnavailable
+
+```go
+func (c *Context) ServiceUnavailable(err error)
+```
+
+Sends a 503 Service Unavailable error response.
+
+**Parameters:**
+- `err`: The error to send, or `nil` for a generic "Service Unavailable" message
 
 ## Logging
 

@@ -14,7 +14,7 @@ description: >
 Request validation ensures incoming data meets your requirements before processing.
 
 {{% alert title="Validation Approaches" color="info" %}}
-The router provides strict JSON binding with `BindStrict()`. For comprehensive validation with struct tags and multi-source binding, use the [binding package](/guides/binding/) with the [validation package](/guides/validation/).
+The router package focuses on routing. For binding and validation, use the [binding package](/guides/binding/) with the [validation package](/guides/validation/), or the [app package](/guides/app/) for integrated binding + validation.
 {{% /alert %}}
 
 ## Validation Strategies
@@ -82,8 +82,9 @@ func (p *CreatePostRequest) ValidateContext(ctx context.Context) error {
 ```go
 func createTransfer(c *router.Context) {
     var req TransferRequest
-    if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-        return // Error response already written
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+        return
     }
     
     // Call interface validation method
@@ -198,9 +199,10 @@ func (r *CreateOrderRequest) Validate() error {
 func createOrder(c *router.Context) {
     var req CreateOrderRequest
     
-    // Strict JSON binding
-    if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-        return // Error already written
+    // Simple JSON binding
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+        return
     }
     
     // Business logic validation
@@ -240,7 +242,8 @@ func (r *UpdateUserRequest) Validate() error {
 func updateUser(c *router.Context) {
     var req UpdateUserRequest
     
-    if err := c.BindStrict(&req, router.BindOptions{}); err != nil {
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
         return
     }
     
@@ -298,8 +301,10 @@ func (r *CreateUserRequest) Validate() *ValidationErrors {
 func createUser(c *router.Context) {
     var req CreateUserRequest
     
-    if err := c.BindStrict(&req, router.BindOptions{}); err != nil {
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
         return
+    }
     }
     
     if verrs := req.Validate(); verrs != nil {
@@ -319,7 +324,7 @@ func createUser(c *router.Context) {
 - Use pointer fields (`*string`) for optional PATCH fields
 - Return structured errors with field paths
 - Validate early, fail fast
-- Use `BindStrict()` for size limits and strict JSON parsing
+- Use the binding or app package for full binding capabilities
 
 **Don't:**
 
@@ -363,9 +368,10 @@ func main() {
     r.POST("/users", func(c *router.Context) {
         var req CreateUserRequest
         
-        // Bind JSON with strict validation
-        if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-            return // Error response already sent
+        // Bind JSON
+        if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+            c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+            return
         }
         
         // Run business validation

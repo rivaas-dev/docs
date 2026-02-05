@@ -236,13 +236,13 @@ func AuthMiddleware() app.HandlerFunc {
         token := c.Request.Header.Get("Authorization")
         
         if token == "" {
-            c.Unauthorized("missing authorization token")
+            c.Unauthorized(fmt.Errorf("missing authorization token"))
             return
         }
         
         // Validate token...
         if !isValid(token) {
-            c.Unauthorized("invalid token")
+            c.Unauthorized(fmt.Errorf("invalid token"))
             return
         }
         
@@ -278,7 +278,7 @@ func AuthWithConfig(config AuthConfig) app.HandlerFunc {
         token := c.Request.Header.Get(config.TokenHeader)
         
         if token == "" || !isValid(token) {
-            c.Unauthorized("authentication failed")
+            c.Unauthorized(fmt.Errorf("authentication failed"))
             return
         }
         
@@ -482,7 +482,7 @@ func AuthMiddleware() app.HandlerFunc {
         
         token := c.Request.Header.Get("Authorization")
         if token == "" {
-            c.Unauthorized("missing authorization token")
+            c.Unauthorized(fmt.Errorf("missing authorization token"))
             return
         }
         
@@ -494,7 +494,7 @@ func AdminOnlyMiddleware() app.HandlerFunc {
     return func(c *app.Context) {
         // Check if user is admin...
         if !isAdmin() {
-            c.Forbidden("admin access required")
+            c.Forbidden(fmt.Errorf("admin access required"))
             return
         }
         

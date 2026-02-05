@@ -39,7 +39,7 @@ type CreateUserRequest struct {
 a.POST("/users", func(c *app.Context) {
     var req CreateUserRequest
     if err := c.Bind(&req); err != nil {
-        c.Error(err) // Handles binding and validation errors
+        c.Fail(err) // Handles binding and validation errors
         return
     }
     
@@ -64,7 +64,7 @@ type GetUserRequest struct {
 a.GET("/users/:id", func(c *app.Context) {
     var req GetUserRequest
     if err := c.Bind(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -80,7 +80,7 @@ Sometimes you need to process data before validating it. Use `BindOnly()` for th
 a.POST("/users", func(c *app.Context) {
     var req CreateUserRequest
     if err := c.BindOnly(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -89,7 +89,7 @@ a.POST("/users", func(c *app.Context) {
     
     // Now validate
     if err := c.Validate(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
 })
@@ -109,7 +109,7 @@ type UpdateUserRequest struct {
 a.PUT("/users/:id", func(c *app.Context) {
     var req UpdateUserRequest
     if err := c.Bind(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -136,14 +136,14 @@ type UploadRequest struct {
 a.POST("/upload", func(c *app.Context) {
     var req UploadRequest
     if err := c.Bind(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
     // Validate file type
     allowedTypes := []string{".jpg", ".png", ".gif"}
     if !slices.Contains(allowedTypes, req.File.Ext()) {
-        c.BadRequest("Invalid file type")
+        c.BadRequest(fmt.Errorf("invalid file type"))
         return
     }
     
@@ -173,7 +173,7 @@ type GalleryUpload struct {
 a.POST("/gallery", func(c *app.Context) {
     var req GalleryUpload
     if err := c.Bind(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -253,7 +253,7 @@ a.POST("/users", func(c *app.Context) {
     if err := c.Bind(&req); err != nil {
         // Handle the error your way
         c.Logger().Error("binding failed", "error", err)
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -267,7 +267,7 @@ Or with generics:
 a.POST("/users", func(c *app.Context) {
     req, err := app.Bind[CreateUserRequest](c)
     if err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -380,7 +380,7 @@ Most apps use tag validation. It's simple and works well.
 
 ### Basic Error Handling
 
-Send error responses with automatic formatting:
+When something goes wrong in your handler, use `Fail()` to send an error response. This method formats the error, writes the HTTP response, and automatically stops the handler chain so no other handlers run after it:
 
 ```go
 a.GET("/users/:id", func(c *app.Context) {
@@ -388,7 +388,7 @@ a.GET("/users/:id", func(c *app.Context) {
     
     user, err := db.GetUser(id)
     if err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
@@ -398,13 +398,13 @@ a.GET("/users/:id", func(c *app.Context) {
 
 ### Explicit Status Codes
 
-Override error status codes:
+When you need a specific HTTP status code for an error, use `FailStatus()`:
 
 ```go
 a.GET("/users/:id", func(c *app.Context) {
     user, err := db.GetUser(id)
     if err != nil {
-        c.ErrorStatus(err, http.StatusNotFound)
+        c.FailStatus(http.StatusNotFound, err)
         return
     }
     
@@ -414,30 +414,48 @@ a.GET("/users/:id", func(c *app.Context) {
 
 ### Convenience Error Methods
 
-Use convenience methods for common status codes:
+Use convenience methods for common HTTP error status codes. These methods automatically format and send the error response, then stop the handler chain:
 
 ```go
 // 404 Not Found
 if user == nil {
-    c.NotFound("user not found")
+    c.NotFound(fmt.Errorf("user not found"))
     return
 }
 
 // 400 Bad Request
 if err := validateInput(input); err != nil {
-    c.BadRequest("invalid input")
+    c.BadRequest(fmt.Errorf("invalid input"))
     return
 }
 
 // 401 Unauthorized
 if !isAuthenticated {
-    c.Unauthorized("authentication required")
+    c.Unauthorized(fmt.Errorf("authentication required"))
     return
 }
 
 // 403 Forbidden
 if !hasPermission {
-    c.Forbidden("insufficient permissions")
+    c.Forbidden(fmt.Errorf("insufficient permissions"))
+    return
+}
+
+// 409 Conflict
+if userExists {
+    c.Conflict(fmt.Errorf("user already exists"))
+    return
+}
+
+// 422 Unprocessable Entity
+if validationErr != nil {
+    c.UnprocessableEntity(validationErr)
+    return
+}
+
+// 429 Too Many Requests
+if rateLimitExceeded {
+    c.TooManyRequests(fmt.Errorf("rate limit exceeded"))
     return
 }
 
@@ -446,6 +464,19 @@ if err := processRequest(); err != nil {
     c.InternalError(err)
     return
 }
+
+// 503 Service Unavailable
+if maintenanceMode {
+    c.ServiceUnavailable(fmt.Errorf("maintenance mode"))
+    return
+}
+```
+
+You can also pass `nil` to use a generic default message:
+
+```go
+c.NotFound(nil)  // Uses "Not Found" as the message
+c.BadRequest(nil)  // Uses "Bad Request" as the message
 ```
 
 ### Error Formatters

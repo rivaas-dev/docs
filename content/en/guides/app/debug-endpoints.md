@@ -216,7 +216,7 @@ func main() {
             if strings.HasPrefix(c.Request.URL.Path, "/_internal/") {
                 // Verify admin token
                 if !isAdmin(c) {
-                    c.Forbidden("admin access required")
+                    c.Forbidden(fmt.Errorf("admin access required"))
                     return
                 }
             }

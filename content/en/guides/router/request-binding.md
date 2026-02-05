@@ -15,31 +15,31 @@ description: >
 Request binding parses request data (query parameters, URL parameters, form data, JSON) into Go structs.
 
 {{% alert title="Two Approaches" color="info" %}}
-The router provides **basic strict JSON binding** directly on Context. For **full binding capabilities** (query, form, headers, cookies), use the separate [binding package](/reference/packages/binding/).
+For simple cases, use the standard library's `json.Decoder`. For full binding capabilities (query, form, headers, cookies, multi-source), use the separate [binding package](/reference/packages/binding/). For integrated binding with validation, use the [app package](/guides/app/).
 {{% /alert %}}
 
 ## Router Context Methods
 
-The router Context provides basic binding and data access methods.
+The router Context provides basic data access methods and streaming capabilities.
 
-### Strict JSON Binding
+### Simple JSON Binding
 
-`BindStrict()` binds JSON with strict validation:
+For simple JSON binding in router-only code, use the standard library:
 
 ```go
+import "encoding/json"
+
 r.POST("/users", func(c *router.Context) {
     var req CreateUserRequest
-    if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-        return // Error response already written
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+        return
     }
     c.JSON(201, req)
 })
 ```
 
-**Features:**
-- Rejects unknown fields. Catches typos.
-- Enforces request body size limits.
-- Returns appropriate HTTP status codes. 400 for malformed. 422 for type errors.
+This works well for simple cases. For more features, use the binding package.
 
 ### Manual Parameter Access
 
@@ -73,7 +73,7 @@ r.POST("/login", func(c *router.Context) {
 
 ### Content Type Validation
 
-Validate content type before binding:
+Check the content type before processing the body:
 
 ```go
 r.POST("/users", func(c *router.Context) {
@@ -82,7 +82,8 @@ r.POST("/users", func(c *router.Context) {
     }
     
     var req CreateUserRequest
-    if err := c.BindStrict(&req, router.BindOptions{}); err != nil {
+    if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+        c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
         return
     }
     c.JSON(201, req)
@@ -264,11 +265,12 @@ type SearchRequest struct {
 func main() {
     r := router.MustNew()
     
-    // Strict JSON binding (built-in)
+    // Simple JSON binding
     r.POST("/users", func(c *router.Context) {
         var req CreateUserRequest
-        if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
-            return // Error already written
+        if err := json.NewDecoder(c.Request.Body).Decode(&req); err != nil {
+            c.WriteErrorResponse(http.StatusBadRequest, "Invalid JSON")
+            return
         }
         c.JSON(201, req)
     })

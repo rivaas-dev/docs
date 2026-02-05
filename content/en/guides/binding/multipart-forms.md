@@ -415,7 +415,7 @@ type UploadRequest struct {
 a.POST("/upload", func(c *app.Context) {
     var req UploadRequest
     if err := c.Bind(&req); err != nil {
-        c.Error(err)
+        c.Fail(err)
         return
     }
     
