@@ -60,20 +60,20 @@ The middleware automatically collects:
 
 | Metric | Type | Labels | Description |
 |--------|------|--------|-------------|
-| `http_request_duration_seconds` | Histogram | method, path, status | Request duration distribution |
-| `http_requests_total` | Counter | method, path, status | Total request count |
+| `http_request_duration_seconds` | Histogram | method, http_route, http_status_code | Request duration distribution |
+| `http_requests_total` | Counter | method, http_route, http_status_code | Total request count |
 | `http_requests_active` | Gauge | - | Currently active requests |
-| `http_request_size_bytes` | Histogram | method, path | Request body size |
-| `http_response_size_bytes` | Histogram | method, path, status | Response body size |
-| `http_errors_total` | Counter | method, path, status | HTTP error count |
+| `http_request_size_bytes` | Histogram | method, http_route | Request body size |
+| `http_response_size_bytes` | Histogram | method, http_route, http_status_code | Response body size |
+| `http_errors_total` | Counter | method, http_route, http_status_code | HTTP error count |
 
 ### Metric Labels
 
 Each metric includes relevant labels:
 
 - **method**: HTTP method like GET, POST, PUT, DELETE.
-- **path**: Request path like `/api/users`, `/health`.
-- **status**: HTTP status code like `200`, `404`, `500`.
+- **http_route**: Route pattern for cardinality control (e.g., `/api/users/{id}`).
+- **http_status_code**: HTTP status code like `200`, `404`, `500`.
 
 ## Path Exclusion
 
@@ -204,9 +204,9 @@ These headers are **always filtered** and never recorded as metrics, even if exp
 ### Example
 
 ```go
-// Only X-Request-ID will be recorded
-// Authorization and Cookie are automatically filtered
 handler := metrics.Middleware(recorder,
+    // Only X-Request-ID will be recorded
+    // Authorization and Cookie are automatically filtered
     metrics.WithHeaders(
         "Authorization",      // Filtered
         "X-Request-ID",       // Recorded
@@ -214,6 +214,18 @@ handler := metrics.Middleware(recorder,
         "X-Correlation-ID",   // Recorded
     ),
 )(mux)
+```
+
+Headers are normalized to lowercase with underscores:
+
+```
+http_requests_total{
+    method="GET",
+    http_route="/api/users",
+    http_status_code="200",
+    x_request_id="abc123",
+    x_correlation_id="def456"
+} 1
 ```
 
 ### Why Filter Sensitive Headers?
@@ -468,24 +480,30 @@ curl http://localhost:9090/metrics
 Example output:
 
 ```
+# HELP target_info Target metadata
+# TYPE target_info gauge
+target_info{service_name="my-api",service_version="v1.0.0"} 1
+
 # HELP http_requests_total Total number of HTTP requests
 # TYPE http_requests_total counter
-http_requests_total{method="GET",path="/",status="200"} 42
-http_requests_total{method="GET",path="/api/users",status="200"} 128
-http_requests_total{method="POST",path="/api/users",status="201"} 15
+http_requests_total{method="GET",http_route="/",http_status_code="200"} 42
+http_requests_total{method="GET",http_route="/api/users",http_status_code="200"} 128
+http_requests_total{method="POST",http_route="/api/users",http_status_code="201"} 15
 
 # HELP http_request_duration_seconds HTTP request duration
 # TYPE http_request_duration_seconds histogram
-http_request_duration_seconds_bucket{method="GET",path="/",le="0.005"} 10
-http_request_duration_seconds_bucket{method="GET",path="/",le="0.01"} 35
-http_request_duration_seconds_bucket{method="GET",path="/",le="0.025"} 42
-http_request_duration_seconds_sum{method="GET",path="/"} 0.523
-http_request_duration_seconds_count{method="GET",path="/"} 42
+http_request_duration_seconds_bucket{method="GET",http_route="/",le="0.005"} 10
+http_request_duration_seconds_bucket{method="GET",http_route="/",le="0.01"} 35
+http_request_duration_seconds_bucket{method="GET",http_route="/",le="0.025"} 42
+http_request_duration_seconds_sum{method="GET",http_route="/"} 0.523
+http_request_duration_seconds_count{method="GET",http_route="/"} 42
 
 # HELP http_requests_active Currently active HTTP requests
 # TYPE http_requests_active gauge
 http_requests_active 3
 ```
+
+The `http_requests_active` gauge accurately tracks the number of requests currently being processed.
 
 ## Middleware Options Reference
 

@@ -455,6 +455,15 @@ func createRecorder() (*metrics.Recorder, error) {
             opts = append(opts, metrics.WithStrictPort())
         }
         
+        // Optional: Reduce label cardinality for simple deployments
+        if getBoolEnv("METRICS_WITHOUT_SCOPE_INFO", false) {
+            opts = append(opts, metrics.WithoutScopeInfo())
+        }
+        
+        if getBoolEnv("METRICS_WITHOUT_TARGET_INFO", false) {
+            opts = append(opts, metrics.WithoutTargetInfo())
+        }
+        
     case "otlp":
         endpoint := getEnv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4318")
         opts = append(opts, metrics.WithOTLP(endpoint))
@@ -547,6 +556,9 @@ METRICS_ADDR=:9090
 METRICS_PATH=/metrics
 METRICS_STRICT_PORT=true
 METRICS_MAX_CUSTOM=2000
+# Optional: Reduce label cardinality
+METRICS_WITHOUT_SCOPE_INFO=false
+METRICS_WITHOUT_TARGET_INFO=false
 ```
 
 ## Microservices Pattern

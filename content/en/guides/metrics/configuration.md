@@ -26,21 +26,13 @@ recorder := metrics.MustNew(
 )
 ```
 
-The service name appears in two places in your metrics output:
-
-**1. Metric labels** - Every metric includes the service name:
-
-```
-http_requests_total{service_name="my-api",method="GET"} 42
-```
-
-**2. Target info metric** - OpenTelemetry resource information:
+The service name appears in the `target_info` metric, which holds resource-level information about your service:
 
 ```
 target_info{service_name="my-api",service_version="v1.2.3"} 1
 ```
 
-The `target_info` metric is useful for service discovery and correlating metrics across your infrastructure.
+Individual metrics like `http_requests_total` do not include `service_name` as a label. This keeps label cardinality low, which follows Prometheus best practices. The `target_info` metric is used for service discovery and correlating metrics across your infrastructure.
 
 **Best Practices**:
 - Use lowercase with hyphens: `user-service`, `payment-api`.
@@ -98,6 +90,42 @@ recorder := metrics.MustNew(
 **With Strict Mode**: Fails with error if exact port is unavailable.
 
 **Production Best Practice**: Always use `WithStrictPort()` to ensure predictable port allocation.
+
+### Without Scope Info
+
+Remove OpenTelemetry instrumentation scope labels from metrics:
+
+```go
+recorder := metrics.MustNew(
+    metrics.WithPrometheus(":9090", "/metrics"),
+    metrics.WithoutScopeInfo(),  // Remove otel_scope_* labels
+    metrics.WithServiceName("my-api"),
+)
+```
+
+**What It Does**: By default, OpenTelemetry adds labels like `otel_scope_name`, `otel_scope_version`, and `otel_scope_schema_url` to every metric. These labels identify which instrumentation library produced each metric.
+
+**When to Use**: If you only have one instrumentation scope (which is common), you can remove these labels to keep your metrics clean and reduce label cardinality.
+
+**Only Affects**: Prometheus provider (OTLP and stdout ignore this option).
+
+### Without Target Info
+
+Disable the `target_info` metric:
+
+```go
+recorder := metrics.MustNew(
+    metrics.WithPrometheus(":9090", "/metrics"),
+    metrics.WithoutTargetInfo(),  // Remove target_info metric
+    metrics.WithServiceName("my-api"),
+)
+```
+
+**What It Does**: By default, OpenTelemetry creates a `target_info` metric containing resource attributes like `service_name` and `service_version`.
+
+**When to Use**: If you already identify services through Prometheus external labels or other means, you can disable this metric.
+
+**Only Affects**: Prometheus provider (OTLP and stdout ignore this option).
 
 ### Server Disabled
 

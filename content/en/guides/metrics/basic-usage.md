@@ -279,16 +279,22 @@ curl http://localhost:9090/metrics
 Example output:
 
 ```
+# HELP target_info Target metadata
+# TYPE target_info gauge
+target_info{service_name="my-api",service_version="v1.0.0"} 1
+
 # HELP http_requests_total Total number of HTTP requests
 # TYPE http_requests_total counter
-http_requests_total{method="GET",path="/",status="200"} 42
+http_requests_total{method="GET",http_route="/",http_status_code="200"} 42
 
 # HELP http_request_duration_seconds HTTP request duration
 # TYPE http_request_duration_seconds histogram
-http_request_duration_seconds_bucket{method="GET",path="/",le="0.005"} 10
-http_request_duration_seconds_bucket{method="GET",path="/",le="0.01"} 25
+http_request_duration_seconds_bucket{method="GET",http_route="/",le="0.005"} 10
+http_request_duration_seconds_bucket{method="GET",http_route="/",le="0.01"} 25
 ...
 ```
+
+The `target_info` metric contains your service metadata. Individual metrics include request-specific labels like `method`, `http_route`, and `http_status_code`.
 
 ## Error Handling
 

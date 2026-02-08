@@ -146,16 +146,20 @@ curl http://localhost:9090/metrics
 Example output:
 
 ```
+# HELP target_info Target metadata
+# TYPE target_info gauge
+target_info{service_name="my-service",service_version="v1.0.0"} 1
+
 # HELP http_requests_total Total number of HTTP requests
 # TYPE http_requests_total counter
-http_requests_total{method="GET",path="/api/users",status="200"} 1543
+http_requests_total{method="GET",http_route="/api/users",http_status_code="200"} 1543
 
 # HELP http_request_duration_seconds HTTP request duration
 # TYPE http_request_duration_seconds histogram
-http_request_duration_seconds_bucket{method="GET",path="/api/users",le="0.005"} 245
-http_request_duration_seconds_bucket{method="GET",path="/api/users",le="0.01"} 892
-http_request_duration_seconds_sum{method="GET",path="/api/users"} 15.432
-http_request_duration_seconds_count{method="GET",path="/api/users"} 1543
+http_request_duration_seconds_bucket{method="GET",http_route="/api/users",le="0.005"} 245
+http_request_duration_seconds_bucket{method="GET",http_route="/api/users",le="0.01"} 892
+http_request_duration_seconds_sum{method="GET",http_route="/api/users"} 15.432
+http_request_duration_seconds_count{method="GET",http_route="/api/users"} 1543
 ```
 
 ### Prometheus Scrape Configuration
