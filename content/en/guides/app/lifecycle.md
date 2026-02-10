@@ -7,9 +7,11 @@ keywords:
   - hooks
   - startup
   - shutdown
+  - reload
+  - SIGHUP
   - lifecycle events
 description: >
-  Use lifecycle hooks for initialization, cleanup, and event handling.
+  Use lifecycle hooks for initialization, cleanup, reload, and event handling.
 ---
 
 ## Overview
@@ -18,6 +20,7 @@ The app package provides lifecycle hooks for managing application state:
 
 - **OnStart** - Called before server starts. Runs sequentially. Stops on first error.
 - **OnReady** - Called when server is ready to accept connections. Runs async. Non-blocking.
+- **OnReload** - Called when SIGHUP is received or `Reload()` is called. Runs sequentially. Errors logged.
 - **OnShutdown** - Called during graceful shutdown. LIFO order.
 - **OnStop** - Called after shutdown completes. Best-effort.
 - **OnRoute** - Called when a route is registered. Synchronous.
@@ -129,6 +132,168 @@ a.OnReady(func() {
     doSomethingRisky()
 })
 ```
+
+## OnReload Hook
+
+### What is it?
+
+The OnReload hook lets you reload your app's configuration without stopping the server. When you register this hook, your app automatically listens for SIGHUP signals on Unix systems (Linux, macOS). No extra setup needed!
+
+### Basic Usage
+
+Here's how to reload configuration when you get a SIGHUP signal:
+
+```go
+a := app.MustNew(
+    app.WithServiceName("my-api"),
+)
+
+// Register a reload hook - SIGHUP is now automatically enabled!
+a.OnReload(func(ctx context.Context) error {
+    log.Println("Reloading configuration...")
+    
+    // Load new config
+    newConfig, err := loadConfig("config.yaml")
+    if err != nil {
+        return fmt.Errorf("failed to load config: %w", err)
+    }
+    
+    // Apply new config
+    applyConfig(newConfig)
+    return nil
+})
+
+// Start server
+ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+defer cancel()
+a.Start(ctx)
+```
+
+Now you can reload without restarting:
+
+```bash
+# Send SIGHUP to reload
+kill -HUP <pid>
+
+# Or use killall
+killall -HUP my-api
+```
+
+### How it works
+
+When you register an `OnReload` hook:
+- **On Unix/Linux/macOS**: Your app automatically listens for SIGHUP signals
+- **On Windows**: SIGHUP doesn't exist, but you can still call `Reload()` programmatically
+- **All platforms**: You can trigger reload from your code using `app.Reload(ctx)`
+
+When no `OnReload` hooks are registered, SIGHUP is ignored on Unix so the process is not terminated (e.g. by `kill -HUP` or terminal disconnect).
+
+### Error Handling
+
+If reload fails, your app keeps running with the old configuration:
+
+```go
+a.OnReload(func(ctx context.Context) error {
+    cfg, err := loadConfig("config.yaml")
+    if err != nil {
+        // Error is logged, but server keeps running
+        return err
+    }
+    
+    // Validate before applying
+    if err := cfg.Validate(); err != nil {
+        return fmt.Errorf("invalid config: %w", err)
+    }
+    
+    applyConfig(cfg)
+    return nil
+})
+```
+
+The hooks run one at a time (sequentially) and stop on the first error. This means if you have multiple reload hooks and one fails, the rest won't run.
+
+### Programmatic Reload
+
+You can also trigger reload from your code - useful for admin endpoints:
+
+```go
+// Create an admin endpoint to trigger reload
+a.POST("/admin/reload", func(c *app.Context) {
+    if err := a.Reload(c.Request.Context()); err != nil {
+        c.InternalError(err)
+        return
+    }
+    c.JSON(200, map[string]string{"status": "config reloaded"})
+})
+```
+
+### Multiple Reload Hooks
+
+You can register multiple hooks for different parts of your config:
+
+```go
+// Reload database pool settings
+a.OnReload(func(ctx context.Context) error {
+    log.Println("Reloading database config...")
+    return db.ReconfigurePool(ctx)
+})
+
+// Reload cache settings
+a.OnReload(func(ctx context.Context) error {
+    log.Println("Reloading cache config...")
+    return cache.Reload(ctx)
+})
+
+// Reload log level
+a.OnReload(func(ctx context.Context) error {
+    log.Println("Reloading log level...")
+    return logger.SetLevel(newLevel)
+})
+```
+
+### Common Use Cases
+
+```go
+// Reload TLS certificates
+a.OnReload(func(ctx context.Context) error {
+    return tlsManager.ReloadCertificates()
+})
+
+// Reload feature flags
+a.OnReload(func(ctx context.Context) error {
+    return features.Reload(ctx)
+})
+
+// Reload rate limits
+a.OnReload(func(ctx context.Context) error {
+    return rateLimiter.UpdateLimits(ctx)
+})
+
+// Flush caches
+a.OnReload(func(ctx context.Context) error {
+    cache.Clear()
+    return nil
+})
+```
+
+### What can't be reloaded?
+
+**Routes and middleware** can't be changed after the server starts - they're frozen for safety. Only reload things like:
+- Configuration files
+- Database connection settings
+- TLS certificates
+- Cache contents
+- Log levels
+- Feature flags
+
+### Platform Differences
+
+- **Unix/Linux/macOS**: SIGHUP works automatically
+- **Windows**: SIGHUP isn't available, use `app.Reload(ctx)` instead
+
+### Thread Safety
+
+Don't worry about multiple reload signals at the same time - the framework handles this automatically. If multiple SIGHUPs come in, they'll run one at a time.
 
 ## OnShutdown Hook
 
@@ -395,6 +560,7 @@ func main() {
 3. Server starts listening
 4. OnReady hooks execute (async, non-blocking)
 5. Server handles requests...
+   → OnReload hooks execute when SIGHUP received (sequential, logged on error)
 6. Context canceled (SIGTERM/SIGINT)
 7. OnShutdown hooks execute (LIFO order, with timeout)
 8. Server shutdown complete
