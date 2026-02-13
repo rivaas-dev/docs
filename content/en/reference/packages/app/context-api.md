@@ -210,13 +210,7 @@ Sends a 503 Service Unavailable error response.
 
 ## Logging
 
-### Logger
-
-```go
-func (c *Context) Logger() *slog.Logger
-```
-
-Returns the request-scoped logger with automatic context (HTTP metadata, trace IDs, request ID). Never returns nil.
+To log from a handler with trace correlation, pass the request context to the standard library's context-aware logging functions. For example: `slog.InfoContext(c.RequestContext(), "msg", ...)` or `slog.ErrorContext(c.RequestContext(), "msg", ...)`. When the app is configured with observability (logging and tracing), `trace_id` and `span_id` are injected automatically from the active OpenTelemetry span.
 
 ## Presence
 

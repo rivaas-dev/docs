@@ -310,7 +310,6 @@ if c.HasErrors() {
 ```go
 c.RequestContext() context.Context  // Request's context.Context
 c.TraceContext() context.Context    // OpenTelemetry trace context
-c.Logger() *slog.Logger             // Request-scoped logger
 ```
 
 ## Tracing & Metrics
@@ -362,15 +361,15 @@ func handler(c *router.Context) {
     // Tracing
     c.SetSpanAttribute("user.id", id)
     
-    // Logging
-    c.Logger().Info("processing request", "user_id", id)
+    // Logging (pass request context for trace correlation)
+    slog.InfoContext(c.RequestContext(), "processing request", "user_id", id)
     
     // Response
     if err := c.JSON(200, map[string]string{
         "id":    id,
         "query": query,
     }); err != nil {
-        c.Logger().Error("failed to write response", "error", err)
+        slog.ErrorContext(c.RequestContext(), "failed to write response", "error", err)
     }
 }
 ```

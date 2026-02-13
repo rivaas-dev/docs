@@ -417,7 +417,7 @@ a.GET("/", handler)   // Handler executes last
 package main
 
 import (
-    "log"
+    "log/slog"
     "net/http"
     "time"
     
@@ -428,7 +428,7 @@ import (
 )
 
 func main() {
-    a, err := app.New(
+    a := app.MustNew(
         app.WithServiceName("api"),
         app.WithMiddleware(
             requestid.New(),
@@ -436,9 +436,6 @@ func main() {
             timeout.New(timeout.WithDuration(30 * time.Second)),
         ),
     )
-    if err != nil {
-        log.Fatal(err)
-    }
     
     // Custom middleware
     a.Use(LoggingMiddleware())
@@ -464,7 +461,7 @@ func LoggingMiddleware() app.HandlerFunc {
         c.Next()
         
         duration := time.Since(start)
-        c.Logger().Info("request completed",
+        slog.InfoContext(c.RequestContext(), "request completed",
             "method", c.Request.Method,
             "path", c.Request.URL.Path,
             "duration", duration,

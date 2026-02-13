@@ -64,26 +64,21 @@ logger := logging.MustNew(
 )
 ```
 
-### NewContextLogger
+## Automatic Trace Correlation
+
+When you create a logger with this package (and optionally set it as the global logger with `WithGlobalLogger()`), trace correlation is automatic. You do not need a special logger type.
+
+Any call to the standard library's context-aware methods — `slog.InfoContext(ctx, ...)`, `slog.ErrorContext(ctx, ...)`, and so on — will automatically get `trace_id` and `span_id` added to the log record if the context contains an active OpenTelemetry span. The logging package wraps the handler with a context-aware layer that reads the span from the context and injects these fields.
+
+**Example (in an HTTP handler):**
 
 ```go
-func NewContextLogger(ctx context.Context, logger *Logger) *ContextLogger
+// Pass the request context when you log
+slog.InfoContext(c.RequestContext(), "processing request", "order_id", orderID)
+// Output includes trace_id and span_id when tracing is enabled
 ```
 
-Creates a context-aware logger that automatically extracts trace and span IDs from OpenTelemetry context.
-
-**Parameters:**
-- `ctx` - Context to extract trace information from.
-- `logger` - Base Logger instance.
-
-**Returns:**
-- `*ContextLogger` - Context-aware logger.
-
-**Example:**
-```go
-cl := logging.NewContextLogger(ctx, logger)
-cl.Info("processing request")  // Includes trace_id and span_id
-```
+Use the same pattern with `slog.DebugContext`, `slog.WarnContext`, and `slog.ErrorContext`. No wrapper type or extra API is required.
 
 ## Logger Type
 
@@ -421,98 +416,6 @@ if err := logger.Shutdown(ctx); err != nil {
     fmt.Fprintf(os.Stderr, "shutdown error: %v\n", err)
 }
 ```
-
-## ContextLogger Type
-
-### Logging Methods
-
-#### Debug
-
-```go
-func (cl *ContextLogger) Debug(msg string, args ...any)
-```
-
-Logs a debug message with automatic trace correlation.
-
-#### Info
-
-```go
-func (cl *ContextLogger) Info(msg string, args ...any)
-```
-
-Logs an info message with automatic trace correlation.
-
-#### Warn
-
-```go
-func (cl *ContextLogger) Warn(msg string, args ...any)
-```
-
-Logs a warning message with automatic trace correlation.
-
-#### Error
-
-```go
-func (cl *ContextLogger) Error(msg string, args ...any)
-```
-
-Logs an error message with automatic trace correlation.
-
-### Context Methods
-
-#### Logger
-
-```go
-func (cl *ContextLogger) Logger() *slog.Logger
-```
-
-Returns the underlying slog.Logger.
-
-**Returns:**
-- `*slog.Logger` - Underlying logger
-
-#### TraceID
-
-```go
-func (cl *ContextLogger) TraceID() string
-```
-
-Returns the trace ID if available.
-
-**Returns:**
-- `string` - Trace ID, or empty if not available
-
-**Example:**
-```go
-if traceID := cl.TraceID(); traceID != "" {
-    fmt.Printf("Trace ID: %s\n", traceID)
-}
-```
-
-#### SpanID
-
-```go
-func (cl *ContextLogger) SpanID() string
-```
-
-Returns the span ID if available.
-
-**Returns:**
-- `string` - Span ID, or empty if not available
-
-#### With
-
-```go
-func (cl *ContextLogger) With(args ...any) *slog.Logger
-```
-
-Returns a slog.Logger with additional attributes.
-
-**Parameters:**
-- `args` - Key-value pairs
-
-**Returns:**
-- `*slog.Logger` - Logger with added attributes
 
 ## Next Steps
 

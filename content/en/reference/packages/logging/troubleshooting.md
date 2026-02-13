@@ -151,24 +151,22 @@ tracer := tracing.MustNew(
 defer tracer.Shutdown(context.Background())
 ```
 
-2. **Not using ContextLogger:**
+2. **Not passing the request context when logging:**
 ```go
-// Wrong - plain logger
-logger.Info("message")
+// Wrong - no context, so no trace_id/span_id
+slog.Info("message")
 
-// Right - context logger
-cl := logging.NewContextLogger(ctx, logger)
-cl.Info("message")  // Includes trace_id and span_id
+// Right - pass context so trace_id and span_id are injected automatically
+slog.InfoContext(ctx, "message")
 ```
 
 3. **Context has no active span:**
 ```go
-// Start a span
+// Start a span so the context carries trace info
 ctx, span := tracer.Start(context.Background(), "operation")
 defer span.End()
 
-cl := logging.NewContextLogger(ctx, logger)
-cl.Info("message")  // Now includes trace IDs
+slog.InfoContext(ctx, "message")  // Now includes trace_id and span_id
 ```
 
 ### Wrong Trace IDs
@@ -177,23 +175,18 @@ cl.Info("message")  // Now includes trace IDs
 
 **Cause:** Context not properly propagated.
 
-**Solution:** Ensure context flows through call chain:
+**Solution:** Ensure context flows through the call chain and pass it when you log:
 
 ```go
 func handler(w http.ResponseWriter, r *http.Request) {
-    ctx := r.Context()  // Get context with trace
+    ctx := r.Context()  // Context carries trace from middleware
     
-    // Pass context down
     result := processRequest(ctx)
-    
     w.Write(result)
 }
 
 func processRequest(ctx context.Context) []byte {
-    // Use context
-    cl := logging.NewContextLogger(ctx, logger)
-    cl.Info("processing")
-    
+    slog.InfoContext(ctx, "processing")  // Uses same context, so same trace
     return data
 }
 ```
@@ -354,13 +347,13 @@ r.Use(accesslog.New(
 // /health and /metrics won't be logged
 ```
 
-### Context Logger Not Working
+### No Trace IDs in Handler Logs
 
-**Problem:** Router context logger has no trace IDs.
+**Problem:** Handler logs have no trace_id or span_id.
 
-**Cause:** Tracing not initialized or middleware not applied.
+**Cause:** Tracing not initialized, or you are not using the context when logging.
 
-**Solution:** Initialize tracing:
+**Solution:** Initialize tracing with the app, and always pass the request context when you log:
 ```go
 a, _ := app.New(
     app.WithServiceName("my-api"),
@@ -369,7 +362,9 @@ a, _ := app.New(
         app.WithTracing(tracing.WithOTLP("localhost:4317")),
     ),
 )
+// In handlers, use: slog.InfoContext(c.RequestContext(), "message", ...)
 ```
+Trace IDs are injected automatically for any `slog.*Context(ctx, ...)` call when the context has an active OpenTelemetry span.
 
 ## Testing Issues
 

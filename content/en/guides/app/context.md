@@ -251,8 +251,7 @@ When you need more control over error handling, use `Bind()` directly:
 a.POST("/users", func(c *app.Context) {
     var req CreateUserRequest
     if err := c.Bind(&req); err != nil {
-        // Handle the error your way
-        c.Logger().Error("binding failed", "error", err)
+        slog.ErrorContext(c.RequestContext(), "binding failed", "error", err)
         c.Fail(err)
         return
     }
@@ -503,19 +502,15 @@ a, err := app.New(
 
 ## Request-Scoped Logging
 
-### Accessing the Logger
-
-Get the request-scoped logger with automatic context:
+Pass the request context when you log so trace IDs are attached automatically. Use the standard library's context-aware logging:
 
 ```go
+import "log/slog"
+
 a.GET("/orders/:id", func(c *app.Context) {
     orderID := c.Param("id")
     
-    // Logger automatically includes:
-    // - HTTP metadata (method, route, target, client IP)
-    // - Request ID (if present)
-    // - Trace/span IDs (if tracing enabled)
-    c.Logger().Info("processing order",
+    slog.InfoContext(c.RequestContext(), "processing order",
         slog.String("order.id", orderID),
     )
     
@@ -523,9 +518,11 @@ a.GET("/orders/:id", func(c *app.Context) {
 })
 ```
 
+`trace_id` and `span_id` are injected automatically when tracing is enabled. HTTP details (method, route, client IP, etc.) live in the access log; handler logs stay lean with just your message and attributes plus trace correlation.
+
 ### Structured Logging
 
-Use structured logging with key-value pairs:
+Use key-value pairs with any `slog.*Context` call:
 
 ```go
 a.POST("/orders", func(c *app.Context) {
@@ -534,7 +531,7 @@ a.POST("/orders", func(c *app.Context) {
         return
     }
     
-    c.Logger().Info("creating order",
+    slog.InfoContext(c.RequestContext(), "creating order",
         slog.String("customer.id", req.CustomerID),
         slog.Int("item.count", len(req.Items)),
         slog.Float64("order.total", req.Total),
@@ -542,7 +539,7 @@ a.POST("/orders", func(c *app.Context) {
     
     // Process order...
     
-    c.Logger().Info("order created successfully",
+    slog.InfoContext(c.RequestContext(), "order created successfully",
         slog.String("order.id", orderID),
     )
 })
@@ -550,28 +547,25 @@ a.POST("/orders", func(c *app.Context) {
 
 ### Log Levels
 
-Use different log levels:
+Use the context-aware variants for each level:
 
 ```go
-c.Logger().Debug("fetching from cache")
-c.Logger().Info("request processed successfully")
-c.Logger().Warn("cache miss, fetching from database")
-c.Logger().Error("failed to save to database", "error", err)
+slog.DebugContext(c.RequestContext(), "fetching from cache")
+slog.InfoContext(c.RequestContext(), "request processed successfully")
+slog.WarnContext(c.RequestContext(), "cache miss, fetching from database")
+slog.ErrorContext(c.RequestContext(), "failed to save to database", "error", err)
 ```
 
-### Automatic Context
+### What Appears in Handler Logs
 
-The logger automatically includes request context:
+Handler log lines include service metadata, trace correlation, and whatever attributes you add. They do not duplicate HTTP fields; those are in the access log:
 
 ```json
 {
   "time": "2024-01-18T10:30:00Z",
   "level": "INFO",
   "msg": "processing order",
-  "http.method": "GET",
-  "http.route": "/orders/:id",
-  "http.target": "/orders/123",
-  "network.client.ip": "203.0.113.1",
+  "service": "orders-api",
   "trace_id": "abc...",
   "span_id": "def...",
   "order.id": "123"
@@ -639,8 +633,7 @@ func main() {
             return // Error already sent
         }
         
-        // Log what's happening
-        c.Logger().Info("creating order",
+        slog.InfoContext(c.RequestContext(), "creating order",
             slog.String("customer.id", req.CustomerID),
             slog.Int("item.count", len(req.Items)),
             slog.Float64("order.total", req.Total),
@@ -649,8 +642,7 @@ func main() {
         // Your business logic here...
         orderID := "order-123"
         
-        // Log success
-        c.Logger().Info("order created",
+        slog.InfoContext(c.RequestContext(), "order created",
             slog.String("order.id", orderID),
         )
         

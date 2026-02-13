@@ -105,22 +105,17 @@ app.WithLogging(
 
 ### Request-Scoped Logging
 
-Use the request-scoped logger in handlers.
+Pass the request context when you log so trace IDs are attached automatically:
 
 ```go
 a.GET("/orders/:id", func(c *app.Context) {
     orderID := c.Param("id")
     
-    // Logger automatically includes:
-    // - HTTP metadata (method, route, target, client IP)
-    // - Request ID (if present)
-    // - Trace/span IDs (if tracing enabled)
-    c.Logger().Info("processing order",
+    slog.InfoContext(c.RequestContext(), "processing order",
         slog.String("order.id", orderID),
     )
     
-    // Subsequent logs maintain context
-    c.Logger().Debug("fetching from database")
+    slog.DebugContext(c.RequestContext(), "fetching from database")
     
     c.JSON(http.StatusOK, map[string]string{
         "order_id": orderID,
@@ -128,17 +123,15 @@ a.GET("/orders/:id", func(c *app.Context) {
 })
 ```
 
-Log output includes automatic context:
+Handler log lines stay lean: they include `trace_id` and `span_id` (when tracing is enabled) plus whatever attributes you add. HTTP details (method, route, client IP, etc.) are in the access log, not in every handler log.
+
+Example handler log line:
 
 ```json
 {
   "time": "2024-01-18T10:30:00Z",
   "level": "INFO",
   "msg": "processing order",
-  "http.method": "GET",
-  "http.route": "/orders/:id",
-  "http.target": "/orders/123",
-  "network.client.ip": "203.0.113.1",
   "trace_id": "abc...",
   "span_id": "def...",
   "order.id": "123"
