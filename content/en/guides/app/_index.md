@@ -131,9 +131,9 @@ func main() {
             app.WithLogging(logging.WithJSONHandler()),
             app.WithMetrics(), // Prometheus is default
             app.WithTracing(tracing.WithOTLP("localhost:4317")),
-            app.WithExcludePaths("/healthz", "/readyz", "/metrics"),
+            app.WithExcludePaths("/livez", "/readyz", "/metrics"),
         ),
-        // Health endpoints: GET /healthz (liveness), GET /readyz (readiness)
+        // Health endpoints: GET /livez (liveness), GET /readyz (readiness)
         app.WithHealthEndpoints(
             app.WithHealthTimeout(800 * time.Millisecond),
             app.WithReadinessCheck("database", func(ctx context.Context) error {

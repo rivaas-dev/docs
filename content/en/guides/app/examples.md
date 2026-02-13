@@ -88,7 +88,7 @@ func main() {
             app.WithLogging(logging.WithJSONHandler()),
             app.WithMetrics(),
             app.WithTracing(tracing.WithOTLP("localhost:4317")),
-            app.WithExcludePaths("/healthz", "/readyz", "/metrics"),
+            app.WithExcludePaths("/livez", "/readyz", "/metrics"),
             app.WithLogOnlyErrors(),
             app.WithSlowThreshold(1 * time.Second),
         ),

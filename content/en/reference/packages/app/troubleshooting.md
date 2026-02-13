@@ -170,7 +170,7 @@ Kill the process or use a different port.
 
 ### Health Checks Always Failing
 
-**Problem:** `/healthz` or `/readyz` always returns 503.
+**Problem:** `/livez` or `/readyz` always returns 503.
 
 **Solution:**
 

@@ -34,15 +34,15 @@ Mounts health endpoints under a prefix.
 
 **Default:** `""` (root)
 
-### WithHealthzPath
+### WithLivezPath
 
 ```go
-func WithHealthzPath(path string) HealthOption
+func WithLivezPath(path string) HealthOption
 ```
 
 Custom liveness probe path.
 
-**Default:** `"/healthz"`
+**Default:** `"/livez"`
 
 ### WithReadyzPath
 
@@ -105,6 +105,6 @@ app.WithHealthEndpoints(
 )
 
 // Endpoints:
-// GET /_system/healthz - Liveness (200 if all checks pass)
+// GET /_system/livez - Liveness (200 if all checks pass)
 // GET /_system/readyz - Readiness (204 if all checks pass)
 ```

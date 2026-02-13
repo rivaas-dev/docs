@@ -337,7 +337,7 @@ a, err := app.New(
         app.WithLogging(),
         app.WithMetrics(),
         app.WithTracing(),
-        app.WithExcludePaths("/healthz", "/readyz", "/metrics"),
+        app.WithExcludePaths("/livez", "/readyz", "/metrics"),
     ),
 )
 ```
@@ -370,7 +370,7 @@ a, err := app.New(
 
 By default, the following paths are excluded:
 
-- `/health`, `/healthz`, `/live`, `/livez`
+- `/health`, `/livez`, `/ready`, `/readyz`
 - `/ready`, `/readyz`
 - `/metrics`
 - `/debug/*`
@@ -477,7 +477,7 @@ func main() {
             ),
             
             // Path filtering
-            app.WithExcludePaths("/healthz", "/readyz"),
+            app.WithExcludePaths("/livez", "/readyz"),
             app.WithExcludePrefixes("/internal/"),
             
             // Access logging: errors and slow requests only

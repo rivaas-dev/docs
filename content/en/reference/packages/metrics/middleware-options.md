@@ -65,7 +65,7 @@ handler := metrics.Middleware(recorder,
 
 // Not excluded (not exact matches)
 /health/status   ✗ not excluded
-/healthz         ✗ not excluded
+/livez           ✗ not excluded
 /api/metrics     ✗ not excluded
 ```
 

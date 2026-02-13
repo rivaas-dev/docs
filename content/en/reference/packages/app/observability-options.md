@@ -168,7 +168,7 @@ app.WithObservability(
     app.WithTracing(tracing.WithOTLP("localhost:4317")),
     
     // Path filtering
-    app.WithExcludePaths("/healthz", "/readyz"),
+    app.WithExcludePaths("/livez", "/readyz"),
     app.WithExcludePrefixes("/internal/"),
     
     // Access logging

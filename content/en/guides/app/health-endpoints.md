@@ -16,8 +16,8 @@ description: >
 
 The app package provides standard health check endpoints. They work with Kubernetes and other orchestration platforms:
 
-- **Liveness Probe** (`/healthz`) - Shows if the process is alive. Restart if failing.
-- **Readiness Probe** (`/readyz`) - Shows if the service can handle traffic.
+- **Liveness Probe** (`/livez`) — Tells you if the process is alive. Restart the container if it fails.
+- **Readiness Probe** (`/readyz`) — Tells you if the service can accept traffic.
 
 ## Basic Configuration
 
@@ -31,7 +31,7 @@ a, err := app.New(
 )
 
 // Endpoints:
-// GET /healthz - Liveness probe
+// GET /livez - Liveness probe
 // GET /readyz - Readiness probe
 ```
 
@@ -42,7 +42,7 @@ Configure custom health check paths:
 ```go
 a, err := app.New(
     app.WithHealthEndpoints(
-        app.WithHealthzPath("/health/live"),
+        app.WithLivezPath("/health/live"),
         app.WithReadyzPath("/health/ready"),
     ),
 )
@@ -60,7 +60,7 @@ a, err := app.New(
 )
 
 // Endpoints:
-// GET /_system/healthz
+// GET /_system/livez
 // GET /_system/readyz
 ```
 
@@ -253,7 +253,7 @@ spec:
         - containerPort: 8080
         livenessProbe:
           httpGet:
-            path: /healthz
+            path: /livez
             port: 8080
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -335,7 +335,7 @@ func main() {
     
     // Start server...
     // Endpoints available at:
-    // GET /_system/healthz - Liveness
+    // GET /_system/livez - Liveness
     // GET /_system/readyz - Readiness
 }
 
@@ -350,7 +350,7 @@ func checkCache(ctx context.Context) error {
 ### Test Liveness
 
 ```bash
-curl http://localhost:8080/healthz
+curl http://localhost:8080/livez
 # Expected: 200 OK
 # Body: "ok"
 ```
@@ -366,7 +366,7 @@ curl http://localhost:8080/readyz
 ### Test with Custom Prefix
 
 ```bash
-curl http://localhost:8080/_system/healthz
+curl http://localhost:8080/_system/livez
 curl http://localhost:8080/_system/readyz
 ```
 
