@@ -1,0 +1,75 @@
+{{- /* benchmark-table.html - Renders benchmark comparison table from data/benchmarks/router.json */ -}}
+{{- $scenario := .Get "scenario" -}}
+{{- $data := site.Data.benchmarks.router -}}
+
+{{- with $data -}}
+  {{- range .scenarios -}}
+    {{- if eq .name $scenario -}}
+      <div class="benchmark-table-container">
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Framework</th>
+                <th class="text-right">ns/op</th>
+                <th class="text-right">B/op</th>
+                <th class="text-right">allocs/op</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{- $results := .results -}}
+              {{- /* Sort by ns_op */ -}}
+              {{- range sort $results "ns_op" -}}
+                <tr{{- if eq .framework "Rivaas" }} class="table-success"{{- end -}}>
+                  <td><strong>{{ .framework }}</strong></td>
+                  <td class="text-right font-monospace">{{ printf "%.1f" .ns_op }}</td>
+                  <td class="text-right font-monospace">{{ printf "%.0f" .b_op }}</td>
+                  <td class="text-right font-monospace">{{ printf "%.0f" .allocs_op }}</td>
+                  <td class="text-muted small">
+                    {{- if eq .allocs_op 0.0 -}}
+                      <span class="badge bg-success">Zero alloc</span>
+                    {{- end -}}
+                    {{- if eq .framework "Hertz" -}}
+                      <span class="badge bg-info">via ut.PerformRequest</span>
+                    {{- end -}}
+                    {{- if or (eq .framework "Fiber") (eq .framework "FiberV3") -}}
+                      <span class="badge bg-info">via http adaptor</span>
+                    {{- end -}}
+                  </td>
+                </tr>
+              {{- end -}}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted small mt-2">
+          <strong>Scenario:</strong> <code>{{ .path }}</code> — 
+          Lower is better. All handlers use direct writes (io.WriteString) to minimize overhead and isolate routing cost.
+        </p>
+      </div>
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  <div class="alert alert-warning">
+    <strong>Benchmark data not available.</strong> Run benchmarks to generate data.
+  </div>
+{{- end -}}
+
+<style>
+.benchmark-table-container {
+  margin: 1.5rem 0;
+}
+.benchmark-table-container .table {
+  margin-bottom: 0.5rem;
+}
+.benchmark-table-container .table-success {
+  background-color: rgba(var(--bs-success-rgb), 0.1) !important;
+}
+.benchmark-table-container .font-monospace {
+  font-family: var(--bs-font-monospace, 'Courier New', monospace);
+}
+.benchmark-table-container .badge {
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+</style>

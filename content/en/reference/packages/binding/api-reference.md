@@ -822,7 +822,7 @@ All package-level functions and `Binder` methods are safe for concurrent use. Th
 
 - **[Options Reference](../options/)** - All configuration options
 - **[Sub-Packages](../sub-packages/)** - YAML, TOML, MessagePack, Protocol Buffers
-- **[Performance](../performance/)** - Benchmarks and optimization
+- **[Performance](/reference/packages/router/performance/)** - Router benchmarks and optimization
 - **[Troubleshooting](../troubleshooting/)** - Common issues and solutions
 
 For usage examples, see the [Binding Guide](/guides/binding/).

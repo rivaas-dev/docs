@@ -1006,7 +1006,7 @@ func CreateUserHandler(c *router.Context) error {
 ## Next Steps
 
 - Review [API Reference](/reference/packages/binding/api-reference/) for all features
-- Check [Performance](/reference/packages/binding/performance/) for optimization tips
+- Check [Router Performance](/reference/packages/router/performance/) for benchmark methodology
 - See [Troubleshooting](/reference/packages/binding/troubleshooting/) for common issues
 - Explore [Sub-Packages](/reference/packages/binding/sub-packages/) for YAML, TOML, etc.
 

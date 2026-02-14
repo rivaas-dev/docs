@@ -189,7 +189,7 @@ app.WithObservability(
     app.WithLogging(),
     app.WithMetrics(),
     app.WithTracing(),
-    app.WithExcludePaths("/healthz", "/readyz", "/metrics"),
+    app.WithExcludePaths("/livez", "/readyz", "/metrics"),
     app.WithExcludePrefixes("/static", "/assets"),
 )
 ```
@@ -213,15 +213,15 @@ a := app.MustNew(
 ```
 
 This registers:
-- `GET /healthz` — Liveness probe
+- `GET /livez` — Liveness probe
 - `GET /readyz` — Readiness probe
 
 ### Custom Health Paths
 
 ```go
 app.WithHealthEndpoints(
-    app.WithHealthPrefix("/_system"),       // Prefix: /_system/healthz
-    app.WithHealthzPath("/live"),           // Custom path: /_system/live
+    app.WithHealthPrefix("/_system"),       // Prefix: /_system/livez
+    app.WithLivezPath("/live"),             // Custom path: /_system/live
     app.WithReadyzPath("/ready"),           // Custom path: /_system/ready
     app.WithHealthTimeout(500 * time.Millisecond),
 )
@@ -322,7 +322,7 @@ func main() {
             app.WithLogging(logging.WithJSONHandler()),
             app.WithMetrics(metrics.WithPrometheus(":9090", "/metrics")),
             app.WithTracing(tracing.WithOTLP("jaeger:4317")),
-            app.WithExcludePaths("/healthz", "/readyz", "/metrics"),
+            app.WithExcludePaths("/livez", "/readyz", "/metrics"),
         ),
 
         // Health checks

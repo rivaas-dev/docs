@@ -784,7 +784,7 @@ a.POST("/users", func(c *app.Context) error {
 ## Next Steps
 
 - Review [Examples](../examples/) for complete patterns
-- See [Performance](/reference/packages/binding/performance/) for optimization tips
+- See [Router Performance](/reference/packages/router/performance/) for benchmark methodology
 - Check [Troubleshooting](/reference/packages/binding/troubleshooting/) for common issues
 - Explore [API Reference](/reference/packages/binding/api-reference/) for all features
 
