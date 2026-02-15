@@ -1,0 +1,19 @@
+{{- /* benchmark-meta.html - Renders benchmark test environment from data/benchmarks/router.json */ -}}
+{{- $data := site.Data.benchmarks.router -}}
+
+{{- with $data -}}
+<ul>
+  <li><strong>Go Version:</strong> {{ .go_version | default "—" }}</li>
+  <li><strong>CPU:</strong> {{ .cpu | default "—" }}</li>
+  <li><strong>OS:</strong> {{ .goos | default "—" }}/{{ .goarch | default "—" }}</li>
+  <li><strong>Last Updated:</strong> {{ .updated | default "—" }}</li>
+</ul>
+{{- else -}}
+<ul>
+  <li><strong>Go Version:</strong> —</li>
+  <li><strong>CPU:</strong> —</li>
+  <li><strong>OS:</strong> —/—</li>
+  <li><strong>Last Updated:</strong> —</li>
+</ul>
+<p class="text-muted small">Benchmark data will appear here after the first release-triggered run.</p>
+{{- end -}}

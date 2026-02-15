@@ -18,10 +18,7 @@ This page contains detailed performance benchmarks comparing **rivaas/router** a
 
 ### Test Environment
 
-- **Go Version:** {{ site.Data.benchmarks.router.go_version }}
-- **CPU:** {{ site.Data.benchmarks.router.cpu }}
-- **OS:** {{ site.Data.benchmarks.router.goos }}/{{ site.Data.benchmarks.router.goarch }}
-- **Last Updated:** {{ site.Data.benchmarks.router.updated }}
+{{< benchmark-meta >}}
 
 ### Frameworks Compared
 
