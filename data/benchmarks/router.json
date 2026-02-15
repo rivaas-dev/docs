@@ -1,54 +1,189 @@
 {
-  "updated": "2026-02-14",
+  "cpu": "AMD EPYC 9V74 80-Core Processor",
   "go_version": "1.25",
-  "goos": "linux",
   "goarch": "amd64",
-  "cpu": "12th Gen Intel(R) Core(TM) i7-1265U",
+  "goos": "linux",
   "scenarios": [
     {
       "name": "Static",
       "path": "/",
       "results": [
-        { "framework": "Rivaas", "ns_op": 179.4, "b_op": 0, "allocs_op": 0 },
-        { "framework": "StdMux", "ns_op": 302.2, "b_op": 0, "allocs_op": 0 },
-        { "framework": "Gin", "ns_op": 259.1, "b_op": 0, "allocs_op": 0 },
-        { "framework": "Echo", "ns_op": 139.4, "b_op": 8, "allocs_op": 1 },
-        { "framework": "Chi", "ns_op": 1014, "b_op": 368, "allocs_op": 2 },
-        { "framework": "Fiber", "ns_op": 7161, "b_op": 1976, "allocs_op": 20 },
-        { "framework": "FiberV3", "ns_op": 24721, "b_op": 33267, "allocs_op": 15 },
-        { "framework": "Hertz", "ns_op": 4722, "b_op": 3448, "allocs_op": 24 },
-        { "framework": "Beego", "ns_op": 2309, "b_op": 360, "allocs_op": 4 }
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Rivaas",
+          "ns_op": 65.26
+        },
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "StdMux",
+          "ns_op": 76.17
+        },
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Gin",
+          "ns_op": 66.11
+        },
+        {
+          "allocs_op": 1,
+          "b_op": 8,
+          "framework": "Echo",
+          "ns_op": 76.62
+        },
+        {
+          "allocs_op": 2,
+          "b_op": 368,
+          "framework": "Chi",
+          "ns_op": 282.3
+        },
+        {
+          "allocs_op": 20,
+          "b_op": 1972,
+          "framework": "Fiber",
+          "ns_op": 2110
+        },
+        {
+          "allocs_op": 15,
+          "b_op": 33096,
+          "framework": "FiberV3",
+          "ns_op": 6985
+        },
+        {
+          "allocs_op": 24,
+          "b_op": 3448,
+          "framework": "Hertz",
+          "ns_op": 1689
+        },
+        {
+          "allocs_op": 4,
+          "b_op": 360,
+          "framework": "Beego",
+          "ns_op": 602.8
+        }
       ]
     },
     {
       "name": "OneParam",
       "path": "/users/:id",
       "results": [
-        { "framework": "Rivaas", "ns_op": 195.3, "b_op": 0, "allocs_op": 0 },
-        { "framework": "StdMux", "ns_op": 355.7, "b_op": 16, "allocs_op": 1 },
-        { "framework": "Gin", "ns_op": 284.4, "b_op": 0, "allocs_op": 0 },
-        { "framework": "Echo", "ns_op": 426.9, "b_op": 16, "allocs_op": 2 },
-        { "framework": "Chi", "ns_op": 2337, "b_op": 368, "allocs_op": 2 },
-        { "framework": "Fiber", "ns_op": 4234, "b_op": 2070, "allocs_op": 20 },
-        { "framework": "FiberV3", "ns_op": 17953, "b_op": 33218, "allocs_op": 16 },
-        { "framework": "Hertz", "ns_op": 5614, "b_op": 3544, "allocs_op": 27 },
-        { "framework": "Beego", "ns_op": 3184, "b_op": 400, "allocs_op": 6 }
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Rivaas",
+          "ns_op": 126.4
+        },
+        {
+          "allocs_op": 1,
+          "b_op": 16,
+          "framework": "StdMux",
+          "ns_op": 223.8
+        },
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Gin",
+          "ns_op": 120.5
+        },
+        {
+          "allocs_op": 2,
+          "b_op": 16,
+          "framework": "Echo",
+          "ns_op": 133
+        },
+        {
+          "allocs_op": 2,
+          "b_op": 368,
+          "framework": "Chi",
+          "ns_op": 365
+        },
+        {
+          "allocs_op": 20,
+          "b_op": 2059,
+          "framework": "Fiber",
+          "ns_op": 2145
+        },
+        {
+          "allocs_op": 16,
+          "b_op": 33112,
+          "framework": "FiberV3",
+          "ns_op": 7190
+        },
+        {
+          "allocs_op": 27,
+          "b_op": 3544,
+          "framework": "Hertz",
+          "ns_op": 2011
+        },
+        {
+          "allocs_op": 6,
+          "b_op": 400,
+          "framework": "Beego",
+          "ns_op": 931.6
+        }
       ]
     },
     {
       "name": "TwoParams",
       "path": "/users/:id/posts/:post_id",
       "results": [
-        { "framework": "Rivaas", "ns_op": 392.2, "b_op": 0, "allocs_op": 0 },
-        { "framework": "StdMux", "ns_op": 866.8, "b_op": 48, "allocs_op": 2 },
-        { "framework": "Gin", "ns_op": 431.8, "b_op": 0, "allocs_op": 0 },
-        { "framework": "Echo", "ns_op": 479.5, "b_op": 32, "allocs_op": 4 },
-        { "framework": "Chi", "ns_op": 1003, "b_op": 368, "allocs_op": 2 },
-        { "framework": "Fiber", "ns_op": 8262, "b_op": 2096, "allocs_op": 20 },
-        { "framework": "FiberV3", "ns_op": 29475, "b_op": 33248, "allocs_op": 18 },
-        { "framework": "Hertz", "ns_op": 4472, "b_op": 3664, "allocs_op": 29 },
-        { "framework": "Beego", "ns_op": 3696, "b_op": 448, "allocs_op": 8 }
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Rivaas",
+          "ns_op": 222.5
+        },
+        {
+          "allocs_op": 2,
+          "b_op": 48,
+          "framework": "StdMux",
+          "ns_op": 435.3
+        },
+        {
+          "allocs_op": 0,
+          "b_op": 0,
+          "framework": "Gin",
+          "ns_op": 199.7
+        },
+        {
+          "allocs_op": 4,
+          "b_op": 32,
+          "framework": "Echo",
+          "ns_op": 223.7
+        },
+        {
+          "allocs_op": 2,
+          "b_op": 368,
+          "framework": "Chi",
+          "ns_op": 475.7
+        },
+        {
+          "allocs_op": 20,
+          "b_op": 2164,
+          "framework": "Fiber",
+          "ns_op": 2339
+        },
+        {
+          "allocs_op": 18,
+          "b_op": 33573,
+          "framework": "FiberV3",
+          "ns_op": 7636
+        },
+        {
+          "allocs_op": 29,
+          "b_op": 3664,
+          "framework": "Hertz",
+          "ns_op": 2163
+        },
+        {
+          "allocs_op": 8,
+          "b_op": 448,
+          "framework": "Beego",
+          "ns_op": 1236
+        }
       ]
     }
-  ]
+  ],
+  "updated": "2026-02-15"
 }
