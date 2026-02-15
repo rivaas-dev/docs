@@ -329,7 +329,7 @@ func main() {
     
     // Start server
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -337,24 +337,45 @@ func main() {
 
 ### Port Configuration
 
-Specify different ports:
+Configure the listen address via options when creating the app (default is `:8080`):
 
 ```go
-// Development
-a.Start(ctx, ":8080")
+// Development (default port 8080)
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithPort(8080),
+)
+// ...
+a.Start(ctx)
 
 // Production
-a.Start(ctx, ":80")
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithPort(80),
+)
+// ...
+a.Start(ctx)
 
 // Bind to specific interface
-a.Start(ctx, "127.0.0.1:8080")
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithHost("127.0.0.1"),
+    app.WithPort(8080),
+)
+// ...
+a.Start(ctx)
 
 // Use environment variable
-port := os.Getenv("PORT")
-if port == "" {
-    port = "8080"
+port := 8080
+if p := os.Getenv("PORT"); p != "" {
+    port, _ = strconv.Atoi(p)
 }
-a.Start(ctx, ":"+port)
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithPort(port),
+)
+// ...
+a.Start(ctx)
 ```
 
 ## Complete Example
@@ -423,7 +444,7 @@ func main() {
     
     // Start server
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }

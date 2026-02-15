@@ -112,9 +112,9 @@ Serve static files and set custom 404 handler.
 ### Server Management
 
 ```go
-func (a *App) Start(ctx context.Context, addr string) error
-func (a *App) StartTLS(ctx context.Context, addr, certFile, keyFile string) error
-func (a *App) StartMTLS(ctx context.Context, addr string, cert tls.Certificate, opts ...MTLSOption) error
+func (a *App) Start(ctx context.Context) error
+func (a *App) StartTLS(ctx context.Context, certFile, keyFile string) error
+func (a *App) StartMTLS(ctx context.Context, serverCert tls.Certificate, opts ...MTLSOption) error
 ```
 
 Start HTTP, HTTPS, or mTLS servers with graceful shutdown.

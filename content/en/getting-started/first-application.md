@@ -65,7 +65,7 @@ func main() {
 
     // Start the server
     log.Println("🚀 Starting server on http://localhost:8080")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }
@@ -200,7 +200,7 @@ a.POST("/echo", handleEcho)
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
 
-if err := a.Start(ctx, ":8080"); err != nil {
+if err := a.Start(ctx); err != nil {
     log.Fatal(err)
 }
 ```
@@ -357,19 +357,19 @@ a.Start(context.Background(), ":8080")
 // ✅ Good: Graceful shutdown with signals
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
-a.Start(ctx, ":8080")
+a.Start(ctx)
 ```
 
 ### Registering Routes After Start
 
 ```go
 // ❌ Bad: Routes registered after Start
-a.Start(ctx, ":8080")
+a.Start(ctx)
 a.GET("/late", handler)  // Won't work!
 
 // ✅ Good: Routes before Start
 a.GET("/early", handler)
-a.Start(ctx, ":8080")
+a.Start(ctx)
 ```
 
 ## Production Basics
@@ -425,9 +425,14 @@ lsof -i :8080
 # Kill the process or use a different port
 ```
 
-Change the port in your code:
+Change the port when creating the app:
 ```go
-a.Start(ctx, ":3000")  // Use port 3000 instead
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithPort(3000),  // Use port 3000 instead of default 8080
+)
+// ...
+a.Start(ctx)
 ```
 
 ### JSON Binding Errors

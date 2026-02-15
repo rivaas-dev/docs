@@ -94,7 +94,7 @@ Returns an error if any hook fails, but the server continues running with the ol
 ## Execution Flow
 
 ```
-1. app.Start(ctx, ":8080") called
+1. app.Start(ctx) called
 2. OnStart hooks execute (sequential, stop on error)
 3. Server starts listening
 4. OnReady hooks execute (async, non-blocking)

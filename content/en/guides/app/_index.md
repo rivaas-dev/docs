@@ -92,7 +92,7 @@ func main() {
     defer cancel()
 
     // Start server with graceful shutdown
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -169,7 +169,7 @@ func main() {
     defer cancel()
 
     // Start server
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }

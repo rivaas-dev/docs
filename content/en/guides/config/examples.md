@@ -427,7 +427,6 @@ package main
 
 import (
     "context"
-    "fmt"
     "log"
     "os"
     "os/signal"
@@ -457,10 +456,12 @@ func main() {
         log.Fatalf("failed to load config: %v", err)
     }
     
-    // Create rivaas/app with configuration
+    // Create rivaas/app with configuration from config
     a := app.MustNew(
         app.WithServiceName("myapp"),
         app.WithServiceVersion("v1.0.0"),
+        app.WithHost(appConfig.Server.Host),
+        app.WithPort(appConfig.Server.Port),
     )
     
     // Define routes
@@ -472,11 +473,7 @@ func main() {
     ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
     defer cancel()
     
-    // Start server with configured address
-    addr := fmt.Sprintf("%s:%d", appConfig.Server.Host, appConfig.Server.Port)
-    log.Printf("Starting server on http://%s\n", addr)
-    
-    if err := a.Start(ctx, addr); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatalf("server error: %v", err)
     }
 }

@@ -70,7 +70,7 @@ func main() {
     defer cancel()
 
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }

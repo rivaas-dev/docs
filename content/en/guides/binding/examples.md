@@ -973,7 +973,7 @@ func main() {
     addr := ":8080"
     log.Printf("Server starting on %s", addr)
     
-    if err := a.Start(ctx, addr); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }

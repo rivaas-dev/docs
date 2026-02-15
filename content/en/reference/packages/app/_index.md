@@ -144,9 +144,9 @@ a.Any(path string, handler HandlerFunc, opts ...RouteOption) *route.Route
 ### Server Management
 
 ```go
-a.Start(ctx context.Context, addr string) error
-a.StartTLS(ctx context.Context, addr, certFile, keyFile string) error
-a.StartMTLS(ctx context.Context, addr string, cert tls.Certificate, opts ...MTLSOption) error
+a.Start(ctx context.Context) error
+a.StartTLS(ctx context.Context, certFile, keyFile string) error
+a.StartMTLS(ctx context.Context, serverCert tls.Certificate, opts ...MTLSOption) error
 ```
 
 ### Lifecycle Hooks

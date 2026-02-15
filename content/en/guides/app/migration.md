@@ -73,7 +73,7 @@ http.ListenAndServe(":8080", r)
 a := app.MustNew()
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 defer cancel()
-a.Start(ctx, ":8080")  // Includes graceful shutdown
+a.Start(ctx)  // Includes graceful shutdown
 ```
 
 ## Migration Steps
@@ -133,7 +133,7 @@ http.ListenAndServe(":8080", r)
 // After
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
-a.Start(ctx, ":8080")
+a.Start(ctx)
 ```
 
 ## Complete Migration Example
@@ -206,7 +206,7 @@ func main() {
     )
     defer cancel()
     
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }

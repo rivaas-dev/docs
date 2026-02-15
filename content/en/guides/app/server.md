@@ -23,18 +23,32 @@ Start an HTTP server:
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
 
-if err := a.Start(ctx, ":8080"); err != nil {
+if err := a.Start(ctx); err != nil {
     log.Fatal(err)
 }
 ```
 
 ### Custom Address
 
-Bind to specific interface:
+Configure the listen address via options when creating the app (default is `:8080`):
 
 ```go
-a.Start(ctx, "127.0.0.1:8080")  // Localhost only
-a.Start(ctx, "0.0.0.0:8080")    // All interfaces
+// Localhost only
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithHost("127.0.0.1"),
+    app.WithPort(8080),
+)
+// ...
+a.Start(ctx)
+
+// All interfaces (default)
+a, err := app.New(
+    app.WithServiceName("my-api"),
+    app.WithPort(8080),
+)
+// ...
+a.Start(ctx)
 ```
 
 ## HTTPS Server
@@ -47,7 +61,7 @@ Start with TLS certificates:
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
 
-if err := a.StartTLS(ctx, ":8443", "server.crt", "server.key"); err != nil {
+if err := a.StartTLS(ctx, "server.crt", "server.key"); err != nil {
     log.Fatal(err)
 }
 ```
@@ -85,7 +99,7 @@ caCertPool.AppendCertsFromPEM(caCert)
 ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 defer cancel()
 
-err = a.StartMTLS(ctx, ":8443", serverCert,
+err = a.StartMTLS(ctx, serverCert,
     app.WithClientCAs(caCertPool),
     app.WithMinVersion(tls.VersionTLS13),
 )
@@ -96,7 +110,7 @@ err = a.StartMTLS(ctx, ":8443", serverCert,
 Authorize clients based on certificate:
 
 ```go
-err = a.StartMTLS(ctx, ":8443", serverCert,
+err = a.StartMTLS(ctx, serverCert,
     app.WithClientCAs(caCertPool),
     app.WithAuthorize(func(cert *x509.Certificate) (string, bool) {
         // Extract principal from certificate
@@ -126,7 +140,7 @@ ctx, cancel := signal.NotifyContext(
 )
 defer cancel()
 
-if err := a.Start(ctx, ":8080"); err != nil {
+if err := a.Start(ctx); err != nil {
     log.Fatal(err)
 }
 ```
@@ -188,7 +202,7 @@ func main() {
     defer cancel()
     
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatal(err)
     }
 }
@@ -236,7 +250,7 @@ func main() {
     defer cancel()
     
     log.Println("mTLS server starting on :8443")
-    err = a.StartMTLS(ctx, ":8443", serverCert,
+    err = a.StartMTLS(ctx, serverCert,
         app.WithClientCAs(caCertPool),
         app.WithMinVersion(tls.VersionTLS13),
     )

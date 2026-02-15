@@ -45,7 +45,7 @@ a.OnStart(func(ctx context.Context) error {
 })
 
 // Start server - hooks execute before listening
-a.Start(ctx, ":8080")
+a.Start(ctx)
 ```
 
 ### Error Handling
@@ -61,7 +61,7 @@ a.OnStart(func(ctx context.Context) error {
 })
 
 // If this hook fails, server won't start
-if err := a.Start(ctx, ":8080"); err != nil {
+if err := a.Start(ctx); err != nil {
     log.Fatalf("Startup failed: %v", err)
 }
 ```
@@ -546,7 +546,7 @@ func main() {
     
     // Start server
     log.Println("Starting server...")
-    if err := a.Start(ctx, ":8080"); err != nil {
+    if err := a.Start(ctx); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -555,7 +555,7 @@ func main() {
 ## Hook Execution Flow
 
 ```
-1. app.Start(ctx, ":8080") called
+1. app.Start(ctx) called
 2. OnStart hooks execute (sequential, stop on error)
 3. Server starts listening
 4. OnReady hooks execute (async, non-blocking)
