@@ -42,8 +42,8 @@ $gray-300: #D6DEDA;        // Cool ash (borders)
 $gray-400: #B5C2BC;        // Stone gray
 $gray-500: #95A8A2;        // Fog gray (bumped for better contrast)
 $gray-600: #5C6B66;        // Muted slate (secondary text)
-$gray-700: #2E3B39;        // Basalt gray
-$gray-800: #252F2C;        // Deep basalt
+$gray-700: #354542;        // Basalt gray (lifted for surface contrast)
+$gray-800: #2A3532;        // Deep basalt (lifted for depth)
 $gray-900: #1F2A27;        // Charcoal basalt (primary text)
 $black: #0F1413;           // Night basalt (dark mode bg)
 
@@ -54,7 +54,7 @@ $primary: #1E6F5C;         // Alpine green
 $primary-dark: #155A49;    // Deep forest (hover/emphasis)
 $primary-light: $gray-200; // Pale green mist (same as gray-200)
 
-$secondary: #2E3B39;       // Basalt gray (structure/hierarchy)
+$secondary: #354542;       // Basalt gray (structure/hierarchy)
 
 // ========================================
 // Bootstrap Contrast Configuration
@@ -76,7 +76,7 @@ $danger: #D4553E;          // Brightened rust (WCAG AA compliant)
 // Dark Mode Colors (Design Tokens)
 // ========================================
 $dark-bg: $black;              // Night basalt
-$dark-surface: #1A2220;        // Deep stone
+$dark-surface: #1F2926;        // Deep stone (lifted for section separation)
 $dark-text: #E6ECE9;           // Soft off-white
 $dark-text-muted: #A3B1AB;     // Cool gray
 $dark-accent: #3FAF98;         // Alpine green (lighter for dark mode)
