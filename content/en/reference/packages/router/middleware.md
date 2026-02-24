@@ -11,16 +11,20 @@ description: >
   Built-in middleware catalog with configuration options.
 ---
 
-The router includes production-ready middleware in sub-packages. Each middleware uses functional options for configuration.
+The router includes production-ready middleware in separate packages. Each middleware is its own Go module, so you only add the ones you need and keep your dependency footprint small. All of them use functional options for configuration.
 
 ## Security
 
 ### Security Headers
 
-**Package:** `rivaas.dev/router/middleware/security`
+**Package:** `rivaas.dev/middleware/security`
+
+```bash
+go get rivaas.dev/middleware/security
+```
 
 ```go
-import "rivaas.dev/router/middleware/security"
+import "rivaas.dev/middleware/security"
 
 r.Use(security.New(
     security.WithHSTS(true),
@@ -32,10 +36,14 @@ r.Use(security.New(
 
 ### CORS
 
-**Package:** `rivaas.dev/router/middleware/cors`
+**Package:** `rivaas.dev/middleware/cors`
+
+```bash
+go get rivaas.dev/middleware/cors
+```
 
 ```go
-import "rivaas.dev/router/middleware/cors"
+import "rivaas.dev/middleware/cors"
 
 r.Use(cors.New(
     cors.WithAllowedOrigins("https://example.com"),
@@ -48,10 +56,14 @@ r.Use(cors.New(
 
 ### Basic Auth
 
-**Package:** `rivaas.dev/router/middleware/basicauth`
+**Package:** `rivaas.dev/middleware/basicauth`
+
+```bash
+go get rivaas.dev/middleware/basicauth
+```
 
 ```go
-import "rivaas.dev/router/middleware/basicauth"
+import "rivaas.dev/middleware/basicauth"
 
 admin := r.Group("/admin")
 admin.Use(basicauth.New(
@@ -64,12 +76,16 @@ admin.Use(basicauth.New(
 
 ### Access Log
 
-**Package:** `rivaas.dev/router/middleware/accesslog`
+**Package:** `rivaas.dev/middleware/accesslog`
+
+```bash
+go get rivaas.dev/middleware/accesslog
+```
 
 ```go
 import (
     "log/slog"
-    "rivaas.dev/router/middleware/accesslog"
+    "rivaas.dev/middleware/accesslog"
 )
 
 logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -83,12 +99,16 @@ r.Use(accesslog.New(
 
 ### Request ID
 
-**Package:** `rivaas.dev/router/middleware/requestid`
+**Package:** `rivaas.dev/middleware/requestid`
+
+```bash
+go get rivaas.dev/middleware/requestid
+```
 
 Generates unique, time-ordered request IDs for distributed tracing and log correlation.
 
 ```go
-import "rivaas.dev/router/middleware/requestid"
+import "rivaas.dev/middleware/requestid"
 
 // UUID v7 by default (36 chars, time-ordered, RFC 9562)
 r.Use(requestid.New())
@@ -113,10 +133,14 @@ func handler(c *router.Context) {
 
 ### Recovery
 
-**Package:** `rivaas.dev/router/middleware/recovery`
+**Package:** `rivaas.dev/middleware/recovery`
+
+```bash
+go get rivaas.dev/middleware/recovery
+```
 
 ```go
-import "rivaas.dev/router/middleware/recovery"
+import "rivaas.dev/middleware/recovery"
 
 r.Use(recovery.New(
     recovery.WithPrintStack(true),
@@ -126,10 +150,14 @@ r.Use(recovery.New(
 
 ### Timeout
 
-**Package:** `rivaas.dev/router/middleware/timeout`
+**Package:** `rivaas.dev/middleware/timeout`
+
+```bash
+go get rivaas.dev/middleware/timeout
+```
 
 ```go
-import "rivaas.dev/router/middleware/timeout"
+import "rivaas.dev/middleware/timeout"
 
 r.Use(timeout.New(
     timeout.WithDuration(30 * time.Second),
@@ -139,10 +167,14 @@ r.Use(timeout.New(
 
 ### Rate Limit
 
-**Package:** `rivaas.dev/router/middleware/ratelimit`
+**Package:** `rivaas.dev/middleware/ratelimit`
+
+```bash
+go get rivaas.dev/middleware/ratelimit
+```
 
 ```go
-import "rivaas.dev/router/middleware/ratelimit"
+import "rivaas.dev/middleware/ratelimit"
 
 r.Use(ratelimit.New(
     ratelimit.WithRequestsPerSecond(1000),
@@ -156,10 +188,14 @@ r.Use(ratelimit.New(
 
 ### Body Limit
 
-**Package:** `rivaas.dev/router/middleware/bodylimit`
+**Package:** `rivaas.dev/middleware/bodylimit`
+
+```bash
+go get rivaas.dev/middleware/bodylimit
+```
 
 ```go
-import "rivaas.dev/router/middleware/bodylimit"
+import "rivaas.dev/middleware/bodylimit"
 
 r.Use(bodylimit.New(
     bodylimit.WithLimit(10 * 1024 * 1024), // 10MB
@@ -170,10 +206,14 @@ r.Use(bodylimit.New(
 
 ### Compression
 
-**Package:** `rivaas.dev/router/middleware/compression`
+**Package:** `rivaas.dev/middleware/compression`
+
+```bash
+go get rivaas.dev/middleware/compression
+```
 
 ```go
-import "rivaas.dev/router/middleware/compression"
+import "rivaas.dev/middleware/compression"
 
 r.Use(compression.New(
     compression.WithLevel(compression.DefaultCompression),
@@ -186,10 +226,14 @@ r.Use(compression.New(
 
 ### Method Override
 
-**Package:** `rivaas.dev/router/middleware/methodoverride`
+**Package:** `rivaas.dev/middleware/methodoverride`
+
+```bash
+go get rivaas.dev/middleware/methodoverride
+```
 
 ```go
-import "rivaas.dev/router/middleware/methodoverride"
+import "rivaas.dev/middleware/methodoverride"
 
 r.Use(methodoverride.New(
     methodoverride.WithHeader("X-HTTP-Method-Override"),
@@ -198,10 +242,14 @@ r.Use(methodoverride.New(
 
 ### Trailing Slash
 
-**Package:** `rivaas.dev/router/middleware/trailingslash`
+**Package:** `rivaas.dev/middleware/trailingslash`
+
+```bash
+go get rivaas.dev/middleware/trailingslash
+```
 
 ```go
-import "rivaas.dev/router/middleware/trailingslash"
+import "rivaas.dev/middleware/trailingslash"
 
 r.Use(trailingslash.New(
     trailingslash.WithRedirectCode(301),
@@ -256,11 +304,11 @@ import (
     "time"
     
     "rivaas.dev/router"
-    "rivaas.dev/router/middleware/accesslog"
-    "rivaas.dev/router/middleware/cors"
-    "rivaas.dev/router/middleware/recovery"
-    "rivaas.dev/router/middleware/requestid"
-    "rivaas.dev/router/middleware/security"
+    "rivaas.dev/middleware/accesslog"
+    "rivaas.dev/middleware/cors"
+    "rivaas.dev/middleware/recovery"
+    "rivaas.dev/middleware/requestid"
+    "rivaas.dev/middleware/security"
 )
 
 func main() {

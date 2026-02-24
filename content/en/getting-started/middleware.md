@@ -50,6 +50,20 @@ Rivaas includes 12 production-ready middleware packages:
 
 Check the [Middleware Reference](/reference/packages/router/middleware/) for complete documentation.
 
+## Installation
+
+Each middleware is a separate Go module. Add only the ones you use so your dependency set stays small:
+
+```bash
+# Examples: add the middleware you need
+go get rivaas.dev/middleware/requestid
+go get rivaas.dev/middleware/cors
+go get rivaas.dev/middleware/recovery
+go get rivaas.dev/middleware/timeout
+```
+
+See the [Middleware Reference](/reference/packages/router/middleware/) for the full list and a `go get` command for each package.
+
 ## Adding Middleware
 
 ### Global Middleware
@@ -59,8 +73,8 @@ Apply middleware to all routes:
 ```go
 import (
     "rivaas.dev/app"
-    "rivaas.dev/router/middleware/requestid"
-    "rivaas.dev/router/middleware/cors"
+    "rivaas.dev/middleware/requestid"
+    "rivaas.dev/middleware/cors"
 )
 
 func main() {
@@ -117,7 +131,7 @@ a.GET("/protected", protectedHandler, authMiddleware)
 Track requests across distributed systems with unique, time-ordered IDs:
 
 ```go
-import "rivaas.dev/router/middleware/requestid"
+import "rivaas.dev/middleware/requestid"
 
 // UUID v7 by default (36 chars, time-ordered, RFC 9562)
 a.Use(requestid.New())
@@ -148,7 +162,7 @@ Both UUID v7 and ULID are lexicographically sortable, making them ideal for debu
 Enable cross-origin requests:
 
 ```go
-import "rivaas.dev/router/middleware/cors"
+import "rivaas.dev/middleware/cors"
 
 // Development: Allow all origins
 a.Use(cors.New(cors.WithAllowAllOrigins(true)))
@@ -169,7 +183,7 @@ a.Use(cors.New(
 Prevent long-running requests:
 
 ```go
-import "rivaas.dev/router/middleware/timeout"
+import "rivaas.dev/middleware/timeout"
 
 // Global timeout
 a.Use(timeout.New(timeout.WithDuration(5 * time.Second)))
@@ -186,7 +200,7 @@ a.Use(timeout.New(
 Automatically recover from panics (included by default):
 
 ```go
-import "rivaas.dev/router/middleware/recovery"
+import "rivaas.dev/middleware/recovery"
 
 // Custom recovery with stack traces
 a.Use(recovery.New(
@@ -205,7 +219,7 @@ a.Use(recovery.New(
 Limit request rate (single-instance only):
 
 ```go
-import "rivaas.dev/router/middleware/ratelimit"
+import "rivaas.dev/middleware/ratelimit"
 
 // 100 requests per second with burst of 20
 a.Use(ratelimit.New(
@@ -391,10 +405,10 @@ import (
     "time"
 
     "rivaas.dev/app"
-    "rivaas.dev/router/middleware/cors"
-    "rivaas.dev/router/middleware/recovery"
-    "rivaas.dev/router/middleware/requestid"
-    "rivaas.dev/router/middleware/timeout"
+    "rivaas.dev/middleware/cors"
+    "rivaas.dev/middleware/recovery"
+    "rivaas.dev/middleware/requestid"
+    "rivaas.dev/middleware/timeout"
 )
 
 func main() {

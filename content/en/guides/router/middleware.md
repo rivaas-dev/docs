@@ -101,14 +101,23 @@ r.POST("/upload", RateLimit(), ValidateFile(), uploadHandler)
 
 ## Built-in Middleware
 
-The router includes production-ready middleware in sub-packages. See the [Middleware Reference](/reference/packages/router/middleware/) for complete options.
+The router includes production-ready middleware in separate packages. Each one is its own Go module—add only what you need:
+
+```bash
+go get rivaas.dev/middleware/security
+go get rivaas.dev/middleware/cors
+go get rivaas.dev/middleware/accesslog
+# ... and so on for each middleware you use
+```
+
+See the [Middleware Reference](/reference/packages/router/middleware/) for the full list and options.
 
 ### Security
 
 #### Security Headers
 
 ```go
-import "rivaas.dev/router/middleware/security"
+import "rivaas.dev/middleware/security"
 
 r.Use(security.New(
     security.WithHSTS(true),
@@ -120,7 +129,7 @@ r.Use(security.New(
 #### CORS
 
 ```go
-import "rivaas.dev/router/middleware/cors"
+import "rivaas.dev/middleware/cors"
 
 r.Use(cors.New(
     cors.WithAllowedOrigins("https://example.com"),
@@ -133,7 +142,7 @@ r.Use(cors.New(
 #### Basic Auth
 
 ```go
-import "rivaas.dev/router/middleware/basicauth"
+import "rivaas.dev/middleware/basicauth"
 
 admin := r.Group("/admin")
 admin.Use(basicauth.New(
@@ -148,7 +157,7 @@ admin.Use(basicauth.New(
 ```go
 import (
     "log/slog"
-    "rivaas.dev/router/middleware/accesslog"
+    "rivaas.dev/middleware/accesslog"
 )
 
 logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -162,7 +171,7 @@ r.Use(accesslog.New(
 #### Request ID
 
 ```go
-import "rivaas.dev/router/middleware/requestid"
+import "rivaas.dev/middleware/requestid"
 
 // UUID v7 by default (36 chars, time-ordered, RFC 9562)
 r.Use(requestid.New())
@@ -185,7 +194,7 @@ func handler(c *router.Context) {
 #### Recovery
 
 ```go
-import "rivaas.dev/router/middleware/recovery"
+import "rivaas.dev/middleware/recovery"
 
 r.Use(recovery.New(
     recovery.WithPrintStack(true),
@@ -196,7 +205,7 @@ r.Use(recovery.New(
 #### Timeout
 
 ```go
-import "rivaas.dev/router/middleware/timeout"
+import "rivaas.dev/middleware/timeout"
 
 r.Use(timeout.New(
     timeout.WithDuration(30 * time.Second),
@@ -207,7 +216,7 @@ r.Use(timeout.New(
 #### Rate Limit
 
 ```go
-import "rivaas.dev/router/middleware/ratelimit"
+import "rivaas.dev/middleware/ratelimit"
 
 r.Use(ratelimit.New(
     ratelimit.WithRequestsPerSecond(1000),
@@ -221,7 +230,7 @@ r.Use(ratelimit.New(
 #### Body Limit
 
 ```go
-import "rivaas.dev/router/middleware/bodylimit"
+import "rivaas.dev/middleware/bodylimit"
 
 r.Use(bodylimit.New(
     bodylimit.WithLimit(10 * 1024 * 1024), // 10MB
@@ -233,7 +242,7 @@ r.Use(bodylimit.New(
 #### Compression
 
 ```go
-import "rivaas.dev/router/middleware/compression"
+import "rivaas.dev/middleware/compression"
 
 r.Use(compression.New(
     compression.WithLevel(compression.DefaultCompression),
@@ -477,7 +486,7 @@ func JWTAuth(secret string) router.HandlerFunc {
 The built-in `requestid` middleware handles this pattern with UUID v7 or ULID:
 
 ```go
-import "rivaas.dev/router/middleware/requestid"
+import "rivaas.dev/middleware/requestid"
 
 // UUID v7 (default) - time-ordered, 36 chars
 r.Use(requestid.New())
@@ -648,11 +657,11 @@ import (
     "time"
     
     "rivaas.dev/router"
-    "rivaas.dev/router/middleware/accesslog"
-    "rivaas.dev/router/middleware/cors"
-    "rivaas.dev/router/middleware/recovery"
-    "rivaas.dev/router/middleware/requestid"
-    "rivaas.dev/router/middleware/security"
+    "rivaas.dev/middleware/accesslog"
+    "rivaas.dev/middleware/cors"
+    "rivaas.dev/middleware/recovery"
+    "rivaas.dev/middleware/requestid"
+    "rivaas.dev/middleware/security"
 )
 
 func main() {

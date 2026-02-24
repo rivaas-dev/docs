@@ -69,7 +69,7 @@ a, err := app.New(
 Generate unique request IDs for tracing:
 
 ```go
-import "rivaas.dev/router/middleware/requestid"
+import "rivaas.dev/middleware/requestid"
 
 a.Use(requestid.New())
 
@@ -96,7 +96,7 @@ requestid.New(
 Handle Cross-Origin Resource Sharing:
 
 ```go
-import "rivaas.dev/router/middleware/cors"
+import "rivaas.dev/middleware/cors"
 
 // Allow all origins (development)
 a.Use(cors.New(cors.WithAllowAllOrigins(true)))
@@ -115,7 +115,7 @@ a.Use(cors.New(
 Recover from panics gracefully (included by default):
 
 ```go
-import "rivaas.dev/router/middleware/recovery"
+import "rivaas.dev/middleware/recovery"
 
 a.Use(recovery.New(
     recovery.WithStackTrace(true),
@@ -127,7 +127,7 @@ a.Use(recovery.New(
 Log HTTP requests (when not using app's built-in observability):
 
 ```go
-import "rivaas.dev/router/middleware/accesslog"
+import "rivaas.dev/middleware/accesslog"
 
 logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
@@ -144,7 +144,7 @@ a.Use(accesslog.New(
 Add request timeout handling:
 
 ```go
-import "rivaas.dev/router/middleware/timeout"
+import "rivaas.dev/middleware/timeout"
 
 // Default timeout (30s)
 a.Use(timeout.New())
@@ -162,7 +162,7 @@ a.Use(timeout.New(
 Rate limit requests (single-instance only):
 
 ```go
-import "rivaas.dev/router/middleware/ratelimit"
+import "rivaas.dev/middleware/ratelimit"
 
 // 100 requests per minute
 a.Use(ratelimit.New(100, time.Minute))
@@ -175,7 +175,7 @@ a.Use(ratelimit.New(100, time.Minute))
 Compress responses with gzip or brotli:
 
 ```go
-import "rivaas.dev/router/middleware/compression"
+import "rivaas.dev/middleware/compression"
 
 a.Use(compression.New(
     compression.WithLevel(compression.BestSpeed),
@@ -188,7 +188,7 @@ a.Use(compression.New(
 Limit request body size:
 
 ```go
-import "rivaas.dev/router/middleware/bodylimit"
+import "rivaas.dev/middleware/bodylimit"
 
 a.Use(bodylimit.New(
     bodylimit.WithMaxBytes(5 << 20), // 5MB max
@@ -200,7 +200,7 @@ a.Use(bodylimit.New(
 Add security headers (HSTS, CSP, etc.):
 
 ```go
-import "rivaas.dev/router/middleware/securityheaders"
+import "rivaas.dev/middleware/securityheaders"
 
 a.Use(securityheaders.New(
     securityheaders.WithHSTS(true),
@@ -214,7 +214,7 @@ a.Use(securityheaders.New(
 HTTP Basic Authentication:
 
 ```go
-import "rivaas.dev/router/middleware/basicauth"
+import "rivaas.dev/middleware/basicauth"
 
 a.Use(basicauth.New(
     basicauth.WithUsers(map[string]string{
@@ -422,9 +422,9 @@ import (
     "time"
     
     "rivaas.dev/app"
-    "rivaas.dev/router/middleware/requestid"
-    "rivaas.dev/router/middleware/cors"
-    "rivaas.dev/router/middleware/timeout"
+    "rivaas.dev/middleware/requestid"
+    "rivaas.dev/middleware/cors"
+    "rivaas.dev/middleware/timeout"
 )
 
 func main() {
