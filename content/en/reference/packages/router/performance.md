@@ -167,6 +167,8 @@ benchstat results.txt
 
 ### Why Zero Allocations Matter
 
+The router is zero allocation for the benchmarked scenarios: static route, one parameter, and two parameters.
+
 Each allocation has a cost:
 - **Time:** Allocating memory takes time (~30-50ns for small allocations)
 - **GC pressure:** More allocations mean more garbage collection work

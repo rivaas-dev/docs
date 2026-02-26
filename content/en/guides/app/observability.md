@@ -191,6 +191,8 @@ a, err := app.New(
 
 ### Custom Metrics in Handlers
 
+These methods are part of `app.Context`. They use the metrics and tracing you set up with `app.WithObservability()`. If observability is not configured, the methods simply do nothing (no-ops).
+
 Record custom metrics in your handlers:
 
 ```go

@@ -309,28 +309,9 @@ if c.HasErrors() {
 
 ```go
 c.RequestContext() context.Context  // Request's context.Context
-c.TraceContext() context.Context    // OpenTelemetry trace context
 ```
 
-## Tracing & Metrics
-
-### Tracing
-
-```go
-c.TraceID() string
-c.SpanID() string
-c.Span() trace.Span
-c.SetSpanAttribute(key string, value any)
-c.AddSpanEvent(name string, attrs ...attribute.KeyValue)
-```
-
-### Metrics
-
-```go
-c.RecordMetric(name string, value float64, attributes ...attribute.KeyValue)
-c.IncrementCounter(name string, attributes ...attribute.KeyValue)
-c.SetGauge(name string, value float64, attributes ...attribute.KeyValue)
-```
+For tracing and metrics in your handlers, use the **app** package. The [app observability guide](/guides/app/observability/) shows how to use `app.Context` methods such as `TraceID()`, `SpanID()`, `SetSpanAttribute()`, `AddSpanEvent()`, `RecordHistogram()`, `IncrementCounter()`, and `SetGauge()`.
 
 ## Versioning
 
@@ -357,9 +338,6 @@ func handler(c *router.Context) {
     if err := c.BindStrict(&req, router.BindOptions{MaxBytes: 1 << 20}); err != nil {
         return // Error response already written
     }
-    
-    // Tracing
-    c.SetSpanAttribute("user.id", id)
     
     // Logging (pass request context for trace correlation)
     slog.InfoContext(c.RequestContext(), "processing request", "user_id", id)

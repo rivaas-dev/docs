@@ -51,7 +51,7 @@ The App package is a complete web framework built on top of the Rivaas router. I
 - **Need complete flexibility** - Don't want any opinions or defaults imposed.
 - **Integrating into existing systems** - Need to fit into established patterns.
 
-**Performance Note:** The app package adds about 1-2% latency compared to using router directly. Latency goes from 119ns to about 121-122ns. However, it provides significant development speed and maintainability benefits. This comes through integrated observability and sensible defaults.
+**Performance Note:** The app package adds about 1-2% latency compared to using the router directly. See [Router Performance](/reference/packages/router/performance/) for baseline numbers. However, it provides significant development speed and maintainability benefits. This comes through integrated observability and sensible defaults.
 
 ## Quick Start
 

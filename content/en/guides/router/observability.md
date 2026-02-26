@@ -8,10 +8,10 @@ keywords:
   - metrics
   - opentelemetry
 description: >
-  Native OpenTelemetry tracing support with zero overhead when disabled, plus diagnostic events.
+  OpenTelemetry support via the observability recorder interface, with zero overhead when disabled, plus diagnostic events.
 ---
 
-The router includes native OpenTelemetry tracing support and optional diagnostic events.
+The router provides OpenTelemetry support via the observability recorder interface and optional diagnostic events.
 
 ## OpenTelemetry Tracing
 
@@ -33,72 +33,21 @@ r := router.New(
 )
 ```
 
-### Context Tracing Methods
+### Handler-level tracing
+
+When you use the **router** on its own, get the span from the request context and use the **tracing** package helpers:
 
 ```go
-func handler(c *router.Context) {
-    // Get trace/span IDs
-    traceID := c.TraceID()
-    spanID := c.SpanID()
-    
-    // Add custom attributes
-    c.SetSpanAttribute("user.id", "123")
-    c.SetSpanAttribute("operation.type", "database_query")
-    
-    // Add events
-    c.AddSpanEvent("processing_started")
-    c.AddSpanEvent("cache_miss", 
-        attribute.String("cache.key", "user:123"),
-    )
-}
+import "rivaas.dev/tracing"
+
+r.GET("/users/:id", func(c *router.Context) {
+    tracing.SetSpanAttributeFromContext(c.RequestContext(), "user.id", c.Param("id"))
+    tracing.AddSpanEventFromContext(c.RequestContext(), "fetching_user")
+    // ...
+})
 ```
 
-### Complete Tracing Example
-
-```go
-package main
-
-import (
-    "context"
-    "log"
-    "net/http"
-    
-    "rivaas.dev/router"
-    "go.opentelemetry.io/otel"
-    "go.opentelemetry.io/otel/exporters/jaeger"
-    "go.opentelemetry.io/otel/sdk/trace"
-)
-
-func main() {
-    // Initialize Jaeger exporter
-    exp, err := jaeger.New(jaeger.WithCollectorEndpoint(
-        jaeger.WithEndpoint("http://localhost:14268/api/traces"),
-    ))
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    tp := trace.NewTracerProvider(
-        trace.WithBatcher(exp),
-        trace.WithSampler(trace.TraceIDRatioBased(0.1)),
-    )
-    otel.SetTracerProvider(tp)
-
-    // Create router with tracing
-    r := router.New(
-        router.WithTracing(),
-        router.WithTracingServiceName("my-service"),
-    )
-    
-    r.GET("/", func(c *router.Context) {
-        c.SetSpanAttribute("handler", "home")
-        c.JSON(200, map[string]string{"message": "Hello"})
-    })
-    
-    defer tp.Shutdown(context.Background())
-    log.Fatal(http.ListenAndServe(":8080", r))
-}
-```
+When you use the **app** package, your handlers receive `app.Context`, which has built-in methods: `c.TraceID()`, `c.SpanID()`, `c.SetSpanAttribute()`, `c.AddSpanEvent()`, and more. See the [app observability guide](/guides/app/observability/).
 
 ## Diagnostics
 
@@ -144,13 +93,7 @@ r := router.New(router.WithDiagnostics(handler))
    router.WithTracingSampleRate(0.01) // 1% sampling
    ```
 
-3. **Add meaningful attributes** in handlers:
-   ```go
-   c.SetSpanAttribute("user.id", userID)
-   c.SetSpanAttribute("operation.type", "database_query")
-   ```
-
-4. **Disable parameter recording** for sensitive data:
+3. **Disable parameter recording** for sensitive data:
    ```go
    router.WithTracingDisableParams()
    ```

@@ -297,9 +297,9 @@ WARN: route has more than 8 parameters, using map storage instead of fast array
 
 ### Performance Impact
 
-- **≤8 params**: ~119ns/op, 0 allocations
-- **>8 params**: ~119ns/op, 1 allocation (~24 bytes)
-- **Real-world impact**: Negligible for most applications (<1% overhead)
+- **≤8 params**: Sub-microsecond per operation, 0 allocations.
+- **>8 params**: Sub-microsecond per operation, 1 small allocation.
+- **Real-world impact**: Negligible for most applications (<1% overhead). See [Router Performance](/reference/packages/router/performance/) for current figures.
 
 ## Route Constraints
 

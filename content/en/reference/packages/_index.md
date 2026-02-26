@@ -23,7 +23,7 @@ A batteries-included web framework built on top of the Rivaas router. Includes i
 
 ### Router (`rivaas.dev/router`)
 
-High-performance HTTP router with radix tree routing, bloom filters, and compiled route tables. Features sub-microsecond routing, built-in middleware support, request binding, OpenTelemetry native tracing, API versioning, and content negotiation.
+High-performance HTTP router with radix tree routing, bloom filters, and compiled route tables. Features sub-microsecond routing, built-in middleware support, OpenTelemetry support, API versioning, and content negotiation.
 
 [View Router Package Reference →](/reference/packages/router/)
 

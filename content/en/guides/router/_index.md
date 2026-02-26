@@ -19,7 +19,7 @@ The Rivaas Router provides a high-performance routing system. Includes built-in 
 
 ## Overview
 
-The Rivaas Router is a production-ready HTTP router for cloud-native applications. It combines high performance with a rich feature set. It delivers 8.4M+ requests per second at 119ns per operation. It includes automatic request binding, validation, content negotiation, API versioning, and native OpenTelemetry tracing.
+The Rivaas Router is a production-ready HTTP router for cloud-native applications. It combines high performance with a rich feature set. It offers sub-microsecond routing and high throughput. See [Router Performance](/reference/packages/router/performance/) for current benchmark numbers. It includes content negotiation, API versioning, and OpenTelemetry support.
 
 ## Key Features
 
@@ -34,16 +34,18 @@ The Rivaas Router is a production-ready HTTP router for cloud-native application
 - **Route Constraints**: Numeric, UUID, Alpha, Alphanumeric, Custom regex validation.
 - **Concurrent Safe**: Thread-safe for use by multiple goroutines.
 
-### Request Binding
+### Works with: Request Binding
 
-Automatically bind request data to structs:
+The router works well with the [binding package](/reference/packages/binding/). Use it to parse request data into structs:
 
 - **Binding Package**: Full binding with `binding.Query()`, `binding.JSON()`, `binding.Form()`, `binding.Headers()`, `binding.Cookies()`.
 - **App Package**: Integrated binding + validation with `app.Bind[T]()`, `app.BindStrict[T]()`.
 - **15+ Type Categories**: Primitives, Time, Network types like net.IP and net.IPNet, Maps, Nested Structs, Slices.
 - **Advanced Features**: Maps with dot or bracket notation, nested structs in query strings, enum validation, default values.
 
-### Request Validation
+### Works with: Request Validation
+
+The [validation package](/reference/packages/validation/) offers multiple strategies you can use after binding:
 
 - **Multiple Strategies**: Interface validation, Tag validation with go-playground/validator, JSON Schema.
 - **Partial Validation**: PATCH request support. Validate only present fields.
@@ -83,17 +85,17 @@ Automatically bind request data to structs:
 - **Rate Limit** - Token bucket rate limiting
 - **Body Limit** - Request body size limiting
 
-### Observability - OpenTelemetry Native
+### Observability - OpenTelemetry
 
 - **Metrics**: Custom histograms, counters, gauges, automatic request metrics
-- **Tracing**: Native OpenTelemetry support with zero overhead when disabled
+- **Tracing**: OpenTelemetry support via recorder interface; zero overhead when disabled
 - **Diagnostics**: Optional diagnostic events for security concerns
 
 ### Performance
 
-- **Sub-microsecond routing**: 119ns per operation
-- **High throughput**: 8.4M+ requests/second
-- **Memory efficient**: 16 bytes per request, 1 allocation
+- **Sub-microsecond routing and high throughput** — See [Router Performance](/reference/packages/router/performance/) for current latency and throughput numbers.
+- **Zero allocation** — 0 allocs for routing and parameter extraction in the benchmarked scenarios (static, 1 param, 2 params). One small allocation only when a route has more than 8 path parameters.
+- **Memory efficient** — Context pooling and minimal allocations per request.
 - **Context pooling**: Automatic context reuse
 - **Lock-free operations**: Atomic operations for concurrent access
 
@@ -233,7 +235,7 @@ The Rivaas Router excels in these scenarios:
 - **REST APIs** - JSON APIs with comprehensive request/response handling
 - **Web Applications** - HTML rendering, forms, sessions, static files
 - **Microservices** - OpenTelemetry integration, API versioning, health checks
-- **High-Performance Services** - Sub-microsecond routing, 8.4M+ req/s throughput
+- **High-Performance Services** - Sub-microsecond routing and high throughput
 
 ## Next Steps
 

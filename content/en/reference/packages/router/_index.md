@@ -23,8 +23,7 @@ The `rivaas.dev/router` package provides a high-performance HTTP router with com
 - Radix tree routing with bloom filters
 - Compiled route tables for performance
 - Built-in middleware support
-- Request binding and validation
-- OpenTelemetry native tracing
+- OpenTelemetry support
 - API versioning
 - Content negotiation
 
@@ -81,9 +80,9 @@ rivaas.dev/router/
 
 ### Routing Performance
 
-- **Sub-microsecond routing**: 119ns per operation
-- **High throughput**: 8.4M+ requests/second
-- **Memory efficient**: 16 bytes per request, 1 allocation
+- **Sub-microsecond routing** — See [Performance](performance/) for current latency and throughput numbers.
+- **Zero allocation** — No allocations for routing and param extraction in typical cases (≤8 path params). See [Performance](performance/) for benchmark details.
+- **Memory efficient** — Context pooling and minimal allocations per request.
 - **Context pooling**: Automatic context reuse
 - **Lock-free operations**: Atomic operations for concurrent access
 

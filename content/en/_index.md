@@ -32,13 +32,13 @@ Rivaas is a modular Go web framework for building production-ready APIs and web 
 Like its namesake, Rivaas is:
 
 - **🛡️ Resilient** — Built for production. Includes graceful shutdown, health checks, and panic recovery.
-- **⚡ Lightweight** — Minimal overhead (119ns latency, 16 bytes/request). No loss of features.
+- **⚡ Lightweight** — Minimal overhead (low latency, zero allocations). No loss of features.
 - **🔧 Adaptive** — Works locally, in containers, or across distributed systems.
 - **📦 Self-sufficient** — Integrated observability. No external dependencies to add.
 
 ## Key Features
 
-- **High Performance** — 8.4M+ requests/sec. Uses radix tree router and Bloom filter optimization.
+- **High Performance** — High throughput. Uses radix tree router and Bloom filter optimization. See [Router Performance](/reference/packages/router/performance/) for benchmarks.
 - **Production-Ready** — Includes graceful shutdown, health endpoints, panic recovery, and mTLS support.
 - **Cloud-Native** — Built with OpenTelemetry. Supports Prometheus, OTLP, and Jaeger.
 - **Modular Architecture** — Each package works alone. No need for the full framework.
@@ -114,7 +114,7 @@ Web framework with integrated observability, lifecycle management, and graceful 
 [Learn more →](/reference/packages/app/)
 {{% /card %}}
 {{% card header="**Router**" %}}
-High-performance HTTP router. Handles 8.4M+ requests/sec with 119ns latency.
+High-performance HTTP router with sub-microsecond latency. See [Performance](/reference/packages/router/performance/) for current benchmarks.
 
 [Learn more →](/reference/packages/router/)
 {{% /card %}}

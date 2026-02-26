@@ -205,7 +205,8 @@ Yes. The router is production-ready with:
 - 84.8% code coverage
 - Comprehensive test suite
 - Zero race conditions
-- 8.4M+ req/s throughput
+- Zero allocation for routing and param extraction in typical use (≤8 path params)
+- High throughput (see [Performance](/reference/packages/router/performance/) for current numbers)
 
 ### How do I handle CORS?
 

@@ -572,6 +572,27 @@ Handler log lines include service metadata, trace correlation, and whatever attr
 }
 ```
 
+## Observability
+
+When you enable observability with `app.WithObservability()`, your handlers can record custom metrics and add tracing data from `app.Context`:
+
+**Tracing:** `TraceID()`, `SpanID()`, `SetSpanAttribute()`, `AddSpanEvent()`, `TraceContext()`, `Span()`
+
+**Metrics:** `RecordHistogram()`, `IncrementCounter()`, `SetGauge()`
+
+Example:
+
+```go
+a.GET("/orders/:id", func(c *app.Context) {
+    c.SetSpanAttribute("order.id", c.Param("id"))
+    c.AddSpanEvent("order_lookup_started")
+    c.IncrementCounter("order.lookups", attribute.String("order.id", c.Param("id")))
+    // ...
+})
+```
+
+If observability is not configured, these methods do nothing (no-ops). For full setup and options, see the [observability guide](/guides/app/observability/).
+
 ## Router Context Features
 
 The app context embeds `router.Context`, so all router features are available:
