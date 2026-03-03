@@ -1,7 +1,7 @@
 ---
 title: "Multi-Source Binding"
 description: "Combine multiple data sources with precedence rules for flexible request handling"
-weight: 6
+weight: 7
 keywords:
   - multi-source binding
   - combined binding

@@ -71,12 +71,13 @@
     }
   }
   
-  // Language badge for code blocks - modern styling
+  // Language badge for code blocks - positioned left to avoid collision with copy button
   &[data-lang]::after {
     content: attr(data-lang);
     position: absolute;
     top: var(--rivaas-space-2);
-    right: var(--rivaas-space-3);
+    left: var(--rivaas-space-3);
+    right: auto;
     padding: var(--rivaas-space-1) var(--rivaas-space-2-5);
     font-size: 0.6875rem;
     font-family: $font-family-monospace;

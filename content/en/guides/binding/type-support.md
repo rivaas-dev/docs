@@ -1,7 +1,7 @@
 ---
 title: "Type Support"
 description: "Complete reference for all supported data types and conversions"
-weight: 8
+weight: 9
 keywords:
   - binding type support
   - custom types

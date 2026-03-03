@@ -2,8 +2,7 @@
 title: "Binding Package"
 linkTitle: "Binding"
 description: "Complete API reference for the rivaas.dev/binding package"
-weight: 2
-sidebar_root_for: self
+weight: 3
 no_list: true
 keywords:
   - binding api

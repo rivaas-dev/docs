@@ -1,7 +1,7 @@
 ---
 title: "Lifecycle"
 linkTitle: "Lifecycle"
-weight: 8
+weight: 9
 keywords:
   - app lifecycle
   - hooks

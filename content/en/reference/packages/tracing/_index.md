@@ -2,8 +2,7 @@
 title: "Tracing Package"
 linkTitle: "Tracing"
 description: "API reference for rivaas.dev/tracing - Distributed tracing for Go applications"
-weight: 5
-sidebar_root_for: self
+weight: 9
 no_list: true
 keywords:
   - tracing api

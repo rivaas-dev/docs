@@ -2,7 +2,7 @@
   "name": "rivaas-docs",
   "description": "Example site that uses Docsy theme for technical documentation.",
   "repository": "github:rivaas-dev/docs",
-  "homepage": "https://rivaas.dev/docs",
+  "homepage": "https://rivaas.dev/docs/",
   "author": "Rivaas Authors",
   "license": "Apache-2.0",
   "bugs": "https://github.com/rivaas-dev/docs/issues",

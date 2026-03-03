@@ -2,8 +2,7 @@
 title: "Logging Package"
 linkTitle: "Logging"
 description: "API reference for rivaas.dev/logging - Structured logging for Go applications"
-weight: 3
-sidebar_root_for: self
+weight: 7
 no_list: true
 keywords:
   - logging api

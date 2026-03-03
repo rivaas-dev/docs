@@ -1,7 +1,7 @@
 ---
 title: "Error Handling"
 description: "Master error handling patterns for robust request validation and debugging"
-weight: 9
+weight: 10
 keywords:
   - binding errors
   - validation errors

@@ -1,7 +1,7 @@
 ---
 title: "Health Endpoints"
 linkTitle: "Health Endpoints"
-weight: 9
+weight: 10
 keywords:
   - health checks
   - liveness

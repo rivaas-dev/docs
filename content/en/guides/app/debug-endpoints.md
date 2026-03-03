@@ -1,7 +1,7 @@
 ---
 title: "Debug Endpoints"
 linkTitle: "Debug Endpoints"
-weight: 10
+weight: 11
 keywords:
   - debug endpoints
   - pprof

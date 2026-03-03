@@ -1,7 +1,7 @@
 ---
 title: "Struct Tags"
 description: "Master struct tag syntax for precise control over data binding"
-weight: 7
+weight: 8
 keywords:
   - binding struct tags
   - field mapping

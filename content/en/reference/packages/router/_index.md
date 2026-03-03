@@ -1,7 +1,7 @@
 ---
 title: "Router Package"
 linkTitle: "Router"
-weight: 40
+weight: 2
 no_list: true
 keywords:
   - router api

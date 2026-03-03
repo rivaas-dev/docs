@@ -68,7 +68,7 @@ $min-contrast-ratio: 2.5;
 // Semantic Colors (Calm & Professional)
 // ========================================
 $success: #2D8A55;         // Moss green (WCAG AA compliant)
-$info: #2563EB;            // Glacier blue (WCAG AA compliant)
+$info: #0891B2;            // Glacier cyan (alpine-coherent, WCAG AA compliant)
 $warning: #D97706;         // Lichen amber (WCAG AA compliant)
 $danger: #D4553E;          // Brightened rust (WCAG AA compliant)
 
@@ -76,7 +76,7 @@ $danger: #D4553E;          // Brightened rust (WCAG AA compliant)
 // Dark Mode Colors (Design Tokens)
 // ========================================
 $dark-bg: $black;              // Night basalt
-$dark-surface: #22332F;        // Deep stone (lifted for section separation)
+$dark-surface: #293D38;        // Deep stone (lifted for section separation, ~1.7:1 contrast on $dark-bg)
 $dark-text: #E8EDEA;           // Soft off-white
 $dark-text-muted: #9BA9A3;     // Cool gray
 $dark-accent: #3FAF98;         // Alpine green (lighter for dark mode)
@@ -266,7 +266,7 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-feedback-success-text: #{darken($success, 10%)};
   --rivaas-feedback-warning: #{$warning};
   --rivaas-feedback-warning-bg: #{rgba($warning, 0.1)};
-  --rivaas-feedback-warning-text: #{darken($warning, 10%)};
+  --rivaas-feedback-warning-text: #{$warning};  // Use base amber — darken() produces muddy brown
   --rivaas-feedback-error: #{$danger};
   --rivaas-feedback-error-bg: #{rgba($danger, 0.1)};
   --rivaas-feedback-error-text: #{darken($danger, 10%)};
@@ -304,6 +304,7 @@ $btn-border-radius-lg: $border-radius-lg;
   --rivaas-text-2xs: 0.6875rem;    // 11px (section labels, badges)
   --rivaas-text-xs: 0.75rem;       // 12px (utility text, captions)
   --rivaas-text-sm: 0.8125rem;     // 13px (navigation, compact UI)
+  --rivaas-text-nav: 0.875rem;     // 14px (sidebar/compact navigation)
   --rivaas-text-base: 1.0625rem;   // 17px (body text, improved readability)
   --rivaas-text-lg: 1.1875rem;     // 19px (lead paragraphs)
   --rivaas-text-xl: 1.3125rem;     // 21px (h4)
@@ -418,13 +419,13 @@ $btn-border-radius-lg: $border-radius-lg;
   // ========================================
   
   // Sidebar
-  --rivaas-sidebar-bg: var(--rivaas-surface-secondary);
+  --rivaas-sidebar-bg: var(--rivaas-surface-primary);
   --rivaas-sidebar-border: var(--rivaas-border-default);
   --rivaas-sidebar-link-color: var(--rivaas-text-secondary);
   --rivaas-sidebar-link-hover-bg: #{rgba($primary, 0.08)};
   --rivaas-sidebar-link-hover-color: var(--rivaas-accent);
   --rivaas-sidebar-link-active-bg: #{$primary-light};
-  --rivaas-sidebar-link-active-color: #{$primary-dark};
+  --rivaas-sidebar-link-active-color: #{$gray-800};  // ~6.5:1 on $gray-200 bg — WCAG AA comfortable
   --rivaas-sidebar-link-active-border: var(--rivaas-accent);
 
   // Table of Contents
@@ -486,9 +487,9 @@ html[data-bs-theme="dark"] {
   // Surfaces
   --rivaas-surface-primary: #{$dark-bg};
   --rivaas-surface-secondary: #{$dark-surface};
-  --rivaas-surface-tertiary: #{darken($dark-bg, 2%)};
+  --rivaas-surface-tertiary: #{$dark-bg};
   --rivaas-surface-elevated: #{lighten($dark-surface, 3%)};
-  --rivaas-surface-sunken: #{darken($dark-bg, 2%)};
+  --rivaas-surface-sunken: #{$dark-bg};
   --rivaas-surface-overlay: #{rgba($black, 0.7)};
   --rivaas-surface-code: #{$dark-surface};
   --rivaas-surface-code-inline: #{rgba($dark-accent, 0.25)};  // Increased for better visibility
@@ -542,8 +543,8 @@ html[data-bs-theme="dark"] {
   --rivaas-gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(79, 209, 181, 0.15) 0%, rgba(79, 209, 181, 0) 70%);
 
   // RGB variants for dark mode glassmorphism
-  --rivaas-surface-primary-rgb: 15, 20, 19;
-  --rivaas-surface-secondary-rgb: 26, 34, 32;
+  --rivaas-surface-primary-rgb: 13, 30, 26;
+  --rivaas-surface-secondary-rgb: 34, 51, 47;
   --rivaas-white-rgb: 230, 236, 233;
   --rivaas-accent-rgb: 79, 209, 181;
 
@@ -569,7 +570,7 @@ html[data-bs-theme="dark"] {
   --rivaas-navbar-bg-scroll: #{rgba($dark-bg, 0.92)};  // 92% - more solid on scroll
   --rivaas-navbar-text: #{$dark-text};
 
-  --rivaas-footer-bg: #{$black};
+  --rivaas-footer-bg: #{$dark-surface};  // Elevated above page bg for visual separation
   --rivaas-footer-border: #{$dark-accent};
   --rivaas-footer-link-hover: #{$dark-accent};
 }

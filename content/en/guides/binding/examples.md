@@ -1,7 +1,7 @@
 ---
 title: "Examples"
 description: "Real-world examples and integration patterns for common use cases"
-weight: 11
+weight: 12
 keywords:
   - binding examples
   - code samples

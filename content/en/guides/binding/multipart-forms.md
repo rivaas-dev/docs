@@ -1,7 +1,7 @@
 ---
 title: "Multipart Forms"
 description: "Handle file uploads with form data using multipart form binding"
-weight: 5
+weight: 6
 keywords:
   - multipart forms
   - file upload

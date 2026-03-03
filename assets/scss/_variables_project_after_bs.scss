@@ -23,19 +23,23 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 html[data-bs-theme="dark"] {
   --bs-primary: #3FAF98;
   --bs-primary-rgb: 63, 175, 152;
-  
-  --bs-body-bg: #0F1413;
-  --bs-body-bg-rgb: 15, 20, 19;
-  
+
+  // Base background — aligned with $dark-bg / --rivaas-surface-primary
+  --bs-body-bg: #{$dark-bg};
+  --bs-body-bg-rgb: 13, 30, 26;
+
+  // Surface hierarchy — explicit to prevent Bootstrap auto-computation
+  --bs-secondary-bg: #{$dark-surface};
+  --bs-secondary-bg-rgb: 41, 61, 56;  // #293D38
+  --bs-tertiary-bg: #{$dark-bg};
+  --bs-tertiary-bg-rgb: 13, 30, 26;
+
   --bs-body-color: #E6ECE9;
   --bs-body-color-rgb: 230, 236, 233;
-  
+
   --bs-secondary-color: #A3B1AB;
   --bs-secondary-color-rgb: 163, 177, 171;
-  
-  --bs-tertiary-bg: #1A2220;
-  --bs-tertiary-bg-rgb: 26, 34, 32;
-  
+
   --bs-border-color: rgba(163, 177, 171, 0.2);
 }
 

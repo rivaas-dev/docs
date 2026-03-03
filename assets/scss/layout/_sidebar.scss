@@ -77,7 +77,7 @@
   // Clean, typography-only hierarchy - no backgrounds or dividers
   .td-sidebar-link__section {
     font-weight: var(--rivaas-font-bold);
-    font-size: var(--rivaas-text-2xs);  // 11px
+    font-size: var(--rivaas-text-xs);   // 12px — minimum for uppercase labels
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--rivaas-text-muted);
@@ -108,7 +108,7 @@
     margin: var(--rivaas-space-0-5) 0;
     border-radius: var(--rivaas-radius-sm);
     color: var(--rivaas-sidebar-link-color);
-    font-size: 0.875rem;  // 14px - readable navigation
+    font-size: var(--rivaas-text-nav);  // 14px - readable navigation
     line-height: 1.4;
     border-left: 3px solid transparent;
     transition: all var(--rivaas-transition-fast);

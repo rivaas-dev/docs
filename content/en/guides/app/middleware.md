@@ -1,7 +1,7 @@
 ---
 title: "Middleware"
 linkTitle: "Middleware"
-weight: 6
+weight: 7
 keywords:
   - app middleware
   - request handling

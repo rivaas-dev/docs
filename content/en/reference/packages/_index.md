@@ -2,6 +2,7 @@
 title: "Package Reference"
 description: "API reference documentation for Rivaas packages"
 weight: 1
+sidebar_root_for: self
 no_list: true
 keywords:
   - packages

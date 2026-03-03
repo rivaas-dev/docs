@@ -1,7 +1,7 @@
 ---
 title: "Advanced Usage"
 description: "Advanced techniques including custom converters, binders, and extension patterns"
-weight: 10
+weight: 11
 keywords:
   - binding advanced
   - custom binders

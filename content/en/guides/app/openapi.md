@@ -1,7 +1,7 @@
 ---
 title: "OpenAPI"
 linkTitle: "OpenAPI"
-weight: 12
+weight: 13
 keywords:
   - app openapi
   - swagger

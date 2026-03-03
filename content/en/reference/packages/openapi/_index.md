@@ -2,8 +2,7 @@
 title: "OpenAPI Package"
 linkTitle: "OpenAPI"
 description: "API reference for rivaas.dev/openapi - Automatic OpenAPI specification generation"
-weight: 3
-sidebar_root_for: self
+weight: 6
 no_list: true
 keywords:
   - openapi api

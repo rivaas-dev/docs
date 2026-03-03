@@ -2,8 +2,7 @@
 title: "Metrics Package"
 linkTitle: "Metrics"
 description: "API reference for rivaas.dev/metrics - Metrics collection for Go applications"
-weight: 4
-sidebar_root_for: self
+weight: 8
 no_list: true
 keywords:
   - metrics api

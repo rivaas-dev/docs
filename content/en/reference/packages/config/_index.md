@@ -2,8 +2,7 @@
 title: "Config Package"
 linkTitle: "Config"
 description: "API reference for rivaas.dev/config - Configuration management for Go applications"
-weight: 1
-sidebar_root_for: self
+weight: 5
 no_list: true
 keywords:
   - config api

@@ -391,7 +391,7 @@ html[data-bs-theme="dark"] {
     // Enhanced surface with subtle gradient
     background: linear-gradient(
       180deg,
-      rgba(26, 34, 32, 0.95) 0%,
+      rgba(41, 61, 56, 0.95) 0%,  // #293D38 — matches updated $dark-surface
       var(--rivaas-footer-bg) 100%
     );
     
