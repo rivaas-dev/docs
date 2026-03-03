@@ -117,21 +117,23 @@ r := router.MustNew(router.WithServerTimeouts(
 
 ## Performance Options
 
-### `WithRouteCompilation(enabled bool)` / `WithoutRouteCompilation()`
+### `WithRouteCompilation(enabled bool)`
 
-Controls compiled route matching. When enabled (default), routes are pre-compiled for faster lookup.
+Turns compiled route matching on or off. By default it’s off: the router uses tree traversal, which is fast and works well for most apps. Turn it on when you have a lot of routes (for example hundreds of static routes). Then the router can use pre-compiled lookups and bloom filters to speed things up.
+
+**Default:** `false` (tree traversal)
 
 ```go
-// Enabled by default
-r := router.MustNew(router.WithRouteCompilation(true))
+// Default: tree traversal (no need to set anything)
+r := router.MustNew()
 
-// Disable for debugging
-r := router.MustNew(router.WithoutRouteCompilation())
+// Turn on compiled routes for large APIs
+r := router.MustNew(router.WithRouteCompilation(true))
 ```
 
 ### `WithBloomFilterSize(size uint64)`
 
-Sets the bloom filter size for compiled routes. Larger sizes reduce false positives.
+Sets the bloom filter size when you use compiled routes. Larger sizes reduce false positives.
 
 **Default:** 1000  
 **Recommended:** 2-3x the number of static routes

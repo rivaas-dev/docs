@@ -26,7 +26,7 @@ The Rivaas Router is a production-ready HTTP router for cloud-native application
 ### Core Routing & Request Handling
 
 - **Radix tree routing** - Path matching with bloom filters for static route lookups.
-- **Compiled route tables** - Pre-compiled routes for static and dynamic path matching.
+- **Optional compiled route tables** - For large APIs you can turn on pre-compiled routes to speed up lookups.
 - **Path Parameters**: `/users/:id`, `/posts/:id/:action` - Array-based storage for route parameters.
 - **Wildcard Routes**: `/files/*filepath` - Catch-all routing for file serving.
 - **Route Groups**: Organize routes with shared prefixes and middleware.

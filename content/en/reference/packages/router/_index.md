@@ -21,7 +21,7 @@ This is the API reference for the `rivaas.dev/router` package. For learning-focu
 The `rivaas.dev/router` package provides a high-performance HTTP router with comprehensive features:
 
 - Radix tree routing with bloom filters
-- Compiled route tables for performance
+- Optional compiled route tables for large route sets
 - Built-in middleware support
 - OpenTelemetry support
 - API versioning
@@ -33,14 +33,22 @@ The `rivaas.dev/router` package provides a high-performance HTTP router with com
 rivaas.dev/router/
 ├── router.go          # Core router and route registration
 ├── context.go         # Request context with pooling
-├── route.go           # Route definitions and constraints
-├── middleware/        # Built-in middleware
-│   ├── accesslog/    # Structured access logging
-│   ├── cors/         # CORS handling
-│   ├── recovery/     # Panic recovery
-│   └── ...           # More middleware
+├── serve.go           # Request serving and dispatch
+├── routes.go          # Route tree and method dispatch
+├── radix.go           # Radix tree and route matching
+├── route_bridge.go    # Route groups and mounting
+├── options.go         # Router options
+├── route/             # Route definitions and constraints
+│   ├── route.go
+│   ├── constraint.go
+│   ├── group.go
+│   └── ...
+├── compiler/          # Optional compiled route lookup
+├── version/           # API versioning
 └── ...
 ```
+
+Middleware (accesslog, cors, recovery, etc.) lives in separate packages under `rivaas.dev/middleware/`, not inside the router package.
 
 ## Quick API Index
 
@@ -88,8 +96,8 @@ rivaas.dev/router/
 
 ### Optimization Features
 
-- **Compiled routes**: Pre-compiled routes for static and dynamic paths
-- **Bloom filters**: Fast negative lookups for static routes
+- **Optional compiled routes**: Pre-compiled lookups for large APIs (opt-in via `WithRouteCompilation(true)`)
+- **Bloom filters**: Fast negative lookups when compiled routes are enabled
 - **First-segment index**: ASCII-only route narrowing (O(1) lookup)
 - **Parameter storage**: Array-based for ≤8 params, map for >8
 - **Type caching**: Reflection information cached per struct type
