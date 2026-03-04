@@ -210,6 +210,10 @@ params:
         url: https://github.com/rivaas-dev/rivaas
         icon: fab fa-github
         desc: Development takes place here!
+      - name: X (Twitter)
+        url: https://x.com/rivaas_dev
+        icon: fab fa-x-twitter
+        desc: Follow us on X for updates
       - name: Developer mailing list
         url: mailto://rivaas@googlegroups.com
         icon: fa fa-envelope

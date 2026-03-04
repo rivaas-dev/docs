@@ -76,8 +76,9 @@
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.03);
   
   // Links in footer (text links like "Apache License 2.0")
-  a {
-    color: var(--rivaas-footer-link);
+  // !important needed to override Docsy's .td-box--dark span > a rule
+  a, span > a, p > a {
+    color: var(--rivaas-footer-link) !important;
     text-decoration: none;
     transition: all var(--rivaas-transition-normal);
     position: relative;
@@ -86,7 +87,7 @@
     border-radius: var(--rivaas-radius-xs);
     
     &:hover {
-      color: var(--rivaas-footer-link-hover);
+      color: var(--rivaas-footer-link-hover) !important;
       background: rgba(30, 111, 92, 0.1);  // Subtle alpine tint highlight
       font-weight: var(--rivaas-font-medium);
     }
@@ -162,9 +163,9 @@
     width: 36px;
     height: 36px;
     border-radius: var(--rivaas-radius-full);
-    background: rgba(255, 255, 255, 0.7);  // Light translucent for light mode
+    background: rgba(255, 255, 255, 0.95);  // Near-opaque white for contrast on pale green bg
     color: var(--rivaas-footer-text);
-    border: 1px solid var(--rivaas-border-subtle);
+    border: 1px solid var(--rivaas-border-default);
     transition: all var(--rivaas-transition-normal);
     
     &:hover {
@@ -238,9 +239,9 @@
     width: 36px;
     height: 36px;
     border-radius: var(--rivaas-radius-full);
-    background: rgba(255, 255, 255, 0.7);  // Light translucent for light mode
+    background: rgba(255, 255, 255, 0.95);  // Near-opaque white for contrast on pale green bg
     color: var(--rivaas-footer-text);
-    border: 1px solid var(--rivaas-border-subtle);
+    border: 1px solid var(--rivaas-border-default);
     transition: all var(--rivaas-transition-normal);
     
     &:hover {
@@ -298,8 +299,8 @@
     padding: 0 !important;  // Override text link padding
     margin: 0 !important;   // Override text link margin
     border-radius: var(--rivaas-radius-full);
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid var(--rivaas-border-subtle);
+    background: rgba(255, 255, 255, 0.95);  // Near-opaque white for contrast on pale green bg
+    border: 1px solid var(--rivaas-border-default);
     color: var(--rivaas-footer-text);
     transition: all var(--rivaas-transition-normal);
     
@@ -408,26 +409,26 @@ html[data-bs-theme="dark"] {
     }
   }
   
-  // Dark mode icon buttons
+  // Dark mode icon buttons — visible surface with legible icon color
   .td-footer__left a,
   .td-footer__right a,
   .td-footer__links-list a {
-    background: var(--rivaas-interactive-muted);
-    border-color: var(--rivaas-border-subtle);
-    color: var(--rivaas-footer-text);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--rivaas-border-default);
+    color: var(--rivaas-footer-text) !important;
     
     &:hover {
       background: var(--rivaas-interactive-primary) !important;
-      color: var(--rivaas-interactive-primary-text);
+      color: var(--rivaas-interactive-primary-text) !important;
       border-color: var(--rivaas-interactive-primary);
-      box-shadow: var(--rivaas-shadow-colored); // Accent glow in dark mode
+      box-shadow: var(--rivaas-shadow-colored);
     }
   }
   
-  // Dark mode text link hover
-  .td-footer a:not(.td-footer__links-list a) {
+  // Dark mode text link hover (excludes icon buttons)
+  .td-footer a:not(.td-footer__icon) {
     &:hover {
-      background: rgba(79, 209, 181, 0.12);  // Lighter accent for dark mode
+      background: rgba(79, 209, 181, 0.12);
     }
   }
 }

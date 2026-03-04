@@ -459,8 +459,8 @@ $btn-border-radius-lg: $border-radius-lg;
   // Footer (Light mode - Pale green mist theme)
   --rivaas-footer-bg: #{$gray-200};  // Pale green mist - cohesive with page
   --rivaas-footer-text: #{$gray-600};  // Muted slate - readable secondary text
-  --rivaas-footer-link: #{$primary};  // Alpine green - brand link color
-  --rivaas-footer-link-hover: #{$primary-dark};  // Deep forest on hover
+  --rivaas-footer-link: #{$primary-dark};  // Deep forest - better contrast on pale green bg
+  --rivaas-footer-link-hover: #{darken($primary-dark, 8%)};  // Deeper on hover
   --rivaas-footer-border: var(--rivaas-accent);
 }
 
@@ -570,9 +570,11 @@ html[data-bs-theme="dark"] {
   --rivaas-navbar-bg-scroll: #{rgba($dark-bg, 0.92)};  // 92% - more solid on scroll
   --rivaas-navbar-text: #{$dark-text};
 
-  --rivaas-footer-bg: #{$dark-surface};  // Elevated above page bg for visual separation
+  --rivaas-footer-bg: #{$dark-bg};  // Flush with page bg, gradient border-top provides separation
   --rivaas-footer-border: #{$dark-accent};
-  --rivaas-footer-link-hover: #{$dark-accent};
+  --rivaas-footer-text: #{$dark-text-muted};
+  --rivaas-footer-link: #{$dark-accent};
+  --rivaas-footer-link-hover: #{lighten($dark-accent, 10%)};
 }
 
 // ========================================

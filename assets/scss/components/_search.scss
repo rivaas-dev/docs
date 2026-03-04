@@ -1,10 +1,82 @@
 /*
  * Rivaas Documentation - Search (DocSearch/Algolia)
- * Component styling for DocSearch elements
- * 
- * Note: CSS custom properties (--docsearch-*) are defined in
- * layouts/partials/algolia/head.html to ensure proper load order
+ * All DocSearch component styling consolidated here.
+ * CSS custom properties (--docsearch-*) are in layouts/partials/algolia/head.html.
+ * Uses !important where needed to override the DocSearch CDN CSS.
  */
+
+// ========================================
+// DocSearch Button (trigger in navbar)
+// ========================================
+.DocSearch-Button {
+  border-radius: var(--rivaas-radius) !important;
+  background: var(--rivaas-surface-secondary) !important;
+  border: 1px solid var(--rivaas-border-default) !important;
+  color: var(--rivaas-text-secondary) !important;
+  transition: all var(--rivaas-transition-normal);
+  
+  &:hover {
+    background: var(--rivaas-surface-primary) !important;
+    border-color: var(--rivaas-border-strong) !important;
+    box-shadow: var(--rivaas-shadow-sm);
+    transform: translateY(-1px);
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: var(--rivaas-accent) !important;
+    box-shadow: 0 0 0 3px rgba(var(--rivaas-accent-rgb, 30, 111, 92), 0.15);
+  }
+  
+  .DocSearch-Button-Placeholder {
+    color: var(--rivaas-text-muted) !important;
+  }
+  
+  @include dark-mode {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: var(--rivaas-border-default) !important;
+    color: var(--rivaas-text-secondary) !important;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(63, 175, 152, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(63, 175, 152, 0.15);
+    }
+  }
+}
+
+// ========================================
+// DocSearch Button Keys (Ctrl+K shortcut)
+// ========================================
+.DocSearch-Button .DocSearch-Button-Keys {
+  display: flex !important;
+  visibility: visible !important;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.DocSearch-Button .DocSearch-Button-Keys .DocSearch-Button-Key,
+.DocSearch-Button-Key,
+kbd.DocSearch-Button-Key {
+  display: inline-flex !important;
+  visibility: visible !important;
+  align-items: center;
+  justify-content: center;
+  background: var(--docsearch-key-gradient) !important;
+  box-shadow: var(--docsearch-key-shadow) !important;
+  border: none !important;
+  border-radius: 4px;
+  color: var(--docsearch-text-color) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500;
+  padding: 2px 6px !important;
+  min-height: 20px;
+  min-width: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+  white-space: nowrap;
+}
 
 // ========================================
 // DocSearch Modal
@@ -13,6 +85,7 @@
   border-radius: var(--rivaas-radius-lg);
   box-shadow: var(--rivaas-shadow-xl);
   border: 1px solid var(--rivaas-border-default);
+  overflow: hidden;
   
   @include dark-mode {
     border-color: var(--rivaas-border-subtle);
@@ -20,8 +93,12 @@
 }
 
 // ========================================
-// DocSearch Form & Input
+// DocSearch SearchBar & Form
 // ========================================
+.DocSearch-SearchBar {
+  border-radius: var(--rivaas-radius-lg) var(--rivaas-radius-lg) 0 0;
+}
+
 .DocSearch-Form {
   border-radius: var(--rivaas-radius);
   background: var(--docsearch-searchbox-background);
@@ -41,7 +118,6 @@
   font-size: var(--rivaas-text-base);
   color: var(--rivaas-text-primary);
   
-  // Remove default focus outline - handled by parent .DocSearch-Form
   &:focus {
     outline: none;
     box-shadow: none;
@@ -53,43 +129,19 @@
 }
 
 // ========================================
-// DocSearch Button (trigger in navbar)
-// ========================================
-.DocSearch-Button {
-  border-radius: var(--rivaas-radius);
-  background: var(--rivaas-surface-secondary);
-  border: 1px solid var(--rivaas-border-default);
-  color: var(--rivaas-text-secondary);
-  transition: 
-    background var(--rivaas-transition-normal),
-    border-color var(--rivaas-transition-normal),
-    box-shadow var(--rivaas-transition-normal);
-  
-  &:hover {
-    background: var(--rivaas-surface-primary);
-    border-color: var(--rivaas-border-strong);
-    box-shadow: var(--rivaas-shadow-sm);
-  }
-  
-  &:focus {
-    outline: none;
-    border-color: var(--rivaas-accent);
-    box-shadow: 0 0 0 3px rgba(var(--rivaas-accent-rgb, 30, 111, 92), 0.15);
-  }
-  
-  .DocSearch-Button-Placeholder {
-    color: var(--rivaas-text-muted);
-  }
-  
-  // Note: .DocSearch-Button-Keys styles are in layouts/partials/algolia/head.html
-  // for proper specificity override of the DocSearch CDN CSS
-}
-
-// ========================================
 // DocSearch Hits (Search Results)
 // ========================================
+.DocSearch-Hit-source {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  color: var(--docsearch-muted-color);
+}
+
 .DocSearch-Hit {
-  border-radius: var(--rivaas-radius);
+  border-radius: 6px;
+  margin: 0 8px 4px 8px;
   
   a {
     border-radius: var(--rivaas-radius);
@@ -104,13 +156,35 @@
     }
   }
   
-  &[aria-selected="true"] a {
-    background: var(--rivaas-accent);
-    border-color: var(--rivaas-accent);
+  &[aria-selected="true"] {
+    background-color: var(--rivaas-accent);
+    
+    a {
+      background: var(--rivaas-accent);
+      border-color: var(--rivaas-accent);
+    }
     
     .DocSearch-Hit-title,
     .DocSearch-Hit-path {
-      color: var(--rivaas-white);
+      color: #FFFFFF;
+    }
+    
+    mark {
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+  }
+  
+  @include dark-mode {
+    &[aria-selected="true"] {
+      .DocSearch-Hit-title,
+      .DocSearch-Hit-path {
+        color: #0F1413;
+      }
+      
+      mark {
+        color: #0F1413;
+      }
     }
   }
 }
@@ -125,7 +199,6 @@
   font-size: var(--rivaas-text-sm);
 }
 
-// Highlight matches
 .DocSearch-Hit-title mark,
 .DocSearch-Hit-path mark {
   background: transparent;
@@ -136,15 +209,19 @@
 }
 
 // ========================================
-// DocSearch Footer
+// DocSearch Dropdown & Footer
 // ========================================
+.DocSearch-Dropdown {
+  border-radius: 0 0 var(--rivaas-radius-lg) var(--rivaas-radius-lg);
+}
+
 .DocSearch-Footer {
   border-radius: 0 0 var(--rivaas-radius-lg) var(--rivaas-radius-lg);
   border-top: 1px solid var(--rivaas-border-default);
 }
 
 // ========================================
-// DocSearch Cancel/Reset
+// DocSearch Cancel/Reset & Misc
 // ========================================
 .DocSearch-Reset {
   color: var(--rivaas-text-muted);
@@ -154,16 +231,10 @@
   }
 }
 
-// ========================================
-// DocSearch Loading
-// ========================================
 .DocSearch-LoadingIndicator svg {
   color: var(--rivaas-accent);
 }
 
-// ========================================
-// DocSearch No Results
-// ========================================
 .DocSearch-NoResults {
   .DocSearch-NoResults-Prefill-List {
     li {
@@ -172,15 +243,12 @@
   }
 }
 
-// ========================================
-// DocSearch Label (accessibility)
-// ========================================
 .DocSearch-Label {
   color: var(--rivaas-text-muted);
 }
 
 // ========================================
-// Responsive Adjustments
+// Responsive
 // ========================================
 @media (max-width: 767.98px) {
   .DocSearch-Modal {
