@@ -209,16 +209,24 @@
   // Remove margins from copyright span
   .td-footer__copyright {
     margin-right: 0 !important;
+    white-space: nowrap; // Prevent Firefox text-width differences from wrapping the line
   }
   
-  // Better spacing for links and all children
-  a, span {
-    margin: 0;
+  // Override the general footer link padding — these are inline text links, not icon buttons
+  a {
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    // Reposition underline to match the zero-padding layout
+    &::after {
+      left: 0 !important;
+      right: 0 !important;
+    }
   }
   
   // Ensure consistent spacing in text content
   .td-footer__authors {
-    display: inline-block;
+    display: inline;
   }
 }
 
