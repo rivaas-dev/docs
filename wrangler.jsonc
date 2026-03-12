@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "rivaas-docs",
+  "compatibility_date": "2026-03-12",
+  "workers_dev": false,
+  "build": {
+    "command": "npm install && hugo --gc --minify"
+  },
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "rivaas.dev/docs/*",
+      "zone_name": "rivaas.dev"
+    },
+    {
+      "pattern": "rivaas.dev/blog/*",
+      "zone_name": "rivaas.dev"
+    }
+  ]
+}

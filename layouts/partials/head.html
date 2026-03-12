@@ -53,12 +53,21 @@
   {{- if .IsHome -}}
     {{ .Site.Title -}}
   {{ else -}}
-    {{ with .Title }}{{ . }} | {{ end -}}
-    {{ .Site.Title -}}
+    {{ with .Title }}{{ . }}{{ end -}}
+    {{- if and .Parent (not .Parent.IsHome) (ne .Parent.LinkTitle .Title) }} — {{ .Parent.LinkTitle }}{{ end -}}
+    {{ " | " }}{{ .Site.Title -}}
   {{ end -}}
 </title>
 <meta name="description" content="{{ partial "page-description.html" . }}">
 {{ partial "opengraph.html" . -}}
+{{- $images := .Params.images }}
+{{- if not $images }}
+  {{- $images = site.Params.images }}
+{{- end }}
+{{- with $images }}
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+{{- end }}
 {{ partial "schema.html" . -}}
 {{ partial "twitter_cards.html" . -}}
 {{ with .Permalink }}<link rel="canonical" href="{{ . }}">{{ end }}

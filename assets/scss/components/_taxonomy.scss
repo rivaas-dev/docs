@@ -1,0 +1,70 @@
+/*
+ * Rivaas Documentation - Taxonomy (Tag Cloud & Article Tags)
+ *
+ * Docsy's taxonomy SCSS uses Bootstrap semantic variables (`--bs-secondary-bg`,
+ * `--bs-primary-bg-subtle`, etc.) which don't pick up our custom Alpine design
+ * tokens. These overrides bind the taxonomy chips and cloud title to project
+ * tokens so they match the rest of the UI in both light and dark mode.
+ */
+
+// ========================================
+// Tag Cloud (right sidebar)
+// ========================================
+.taxonomy-terms-cloud {
+  margin-top: var(--rivaas-space-4);
+
+  .taxonomy-title {
+    color: var(--rivaas-text-muted);
+    border-bottom-color: var(--rivaas-border-subtle);
+    font-size: var(--rivaas-text-xs);
+    font-weight: var(--rivaas-font-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+}
+
+// ========================================
+// Tag Chips (.taxonomy-term)
+// ========================================
+.taxonomy-term {
+  background: var(--rivaas-surface-secondary);
+  color: var(--rivaas-text-secondary);
+  transition:
+    background var(--rivaas-transition-fast),
+    color var(--rivaas-transition-fast);
+
+  // The left-pointing chevron notch is drawn via a ::before pseudo-element
+  // in the vendor CSS. Bind it to the project accent so it matches on hover.
+  &:hover {
+    background: var(--rivaas-interactive-primary);
+    color: var(--rivaas-interactive-primary-text);
+    text-decoration: none;
+
+    .taxonomy-count {
+      background-color: var(--rivaas-primary-dark);
+      color: var(--rivaas-interactive-primary-text);
+    }
+  }
+
+  &:hover::before {
+    background: var(--rivaas-primary-dark);
+  }
+}
+
+// ========================================
+// Count Badge
+// ========================================
+.taxonomy-count {
+  background-color: var(--rivaas-surface-primary);
+  color: var(--rivaas-text-muted);
+}
+
+// ========================================
+// Article-level tags (inside content area)
+// ========================================
+.taxonomy-terms-article {
+  .taxonomy-title {
+    color: var(--rivaas-text-muted);
+    font-size: var(--rivaas-text-sm);
+  }
+}

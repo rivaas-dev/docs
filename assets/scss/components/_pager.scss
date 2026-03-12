@@ -1,0 +1,65 @@
+/*
+ * Rivaas Documentation - Blog navigation (Pager + RSS button)
+ *
+ * Pager fix: Docsy applies `.td-max-width-on-larger-screens` (max-width: 80%)
+ * to all direct `> ul` children of `.td-content`. This constrains the pager
+ * to 80% of the column width, which breaks `justify-content-between` — the
+ * right "Next→" button no longer aligns with the content's actual right edge.
+ *
+ * RSS fix: Docsy uses `float: right` on `.td-rss-button`, positioning it
+ * relative to the `<main>` element. The `<main>` column has asymmetric
+ * Bootstrap padding (`ps-md-5` / `pe-md-4`), so the floated button sits
+ * outside the visual content column. Removing the float and using flexbox
+ * on the `<main>` wrapper aligns it with the content area instead.
+ */
+
+.td-content > ul.list-unstyled.d-flex {
+  max-width: 100%;
+}
+
+// Align RSS button with the content column right edge.
+// Docsy uses `float: right` which positions the button relative to <main> but
+// ignores the asymmetric Bootstrap padding (`ps-md-5` / `pe-md-4`).
+// Using position:absolute within <main> (already position:relative via Bootstrap
+// grid) places it precisely at the right edge without disturbing document flow
+// or the flex order of sibling elements (.td-content has `order:1` set by Docsy,
+// and .td-blog-posts is order:0 by default — making <main> flex would reorder them).
+//
+// top matches <main>'s padding-top from Docsy's _main-container.scss so the button
+// lands inside the padded content area and doesn't overlap the fixed navbar.
+// right matches pe-md-4 (1.5rem) so the button stays within the visual content
+// column and doesn't spill into the TOC sidebar gutter.
+.td-blog {
+  main {
+    position: relative;
+
+    .td-rss-button {
+      float: none;
+      position: absolute;
+      top: 1.5rem; // mobile: matches .td-main main padding-top
+      right: 0;
+
+      // Override Docsy's @extend .btn-info — use brand primary (alpine green)
+      // so the RSS button matches all other interactive elements in the blog.
+      // Also override btn-lg sizing — a standard button fits better in context.
+      background-color: var(--rivaas-interactive-primary);
+      border-color: var(--rivaas-interactive-primary);
+      color: var(--rivaas-interactive-primary-text);
+      box-shadow: var(--rivaas-shadow-colored);
+      padding: var(--rivaas-space-2) var(--rivaas-space-4);
+      font-size: var(--rivaas-text-sm);
+      line-height: 1.5;
+
+      &:hover {
+        background-color: var(--rivaas-interactive-primary-hover);
+        border-color: var(--rivaas-interactive-primary-hover);
+        box-shadow: var(--rivaas-shadow-colored-hover);
+      }
+
+      @include media-breakpoint-up(md) {
+        top: 5.5rem;    // md+: matches .td-main main padding-top
+        right: 1.5rem;  // md+: matches pe-md-4 padding so button stays in content column
+      }
+    }
+  }
+}

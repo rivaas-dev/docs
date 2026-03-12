@@ -1,0 +1,30 @@
+{{- if and (eq .Section "blog") .IsPage -}}
+{{- $publisher := dict "@type" "Organization" "name" "Rivaas" "url" "https://rivaas.dev" -}}
+{{- with $.Site.Params.images -}}
+  {{- $publisher = merge $publisher (dict "logo" (dict "@type" "ImageObject" "url" (index . 0 | absURL))) -}}
+{{- end -}}
+{{- $schema := dict
+  "@context" "https://schema.org"
+  "@type" "BlogPosting"
+  "headline" .Title
+  "description" (partial "page-description.html" .)
+  "url" .Permalink
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  "publisher" $publisher
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+-}}
+{{- with .Params.author -}}
+  {{- $authorType := cond (eq . "Rivaas Team") "Organization" "Person" -}}
+  {{- $schema = merge $schema (dict "author" (dict "@type" $authorType "name" .)) -}}
+{{- end -}}
+{{- with $.Site.Params.images -}}
+  {{- $schema = merge $schema (dict "image" (index . 0 | absURL)) -}}
+{{- end -}}
+{{- with .Params.keywords -}}
+  {{- $schema = merge $schema (dict "keywords" .) -}}
+{{- end -}}
+<script type="application/ld+json">
+{{ $schema | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+{{- end -}}

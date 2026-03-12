@@ -146,7 +146,7 @@
     }
   }
   
-  ul {
+  ul:not(.list-unstyled) {
     list-style-type: disc;
     
     ul {
@@ -158,7 +158,7 @@
     }
   }
   
-  ul li::marker {
+  ul:not(.list-unstyled) li::marker {
     color: var(--rivaas-accent);
   }
   
