@@ -216,7 +216,7 @@ params:
 
 sitemap:
   changefreq: weekly
-  filename: sitemap-docs.xml
+  filename: sitemap.xml
   priority: 0.5
 
 module:
