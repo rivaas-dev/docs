@@ -10,14 +10,5 @@
     "directory": "./public",
     "not_found_handling": "404-page"
   },
-  "routes": [
-    {
-      "pattern": "rivaas.dev/docs/*",
-      "zone_name": "rivaas.dev"
-    },
-    {
-      "pattern": "rivaas.dev/blog/*",
-      "zone_name": "rivaas.dev"
-    }
-  ]
+  "pages_build_output_dir": "public"
 }
