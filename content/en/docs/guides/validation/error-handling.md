@@ -54,6 +54,30 @@ if err != nil {
 }
 ```
 
+## Sentinel errors
+
+Use `errors.Is(err, validation.ErrValidation)` to detect any validation failure. Use `errors.As(err, &verr)` when you need the structured `*validation.Error` with field-level details.
+
+| Sentinel | Description |
+|----------|-------------|
+| `ErrValidation` | Any validation failure (returned by `Error.Unwrap()` and `FieldError.Unwrap()`) |
+| `ErrCannotValidateNilValue` | A nil value was passed to validate |
+| `ErrCannotValidateInvalidValue` | Value was invalid for reflection |
+| `ErrUnknownValidationStrategy` | An unknown validation strategy was specified |
+| `ErrValidationFailed` | Generic validation failure |
+| `ErrInvalidType` | Value had an unexpected type |
+
+These are the **only** sentinels for validation; there are no duplicates in other packages (the router does not define validation sentinels).
+
+```go
+if errors.Is(err, validation.ErrValidation) {
+    // Any validation error
+}
+if errors.Is(err, validation.ErrCannotValidateNilValue) {
+    // Specifically: nil value passed to Validate
+}
+```
+
 ## Error Codes
 
 Error codes follow a consistent pattern for programmatic handling:

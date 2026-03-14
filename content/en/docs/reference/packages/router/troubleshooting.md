@@ -155,35 +155,6 @@ func handler(c *router.Context) {
 }
 ```
 
-### Validation Errors
-
-**Problem:** Validation not working.
-
-**Solutions:**
-
-```go
-// ✅ Register custom tags in init()
-func init() {
-    router.RegisterTag("custom", validatorFunc)
-}
-
-// ✅ Use app.Context for binding and validation
-func createUser(c *app.Context) {
-    var req CreateUserRequest
-    if !c.MustBind(&req) {
-        return
-    }
-}
-
-// ✅ Partial validation for PATCH
-func updateUser(c *app.Context) {
-    req, ok := app.MustBindPatch[UpdateUserRequest](c)
-    if !ok {
-        return
-    }
-}
-```
-
 ## FAQ
 
 ### Can I use standard HTTP middleware?

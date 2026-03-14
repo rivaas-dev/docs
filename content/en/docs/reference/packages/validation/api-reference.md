@@ -345,6 +345,8 @@ err := validation.Validate(ctx, &user,
 
 ## Sentinel Errors
 
+These are the **single source of truth** for validation sentinels. When handling errors from the router (e.g. `c.Bind` or `c.Validate`), use this package for `errors.Is` and `errors.As` checks.
+
 ```go
 var (
     ErrValidation                 = errors.New("validation")

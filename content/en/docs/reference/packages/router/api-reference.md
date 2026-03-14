@@ -162,6 +162,28 @@ func handler(c *router.Context) {
 }
 ```
 
+## Errors
+
+The router package defines sentinel errors for routing, binding, and server concerns. Use `errors.Is(err, router.Err...)` to check for them.
+
+| Sentinel | Description |
+|----------|-------------|
+| `ErrContextResponseNil` | Context response is nil |
+| `ErrContentTypeNotAllowed` | Content type is not allowed |
+| `ErrResponseWriterNotHijacker` | ResponseWriter does not implement http.Hijacker |
+| `ErrBloomFilterSizeZero` | Bloom filter size must be non-zero |
+| `ErrBloomHashFunctionsInvalid` | Bloom hash functions must be positive |
+| `ErrVersioningConfigInvalid` | Versioning configuration is invalid |
+| `ErrServerTimeoutInvalid` | Server timeout must be positive |
+| `ErrRoutesNotFrozen` | Routes have not been frozen yet |
+| `ErrRouteNotFound` | Route not found |
+| `ErrMissingRouteParameter` | Missing required route parameter |
+| `ErrExpectedJSONArray` | Expected a JSON array |
+| `ErrArrayExceedsMax` | Array exceeds maximum items |
+| `ErrQueryInvalidInteger` | Query parameter contains an invalid integer |
+
+**Validation-related errors** (e.g. from `c.Bind` or `c.Validate`) are not in the router package. Use `rivaas.dev/validation` and `errors.As(err, &validation.Error)` or `errors.Is(err, validation.ErrValidation)`.
+
 ## Next Steps
 
 - **Context API**: See [all Context methods](../context-api/)

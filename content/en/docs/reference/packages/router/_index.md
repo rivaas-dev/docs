@@ -84,6 +84,10 @@ Middleware (accesslog, cors, recovery, etc.) lives in separate packages under `r
 - **Route Constraints**: See [Route Constraints](route-constraints/)
 - **Middleware Options**: See [Middleware](middleware/)
 
+### Errors
+
+- **[Sentinel errors](api-reference/#errors)** - Router error sentinels; validation errors use the [validation package](/docs/reference/packages/validation/)
+
 ## Performance
 
 ### Routing Performance

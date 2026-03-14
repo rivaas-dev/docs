@@ -34,6 +34,46 @@ a, err := app.New(
 // Error: "serviceName must not be empty"
 ```
 
+## Request Binding and Validation
+
+### Validation errors in handlers
+
+**Problem:** Request validation not working or you need to check validation errors in handlers.
+
+Use `app.Context` for binding and validation (not `router.Context` directly). Check validation errors with the **validation** package: `errors.As(err, &validation.Error)` or `errors.Is(err, validation.ErrValidation)`. Do not use the router package for validation sentinel checks.
+
+**Solutions:**
+
+```go
+// ✅ Use app.Context for binding and validation
+func createUser(c *app.Context) {
+    var req CreateUserRequest
+    if !c.MustBind(&req) {
+        return // Binding or validation failed; response already written
+    }
+    // Use req...
+}
+
+// ✅ Partial validation for PATCH
+func updateUser(c *app.Context) {
+    req, ok := app.MustBindPatch[UpdateUserRequest](c)
+    if !ok {
+        return
+    }
+    // Use req...
+}
+
+// ✅ Check validation errors programmatically
+if err := c.Bind(&req); err != nil {
+    var verr *validation.Error
+    if errors.As(err, &verr) {
+        // Handle field-level errors
+    }
+}
+```
+
+For custom validation tags and validation strategy issues, see the [validation package troubleshooting](/docs/reference/packages/validation/troubleshooting/).
+
 ### Import Errors
 
 **Problem:** Cannot import `rivaas.dev/app`.
