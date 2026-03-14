@@ -24,6 +24,7 @@ type Config struct {
 Main configuration container. Thread-safe for concurrent read operations and loading.
 
 **Key properties:**
+
 - Thread-safe for concurrent `Load()` and getter operations.
 - Nil-safe. All getter methods handle nil instances gracefully.
 - Hierarchical data storage with dot notation support.
@@ -42,7 +43,8 @@ type ConfigError struct {
 Error type providing detailed context about configuration errors.
 
 **Example error messages:**
-```
+
+```text
 config error in source[0] during load: file not found: config.yaml
 config error in json-schema during validate: server.port: must be >= 1
 config error in binding during bind: failed to decode configuration
@@ -59,11 +61,15 @@ func New(options ...Option) (*Config, error)
 Creates a new Config instance with the given options. Returns an error if any option fails.
 
 **Parameters:**
+
 - `options` - Variable number of Option functions.
 
 **Returns:**
-- `*Config` - Initialized configuration instance.
+
+- `*Config` - Initialized configuration instance (nil on error).
 - `error` - Error if initialization fails.
+
+On error, `New` returns `(nil, err)`; do not use the config when an error is returned.
 
 **Example:**
 
@@ -88,9 +94,11 @@ func MustNew(options ...Option) *Config
 Creates a new Config instance with the given options. Panics if any option fails.
 
 **Parameters:**
+
 - `options` - Variable number of Option functions
 
 **Returns:**
+
 - `*Config` - Initialized configuration instance
 
 **Panics:** If any option returns an error
@@ -117,12 +125,15 @@ func (c *Config) Load(ctx context.Context) error
 Loads configuration from all configured sources, merges them, and runs validation.
 
 **Parameters:**
+
 - `ctx` - Context for cancellation and deadlines (must not be nil)
 
 **Returns:**
+
 - `error` - ConfigError if loading, merging, or validation fails
 
 **Behavior:**
+
 1. Loads data from all sources sequentially
 2. Merges data hierarchically (later sources override earlier ones)
 3. Runs JSON Schema validation (if configured)
@@ -149,9 +160,11 @@ func (c *Config) Dump(ctx context.Context) error
 Writes the current configuration state to all configured dumpers.
 
 **Parameters:**
+
 - `ctx` - Context for cancellation and deadlines (must not be nil)
 
 **Returns:**
+
 - `error` - Error if any dumper fails
 
 **Example:**
@@ -178,9 +191,11 @@ func (c *Config) Get(key string) any
 Retrieves the value at the given key path. Returns `nil` for missing keys.
 
 **Parameters:**
+
 - `key` - Dot-separated path (e.g., "server.port")
 
 **Returns:**
+
 - `any` - Value at the key, or `nil` if not found
 
 **Nil-safe:** Returns `nil` if Config instance is nil.
@@ -435,13 +450,16 @@ func GetE[T any](c *Config, key string) (T, error)
 Generic getter that returns the value and an error. Useful for custom types and explicit error handling.
 
 **Type parameters:**
+
 - `T` - Target type
 
 **Parameters:**
+
 - `c` - Config instance
 - `key` - Dot-separated path
 
 **Returns:**
+
 - `T` - Value at the key (zero value if error)
 - `error` - Error if key not found, type mismatch, or nil instance
 
@@ -536,11 +554,13 @@ port, err := config.GetE[int](cfg, "key")
 ## Thread Safety
 
 **Thread-safe operations:**
+
 - `Load()` - Uses internal locking
 - All getter methods - Read-only operations are safe
 - Multiple goroutines can call `Load()` and getters concurrently
 
 **Not thread-safe:**
+
 - Concurrent modification during initialization
 - Direct modification of values returned by `Values()`
 
@@ -582,12 +602,12 @@ if err := cfg.Load(context.Background()); err != nil {
 
 ## Performance Characteristics
 
-| Operation | Complexity | Notes |
-|-----------|-----------|-------|
-| `Get(key)` | O(n) | n = depth of dot notation path |
-| `String(key)`, `Int(key)`, etc. | O(n) | Uses `Get()` internally |
-| `Load()` | O(s × m) | s = number of sources, m = data size |
-| `Dump()` | O(d × m) | d = number of dumpers, m = data size |
+| Operation                       | Complexity | Notes                                |
+|---------------------------------|------------|--------------------------------------|
+| `Get(key)`                      | O(n)       | n = depth of dot notation path       |
+| `String(key)`, `Int(key)`, etc. | O(n)       | Uses `Get()` internally              |
+| `Load()`                        | O(s × m)   | s = number of sources, m = data size |
+| `Dump()`                        | O(d × m)   | d = number of dumpers, m = data size |
 
 ## Next Steps
 

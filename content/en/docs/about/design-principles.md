@@ -99,6 +99,8 @@ app, err := app.New(
 // Error: "server.readTimeout: must be positive"
 ```
 
+Rivaas constructors never return a non-nil value when they return an error, so you never receive a partially-initialized config.
+
 ### Convenience Without Sacrificing Control
 
 We provide two ways to create things:
@@ -352,6 +354,8 @@ The `app` package is the glue that connects standalone packages into a complete 
 4. **Provides defaults** — Sets up everything for production use
 5. **Makes it easy** — One entry point for common use cases
 6. **Configures server transport** — HTTP, HTTPS, or mTLS via [WithTLS](/docs/reference/packages/app/options/#withtls) / [WithMTLS](/docs/reference/packages/app/options/#withmtls) at construction; a single `Start(ctx)` runs the server. Default port is 8080 for HTTP and 8443 for TLS/mTLS, overridable with `WithPort`.
+
+When building route handler chains (for both groups and version groups), the app layer uses a single handler type (`router.HandlerFunc`) so the integration layer stays consistent and predictable.
 
 **How app connects packages:**
 
