@@ -12,55 +12,55 @@
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Rivaas",
-          "ns_op": 47.41
+          "ns_op": 47.9
         },
         {
           "allocs_op": 0,
           "b_op": 0,
           "framework": "StdMux",
-          "ns_op": 80.04
+          "ns_op": 76.08
         },
         {
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Gin",
-          "ns_op": 61.1
+          "ns_op": 61.01
         },
         {
           "allocs_op": 1,
           "b_op": 8,
           "framework": "Echo",
-          "ns_op": 78.16
+          "ns_op": 87.23
         },
         {
           "allocs_op": 2,
           "b_op": 368,
           "framework": "Chi",
-          "ns_op": 347.6
+          "ns_op": 314.2
         },
         {
           "allocs_op": 20,
-          "b_op": 2066,
+          "b_op": 1974,
           "framework": "Fiber",
-          "ns_op": 2034
+          "ns_op": 2139
         },
         {
           "allocs_op": 15,
-          "b_op": 33582,
+          "b_op": 33096,
           "framework": "FiberV3",
-          "ns_op": 7116
+          "ns_op": 7076
         },
         {
           "allocs_op": 24,
           "b_op": 3448,
           "framework": "Hertz",
-          "ns_op": 1720
+          "ns_op": 1710
         },
         {
           "allocs_op": 4,
           "b_op": 360,
           "framework": "Beego",
-          "ns_op": 663.1
+          "ns_op": 635.7
         }
       ]
     },
@@ -72,55 +72,55 @@
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Rivaas",
-          "ns_op": 82.16
+          "ns_op": 81.1
         },
         {
           "allocs_op": 1,
           "b_op": 16,
           "framework": "StdMux",
-          "ns_op": 212.2
+          "ns_op": 203
         },
         {
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Gin",
-          "ns_op": 104.4
+          "ns_op": 101.1
         },
         {
           "allocs_op": 2,
           "b_op": 16,
           "framework": "Echo",
-          "ns_op": 149.6
+          "ns_op": 162.3
         },
         {
           "allocs_op": 2,
           "b_op": 368,
           "framework": "Chi",
-          "ns_op": 407.2
+          "ns_op": 392.9
         },
         {
           "allocs_op": 20,
-          "b_op": 2060,
+          "b_op": 2061,
           "framework": "Fiber",
-          "ns_op": 2156
+          "ns_op": 2356
         },
         {
           "allocs_op": 16,
           "b_op": 33112,
           "framework": "FiberV3",
-          "ns_op": 7410
+          "ns_op": 7167
         },
         {
           "allocs_op": 27,
           "b_op": 3544,
           "framework": "Hertz",
-          "ns_op": 2035
+          "ns_op": 1950
         },
         {
           "allocs_op": 6,
           "b_op": 400,
           "framework": "Beego",
-          "ns_op": 1017
+          "ns_op": 1002
         }
       ]
     },
@@ -132,58 +132,58 @@
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Rivaas",
-          "ns_op": 130.9
+          "ns_op": 123.9
         },
         {
           "allocs_op": 2,
           "b_op": 48,
           "framework": "StdMux",
-          "ns_op": 350.3
+          "ns_op": 356.6
         },
         {
           "allocs_op": 0,
           "b_op": 0,
           "framework": "Gin",
-          "ns_op": 165.2
+          "ns_op": 158.7
         },
         {
           "allocs_op": 4,
           "b_op": 32,
           "framework": "Echo",
-          "ns_op": 251.3
+          "ns_op": 258.3
         },
         {
           "allocs_op": 2,
           "b_op": 368,
           "framework": "Chi",
-          "ns_op": 507.3
+          "ns_op": 499.5
         },
         {
           "allocs_op": 20,
-          "b_op": 2077,
+          "b_op": 2162,
           "framework": "Fiber",
-          "ns_op": 2346
+          "ns_op": 2311
         },
         {
           "allocs_op": 18,
-          "b_op": 33128,
+          "b_op": 33520,
           "framework": "FiberV3",
-          "ns_op": 7403
+          "ns_op": 7337
         },
         {
           "allocs_op": 29,
           "b_op": 3664,
           "framework": "Hertz",
-          "ns_op": 2160
+          "ns_op": 2155
         },
         {
           "allocs_op": 8,
           "b_op": 448,
           "framework": "Beego",
-          "ns_op": 1362
+          "ns_op": 1335
         }
       ]
     }
   ],
-  "updated": "2026-02-26"
+  "updated": "2026-03-13"
 }
