@@ -52,6 +52,8 @@ handler := tracing.Middleware(tracer)(mux)
 
 No additional code needed - spans automatically become part of the parent trace.
 
+When using the [app](https://pkg.go.dev/rivaas.dev/app) package, request spans automatically extract and propagate trace context. For child spans in handlers use `c.StartSpan("name")` and `defer c.FinishSpan(span, statusCode)`. Use `c.Tracer()` only when passing the tracer to another library.
+
 ### Manual Extraction
 
 For manual span creation or custom HTTP handlers:

@@ -204,6 +204,28 @@ func MustBindStrict[T any](c *Context, opts ...BindOption) (T, bool)
 
 Type-safe binding with generics. These functions provide a more concise API compared to the Context methods.
 
+## Context observability methods
+
+When observability is enabled, `app.Context` provides these methods (all no-op when metrics/tracing are not configured):
+
+| Method | Description |
+|--------|-------------|
+| `TraceID()` | Current trace ID from the request span. |
+| `SpanID()` | Current span ID. |
+| `SetSpanAttribute(key, value)` | Add attribute to the current span. |
+| `AddSpanEvent(name, attrs...)` | Add event to the current span. |
+| `TraceContext()` | Request context (for logging, etc.). |
+| `Span()` | Current span from context. |
+| `StartSpan(name, opts...)` | Start a child span; returns `(context.Context, trace.Span)`. Use with `defer c.FinishSpan(span, statusCode)`. |
+| `FinishSpan(span, statusCode)` | End a child span. |
+| `Tracer()` | Returns `*tracing.Tracer`; **advanced use only** (e.g. pass to another library). |
+| `RecordHistogram(name, value, attrs...)` | Record a histogram sample. |
+| `IncrementCounter(name, attrs...)` | Increment a counter by 1. |
+| `AddCounter(name, value, attrs...)` | Add to a counter by an arbitrary amount. |
+| `SetGauge(name, value, attrs...)` | Set a gauge value. |
+
+See the [observability guide](/docs/guides/app/observability/) and [context guide](/docs/guides/app/context/) for usage and examples.
+
 ## Types
 
 ### HandlerFunc

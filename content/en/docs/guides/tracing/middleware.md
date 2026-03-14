@@ -9,7 +9,7 @@ keywords:
   - automatic tracing
 ---
 
-The tracing package provides HTTP middleware for automatic request tracing with any HTTP framework.
+The tracing package provides HTTP middleware for automatic request tracing with any HTTP framework. When using the [app](https://pkg.go.dev/rivaas.dev/app) package, request spans use the same semantics (W3C propagation, sampling, standard HTTP attributes) as this middleware.
 
 ## Basic Usage
 

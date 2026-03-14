@@ -11,6 +11,10 @@ keywords:
 
 This guide covers recording custom metrics beyond the built-in HTTP metrics.
 
+## Using custom metrics from the app
+
+When using the [app](https://pkg.go.dev/rivaas.dev/app) package, record custom metrics from handlers via `app.Context`: use `c.RecordHistogram`, `c.IncrementCounter`, `c.AddCounter`, and `c.SetGauge`. See the [app observability guide](/docs/guides/app/observability/) for setup and examples.
+
 ## Metric Types
 
 The metrics package supports three metric types from OpenTelemetry:

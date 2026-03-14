@@ -576,9 +576,9 @@ Handler log lines include service metadata, trace correlation, and whatever attr
 
 When you enable observability with `app.WithObservability()`, your handlers can record custom metrics and add tracing data from `app.Context`:
 
-**Tracing:** `TraceID()`, `SpanID()`, `SetSpanAttribute()`, `AddSpanEvent()`, `TraceContext()`, `Span()`
+**Tracing:** `TraceID()`, `SpanID()`, `SetSpanAttribute()`, `AddSpanEvent()`, `TraceContext()`, `Span()`, `StartSpan(name)` / `FinishSpan(span, statusCode)` for child spans, and `Tracer()` (advanced: pass tracer to another library).
 
-**Metrics:** `RecordHistogram()`, `IncrementCounter()`, `SetGauge()`
+**Metrics:** `RecordHistogram()`, `IncrementCounter()`, `AddCounter(name, value, attrs)`, `SetGauge()`
 
 Example:
 
@@ -586,7 +586,11 @@ Example:
 a.GET("/orders/:id", func(c *app.Context) {
     c.SetSpanAttribute("order.id", c.Param("id"))
     c.AddSpanEvent("order_lookup_started")
+    ctx, span := c.StartSpan("db-query")
+    defer c.FinishSpan(span, 0)
+    _ = ctx
     c.IncrementCounter("order.lookups", attribute.String("order.id", c.Param("id")))
+    c.AddCounter("bytes_processed", 1024, attribute.String("type", "upload"))
     // ...
 })
 ```

@@ -199,21 +199,28 @@ Record custom metrics in your handlers:
 a.GET("/orders/:id", func(c *app.Context) {
     orderID := c.Param("id")
     
-    // Increment counter
+    // Increment counter by 1
     c.IncrementCounter("order.lookups",
         attribute.String("order.id", orderID),
     )
+    
+    // Add to counter by an arbitrary amount
+    c.AddCounter("bytes_processed", 1024, attribute.String("type", "upload"))
     
     // Record histogram
     c.RecordHistogram("order.processing_time", 0.250,
         attribute.String("order.id", orderID),
     )
     
+    c.SetGauge("queue_size", 10)
+    
     c.JSON(http.StatusOK, order)
 })
 ```
 
 ## Tracing
+
+Request spans use the same semantics as the tracing package: W3C trace context extraction, sampling (e.g. `WithSampleRate`), and standard HTTP attributes (`http.method`, `http.url`, `http.route`, `http.status_code`, `service.name`, etc.).
 
 ### OpenTelemetry Tracing
 
@@ -275,6 +282,26 @@ a.GET("/orders/:id", func(c *app.Context) {
     c.JSON(http.StatusOK, order)
 })
 ```
+
+### Custom child spans
+
+Create child spans (e.g. for a database query or external call) with `StartSpan` and `FinishSpan`—the single, discoverable way to create and end child spans from handlers:
+
+```go
+a.GET("/orders/:id", func(c *app.Context) {
+    ctx, span := c.StartSpan("db-query")
+    defer c.FinishSpan(span, 0)
+    // use ctx for the operation so the child span is the active span
+    order, err := db.GetByID(ctx, c.Param("id"))
+    if err != nil {
+        c.InternalError(err)
+        return
+    }
+    c.JSON(http.StatusOK, order)
+})
+```
+
+Use `Tracer()` only for **advanced** use—for example, when you need to pass the tracer to another library (e.g. a DB driver or HTTP client) or use tracer-specific options (inject/extract).
 
 ### Accessing Trace IDs
 
