@@ -9,7 +9,7 @@ keywords:
   - getting started
 ---
 
-Learn how to validate structs using the validation package. This guide starts from simple package-level functions and progresses to customized validator instances.
+Learn how to validate structs using the validation package. This guide starts from simple package-level functions and progresses to customized engines.
 
 ## Package-Level Validation
 
@@ -52,18 +52,18 @@ if err != nil {
 }
 ```
 
-## Creating a Validator Instance
+## Creating an Engine
 
-For more control, create a `Validator` instance with custom configuration:
+For more control, create an [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) with custom configuration:
 
 ```go
-validator := validation.MustNew(
+engine := validation.MustNew(
     validation.WithMaxErrors(10),
     validation.WithRedactor(sensitiveFieldRedactor),
 )
 
 // Use in handlers
-if err := validator.Validate(ctx, &req); err != nil {
+if err := engine.Validate(ctx, &req); err != nil {
     // Handle validation errors
 }
 ```
@@ -74,15 +74,15 @@ There are two constructors:
 
 ```go
 // New returns an error if configuration is invalid
-validator, err := validation.New(
+engine, err := validation.New(
     validation.WithMaxErrors(-1), // Invalid
 )
 if err != nil {
-    return fmt.Errorf("failed to create validator: %w", err)
+    return fmt.Errorf("failed to create engine: %w", err)
 }
 
 // MustNew panics if configuration is invalid (use in main/init)
-validator := validation.MustNew(
+engine := validation.MustNew(
     validation.WithMaxErrors(10),
 )
 ```
@@ -91,21 +91,21 @@ Use `MustNew` in `main()` or `init()` where panic on startup is acceptable. Use 
 
 ## Per-Call Options
 
-Override validator configuration on a per-call basis:
+Override engine configuration on a per-call basis:
 
 ```go
-validator := validation.MustNew(
+engine := validation.MustNew(
     validation.WithMaxErrors(10),
 )
 
 // Override max errors for this call
-err := validator.Validate(ctx, &req,
+err := engine.Validate(ctx, &req,
     validation.WithMaxErrors(5),
     validation.WithStrategy(validation.StrategyTags),
 )
 ```
 
-Per-call options don't modify the validator instance - they create a temporary config for that call only.
+Per-call options don't modify the engine instance - they create a temporary config for that call only.
 
 ## Validating Different Types
 
@@ -209,34 +209,34 @@ err := validation.Validate(ctx, &req,
 
 ## Thread Safety
 
-Both package-level functions and `Validator` instances are safe for concurrent use:
+Both package-level functions and [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) instances are safe for concurrent use:
 
 ```go
-validator := validation.MustNew(
+engine := validation.MustNew(
     validation.WithMaxErrors(10),
 )
 
 // Safe to use from multiple goroutines
 go func() {
-    validator.Validate(ctx, &user1)
+    engine.Validate(ctx, &user1)
 }()
 
 go func() {
-    validator.Validate(ctx, &user2)
+    engine.Validate(ctx, &user2)
 }()
 ```
 
-## Default Validator
+## Default Engine
 
-Package-level functions use a shared default validator:
+Package-level functions use a shared default engine:
 
 ```go
-// These both use the same default validator
+// These both use the same default engine
 validation.Validate(ctx, &req1)
 validation.Validate(ctx, &req2)
 ```
 
-The default validator is created with zero configuration. If you need custom options, create your own `Validator` instance.
+The default engine is created with zero configuration. If you need custom options, create your own [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) with [New](https://pkg.go.dev/rivaas.dev/validation#New) or [MustNew](https://pkg.go.dev/rivaas.dev/validation#MustNew).
 
 ## Working Example
 

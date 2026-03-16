@@ -52,18 +52,18 @@ if err := validation.Validate(ctx, &user); err != nil {
 }
 ```
 
-### Custom Validator Instance
+### Custom Engine
 
-For more control, create a `Validator` instance with custom options:
+For more control, create an [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) with [MustNew](https://pkg.go.dev/rivaas.dev/validation#MustNew):
 
 ```go
-validator := validation.MustNew(
+engine := validation.MustNew(
     validation.WithRedactor(sensitiveFieldRedactor),
     validation.WithMaxErrors(10),
     validation.WithCustomTag("phone", phoneValidator),
 )
 
-if err := validator.Validate(ctx, &user); err != nil {
+if err := engine.Validate(ctx, &user); err != nil {
     // Handle validation errors
 }
 ```
@@ -77,7 +77,7 @@ For PATCH requests where only provided fields should be validated:
 presence, _ := validation.ComputePresence(rawJSON)
 
 // Validate only the present fields
-err := validator.ValidatePartial(ctx, &user, presence)
+err := engine.ValidatePartial(ctx, &user, presence)
 ```
 
 ## Learning Path
@@ -135,7 +135,7 @@ func (u User) JSONSchema() (id, schema string) {
 
 ### 3. Custom Validation Interface
 
-Implement `ValidatorInterface` for simple validation:
+Implement the [Validator](https://pkg.go.dev/rivaas.dev/validation#Validator) interface for simple validation:
 
 ```go
 type User struct {
@@ -152,6 +152,8 @@ func (u *User) Validate() error {
 // validation.Validate will automatically call u.Validate()
 err := validation.Validate(ctx, &user)
 ```
+
+The config package uses the same contract ([config.Validator](https://pkg.go.dev/rivaas.dev/config#Validator)); one implementation works for both.
 
 Or implement `ValidatorWithContext` for context-aware validation:
 

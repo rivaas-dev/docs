@@ -139,14 +139,14 @@ Create configured validator instances for reuse:
 
 ```go
 // Create validator (returns error on invalid config)
-func New(opts ...Option) (*Validator, error)
+func New(opts ...Option) (*Engine, error)
 
 // Create validator (panics on invalid config)
-func MustNew(opts ...Option) *Validator
+func MustNew(opts ...Option) *Engine
 
 // Validator methods
-func (v *Validator) Validate(ctx context.Context, val any, opts ...Option) error
-func (v *Validator) ValidatePartial(ctx context.Context, val any, pm PresenceMap, opts ...Option) error
+func (v *Engine) Validate(ctx context.Context, val any, opts ...Option) error
+func (v *Engine) ValidatePartial(ctx context.Context, val any, pm PresenceMap, opts ...Option) error
 ```
 
 ### Error Types

@@ -21,13 +21,15 @@ The config package provides three validation approaches:
 
 ## Struct-Based Validation
 
-The most idiomatic approach for Go applications. Implement the `Validate()` method on your configuration struct:
+The most idiomatic approach for Go applications. Implement the [Validator](https://pkg.go.dev/rivaas.dev/config#Validator) interface on your configuration struct:
 
 ```go
 type Validator interface {
     Validate() error
 }
 ```
+
+The validation package uses the same contract ([validation.Validator](https://pkg.go.dev/rivaas.dev/validation#Validator)); one implementation works for both config binding and request validation.
 
 ### Basic Example
 

@@ -121,10 +121,40 @@ func main() {
 ```
 
 **Benefits:**
+
 - Automatic service metadata (name, version, environment)
 - Trace correlation (logs include trace_id and span_id)
 - Metrics integration (log metrics alongside custom metrics)
 - Graceful shutdown handling
+
+### Using slog with the app
+
+When you use the app with observability logging enabled, the app sets the **slog default logger** at startup. All `slog` usage (package-level and `*Context` variants) then uses your app's configured logger (level, format, handler).
+
+**In request handlers:** Use the context-aware functions and pass the request context so `trace_id` and `span_id` are attached automatically when tracing is enabled:
+
+```go
+app.GET("/api/users/:id", func(c *app.Context) {
+    slog.InfoContext(c.RequestContext(), "fetching user", "user_id", c.Param("id"))
+    user, err := fetchUser(c.Param("id"))
+    if err != nil {
+        slog.ErrorContext(c.RequestContext(), "failed to fetch user", "error", err)
+        c.Fail(err)
+        return
+    }
+    c.JSON(200, user)
+})
+```
+
+**Outside request handlers:** Use `slog` directly (startup, shutdown, background jobs). The default is already the app's logger:
+
+```go
+// In main after creating the app, or in a background goroutine
+slog.Info("application started", "port", 8080)
+slog.InfoContext(ctx, "background job completed", "items", n)
+```
+
+You do not need to obtain a logger instance for normal logging. When you need the logger instance (for example `logger.With("component", "x")`), use `app.BaseLogger()`.
 
 ### Component Access
 
@@ -141,12 +171,12 @@ a, _ := app.New(
 )
 
 // Access components
-logger := a.Logger()
 router := a.Router()
 tracer := a.Tracer()
 metrics := a.Metrics()
 
-// Use logger directly
+// Logger instance (e.g. for logger.With(...)); most code can just use slog
+logger := a.BaseLogger()
 logger.Info("application started", "port", 8080)
 ```
 

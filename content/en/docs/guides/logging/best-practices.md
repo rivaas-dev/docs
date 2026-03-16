@@ -11,6 +11,10 @@ keywords:
 
 This guide covers best practices for using the logging package in production environments.
 
+## Logging with the app package
+
+When using the app package with observability logging enabled, the app sets the **slog default** at startup. Use `slog` for all logging so your app's configuration (level, format, handler) applies everywhere. In request handlers, pass the request context for trace correlation: `slog.InfoContext(c.RequestContext(), "msg", ...)`. Outside handlers (startup, shutdown, background jobs), use `slog.Info("msg", ...)` or `slog.InfoContext(ctx, ...)` as appropriate. To get the logger instance (e.g. for `logger.With("component", "x")`), use `app.BaseLogger()`.
+
 ## Structured Logging
 
 Always use structured fields instead of string concatenation.

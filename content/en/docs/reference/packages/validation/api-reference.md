@@ -19,7 +19,7 @@ Complete API reference for the validation package's core types, functions, and m
 func Validate(ctx context.Context, v any, opts ...Option) error
 ```
 
-Validates a value using the default validator. Returns `nil` if validation passes, or `*Error` if validation fails.
+Validates a value using the default engine. Returns `nil` if validation passes, or `*Error` if validation fails.
 
 **Parameters:**
 - `ctx` - Context passed to `ValidatorWithContext` implementations.
@@ -86,48 +86,60 @@ presence, err := validation.ComputePresence(rawJSON)
 // presence = {"email": true, "age": true}
 ```
 
-## Validator Type
+## Validator Interface
+
+Types that implement the [Validator](https://pkg.go.dev/rivaas.dev/validation#Validator) interface are validated by calling their `Validate() error` method. The config package uses the same contract ([config.Validator](https://pkg.go.dev/rivaas.dev/config#Validator)); one implementation works for both.
+
+```go
+type Validator interface {
+    Validate() error
+}
+```
+
+## Engine Type
+
+The [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) is the validation runner returned by [New](https://pkg.go.dev/rivaas.dev/validation#New) and [MustNew](https://pkg.go.dev/rivaas.dev/validation#MustNew). It holds configuration and runs validation (struct tags, JSON Schema, or custom [Validator](https://pkg.go.dev/rivaas.dev/validation#Validator) / [ValidatorWithContext](https://pkg.go.dev/rivaas.dev/validation#ValidatorWithContext) implementations).
 
 ### New
 
 ```go
-func New(opts ...Option) (*Validator, error)
+func New(opts ...Option) (*Engine, error)
 ```
 
-Creates a new `Validator` with the given options. Returns an error if configuration is invalid.
+Creates a new [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) with the given options. Returns an error if configuration is invalid.
 
 **Parameters:**
 - `opts` - Configuration options
 
 **Returns:**
-- `*Validator` - Configured validator instance
+- `*Engine` - Configured engine instance
 - `error` - If configuration is invalid
 
 **Example:**
 
 ```go
-validator, err := validation.New(
+engine, err := validation.New(
     validation.WithMaxErrors(10),
     validation.WithRedactor(redactor),
 )
 if err != nil {
-    return fmt.Errorf("failed to create validator: %w", err)
+    return fmt.Errorf("failed to create engine: %w", err)
 }
 ```
 
 ### MustNew
 
 ```go
-func MustNew(opts ...Option) *Validator
+func MustNew(opts ...Option) *Engine
 ```
 
-Creates a new `Validator` with the given options. Panics if configuration is invalid. Use in `main()` or `init()` where panic on startup is acceptable.
+Creates a new [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) with the given options. Panics if configuration is invalid. Use in `main()` or `init()` where panic on startup is acceptable.
 
 **Parameters:**
 - `opts` - Configuration options
 
 **Returns:**
-- `*Validator` - Configured validator instance
+- `*Engine` - Configured engine instance
 
 **Panics:**
 - If configuration is invalid
@@ -135,19 +147,19 @@ Creates a new `Validator` with the given options. Panics if configuration is inv
 **Example:**
 
 ```go
-var validator = validation.MustNew(
+var engine = validation.MustNew(
     validation.WithMaxErrors(10),
     validation.WithRedactor(redactor),
 )
 ```
 
-### Validator.Validate
+### Engine.Validate
 
 ```go
-func (v *Validator) Validate(ctx context.Context, val any, opts ...Option) error
+func (v *Engine) Validate(ctx context.Context, val any, opts ...Option) error
 ```
 
-Validates a value using this validator's configuration. Per-call options override the validator's base configuration.
+Validates a value using this engine's configuration. Per-call options override the engine's base configuration.
 
 **Parameters:**
 - `ctx` - Context for validation
@@ -161,18 +173,18 @@ Validates a value using this validator's configuration. Per-call options overrid
 **Example:**
 
 ```go
-err := validator.Validate(ctx, &user,
+err := engine.Validate(ctx, &user,
     validation.WithMaxErrors(5), // Override base config
 )
 ```
 
-### Validator.ValidatePartial
+### Engine.ValidatePartial
 
 ```go
-func (v *Validator) ValidatePartial(ctx context.Context, val any, pm PresenceMap, opts ...Option) error
+func (v *Engine) ValidatePartial(ctx context.Context, val any, pm PresenceMap, opts ...Option) error
 ```
 
-Validates only fields present in the `PresenceMap` using this validator's configuration.
+Validates only fields present in the `PresenceMap` using this engine's configuration.
 
 **Parameters:**
 - `ctx` - Context for validation
@@ -438,8 +450,8 @@ const (
 
 All types and functions in the validation package are safe for concurrent use by multiple goroutines:
 
-- `Validator` instances are thread-safe
-- Package-level functions use a shared thread-safe default validator
+- [Engine](https://pkg.go.dev/rivaas.dev/validation#Engine) instances are thread-safe
+- Package-level functions use a shared thread-safe default engine
 - `PresenceMap` is read-only after creation (safe for concurrent reads)
 
 ## Performance

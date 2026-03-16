@@ -15,7 +15,7 @@ Complete reference for all configuration options (`With*` functions) available i
 
 Options can be used in two ways:
 
-1. **Validator Creation**: Pass to `New()` or `MustNew()`. Applies to all validations.
+1. **Engine creation**: Pass to `New()` or `MustNew()`. Applies to all validations.
 2. **Per-Call**: Pass to `Validate()` or `ValidatePartial()`. Applies to that call only.
 
 ```go

@@ -210,7 +210,11 @@ Sends a 503 Service Unavailable error response.
 
 ## Logging
 
-To log from a handler with trace correlation, pass the request context to the standard library's context-aware logging functions. For example: `slog.InfoContext(c.RequestContext(), "msg", ...)` or `slog.ErrorContext(c.RequestContext(), "msg", ...)`. When the app is configured with observability (logging and tracing), `trace_id` and `span_id` are injected automatically from the active OpenTelemetry span.
+When the app is configured with observability logging, it sets the **slog default logger** at startup. All `slog` usage (in and outside handlers) then uses the app's configured logger.
+
+To log from a handler with trace correlation, pass the request context: `slog.InfoContext(c.RequestContext(), "msg", ...)` or `slog.ErrorContext(c.RequestContext(), "msg", ...)`. When tracing is enabled, `trace_id` and `span_id` are injected automatically from the active OpenTelemetry span.
+
+Outside request handlers (e.g. startup, background jobs), use `slog.Info("msg", ...)` or `slog.InfoContext(ctx, ...)`. To get the logger instance (e.g. for `logger.With("component", "x")`), use `app.BaseLogger()`.
 
 ## Presence
 

@@ -77,6 +77,8 @@ a, err := app.New(
 )
 ```
 
+When logging is enabled, the app sets the **slog default logger** at startup. All `slog` calls (in handlers and elsewhere) then use your app's configured handler, level, and format. In handlers, pass `c.RequestContext()` for trace correlation; outside handlers, use `slog.Info(...)` or `slog.InfoContext(ctx, ...)`. Use `app.BaseLogger()` when you need the logger instance (e.g. `logger.With("component", "x")`).
+
 ### Log Handlers
 
 Choose from different log handlers.
