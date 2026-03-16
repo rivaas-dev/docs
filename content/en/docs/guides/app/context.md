@@ -483,18 +483,16 @@ c.BadRequest(nil)  // Uses "Bad Request" as the message
 Configure error formatting at app level:
 
 ```go
-// Single formatter
+// Single formatter (options; app builds the formatter)
 a, err := app.New(
-    app.WithErrorFormatter(&errors.RFC9457{
-        BaseURL: "https://api.example.com/problems",
-    }),
+    app.WithErrorFormatter(errors.WithRFC9457("https://api.example.com/problems")),
 )
 
 // Multiple formatters with content negotiation
 a, err := app.New(
     app.WithErrorFormatters(map[string]errors.Formatter{
-        "application/problem+json": &errors.RFC9457{},
-        "application/json": &errors.Simple{},
+        "application/problem+json": errors.MustNew(errors.WithRFC9457("https://api.example.com/problems")),
+        "application/json":        errors.MustNew(errors.WithSimple()),
     }),
     app.WithDefaultErrorFormat("application/problem+json"),
 )

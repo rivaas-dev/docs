@@ -152,10 +152,10 @@ Enables OpenAPI specification generation. Service name and version are automatic
 ### WithErrorFormatter
 
 ```go
-func WithErrorFormatter(formatter errors.Formatter) Option
+func WithErrorFormatter(opts ...errors.Option) Option
 ```
 
-Configures a single error formatter for all error responses.
+Configures a single error formatter from options. The app builds the formatter via `errors.New(opts...)`; invalid options are reported during config validation. Aligns with `WithRouter` and `WithOpenAPI` (accept options, app performs construction). Example: `app.WithErrorFormatter(errors.WithRFC9457("https://api.example.com/problems"))`.
 
 ### WithErrorFormatters
 
