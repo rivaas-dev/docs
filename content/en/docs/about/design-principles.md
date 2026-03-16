@@ -135,36 +135,38 @@ All Rivaas packages use the same configuration pattern. This keeps the API consi
 
 **How it works:**
 
-Every package follows this structure:
+Every package follows this structure. Options apply to an internal **config** struct (often a private type). The constructor validates the config and then builds the public type from it. When the public type holds runtime state (e.g. Router, Logger, Recorder, Tracer), options must not mutate that type directly; they mutate a config struct, and the constructor builds the public type from the validated config.
 
 ```go
-// Step 1: Define an Option type
-type Option func(*Config)
+// Step 1: Define an Option type (options apply to config, not the public type)
+type Option func(*config)
 
 // Step 2: Create constructor that accepts options
-func New(opts ...Option) (*Config, error) {
+func New(opts ...Option) (*PublicType, error) {
     cfg := defaultConfig()  // Start with defaults
     
     for _, opt := range opts {
-        opt(cfg)  // Apply each option
+        opt(cfg)  // Apply each option to config
     }
     
     if err := cfg.validate(); err != nil {
         return nil, err
     }
     
-    return cfg, nil
+    return newFromConfig(cfg), nil  // Build public type from validated config
 }
 
 // Step 3: Convenience constructor that panics on error
-func MustNew(opts ...Option) *Config {
-    cfg, err := New(opts...)
+func MustNew(opts ...Option) *PublicType {
+    t, err := New(opts...)
     if err != nil {
         panic(err)
     }
-    return cfg
+    return t
 }
 ```
+
+Packages like router, logging, metrics, and tracing use a private `config` struct; options apply to `*config`, and `New()` builds the public type (Router, Logger, Recorder, Tracer) from the validated config.
 
 **Naming conventions:**
 
@@ -511,7 +513,7 @@ metrics.MustNew(
 | Principle | How we implement it |
 |-----------|---------------------|
 | **DX First** | Good defaults, clear errors, progressive disclosure |
-| **Functional Options** | All packages use `Option func(*Config)` |
+| **Functional Options** | Options apply to internal config; constructor builds public type from validated config |
 | **Separation of Concerns** | Each package does one thing |
 | **Standalone Packages** | Every package works without `app` |
 | **App as Glue** | Connects packages, manages lifecycle |
