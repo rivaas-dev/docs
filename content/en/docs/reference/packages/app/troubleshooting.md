@@ -74,6 +74,12 @@ if err := c.Bind(&req); err != nil {
 
 For custom validation tags and validation strategy issues, see the [validation package troubleshooting](/docs/reference/packages/validation/troubleshooting/).
 
+### Error handling in handlers
+
+**Send error response:** Use `c.Fail(err)` to format the error, write the response, and stop the handler chain.
+
+**Collect then respond:** To collect multiple errors (e.g. multi-field validation) and send one response, use `c.Context.CollectError(err)` in handlers, then check `c.Context.HasErrors()` and `c.Context.Errors()` and send your response.
+
 ### Import Errors
 
 **Problem:** Cannot import `rivaas.dev/app`.

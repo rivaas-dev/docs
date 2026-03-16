@@ -379,7 +379,7 @@ Most apps use tag validation. It's simple and works well.
 
 ### Basic Error Handling
 
-When something goes wrong in your handler, use `Fail()` to send an error response. This method formats the error, writes the HTTP response, and automatically stops the handler chain so no other handlers run after it:
+When something goes wrong in your handler, use `Fail()` to send an error response. This method formats the error, writes the HTTP response, and automatically stops the handler chain so no other handlers run after it. For collecting multiple errors and responding once, use `c.Context.CollectError(err)` and `c.Context.HasErrors()` / `c.Context.Errors()`.
 
 ```go
 a.GET("/users/:id", func(c *app.Context) {

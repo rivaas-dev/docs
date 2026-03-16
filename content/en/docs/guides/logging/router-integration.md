@@ -374,6 +374,8 @@ func userContextMiddleware() router.HandlerFunc {
 
 ### Error Logging Middleware
 
+Handlers add errors with `c.CollectError(err)`; the middleware then logs them after the handler completes:
+
 ```go
 func errorLoggingMiddleware() router.HandlerFunc {
     return func(c *router.Context) {
