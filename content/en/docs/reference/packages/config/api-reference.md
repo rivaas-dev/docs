@@ -101,7 +101,7 @@ Creates a new Config instance with the given options. Panics if any option fails
 
 - `*Config` - Initialized configuration instance
 
-**Panics:** If any option returns an error
+**Panics:** If validation fails after applying options
 
 **Example:**
 

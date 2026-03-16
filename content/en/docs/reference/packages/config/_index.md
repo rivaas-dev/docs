@@ -153,10 +153,10 @@ Error type for configuration operations with detailed context.
 ### Option
 
 ```go
-type Option func(*Config) error
+type Option func(*Config)
 ```
 
-Configuration option function type used with `New()` and `MustNew()`.
+Configuration option function type used with `New()` and `MustNew()`. Validation errors from options are collected and reported when the config is built.
 
 ## Common Patterns
 

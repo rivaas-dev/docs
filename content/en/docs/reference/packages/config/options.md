@@ -14,10 +14,10 @@ Comprehensive documentation of all option functions used to configure Config ins
 ## Option Type
 
 ```go
-type Option func(*Config) error
+type Option func(*Config)
 ```
 
-Options are functions that configure a Config instance during initialization. They are passed to `New()` or `MustNew()`.
+Options are functions that configure a Config instance during initialization. They are passed to `New()` or `MustNew()`. Validation errors from options are collected and reported when you call `New()` (or when `MustNew()` panics).
 
 ## Environment Variable Expansion
 
