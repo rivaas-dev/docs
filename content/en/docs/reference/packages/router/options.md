@@ -96,9 +96,9 @@ Only use in development or behind a trusted load balancer. DO NOT enable on publ
 r := router.MustNew(router.WithH2C(true))
 ```
 
-### `WithServerTimeouts(readHeader, read, write, idle time.Duration)`
+### `WithServerTimeouts(opts ...ServerTimeoutOption)`
 
-Configures HTTP server timeouts to prevent slowloris attacks and resource exhaustion.
+Configures HTTP server timeouts using functional options. Pass one or more of: `WithReadHeaderTimeout`, `WithReadTimeout`, `WithWriteTimeout`, `WithIdleTimeout`. Options not set keep their defaults.
 
 **Defaults (if not set):**
 - ReadHeaderTimeout: 5s
@@ -107,11 +107,17 @@ Configures HTTP server timeouts to prevent slowloris attacks and resource exhaus
 - IdleTimeout: 60s
 
 ```go
+// Override all four
 r := router.MustNew(router.WithServerTimeouts(
-    10*time.Second,  // ReadHeaderTimeout
-    30*time.Second,  // ReadTimeout
-    60*time.Second,  // WriteTimeout
-    120*time.Second, // IdleTimeout
+    router.WithReadHeaderTimeout(5*time.Second),
+    router.WithReadTimeout(20*time.Second),
+    router.WithWriteTimeout(60*time.Second),
+    router.WithIdleTimeout(120*time.Second),
+))
+
+// Override only what you need
+r := router.MustNew(router.WithServerTimeouts(
+    router.WithReadTimeout(30*time.Second),
 ))
 ```
 
@@ -198,10 +204,10 @@ func main() {
         
         // Server configuration
         router.WithServerTimeouts(
-            10*time.Second,
-            30*time.Second,
-            60*time.Second,
-            120*time.Second,
+            router.WithReadHeaderTimeout(5*time.Second),
+            router.WithReadTimeout(20*time.Second),
+            router.WithWriteTimeout(60*time.Second),
+            router.WithIdleTimeout(120*time.Second),
         ),
         
         // Performance tuning
