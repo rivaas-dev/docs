@@ -271,39 +271,7 @@ WARN custom metric limit reached (1000/1000)
 ERROR failed to create metric: invalid name "__reserved"
 ```
 
-### Event Handler
-
-For advanced use cases, handle events programmatically:
-
-```go
-recorder := metrics.MustNew(
-    metrics.WithPrometheus(":9090", "/metrics"),
-    metrics.WithEventHandler(func(e metrics.Event) {
-        switch e.Type {
-        case metrics.EventError:
-            // Send to error tracking
-            sentry.CaptureMessage(e.Message)
-        case metrics.EventWarning:
-            // Log warnings
-            log.Printf("WARN: %s", e.Message)
-        case metrics.EventInfo:
-            // Log info
-            log.Printf("INFO: %s", e.Message)
-        }
-    }),
-    metrics.WithServiceName("my-api"),
-)
-```
-
-**Event Types**:
-- `EventInfo` - Informational messages
-- `EventWarning` - Non-critical warnings
-- `EventError` - Error conditions
-
-**Use Cases**:
-- Send errors to external monitoring
-- Custom logging formats
-- Metric collection about metric collection
+Internal events are logged at the appropriate slog level (Error, Warn, Info, Debug) via the logger passed to [WithLogger]. Omit `WithLogger` or pass `WithLogger(nil)` to produce no internal output. For Sentry or custom behavior, use a custom [slog.Handler] and pass the resulting logger to `WithLogger`.
 
 ### Custom Metrics Limit
 

@@ -286,50 +286,18 @@ Events are logged at appropriate levels:
 | Info | `INFO` | "Tracing initialized" |
 | Debug | `DEBUG` | "Request not sampled" |
 
-### Custom Event Handler
+### Custom behavior (Sentry, multiple destinations)
 
-For non-slog logging or custom event handling:
+Internal events are logged via the [slog.Logger] you pass to `WithLogger`. To send errors to Sentry or other systems, use a custom [slog.Handler] that forwards to your logger and also reports to Sentry when level is Error or higher. Pass the resulting logger to `WithLogger`.
 
-```go
-import "rivaas.dev/tracing"
+### No internal logging
 
-eventHandler := func(e tracing.Event) {
-    switch e.Type {
-    case tracing.EventError:
-        // Send to error tracking (e.g., Sentry)
-        sentry.CaptureMessage(e.Message)
-        myLogger.Error(e.Message, e.Args...)
-    case tracing.EventWarning:
-        myLogger.Warn(e.Message, e.Args...)
-    case tracing.EventInfo:
-        myLogger.Info(e.Message, e.Args...)
-    case tracing.EventDebug:
-        myLogger.Debug(e.Message, e.Args...)
-    }
-}
-
-tracer := tracing.MustNew(
-    tracing.WithServiceName("my-api"),
-    tracing.WithEventHandler(eventHandler),
-    tracing.WithOTLP("collector:4317"),
-)
-```
-
-**Use cases:**
-- Integrate with non-slog loggers (zap, zerolog, logrus)
-- Send errors to Sentry/Rollbar
-- Custom alerting
-- Audit logging
-- Metrics from events
-
-### No Logging
-
-To disable all internal logging:
+To disable internal tracing output, omit `WithLogger` or pass `WithLogger(nil)`. A discard logger is used and no internal messages are produced.
 
 ```go
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-api"),
-    // No WithLogger or WithEventHandler = no logging
+    // No WithLogger = no internal logging
     tracing.WithOTLP("collector:4317"),
 )
 ```

@@ -546,70 +546,7 @@ if err != nil {
 // Server is ready, make requests
 ```
 
-## Event Types
-
-### EventType
-
-```go
-type EventType int
-
-const (
-    EventError   EventType = iota // Error events
-    EventWarning                   // Warning events
-    EventInfo                      // Informational events
-    EventDebug                     // Debug events
-)
-```
-
-Severity levels for internal operational events.
-
-### Event
-
-```go
-type Event struct {
-    Type    EventType
-    Message string
-    Args    []any // slog-style key-value pairs
-}
-```
-
-Internal operational event from the metrics package.
-
-**Example**:
-
-```go
-metrics.WithEventHandler(func(e metrics.Event) {
-    switch e.Type {
-    case metrics.EventError:
-        sentry.CaptureMessage(e.Message)
-    case metrics.EventWarning:
-        log.Printf("WARN: %s", e.Message)
-    case metrics.EventInfo:
-        log.Printf("INFO: %s", e.Message)
-    }
-})
-```
-
-### EventHandler
-
-```go
-type EventHandler func(Event)
-```
-
-Function type for handling internal operational events.
-
-**Example**:
-
-```go
-handler := func(e metrics.Event) {
-    slog.Default().Info(e.Message, e.Args...)
-}
-
-recorder := metrics.MustNew(
-    metrics.WithPrometheus(":9090", "/metrics"),
-    metrics.WithEventHandler(handler),
-)
-```
+Internal operational events are logged at the appropriate slog level (Error, Warn, Info, Debug) via the logger passed to [WithLogger]. See [WithLogger](options/#withlogger) in Options.
 
 ## Error Handling
 

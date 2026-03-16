@@ -179,40 +179,7 @@ Configuration option function type used with `New()` and `MustNew()`.
 
 **Available Options**: See [Options](options/) for all options.
 
-### EventType
-
-```go
-type EventType int
-
-const (
-    EventError   EventType = iota // Error events
-    EventWarning                   // Warning events
-    EventInfo                      // Informational events
-    EventDebug                     // Debug events
-)
-```
-
-Event severity levels for internal operational events.
-
-### Event
-
-```go
-type Event struct {
-    Type    EventType
-    Message string
-    Args    []any // slog-style key-value pairs
-}
-```
-
-Internal operational event from the metrics package.
-
-### EventHandler
-
-```go
-type EventHandler func(Event)
-```
-
-Processes internal operational events. Used with `WithEventHandler` option.
+Internal operational events (errors, warnings, info, debug) are logged via the [slog.Logger] passed to [WithLogger]. Omit `WithLogger` or pass nil to produce no internal output.
 
 ## Common Patterns
 

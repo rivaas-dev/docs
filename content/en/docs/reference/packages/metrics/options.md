@@ -447,53 +447,12 @@ recorder := metrics.MustNew(
 )
 ```
 
-**Events Logged**:
+**Events Logged** (at appropriate slog levels):
 - Initialization events
 - Error messages (metric creation failures)
 - Warning messages (port conflicts, limits reached)
 
-**Alternative**: Use `WithEventHandler()` for custom event handling.
-
-### WithEventHandler
-
-```go
-func WithEventHandler(handler EventHandler) Option
-```
-
-Sets a custom event handler for internal operational events.
-
-**Parameters**:
-- `handler EventHandler` - Event handler function
-
-**Example**:
-
-```go
-recorder := metrics.MustNew(
-    metrics.WithPrometheus(":9090", "/metrics"),
-    metrics.WithEventHandler(func(e metrics.Event) {
-        switch e.Type {
-        case metrics.EventError:
-            sentry.CaptureMessage(e.Message)
-        case metrics.EventWarning:
-            log.Printf("WARN: %s", e.Message)
-        case metrics.EventInfo:
-            log.Printf("INFO: %s", e.Message)
-        }
-    }),
-    metrics.WithServiceName("my-api"),
-)
-```
-
-**Use Cases**:
-- Send errors to external monitoring (Sentry, etc.)
-- Custom logging formats
-- Metric collection about metric collection
-
-**Event Types**:
-- `EventError` - Error events
-- `EventWarning` - Warning events
-- `EventInfo` - Informational events
-- `EventDebug` - Debug events
+If `logger` is nil or `WithLogger` is not called, no internal output is produced (a discard logger is used). For Sentry or custom behavior, use a custom [slog.Handler] and pass the resulting logger to `WithLogger`.
 
 ## Advanced Provider Options
 

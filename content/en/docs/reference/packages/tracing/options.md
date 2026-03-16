@@ -273,7 +273,7 @@ tracer := tracing.MustNew(
 func WithLogger(logger *slog.Logger) Option
 ```
 
-Sets the logger for internal operational events using the default event handler. This is a convenience wrapper around `WithEventHandler` that logs events to the provided `slog.Logger`.
+Sets the logger for internal operational events (errors, warnings, info, debug). Events are logged at the appropriate slog level. If `logger` is nil or `WithLogger` is not called, no internal output is produced (a discard logger is used). For Sentry or custom behavior, use a custom [slog.Handler] and pass the resulting logger to `WithLogger`.
 
 **Parameters:**
 - `logger`: `*slog.Logger` for logging internal events
@@ -534,8 +534,7 @@ Sample rates outside 0.0-1.0 are automatically clamped to valid bounds.
 | `WithSampleRate(rate)` | Sampling rate (0.0-1.0) | `1.0` |
 | `WithSpanStartHook(hook)` | Span start callback | - |
 | `WithSpanFinishHook(hook)` | Span finish callback | - |
-| `WithLogger(logger)` | Set slog logger | - |
-| `WithEventHandler(handler)` | Custom event handler | - |
+| `WithLogger(logger)` | Set slog logger for internal events; nil or omit = no output | - |
 | `WithTracerProvider(provider)` | Custom tracer provider | - |
 | `WithCustomTracer(tracer)` | Custom tracer | - |
 | `WithCustomPropagator(prop)` | Custom propagator | W3C Trace Context |

@@ -435,63 +435,7 @@ func TraceContext(ctx context.Context) context.Context
 
 Returns the context as-is (it should already contain trace information). Provided for API consistency.
 
-## Event Types
-
-### EventType
-
-```go
-type EventType int
-
-const (
-    EventError   EventType = iota // Error events
-    EventWarning                   // Warning events
-    EventInfo                      // Informational events
-    EventDebug                     // Debug events
-)
-```
-
-Event severity levels for internal operational events.
-
-### Event
-
-```go
-type Event struct {
-    Type    EventType
-    Message string
-    Args    []any // slog-style key-value pairs
-}
-```
-
-Internal operational event from the tracing package. Events are used to report errors, warnings, and informational messages about the tracing system's operation.
-
-### EventHandler
-
-```go
-type EventHandler func(Event)
-```
-
-Processes internal operational events from the tracing package. Implementations can log events, send them to monitoring systems, or take custom actions based on event type.
-
-**Example:**
-
-```go
-tracing.WithEventHandler(func(e tracing.Event) {
-    if e.Type == tracing.EventError {
-        sentry.CaptureMessage(e.Message)
-    }
-    slog.Default().Info(e.Message, e.Args...)
-})
-```
-
-### DefaultEventHandler
-
-```go
-func DefaultEventHandler(logger *slog.Logger) EventHandler
-```
-
-Returns an EventHandler that logs events to the provided slog.Logger. This is the default implementation used by `WithLogger`.
-
-If logger is nil, returns a no-op handler that discards all events.
+Internal operational events are logged at the appropriate slog level via the logger passed to [WithLogger]. See [WithLogger](options/#withlogger) in Options.
 
 ## Hook Types
 
