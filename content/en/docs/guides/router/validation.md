@@ -14,7 +14,7 @@ description: >
 Request validation ensures incoming data meets your requirements before processing.
 
 {{% alert title="Validation Approaches" color="info" %}}
-The router package focuses on routing. For binding and validation, use the [binding package](/docs/guides/binding/) with the [validation package](/docs/guides/validation/), or the [app package](/docs/guides/app/) for integrated binding + validation.
+The router package focuses on routing. For binding and validation, use the [binding package](/docs/guides/binding/) with the [validation package](/docs/guides/validation/), or the [app package](/docs/guides/app/) for integrated binding + validation. Package-level `validation.Validate` uses [DefaultEngine](https://pkg.go.dev/rivaas.dev/validation#DefaultEngine) (lazily initialized). When using the app package, you can inject a custom engine with [WithValidationEngine](/docs/reference/packages/app/options/#withvalidationengine) for custom configuration or test isolation.
 {{% /alert %}}
 
 ## Validation Strategies

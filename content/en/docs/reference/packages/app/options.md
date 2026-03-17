@@ -137,6 +137,26 @@ func WithRouter(opts ...router.Option) Option
 
 Passes router options to the underlying router. Multiple calls accumulate.
 
+## Validation
+
+### WithValidationEngine
+
+```go
+func WithValidationEngine(engine *validation.Engine) Option
+```
+
+Sets the validation engine used by [Context.Bind](/docs/reference/packages/app/context-api/#bind) and [Context.Validate](/docs/reference/packages/app/context-api/#validate). When set, the app uses this engine instead of the package-level [validation.DefaultEngine](https://pkg.go.dev/rivaas.dev/validation#DefaultEngine). Use for custom validation configuration (e.g. redaction, MaxErrors) or test isolation.
+
+**Example:**
+
+```go
+engine := validation.MustNew(validation.WithRedactor(myRedactor))
+a := app.MustNew(
+    app.WithServiceName("my-api"),
+    app.WithValidationEngine(engine),
+)
+```
+
 ## OpenAPI
 
 ### WithOpenAPI
