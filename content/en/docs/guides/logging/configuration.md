@@ -11,6 +11,8 @@ keywords:
 
 This guide covers all configuration options available in the logging package. It covers handler selection to service metadata.
 
+Invalid options are reported when creating the logger with `New()` or `MustNew()`: the constructor returns an error (or panics) before returning a logger, so a non-nil logger is always valid.
+
 ## Handler Configuration
 
 Choose the appropriate handler type for your environment.
