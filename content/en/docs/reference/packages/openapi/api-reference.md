@@ -30,7 +30,7 @@ Main API configuration container. Holds the OpenAPI specification metadata and c
 **Methods:**
 - `Generate(ctx context.Context, ...Operation) (*Result, error)` - Generate OpenAPI specification.
 - `Validate() error` - Check if the API configuration is valid.
-- `UI() UIConfig` - Swagger UI configuration.
+- `UI() UISnapshot` - Read-only snapshot of Swagger UI configuration for rendering (e.g. use [UISnapshot.ToJSON] to embed in HTML).
 - `Info() model.Info` - API metadata (title, version, description, etc.).
 - `Servers() []model.Server` - Server list.
 - `Tags() []model.Tag` - Tags.
@@ -98,6 +98,16 @@ Type-safe OpenAPI version selection. Use with `WithVersion()` option.
 **Constants:**
 - `V30x` - Target OpenAPI 3.0.x family. Generates 3.0.4 specification.
 - `V31x` - Target OpenAPI 3.1.x family. Generates 3.1.2 specification.
+
+### UISnapshot
+
+```go
+type UISnapshot interface {
+    ToJSON(specPath string) (string, error)
+}
+```
+
+Read-only view of Swagger UI configuration returned by [API.UI]. Use it for rendering (e.g. embed JSON in HTML); do not use for construction. Configuration is done via [UIOption] and [New] or [MustNew].
 
 ### Option
 
