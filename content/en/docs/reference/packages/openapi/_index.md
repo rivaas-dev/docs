@@ -51,6 +51,14 @@ Core specification generation including:
 - Operation options - `WithRequest()`, `WithResponse()`, `WithSecurity()`, etc.
 - `Generate()` - Specification generation
 
+### Example sub-package (`rivaas.dev/openapi/example`)
+
+Named examples for request/response bodies:
+- `Example` type - OpenAPI Example Object
+- `New(name, value, opts...)` / `NewExternal(name, url, opts...)` - Create inline or external examples
+- `WithSummary()` / `WithDescription()` - Optional metadata
+- Pass results to `WithRequest()` or `WithResponse()` for named examples in the spec
+
 ### Sub-package (`rivaas.dev/openapi/diag`)
 
 Type-safe warning diagnostics:

@@ -63,17 +63,23 @@ openapi.WithOperationID("getUserById")
 func WithRequest(requestType interface{}, examples ...interface{}) OperationOption
 ```
 
-Sets the request body type with optional examples.
+Sets the request body type with optional named examples.
 
 **Parameters:**
 - `requestType` - Go type to convert to schema
-- `examples` - Optional example instances
+- `examples` - Named examples (from [rivaas.dev/openapi/example](https://pkg.go.dev/rivaas.dev/openapi/example)) or a single value for the default example
 
 **Example:**
 
 ```go
-exampleUser := CreateUserRequest{Name: "John", Email: "john@example.com"}
-openapi.WithRequest(CreateUserRequest{}, exampleUser)
+// Single unnamed example
+openapi.WithRequest(CreateUserRequest{}, CreateUserRequest{Name: "John", Email: "john@example.com"})
+
+// Named examples (use the example package)
+openapi.WithRequest(CreateUserRequest{},
+    example.New("minimal", CreateUserRequest{Name: "J", Email: "j@example.com"}),
+    example.New("full", CreateUserRequest{Name: "John", Email: "john@example.com"}, example.WithSummary("Full example")),
+)
 ```
 
 ### WithResponse
@@ -87,7 +93,7 @@ Adds a response type for a specific status code.
 **Parameters:**
 - `statusCode` - HTTP status code
 - `responseType` - Go type to convert to schema (use `nil` for no body)
-- `examples` - Optional example instances
+- `examples` - Named examples (from [rivaas.dev/openapi/example](https://pkg.go.dev/rivaas.dev/openapi/example)) or a single value for the default example
 
 **Example:**
 
@@ -95,6 +101,12 @@ Adds a response type for a specific status code.
 openapi.WithResponse(200, User{})
 openapi.WithResponse(204, nil) // No response body
 openapi.WithResponse(404, ErrorResponse{})
+
+// Named examples for a status
+openapi.WithResponse(200, User{},
+    example.New("success", User{ID: 1, Name: "John"}, example.WithSummary("Success")),
+    example.New("admin", User{ID: 1, Name: "Admin", Role: "admin"}, example.WithSummary("Admin user")),
+)
 ```
 
 ## Organization Options
