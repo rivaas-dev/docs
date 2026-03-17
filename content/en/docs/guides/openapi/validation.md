@@ -81,7 +81,7 @@ if err != nil {
     log.Fatal(err)
 }
 
-// Create validator
+// Create validator (optionally restrict to specific versions with validate.WithVersions)
 validator := validate.MustNew()
 
 // Validate against OpenAPI 3.0.x
@@ -99,16 +99,26 @@ if err != nil {
 
 ### Auto-Detection
 
-The validator can auto-detect the OpenAPI version:
+The validator can auto-detect the OpenAPI version from the spec's `openapi` field:
 
 ```go
 validator := validate.MustNew()
 
-// Auto-detects version from the spec
+// Auto-detects version from the spec and validates
 err := validator.ValidateAuto(context.Background(), specJSON)
 if err != nil {
     log.Printf("Validation failed: %v\n", err)
 }
+```
+
+### Restrict to specific versions
+
+To only allow certain OpenAPI versions (for example, OpenAPI 3.1 only), use `WithVersions`:
+
+```go
+validator := validate.MustNew(validate.WithVersions(validate.V31))
+err := validator.ValidateAuto(context.Background(), specJSON)
+// Validates 3.1 specs; 3.0 specs will return an error
 ```
 
 ## Swagger UI Validation

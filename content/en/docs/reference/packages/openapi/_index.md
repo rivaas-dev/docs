@@ -64,8 +64,9 @@ Type-safe warning diagnostics:
 Standalone specification validator:
 - `Validator` type - Validates OpenAPI specifications
 - `New(opts ...Option) (*Validator, error)` / `MustNew(opts ...Option) *Validator` - Create a validator (options optional; construction currently cannot fail)
+- `WithVersions(versions ...Version)` - Restrict which OpenAPI versions are accepted (default: both 3.0 and 3.1)
 - `Validate()` - Validate against specific version
-- `ValidateAuto()` - Auto-detect version and validate
+- `ValidateAuto()` - Auto-detect version from spec and validate
 
 ## Quick API Index
 
