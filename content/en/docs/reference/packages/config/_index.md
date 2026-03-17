@@ -106,7 +106,7 @@ Complete documentation of the Config struct and all methods including:
 ### [Options](options/)
 
 Comprehensive list of all configuration options:
-- Source options (`WithFile`, `WithEnv`, `WithConsul`, etc.)
+- Source options (`WithFile`, `WithEnv`, `WithConsul`, `WithConsulOptional`, etc.)
 - Validation options (`WithBinding`, `WithValidator`, `WithJSONSchema`)
 - Dumper options (`WithFileDumper`, `WithDumper`)
 

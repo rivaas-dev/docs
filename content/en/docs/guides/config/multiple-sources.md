@@ -179,8 +179,8 @@ cfg := config.MustNew(
 )
 ```
 
-{{< alert color="info" >}}
-**Works without Consul:** If `CONSUL_HTTP_ADDR` isn't set, `WithConsul` does nothing. This means you can run your app locally without Consul. When you deploy to production, just set the environment variable and Consul will be used.
+{{< alert color="warning" >}}
+**CONSUL_HTTP_ADDR is required** for `WithConsul` and `WithConsulAs`. If it is not set, `New`/`MustNew` returns a validation error at startup. For optional Consul (e.g. local development without Consul), use `WithConsulOptional` or `WithConsulAsOptional` instead.
 {{< /alert >}}
 
 **Environment variables:**
@@ -195,7 +195,7 @@ export CONSUL_HTTP_TOKEN=secret-token
 ```go
 cfg := config.MustNew(
     config.WithFile("config.yaml"),           // Local defaults
-    config.WithConsul("staging/myapp.json"),  // Staging overrides
+    config.WithConsul("staging/myapp.json"),  // Staging overrides (requires CONSUL_HTTP_ADDR)
     config.WithEnv("MYAPP_"),                 // Environment overrides
 )
 ```

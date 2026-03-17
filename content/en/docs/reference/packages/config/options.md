@@ -160,7 +160,7 @@ func WithConsul(path string) Option
 
 Loads configuration from HashiCorp Consul. The format is detected from the file extension.
 
-**Works without Consul:** If `CONSUL_HTTP_ADDR` isn't set, this option does nothing. This means you can run your app locally without Consul. When you deploy to production, just set the environment variable and Consul will be used.
+**CONSUL_HTTP_ADDR is required.** If it is not set, `New`/`MustNew` returns a validation error at construction. For optional Consul (e.g. development without Consul), use `WithConsulOptional` instead.
 
 **Parameters:**
 - `path` - Consul key path (format detected from extension)
@@ -170,12 +170,12 @@ Loads configuration from HashiCorp Consul. The format is detected from the file 
 ```go
 cfg := config.MustNew(
     config.WithFile("config.yaml"),
-    config.WithConsul("production/service.json"),  // Skipped in dev, used in prod
+    config.WithConsul("production/service.json"),  // Fails at construction if CONSUL_HTTP_ADDR is unset
 )
 ```
 
 **Environment variables:**
-- `CONSUL_HTTP_ADDR` - Consul server address (required for Consul to work)
+- `CONSUL_HTTP_ADDR` - Consul server address (required)
 - `CONSUL_HTTP_TOKEN` - Access token for authentication (optional)
 
 ### WithConsulAs
@@ -186,7 +186,7 @@ func WithConsulAs(path string, codecType codec.Type) Option
 
 Loads configuration from Consul with explicit format. Use this when the key path doesn't have an extension.
 
-**Works without Consul:** Like `WithConsul`, this option does nothing if `CONSUL_HTTP_ADDR` isn't set. Your code works the same in dev and prod.
+**CONSUL_HTTP_ADDR is required.** If it is not set, `New`/`MustNew` returns a validation error at construction. For optional Consul, use `WithConsulAsOptional` instead.
 
 **Parameters:**
 - `path` - Consul key path
@@ -202,8 +202,48 @@ cfg := config.MustNew(
 ```
 
 **Environment variables:**
-- `CONSUL_HTTP_ADDR` - Consul server address (required for Consul to work)
+- `CONSUL_HTTP_ADDR` - Consul server address (required)
 - `CONSUL_HTTP_TOKEN` - Access token for authentication (optional)
+
+### WithConsulOptional
+
+```go
+func WithConsulOptional(path string) Option
+```
+
+Adds a Consul source only when `CONSUL_HTTP_ADDR` is set. If it is not set, this option is a no-op (no source added, no error). Use for development without Consul; use `WithConsul` when Consul is required and should fail at construction if the env is missing.
+
+**Parameters:**
+- `path` - Consul key path (format detected from extension)
+
+**Example:**
+
+```go
+cfg := config.MustNew(
+    config.WithFile("config.yaml"),
+    config.WithConsulOptional("production/service.yaml"),  // No-op when CONSUL_HTTP_ADDR is unset
+)
+```
+
+### WithConsulAsOptional
+
+```go
+func WithConsulAsOptional(path string, codecType codec.Type) Option
+```
+
+Adds a Consul source with explicit format only when `CONSUL_HTTP_ADDR` is set. If it is not set, this option is a no-op. Use for development without Consul; use `WithConsulAs` when Consul is required.
+
+**Parameters:**
+- `path` - Consul key path
+- `codecType` - Codec type (e.g. `codec.TypeYAML`, `codec.TypeJSON`)
+
+**Example:**
+
+```go
+cfg := config.MustNew(
+    config.WithConsulAsOptional("production/service", codec.TypeJSON),
+)
+```
 
 ### WithContent
 

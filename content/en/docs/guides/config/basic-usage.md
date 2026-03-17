@@ -65,7 +65,7 @@ cfg := config.MustNew(
 )
 ```
 
-This works with all path-based options: `WithFile`, `WithFileAs`, `WithConsul`, `WithConsulAs`, `WithFileDumper`, and `WithFileDumperAs`.
+This works with all path-based options: `WithFile`, `WithFileAs`, `WithConsul`, `WithConsulAs`, `WithConsulOptional`, `WithConsulAsOptional`, `WithFileDumper`, and `WithFileDumperAs`.
 
 ### Built-in Format Support
 
