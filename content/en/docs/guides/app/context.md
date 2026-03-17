@@ -459,23 +459,23 @@ c.BadRequest(nil)  // Uses "Bad Request" as the message
 
 ### Error Formatters
 
-Configure error formatting at app level:
+Configure error formatting at app level with [WithErrorFormatterFor](/docs/reference/packages/app/options/#witherrorformatterfor):
 
 ```go
-// Single formatter (options; app builds the formatter)
+// Single formatter for all responses
 a, err := app.New(
-    app.WithErrorFormatter(errors.WithRFC9457("https://api.example.com/problems")),
+    app.WithErrorFormatterFor("", errors.WithRFC9457("https://api.example.com/problems")),
 )
 
-// Multiple formatters with content negotiation
+// Multiple formatters with content negotiation (by Accept header)
 a, err := app.New(
-    app.WithErrorFormatters(map[string]errors.Formatter{
-        "application/problem+json": errors.MustNew(errors.WithRFC9457("https://api.example.com/problems")),
-        "application/json":        errors.MustNew(errors.WithSimple()),
-    }),
+    app.WithErrorFormatterFor("application/problem+json", errors.WithRFC9457("https://api.example.com/problems")),
+    app.WithErrorFormatterFor("application/json", errors.WithSimple()),
     app.WithDefaultErrorFormat("application/problem+json"),
 )
 ```
+
+For pre-built or custom formatters, use the advanced [WithErrorFormatters](/docs/reference/packages/app/options/#witherrorformatters) option.
 
 ## Request-Scoped Logging
 

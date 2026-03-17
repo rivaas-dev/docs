@@ -218,13 +218,32 @@ Enables OpenAPI specification generation. Service name and version are automatic
 
 ## Error Formatting
 
-### WithErrorFormatter
+### WithErrorFormatterFor
 
 ```go
-func WithErrorFormatter(opts ...errors.Option) Option
+func WithErrorFormatterFor(mediaType string, opts ...errors.Option) Option
 ```
 
-Configures a single error formatter from options. The app builds the formatter via `errors.New(opts...)`; invalid options are reported during config validation. Aligns with `WithRouter` and `WithOpenAPI` (accept options, app performs construction). Example: `app.WithErrorFormatter(errors.WithRFC9457("https://api.example.com/problems"))`.
+Configures an error formatter from options. The app builds the formatter via `errors.New(opts...)`; invalid options are reported during config validation.
+
+- Use **empty** `mediaType` (`""`) for a single formatter for all responses (no content negotiation).
+- Use a **non-empty** `mediaType` (e.g. `"application/problem+json"`) to register a formatter for content negotiation; multiple calls accumulate. Use [WithDefaultErrorFormat](#withdefaulterrorformat) to set the fallback when no Accept header matches.
+
+You cannot mix single and content-negotiated modes (validation fails at startup).
+
+Example — single formatter:
+
+```go
+app.WithErrorFormatterFor("", errors.WithRFC9457("https://api.example.com/problems"))
+```
+
+Example — content negotiation:
+
+```go
+app.WithErrorFormatterFor("application/problem+json", errors.WithRFC9457("https://api.example.com/problems")),
+app.WithErrorFormatterFor("application/json", errors.WithSimple()),
+app.WithDefaultErrorFormat("application/problem+json"),
+```
 
 ### WithErrorFormatters
 
@@ -232,7 +251,7 @@ Configures a single error formatter from options. The app builds the formatter v
 func WithErrorFormatters(formatters map[string]errors.Formatter) Option
 ```
 
-Configures multiple error formatters with content negotiation based on Accept header.
+**Advanced:** Configures multiple error formatters with content negotiation by Accept header. Use when you need to pass pre-built or custom formatters. Prefer [WithErrorFormatterFor](#witherrorformatterfor) for option-based configuration.
 
 ### WithDefaultErrorFormat
 
@@ -240,7 +259,7 @@ Configures multiple error formatters with content negotiation based on Accept he
 func WithDefaultErrorFormat(mediaType string) Option
 ```
 
-Sets the default format when no Accept header matches. Only used with `WithErrorFormatters`.
+Sets the default format when no Accept header matches. Only used when content-negotiated formatters are configured (via [WithErrorFormatterFor](#witherrorformatterfor) with non-empty media types or [WithErrorFormatters](#witherrorformatters)).
 
 ## Complete Example
 
