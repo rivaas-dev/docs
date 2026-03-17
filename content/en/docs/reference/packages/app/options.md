@@ -161,6 +161,8 @@ a := app.MustNew(
 
 When calling [Context.Validate](/docs/reference/packages/app/context-api/#validate) after `BindOnly()`, use these app-scoped options so your IDE shows them under `app.With...`:
 
+Bind and Validate options must not be nil. Passing a nil option returns an error (e.g. `app: bind option at index N cannot be nil`).
+
 #### WithValidatePartial
 
 ```go
