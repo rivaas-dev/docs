@@ -21,6 +21,8 @@ The `app.Context` wraps `router.Context` and provides app-level features:
 - **Error Handling** - Structured error responses with content negotiation
 - **Logging** - Request-scoped logger with automatic context
 
+When creating a context for tests (e.g. from the app's pool), set `app` for full behavior (custom error formatter, app logger). If `app` is nil, `Fail()` still responds using the default error formatter.
+
 ## Request Binding
 
 ### Binding and Validation

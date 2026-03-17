@@ -71,7 +71,7 @@ All error handling methods automatically format the error response and abort the
 func (c *Context) Fail(err error)
 ```
 
-Sends a formatted error response using the configured formatter. The HTTP status code is determined from the error (if it implements `HTTPStatus() int`) or defaults to 500.
+Sends a formatted error response using the configured formatter. The HTTP status code is determined from the error (if it implements `HTTPStatus() int`) or defaults to 500. When the context is not associated with an app (e.g. `app` is nil), the default error formatter is used.
 
 **Parameters:**
 - `err`: The error to send. If `nil`, the method returns without doing anything.
