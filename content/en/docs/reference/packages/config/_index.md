@@ -59,8 +59,8 @@ Core configuration management including:
 ### Configuration Creation
 
 ```go
-cfg, err := config.New(options...)     // With error handling
-cfg := config.MustNew(options...)      // Panics on error
+cfg, err := config.New(opts...)     // With error handling
+cfg := config.MustNew(opts...)      // Panics on error
 ```
 
 ### Loading Configuration
