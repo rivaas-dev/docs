@@ -98,7 +98,7 @@ const StrategyInterface Strategy = ...
 Uses custom interface methods (`Validate()` or `ValidateContext()`).
 
 **Requirements:**
-- Type implements `ValidatorInterface` or `ValidatorWithContext`
+- Type implements `Validator` or `ValidatorWithContext`
 
 **Example:**
 
@@ -120,7 +120,7 @@ When `StrategyAuto` is used (default), the validator checks strategies in priori
 
 ```mermaid
 graph TD
-    Start[Start Validation] --> CheckInterface{Implements<br/>ValidatorInterface or<br/>ValidatorWithContext?}
+    Start[Start Validation] --> CheckInterface{Implements<br/>Validator or<br/>ValidatorWithContext?}
     
     CheckInterface -->|Yes| UseInterface[Use Interface Strategy]:::success
     CheckInterface -->|No| CheckTags{Has validate<br/>tags?}
@@ -147,7 +147,7 @@ graph TD
 A strategy is considered "applicable" if:
 
 **Interface Strategy:**
-- Type implements `ValidatorInterface` or `ValidatorWithContext`
+- Type implements `Validator` or `ValidatorWithContext`
 - Checks both value and pointer receivers
 
 **Tags Strategy:**

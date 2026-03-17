@@ -11,15 +11,15 @@ weight: 3
 
 Complete reference for validation interfaces that can be implemented for custom validation logic.
 
-## ValidatorInterface
+## Validator
 
 ```go
-type ValidatorInterface interface {
+type Validator interface {
     Validate() error
 }
 ```
 
-Implement this interface for simple custom validation without context.
+Implement this interface for simple custom validation without context. The type name in the package is [Validator](https://pkg.go.dev/rivaas.dev/validation#Validator).
 
 ### When to Use
 
@@ -71,10 +71,10 @@ func (u *User) Validate() error {
 
 ### Pointer vs Value Receivers
 
-Both are supported:
+Both are supported. **When your method is on a pointer receiver, pass a pointer to `Validate` or `Engine.Validate`.**
 
 ```go
-// Pointer receiver (can modify struct)
+// Pointer receiver (can modify struct) — pass &user to Validate
 func (u *User) Validate() error {
     u.Email = strings.ToLower(u.Email) // Normalize
     return validateEmail(u.Email)
@@ -362,7 +362,7 @@ func nestedRedactor(path string) bool {
 When multiple interfaces are implemented, they have different priorities:
 
 **Priority Order:**
-1. `ValidatorWithContext` / `ValidatorInterface` (highest)
+1. `ValidatorWithContext` / `Validator` (highest)
 2. Struct tags (`validate:"..."`)
 3. `JSONSchemaProvider` (lowest)
 
@@ -421,7 +421,7 @@ err := validation.Validate(ctx, &user,
 ### 1. Choose the Right Interface
 
 ```go
-// Simple validation - ValidatorInterface
+// Simple validation - Validator
 func (u *User) Validate() error {
     return validateEmail(u.Email)
 }
@@ -475,7 +475,7 @@ func (u *User) ValidateContext(ctx context.Context) error {
 
 ## Testing
 
-### Testing ValidatorInterface
+### Testing Validator
 
 ```go
 func TestUserValidation(t *testing.T) {

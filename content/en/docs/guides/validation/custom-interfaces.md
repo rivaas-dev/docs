@@ -11,12 +11,12 @@ keywords:
 
 Implement custom validation logic by adding `Validate()` or `ValidateContext()` methods to your structs. This provides the most flexible validation approach for complex business rules.
 
-## ValidatorInterface
+## Validator
 
-Implement the `ValidatorInterface` for simple custom validation:
+Implement the [Validator](https://pkg.go.dev/rivaas.dev/validation#Validator) interface for simple custom validation:
 
 ```go
-type ValidatorInterface interface {
+type Validator interface {
     Validate() error
 }
 ```
@@ -137,7 +137,7 @@ func (u *User) ValidateContext(ctx context.Context) error {
 
 ## Interface Priority
 
-When a type implements `ValidatorInterface` or `ValidatorWithContext`, those methods have the highest priority:
+When a type implements `Validator` or `ValidatorWithContext`, those methods have the highest priority:
 
 **Priority Order:**
 1. `ValidateContext(ctx)` or `Validate()` (highest)
@@ -191,7 +191,7 @@ All errors are aggregated into a single `*validation.Error`.
 
 ## Pointer vs Value Receivers
 
-The validation package works with both pointer and value receivers:
+The validation package works with both pointer and value receivers. **When your method is on a pointer receiver, you must pass a pointer to `Validate`** (e.g. `validation.Validate(ctx, &user)`).
 
 ### Pointer Receiver (Recommended)
 
@@ -201,6 +201,7 @@ func (u *User) Validate() error {
     u.Email = strings.ToLower(u.Email)
     return nil
 }
+// Call with: validation.Validate(ctx, &user)
 ```
 
 ### Value Receiver

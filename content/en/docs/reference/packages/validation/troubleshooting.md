@@ -517,7 +517,7 @@ for i := 0; i < t.NumField(); i++ {
 ### 4. Test interface implementation
 
 ```go
-var _ validation.ValidatorInterface = (*User)(nil) // Compile-time check
+var _ validation.Validator = (*User)(nil) // Compile-time check
 var _ validation.ValidatorWithContext = (*User)(nil)
 var _ validation.JSONSchemaProvider = (*User)(nil)
 ```

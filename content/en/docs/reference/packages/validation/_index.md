@@ -171,11 +171,11 @@ type FieldError struct {
 
 ### Interfaces
 
-Implement these for custom validation:
+Implement these for custom validation. When using a pointer receiver, pass a pointer to `Validate`.
 
 ```go
-// Simple custom validation
-type ValidatorInterface interface {
+// Simple custom validation (validation.Validator)
+type Validator interface {
     Validate() error
 }
 
