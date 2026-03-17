@@ -395,7 +395,7 @@ openapi.GET("/users/:id",
 ```go
 import "rivaas.dev/openapi/validate"
 
-validator := validate.New()
+validator := validate.MustNew()
 err := validator.ValidateAuto(context.Background(), specJSON)
 ```
 

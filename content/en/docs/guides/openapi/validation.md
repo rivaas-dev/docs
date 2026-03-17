@@ -82,7 +82,7 @@ if err != nil {
 }
 
 // Create validator
-validator := validate.New()
+validator := validate.MustNew()
 
 // Validate against OpenAPI 3.0.x
 err = validator.Validate(context.Background(), specJSON, validate.V30)
@@ -102,7 +102,7 @@ if err != nil {
 The validator can auto-detect the OpenAPI version:
 
 ```go
-validator := validate.New()
+validator := validate.MustNew()
 
 // Auto-detects version from the spec
 err := validator.ValidateAuto(context.Background(), specJSON)
@@ -274,7 +274,7 @@ func main() {
         log.Fatal(err)
     }
     
-    validator := validate.New()
+    validator := validate.MustNew()
     if err := validator.ValidateAuto(context.Background(), externalSpec); err != nil {
         log.Printf("External spec validation failed: %v\n", err)
     } else {
