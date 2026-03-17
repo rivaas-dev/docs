@@ -89,7 +89,7 @@ metrics.MustNew(
 
 ### Fail Fast with Clear Errors
 
-Configuration errors happen at startup, not during requests. This helps you catch problems early.
+Configuration errors happen at startup, not during requests. This helps you catch problems early. Error messages tell you what went wrong and how to fix it—for required fields (e.g. service name or version), the error includes which option or environment variable to use.
 
 ```go
 // Returns a clear error immediately

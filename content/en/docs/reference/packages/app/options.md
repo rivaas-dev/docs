@@ -19,7 +19,7 @@ description: >
 func WithServiceName(name string) Option
 ```
 
-Sets the service name used in observability metadata. This includes metrics, traces, and logs. If empty, validation fails.
+Sets the service name used in observability metadata. This includes metrics, traces, and logs. If empty, validation fails; the error message includes how to fix it (this option or `RIVAAS_SERVICE_NAME`).
 
 **Default:** `"rivaas-app"`
 
@@ -29,7 +29,7 @@ Sets the service name used in observability metadata. This includes metrics, tra
 func WithServiceVersion(version string) Option
 ```
 
-Sets the service version used in observability and API documentation. Must be non-empty or validation fails.
+Sets the service version used in observability and API documentation. Must be non-empty or validation fails; the error message includes how to fix it (this option or `RIVAAS_SERVICE_VERSION`).
 
 **Default:** `"1.0.0"`
 

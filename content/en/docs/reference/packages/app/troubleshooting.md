@@ -31,7 +31,8 @@ description: >
 a, err := app.New(
     app.WithServiceName(""),  // ❌ Empty
 )
-// Error: "serviceName must not be empty"
+// Error includes field, message, and how to fix, e.g.:
+// "configuration error in serviceName: cannot be empty (use app.WithServiceName(\"...\") or set RIVAAS_SERVICE_NAME)"
 ```
 
 ## Request Binding and Validation
