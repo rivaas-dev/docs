@@ -308,11 +308,9 @@ func TestStructuredLogging(t *testing.T) {
 ```go
 func TestSampling(t *testing.T) {
     th := logging.NewTestHelper(t,
-        logging.WithSampling(logging.SamplingConfig{
-            Initial:    10,
-            Thereafter: 100,
-            Tick:       time.Minute,
-        }),
+        logging.WithSamplingInitial(10),
+        logging.WithSamplingThereafter(100),
+        logging.WithSamplingTick(time.Minute),
     )
     
     // Log many entries

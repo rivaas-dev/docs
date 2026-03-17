@@ -69,11 +69,9 @@ logger := logging.MustNew(
 // Level 3: Advanced - full control
 logger := logging.MustNew(
     logging.WithCustomLogger(myCustomLogger),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    100,
-        Thereafter: 100,
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(100),
+    logging.WithSamplingThereafter(100),
+    logging.WithSamplingTick(time.Minute),
 )
 ```
 

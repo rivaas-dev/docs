@@ -221,11 +221,9 @@ For high-volume services:
 ```go
 logger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,
-        Thereafter: 100,  // 1% sampling
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(1000),
+    logging.WithSamplingThereafter(100),  // 1% sampling
+    logging.WithSamplingTick(time.Minute),
 )
 ```
 

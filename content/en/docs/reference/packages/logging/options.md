@@ -286,32 +286,39 @@ logger := logging.MustNew(
 
 **Default:** Not registered globally (allows multiple independent loggers)
 
-### WithSampling
+### WithSamplingInitial
 
 ```go
-func WithSampling(cfg SamplingConfig) Option
+func WithSamplingInitial(initial int) Option
 ```
 
-Enables log sampling to reduce volume in high-traffic scenarios.
+Sets how many log entries to emit unconditionally before sampling. Zero means no initial burst. Must be non-negative. Sampling is enabled when any of the sampling options is used.
 
-**Parameters:**
-- `cfg` - Sampling configuration
+### WithSamplingThereafter
+
+```go
+func WithSamplingThereafter(thereafter int) Option
+```
+
+Sets the sampling rate after the initial phase: log 1 in every N entries. Zero means log all after the initial phase. Must be non-negative.
+
+### WithSamplingTick
+
+```go
+func WithSamplingTick(tick time.Duration) Option
+```
+
+Sets the interval at which the sampling counter is reset. Zero means never reset.
 
 **Example:**
 ```go
 logger := logging.MustNew(
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,         // First 1000 logs
-        Thereafter: 100,          // Then 1% sampling
-        Tick:       time.Minute,  // Reset every minute
-    }),
+    logging.WithJSONHandler(),
+    logging.WithSamplingInitial(1000),        // First 1000 logs
+    logging.WithSamplingThereafter(100),      // Then 1% sampling
+    logging.WithSamplingTick(time.Minute),    // Reset every minute
 )
 ```
-
-**SamplingConfig fields:**
-- `Initial` (int) - Log first N entries unconditionally
-- `Thereafter` (int) - After Initial, log 1 of every M entries (0 = log all)
-- `Tick` (time.Duration) - Reset counter every interval (0 = never reset)
 
 **Note:** Errors (level >= ERROR) always bypass sampling.
 
@@ -416,11 +423,9 @@ logger := logging.MustNew(
     logging.WithServiceName(os.Getenv("SERVICE_NAME")),
     logging.WithServiceVersion(os.Getenv("VERSION")),
     logging.WithEnvironment("production"),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,
-        Thereafter: 100,
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(1000),
+    logging.WithSamplingThereafter(100),
+    logging.WithSamplingTick(time.Minute),
 )
 ```
 

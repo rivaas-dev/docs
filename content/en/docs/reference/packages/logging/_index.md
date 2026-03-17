@@ -214,17 +214,15 @@ const (
 
 Log level constants.
 
-### SamplingConfig
+### Log sampling options
 
-```go
-type SamplingConfig struct {
-    Initial    int           // Log first N entries unconditionally
-    Thereafter int           // After Initial, log 1 of every M entries
-    Tick       time.Duration // Reset sampling counter every interval
-}
-```
+Configure log sampling with functional options (no config struct):
 
-Configuration for log sampling.
+- **WithSamplingInitial(initial int)** — Log the first `initial` entries unconditionally. Zero means no initial burst. Must be non-negative.
+- **WithSamplingThereafter(thereafter int)** — After the initial phase, log 1 in every `thereafter` entries. Zero means log all. Must be non-negative.
+- **WithSamplingTick(tick time.Duration)** — Reset the sampling counter every `tick`. Zero means never reset.
+
+Sampling is enabled when any of these options is applied. Combine them as needed. Errors (level >= ERROR) always bypass sampling.
 
 ## Error Types
 
@@ -287,11 +285,9 @@ cl.Info("processing request", "user_id", userID)
 ```go
 logger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,
-        Thereafter: 100,
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(1000),
+    logging.WithSamplingThereafter(100),
+    logging.WithSamplingTick(time.Minute),
 )
 ```
 

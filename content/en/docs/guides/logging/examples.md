@@ -321,11 +321,9 @@ func createLogger() *logging.Logger {
             logging.WithServiceName(os.Getenv("SERVICE_NAME")),
             logging.WithServiceVersion(os.Getenv("VERSION")),
             logging.WithEnvironment("production"),
-            logging.WithSampling(logging.SamplingConfig{
-                Initial:    1000,
-                Thereafter: 100,
-                Tick:       time.Minute,
-            }),
+            logging.WithSamplingInitial(1000),
+            logging.WithSamplingThereafter(100),
+            logging.WithSamplingTick(time.Minute),
         }
     default:
         opts = []logging.Option{

@@ -29,16 +29,14 @@ Log sampling reduces the number of log entries written while preserving statisti
 
 ## Basic Configuration
 
-Configure sampling with `SamplingConfig`:
+Configure sampling with functional options:
 
 ```go
 logger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    100,           // Log first 100 entries unconditionally
-        Thereafter: 100,           // After that, log 1 in every 100
-        Tick:       time.Minute,   // Reset counter every minute
-    }),
+    logging.WithSamplingInitial(100),         // Log first 100 entries unconditionally
+    logging.WithSamplingThereafter(100),     // After that, log 1 in every 100
+    logging.WithSamplingTick(time.Minute),  // Reset counter every minute
 )
 ```
 
@@ -48,44 +46,36 @@ The sampling algorithm has three phases:
 
 ### 1. Initial Phase
 
-Log the first `Initial` entries unconditionally:
+Log the first N entries unconditionally with `WithSamplingInitial`:
 
 ```go
-SamplingConfig{
-    Initial: 100,  // First 100 logs always written
-    // ...
-}
+logging.WithSamplingInitial(100),  // First 100 logs always written
 ```
 
 **Purpose:** Ensure you always see the beginning of operations, even if they're short-lived.
 
 ### 2. Sampling Phase
 
-After `Initial` entries, log 1 in every `Thereafter` entries:
+After the initial phase, log 1 in every N entries with `WithSamplingThereafter`:
 
 ```go
-SamplingConfig{
-    Initial:    100,
-    Thereafter: 100,  // Log 1%, drop 99%
-    // ...
-}
+logging.WithSamplingInitial(100),
+logging.WithSamplingThereafter(100),  // Log 1%, drop 99%
 ```
 
 **Examples:**
-- `Thereafter: 100` → 1% sampling (log 1 in 100)
-- `Thereafter: 10` → 10% sampling (log 1 in 10)
-- `Thereafter: 1000` → 0.1% sampling (log 1 in 1000)
+- `WithSamplingThereafter(100)` → 1% sampling (log 1 in 100)
+- `WithSamplingThereafter(10)` → 10% sampling (log 1 in 10)
+- `WithSamplingThereafter(1000)` → 0.1% sampling (log 1 in 1000)
 
 ### 3. Reset Phase
 
-Reset counter every `Tick` interval:
+Reset the counter every interval with `WithSamplingTick`:
 
 ```go
-SamplingConfig{
-    Initial:    100,
-    Thereafter: 100,
-    Tick:       time.Minute,  // Reset every minute
-}
+logging.WithSamplingInitial(100),
+logging.WithSamplingThereafter(100),
+logging.WithSamplingTick(time.Minute),  // Reset every minute
 ```
 
 **Purpose:** Ensure recent activity is always visible. Without resets, you might miss important recent events.
@@ -112,11 +102,9 @@ Logs:     [Initial] [Sample] [Reset→Initial] [Sample]
 
 ```go
 logger := logging.MustNew(
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    100,
-        Thereafter: 100,  // 1% sampling
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(100),
+    logging.WithSamplingThereafter(100),  // 1% sampling
+    logging.WithSamplingTick(time.Minute),
 )
 
 // These may be sampled
@@ -139,11 +127,9 @@ logger.Error("payment failed", "tx_id", txID)  // Always logged
 logger := logging.MustNew(
     logging.WithJSONHandler(),
     logging.WithLevel(logging.LevelInfo),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,          // First 1000 requests fully logged
-        Thereafter: 100,           // Then 1% sampling
-        Tick:       5 * time.Minute, // Reset every 5 minutes
-    }),
+    logging.WithSamplingInitial(1000),         // First 1000 requests fully logged
+    logging.WithSamplingThereafter(100),       // Then 1% sampling
+    logging.WithSamplingTick(5 * time.Minute), // Reset every 5 minutes
 )
 ```
 
@@ -159,11 +145,9 @@ logger := logging.MustNew(
 logger := logging.MustNew(
     logging.WithJSONHandler(),
     logging.WithLevel(logging.LevelDebug),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    50,            // See first 50 debug logs
-        Thereafter: 1000,          // Then 0.1% sampling
-        Tick:       10 * time.Minute, // Reset every 10 minutes
-    }),
+    logging.WithSamplingInitial(50),              // See first 50 debug logs
+    logging.WithSamplingThereafter(1000),         // Then 0.1% sampling
+    logging.WithSamplingTick(10 * time.Minute),   // Reset every 10 minutes
 )
 ```
 
@@ -176,11 +160,9 @@ logger := logging.MustNew(
 logger := logging.MustNew(
     logging.WithJSONHandler(),
     logging.WithLevel(logging.LevelInfo),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    500,
-        Thereafter: 1000,  // 0.1% sampling (99.9% reduction)
-        Tick:       time.Hour,
-    }),
+    logging.WithSamplingInitial(500),
+    logging.WithSamplingThereafter(1000),  // 0.1% sampling (99.9% reduction)
+    logging.WithSamplingTick(time.Hour),
 )
 ```
 
@@ -190,28 +172,24 @@ logger := logging.MustNew(
 
 ### No Sampling After Initial
 
-Set `Thereafter: 0` to log everything after initial:
+Use `WithSamplingThereafter(0)` to log everything after the initial phase:
 
 ```go
-SamplingConfig{
-    Initial:    100,  // First 100 sampled
-    Thereafter: 0,    // Then log everything
-    Tick:       time.Minute,
-}
+logging.WithSamplingInitial(100),   // First 100 sampled
+logging.WithSamplingThereafter(0),  // Then log everything
+logging.WithSamplingTick(time.Minute),
 ```
 
 **Use case:** Rate limiting only during burst startup.
 
 ### No Reset
 
-Set `Tick: 0` to never reset the counter:
+Omit `WithSamplingTick` or use `WithSamplingTick(0)` to never reset the counter:
 
 ```go
-SamplingConfig{
-    Initial:    1000,
-    Thereafter: 100,
-    Tick:       0,  // Never reset
-}
+logging.WithSamplingInitial(1000),
+logging.WithSamplingThereafter(100),
+// No WithSamplingTick, or WithSamplingTick(0) — never reset
 ```
 
 **Result:** Sample continuously without periodic full logging.
@@ -293,33 +271,29 @@ Begin with light sampling, increase if needed:
 
 ```go
 // Phase 1: Start conservative
-SamplingConfig{
-    Initial:    1000,
-    Thereafter: 10,  // 10% sampling
-    Tick:       time.Minute,
-}
+logging.WithSamplingInitial(1000),
+logging.WithSamplingThereafter(10),  // 10% sampling
+logging.WithSamplingTick(time.Minute),
 
 // Phase 2: If still too much, increase sampling
-SamplingConfig{
-    Initial:    1000,
-    Thereafter: 100,  // 1% sampling
-    Tick:       time.Minute,
-}
+logging.WithSamplingInitial(1000),
+logging.WithSamplingThereafter(100),  // 1% sampling
+logging.WithSamplingTick(time.Minute),
 ```
 
 ### Reset Frequently
 
-Reset counters to maintain visibility:
+Reset counters to maintain visibility with `WithSamplingTick`:
 
 ```go
 // Good - see recent activity
-Tick: time.Minute
+logging.WithSamplingTick(time.Minute)
 
 // Better - more responsive
-Tick: 30 * time.Second
+logging.WithSamplingTick(30 * time.Second)
 
 // Too aggressive - missing too much
-Tick: time.Hour
+logging.WithSamplingTick(time.Hour)
 ```
 
 ### Per-Logger Sampling
@@ -330,21 +304,17 @@ Use different sampling for different loggers:
 // Access logs - heavy sampling
 accessLogger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    100,
-        Thereafter: 1000,  // 0.1%
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(100),
+    logging.WithSamplingThereafter(1000),  // 0.1%
+    logging.WithSamplingTick(time.Minute),
 )
 
 // Application logs - light sampling
 appLogger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    500,
-        Thereafter: 10,  // 10%
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(500),
+    logging.WithSamplingThereafter(10),  // 10%
+    logging.WithSamplingTick(time.Minute),
 )
 ```
 
@@ -357,7 +327,9 @@ var logCount atomic.Int64
 
 logger := logging.MustNew(
     logging.WithJSONHandler(),
-    logging.WithSampling(config),
+    logging.WithSamplingInitial(1000),
+    logging.WithSamplingThereafter(100),
+    logging.WithSamplingTick(time.Minute),
 )
 
 // Periodically check
@@ -397,39 +369,33 @@ logger.Error("payment failed", "tx_id", txID)
 
 **Solutions:**
 
-1. Increase `Thereafter` value:
+1. Increase the value passed to `WithSamplingThereafter`:
 ```go
-SamplingConfig{
-    Thereafter: 1000,  // More aggressive: 0.1% instead of 1%
-}
+logging.WithSamplingThereafter(1000),  // More aggressive: 0.1% instead of 1%
 ```
 
-2. Reduce `Initial` value:
+2. Reduce the value passed to `WithSamplingInitial`:
 ```go
-SamplingConfig{
-    Initial: 50,  // Fewer initial logs
-}
+logging.WithSamplingInitial(50),  // Fewer initial logs
 ```
 
-3. Increase `Tick` interval:
+3. Increase the interval passed to `WithSamplingTick`:
 ```go
-SamplingConfig{
-    Tick: 5 * time.Minute,  // Reset less frequently
-}
+logging.WithSamplingTick(5 * time.Minute),  // Reset less frequently
 ```
 
 ### Lost Debug Context
 
 **Problem:** Sampling makes debugging difficult.
 
-**Solution:** Temporarily disable sampling:
+**Solution:** Temporarily disable sampling by omitting sampling options:
 
 ```go
 // Create logger without sampling for debugging session
 debugLogger := logging.MustNew(
     logging.WithJSONHandler(),
     logging.WithLevel(logging.LevelDebug),
-    // No WithSampling() call
+    // No WithSamplingInitial / WithSamplingThereafter / WithSamplingTick
 )
 ```
 

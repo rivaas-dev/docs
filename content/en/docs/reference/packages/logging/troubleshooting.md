@@ -74,17 +74,15 @@ if sampling, ok := info["sampling"]; ok {
 ```go
 // Less aggressive sampling
 logger := logging.MustNew(
-    logging.WithSampling(logging.SamplingConfig{
-        Initial:    1000,
-        Thereafter: 10,  // 10% instead of 1%
-        Tick:       time.Minute,
-    }),
+    logging.WithSamplingInitial(1000),
+    logging.WithSamplingThereafter(10),  // 10% instead of 1%
+    logging.WithSamplingTick(time.Minute),
 )
 
 // Or disable sampling
 logger := logging.MustNew(
     logging.WithJSONHandler(),
-    // No WithSampling() call
+    // No sampling options (WithSamplingInitial / WithSamplingThereafter / WithSamplingTick)
 )
 ```
 
