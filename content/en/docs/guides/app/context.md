@@ -296,19 +296,6 @@ a.PATCH("/users/:id", func(c *app.Context) {
 })
 ```
 
-You can also use the shortcut function `BindPatch()`:
-
-```go
-a.PATCH("/users/:id", func(c *app.Context) {
-    req, ok := app.MustBindPatch[UpdateUserRequest](c)
-    if !ok {
-        return
-    }
-    
-    // Same as above, but shorter
-})
-```
-
 ### Strict Mode (Reject Unknown Fields)
 
 Catch typos and API mismatches by rejecting unknown fields:
@@ -318,17 +305,6 @@ a.POST("/users", func(c *app.Context) {
     req, ok := app.MustBind[CreateUserRequest](c, app.WithStrict())
     if !ok {
         return // Error sent if client sends unknown fields
-    }
-})
-```
-
-Or use the shortcut:
-
-```go
-a.POST("/users", func(c *app.Context) {
-    req, ok := app.MustBindStrict[CreateUserRequest](c)
-    if !ok {
-        return
     }
 })
 ```

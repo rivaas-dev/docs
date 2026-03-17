@@ -39,7 +39,7 @@ The Rivaas Router is a production-ready HTTP router for cloud-native application
 The router works well with the [binding package](/docs/reference/packages/binding/). Use it to parse request data into structs:
 
 - **Binding Package**: Full binding with `binding.Query()`, `binding.JSON()`, `binding.Form()`, `binding.Headers()`, `binding.Cookies()`.
-- **App Package**: Integrated binding + validation with `app.Bind[T]()`, `app.BindStrict[T]()`.
+- **App Package**: Integrated binding + validation with `app.Bind[T]()` (use `app.WithPartial()` for PATCH, `app.WithStrict()` to reject unknown fields).
 - **15+ Type Categories**: Primitives, Time, Network types like net.IP and net.IPNet, Maps, Nested Structs, Slices.
 - **Advanced Features**: Maps with dot or bracket notation, nested structs in query strings, enum validation, default values.
 

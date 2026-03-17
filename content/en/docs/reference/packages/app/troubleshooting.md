@@ -56,7 +56,7 @@ func createUser(c *app.Context) {
 
 // ✅ Partial validation for PATCH
 func updateUser(c *app.Context) {
-    req, ok := app.MustBindPatch[UpdateUserRequest](c)
+    req, ok := app.MustBind[UpdateUserRequest](c, app.WithPartial())
     if !ok {
         return
     }

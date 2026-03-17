@@ -196,13 +196,9 @@ Test helper that asserts response status and decodes JSON.
 func Bind[T any](c *Context, opts ...BindOption) (T, error)
 func MustBind[T any](c *Context, opts ...BindOption) (T, bool)
 func BindOnly[T any](c *Context, opts ...BindOption) (T, error)
-func BindPatch[T any](c *Context, opts ...BindOption) (T, error)
-func MustBindPatch[T any](c *Context, opts ...BindOption) (T, bool)
-func BindStrict[T any](c *Context, opts ...BindOption) (T, error)
-func MustBindStrict[T any](c *Context, opts ...BindOption) (T, bool)
 ```
 
-Type-safe binding with generics. These functions provide a more concise API compared to the Context methods.
+Type-safe binding with generics. Use [WithPartial](options/#withpartial) for PATCH-style partial validation and [WithStrict](options/#withstrict) to reject unknown JSON fields. These functions provide a more concise API compared to the Context methods.
 
 ## Context observability methods
 
