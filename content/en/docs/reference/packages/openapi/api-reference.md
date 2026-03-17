@@ -21,7 +21,7 @@ type API struct {
 }
 ```
 
-Main API configuration container. Holds the OpenAPI specification metadata and configuration.
+Main API configuration container. Holds the OpenAPI specification metadata and configuration. Configuration is read-only after creation; use the getters below to read values.
 
 **Created by:**
 - `New(...Option) (*API, error)` - With error handling.
@@ -29,7 +29,21 @@ Main API configuration container. Holds the OpenAPI specification metadata and c
 
 **Methods:**
 - `Generate(ctx context.Context, ...Operation) (*Result, error)` - Generate OpenAPI specification.
-- `Version() string` - Get target OpenAPI version like "3.0.4" or "3.1.2".
+- `Validate() error` - Check if the API configuration is valid.
+- `UI() UIConfig` - Swagger UI configuration.
+- `Info() model.Info` - API metadata (title, version, description, etc.).
+- `Servers() []model.Server` - Server list.
+- `Tags() []model.Tag` - Tags.
+- `SecuritySchemes() map[string]*model.SecurityScheme` - Security schemes.
+- `DefaultSecurity() []model.SecurityRequirement` - Default security requirements.
+- `ExternalDocs() *model.ExternalDocs` - External documentation link.
+- `Extensions() map[string]any` - Root-level extensions.
+- `Version() Version` - Target OpenAPI version (V30x or V31x).
+- `StrictDownlevel() bool` - Whether 3.1-only features error when targeting 3.0.
+- `SpecPath() string` - HTTP path for the spec JSON.
+- `UIPath() string` - HTTP path for Swagger UI.
+- `ServeUI() bool` - Whether Swagger UI is enabled.
+- `ValidateSpec() bool` - Whether spec validation is enabled.
 
 ### Operation
 

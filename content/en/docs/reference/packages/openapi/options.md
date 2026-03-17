@@ -31,6 +31,20 @@ Sets the API title and version. **Required.**
 openapi.WithTitle("My API", "1.0.0")
 ```
 
+### WithTitleIfDefault
+
+```go
+func WithTitleIfDefault(title, version string) Option
+```
+
+Sets the API title and version only if they are still the defaults ("API" and "1.0.0"). Used by the app package to inject service name and version when the user has not set a custom title. Option order does not matter; when applied last, it only overwrites default values.
+
+**Example (typically used by app when building OpenAPI options):**
+
+```go
+opts = append(opts, openapi.WithTitleIfDefault(serviceName, serviceVersion))
+```
+
 ### WithInfoDescription
 
 ```go

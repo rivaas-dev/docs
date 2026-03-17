@@ -158,7 +158,7 @@ type API struct {
 }
 ```
 
-Main API configuration container. Created via `New()` or `MustNew()` with functional options.
+Main API configuration container. Created via `New()` or `MustNew()` with functional options. Configuration is read-only after creation; use getters such as `Info()`, `SpecPath()`, `UIPath()`, `ServeUI()`, `ValidateSpec()`, and `Version()` to read values.
 
 ### Operation
 
@@ -197,11 +197,7 @@ Type-safe OpenAPI version selection.
 
 ### Option
 
-```go
-type Option func(*API) error
-```
-
-Functional option for API configuration.
+Functional option for API configuration. Options apply to an internal config; the constructor builds the API from the validated config.
 
 ### OperationOption
 
