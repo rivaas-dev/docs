@@ -79,7 +79,7 @@ func (a *App) OPTIONS(path string, handler HandlerFunc, opts ...RouteOption) *ro
 func (a *App) Any(path string, handler HandlerFunc, opts ...RouteOption) *route.Route
 ```
 
-Register routes for HTTP methods. Supported methods are **GET**, **POST**, **PUT**, **DELETE**, **PATCH**, **HEAD**, and **OPTIONS**. Registering a route with any other method (e.g. CONNECT, TRACE, or a typo) causes a **panic** with a clear message (fail-fast). The same applies to routes registered via Group and VersionGroup (e.g. `Group.GET`, `VersionGroup.POST`).
+Register routes for HTTP methods. Supported methods are **GET**, **POST**, **PUT**, **DELETE**, **PATCH**, **HEAD**, and **OPTIONS**. Registering a route with any other method (e.g. CONNECT, TRACE, or a typo) causes a **panic** with a clear message (fail-fast). The same applies to routes registered via Group and VersionGroup (e.g. `Group.GET`, `VersionGroup.POST`). Route options must not be nil; pass nil and the error is reported by [ValidateRoutes](#validateroutes) (call it before starting the server).
 
 ### Middleware
 
@@ -153,6 +153,26 @@ func (a *App) MustURLFor(routeName string, params map[string]string, query map[s
 ```
 
 Route lookup and URL generation. Router must be frozen (after `Start()`).
+
+### ValidateRoutes
+
+```go
+func (a *App) ValidateRoutes() error
+```
+
+Returns all route-option validation errors (e.g. nil route options) collected during route registration. Call before starting the server (e.g. before `Router().Freeze()` or before passing the app to a runner) so config errors are reported at init. Returns nil if there are no route validation errors.
+
+**Example:**
+
+```go
+a := app.MustNew()
+a.GET("/users", getUsers)
+if err := a.ValidateRoutes(); err != nil {
+    log.Fatal(err)
+}
+a.Router().Freeze()
+// ... start server
+```
 
 ### Metrics
 

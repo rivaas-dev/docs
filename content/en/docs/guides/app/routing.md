@@ -28,7 +28,7 @@ a.HEAD("/users", handler)
 a.OPTIONS("/users", handler)
 ```
 
-Only **GET**, **POST**, **PUT**, **DELETE**, **PATCH**, **HEAD**, and **OPTIONS** are supported. Using any other method (including via internal or reflection-based registration) causes a **panic** with a clear error so mistakes are caught early (see [Fail Fast with Clear Errors](/docs/about/design-principles/#fail-fast-with-clear-errors)).
+Only **GET**, **POST**, **PUT**, **DELETE**, **PATCH**, **HEAD**, and **OPTIONS** are supported. Using any other method (including via internal or reflection-based registration) causes a **panic** with a clear error so mistakes are caught early (see [Fail Fast with Clear Errors](/docs/about/design-principles/#fail-fast-with-clear-errors)). Route options (e.g. `WithBefore`, `WithDoc`) must not be nil; pass nil and the error is reported by [ValidateRoutes](/docs/reference/packages/app/api-reference/#validateroutes)—call it before starting the server so route-option misconfig is reported at init.
 
 ### Match All Methods
 
