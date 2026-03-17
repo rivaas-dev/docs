@@ -234,7 +234,7 @@ See the [observability guide](/docs/guides/app/observability/) and [context guid
 type HandlerFunc func(*Context)
 ```
 
-Handler function that receives an app Context.
+Handler function that receives an app [Context](context-api/). Use [Context.Bind](context-api/#bind) and [Context.BindOnly](context-api/#bindonly) for request binding and validation.
 
 ### TestOption
 

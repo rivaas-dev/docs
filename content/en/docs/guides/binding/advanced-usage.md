@@ -567,6 +567,8 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 
 ### With Validation
 
+When using `rivaas.dev/app`, use `c.Bind()` for bind+validate or `c.BindOnly()` then `c.Validate()` for separate steps. The following pattern is for standalone use without the app package:
+
 ```go
 func BindAndValidate[T any](next http.HandlerFunc) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
