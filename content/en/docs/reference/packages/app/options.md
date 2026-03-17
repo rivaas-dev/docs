@@ -157,6 +157,55 @@ a := app.MustNew(
 )
 ```
 
+### Validate options (Context.Validate)
+
+When calling [Context.Validate](/docs/reference/packages/app/context-api/#validate) after `BindOnly()`, use these app-scoped options so your IDE shows them under `app.With...`:
+
+#### WithValidatePartial
+
+```go
+func WithValidatePartial() ValidateOption
+```
+
+Enables partial validation for this validate call. Only fields present in the request are validated; "required" is ignored for absent fields. Use for PATCH-style flows after `BindOnly()`.
+
+**Example:**
+
+```go
+if err := c.BindOnly(&req); err != nil { ... }
+if err := c.Validate(&req, app.WithValidatePartial()); err != nil {
+    c.Fail(err)
+    return
+}
+```
+
+#### WithValidateStrict
+
+```go
+func WithValidateStrict() ValidateOption
+```
+
+Disallows unknown fields for this validate call. Use when validating JSON-backed structs and you want to reject unknown keys.
+
+#### WithValidateOptions
+
+```go
+func WithValidateOptions(opts ...validation.Option) ValidateOption
+```
+
+Passes options directly to the validation package for this validate call. Use for advanced validation (e.g. `validation.WithMaxErrors(5)`) while keeping the call site on app types.
+
+**Example:**
+
+```go
+if err := c.Validate(&req,
+    app.WithValidatePartial(),
+    app.WithValidateOptions(validation.WithMaxErrors(5)),
+); err != nil { ... }
+```
+
+Note: **WithValidationOptions** as a BindOption (used with `Bind`) applies to the validation step inside `Bind`; **WithValidateOptions** as a ValidateOption applies to `Context.Validate` only.
+
 ## OpenAPI
 
 ### WithOpenAPI

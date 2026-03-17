@@ -52,12 +52,12 @@ Use this when you need to process data before validating it.
 ### Validate
 
 ```go
-func (c *Context) Validate(v any, opts ...validation.Option) error
+func (c *Context) Validate(v any, opts ...ValidateOption) error
 ```
 
 Validates a struct using the configured strategy.
 
-Use this after `BindOnly()` when you need fine-grained control.
+Use this after `BindOnly()` when you need fine-grained control. Options are app-scoped: use [WithValidatePartial](/docs/reference/packages/app/options/#withvalidatepartial), [WithValidateStrict](/docs/reference/packages/app/options/#withvalidatestrict), or [WithValidateOptions](/docs/reference/packages/app/options/#withvalidateoptions) so your IDE shows all options under `app.With...`.
 
 **Returns:** Validation error if validation fails.
 

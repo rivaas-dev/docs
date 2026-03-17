@@ -89,7 +89,7 @@ a.POST("/users", func(c *app.Context) {
     // Clean up the data
     req.Email = strings.ToLower(req.Email)
     
-    // Now validate
+    // Now validate (use app.WithValidatePartial() for partial validation after BindOnly)
     if err := c.Validate(&req); err != nil {
         c.Fail(err)
         return
@@ -321,7 +321,8 @@ You can customize how binding and validation work:
 | `app.WithPartial()` | Only validate fields that are present |
 | `app.WithoutValidation()` | Skip validation (bind only) |
 | `app.WithBindingOptions(...)` | Advanced binding settings |
-| `app.WithValidationOptions(...)` | Advanced validation settings |
+| `app.WithValidationOptions(...)` | Advanced validation settings (Bind) |
+| `app.WithValidatePartial()`, `app.WithValidateStrict()`, `app.WithValidateOptions(...)` | Options for `Context.Validate` after BindOnly |
 
 Example with multiple options:
 
