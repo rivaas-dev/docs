@@ -391,16 +391,16 @@ r := router.New(
         ),
         
         // Track version usage
-        router.WithVersionObserver(
-            router.WithOnDetected(func(version, method string) {
+        version.WithObserver(
+            version.OnDetected(func(version, method string) {
                 // Record metrics
                 metrics.RecordVersionUsage(version, method)
             }),
-            router.WithOnMissing(func() {
+            version.OnMissing(func() {
                 // Client didn't specify version
                 log.Warn("client using default version")
             }),
-            router.WithOnInvalid(func(attempted string) {
+            version.OnInvalid(func(attempted string) {
                 // Client used invalid version
                 metrics.RecordInvalidVersion(attempted)
             }),
@@ -537,9 +537,9 @@ Reject invalid versions early:
 
 ```go
 router.WithVersioning(
-    router.WithValidVersions("v1", "v2", "v3", "beta"),
-    router.WithVersionObserver(
-        router.WithOnInvalid(func(attempted string) {
+    version.WithValidVersions("v1", "v2", "v3", "beta"),
+    version.WithObserver(
+        version.OnInvalid(func(attempted string) {
             log.Warn("invalid API version", "version", attempted)
         }),
     ),
