@@ -409,6 +409,8 @@ r := router.New(
 )
 ```
 
+Lifecycle options (e.g. passed to `r.Version("v1", opts...)` or `VersionRouter.Configure(opts...)`) must not be nil; if any option is nil, `ApplyLifecycle` returns an error.
+
 ### Deprecation Headers
 
 The router automatically adds headers for deprecated versions:

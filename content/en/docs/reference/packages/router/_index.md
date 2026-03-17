@@ -80,7 +80,7 @@ Middleware (accesslog, cors, recovery, etc.) lives in separate packages under `r
 
 ### Configuration
 
-- **Router Options**: See [Options](options/)
+- **Router Options**: See [Options](options/). Options must not be nil; passing a nil option results in an error (or panic with MustNew).
 - **Route Constraints**: See [Route Constraints](route-constraints/)
 - **Middleware Options**: See [Middleware](middleware/)
 

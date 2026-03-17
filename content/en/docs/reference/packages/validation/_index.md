@@ -232,6 +232,8 @@ validator := validation.MustNew(
 )
 ```
 
+Options must not be nil; passing a nil option results in an error (or panic with MustNew).
+
 ### Per-Call Options
 
 ```go

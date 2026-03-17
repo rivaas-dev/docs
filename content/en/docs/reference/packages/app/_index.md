@@ -126,6 +126,8 @@ a := app.MustNew(
 )
 ```
 
+Options must not be nil; passing a nil option results in an error (or panic with MustNew).
+
 ### HTTP Methods
 
 Register routes for HTTP methods:

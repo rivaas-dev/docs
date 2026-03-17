@@ -83,6 +83,8 @@ tracer, err := tracing.New(options...)     // With error handling
 tracer := tracing.MustNew(options...)      // Panics on error
 ```
 
+Options must not be nil; passing a nil option results in an error (or panic with MustNew).
+
 ### Lifecycle Management
 
 ```go

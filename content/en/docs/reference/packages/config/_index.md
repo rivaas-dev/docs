@@ -63,7 +63,7 @@ cfg, err := config.New(opts...)     // With error handling
 cfg := config.MustNew(opts...)      // Panics on error
 ```
 
-Options must not be nil; passing a nil option results in a validation error (reported by `New`, panic by `MustNew`).
+Options must not be nil; passing a nil option results in a validation error (reported by `New`, panic by `MustNew`). This rule applies to all Rivaas packages that use functional options.
 
 ### Loading Configuration
 

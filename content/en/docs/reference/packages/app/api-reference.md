@@ -178,7 +178,7 @@ func (a *App) Test(req *http.Request, opts ...TestOption) (*http.Response, error
 func (a *App) TestJSON(method, path string, body any, opts ...TestOption) (*http.Response, error)
 ```
 
-Test routes without starting a server.
+Test routes without starting a server. Passing a nil `TestOption` causes `Test` to return a non-nil error instead of panicking.
 
 ## Helper Functions
 

@@ -168,6 +168,8 @@ func MustNew(opts ...Option) *PublicType {
 
 Packages like router, logging, metrics, and tracing use a private `config` struct; options apply to `*config`, and `New()` builds the public type (Router, Logger, Recorder, Tracer) from the validated config.
 
+Options must not be nil. Passing a nil option results in a validation error (reported by `New()` or by methods like `ApplyLifecycle` or `Test()` that accept options), not a panic. This applies to both top-level and nested options. When using `MustNew`, any error from `New()` (including nil-option validation) causes a panic.
+
 **Naming conventions:**
 
 - `With<Feature>` — Enable or configure something

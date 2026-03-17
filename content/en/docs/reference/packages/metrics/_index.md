@@ -78,6 +78,8 @@ recorder, err := metrics.New(options...)     // With error handling
 recorder := metrics.MustNew(options...)      // Panics on error
 ```
 
+Options must not be nil; passing a nil option results in an error (or panic with MustNew).
+
 ### Lifecycle Management
 
 ```go

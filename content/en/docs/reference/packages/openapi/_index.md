@@ -199,7 +199,7 @@ Type-safe OpenAPI version selection.
 
 ### Option
 
-Functional option for API configuration. Options apply to an internal config; the constructor builds the API from the validated config.
+Functional option for API configuration. Options apply to an internal config; the constructor builds the API from the validated config. Options must not be nil; passing a nil option results in an error (or panic with MustNew).
 
 ### OperationOption
 
