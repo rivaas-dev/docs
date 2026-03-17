@@ -19,7 +19,7 @@ description: >
 func WithServiceName(name string) Option
 ```
 
-Sets the service name used in observability metadata. This includes metrics, traces, and logs. If empty, validation fails; the error message includes how to fix it (this option or `RIVAAS_SERVICE_NAME`).
+Sets the service name used in observability metadata. This includes metrics, traces, and logs. If empty, config validation fails at startup; the error message includes how to fix it (this option or `RIVAAS_SERVICE_NAME`).
 
 **Default:** `"rivaas-app"`
 
@@ -29,7 +29,7 @@ Sets the service name used in observability metadata. This includes metrics, tra
 func WithServiceVersion(version string) Option
 ```
 
-Sets the service version used in observability and API documentation. Must be non-empty or validation fails; the error message includes how to fix it (this option or `RIVAAS_SERVICE_VERSION`).
+Sets the service version used in observability and API documentation. Must be non-empty or config validation fails at startup; the error message includes how to fix it (this option or `RIVAAS_SERVICE_VERSION`).
 
 **Default:** `"1.0.0"`
 
@@ -39,7 +39,7 @@ Sets the service version used in observability and API documentation. Must be no
 func WithEnvironment(env string) Option
 ```
 
-Sets the environment mode. Valid values: `"development"`, `"production"`. Invalid values cause validation to fail. When access log scope is not set via [WithAccessLogScope](observability-options/#withaccesslogscope), production defaults to errors-only and development to full access logs.
+Sets the environment mode. Valid values: `"development"`, `"production"`. Invalid values cause config validation to fail at startup. When access log scope is not set via [WithAccessLogScope](observability-options/#withaccesslogscope), production defaults to errors-only and development to full access logs.
 
 **Default:** `"development"`
 
@@ -231,7 +231,7 @@ Configures an error formatter from options. The app builds the formatter via `er
 - Use **empty** `mediaType` (`""`) for a single formatter for all responses (no content negotiation).
 - Use a **non-empty** `mediaType` (e.g. `"application/problem+json"`) to register a formatter for content negotiation; multiple calls accumulate. Use [WithDefaultErrorFormat](#withdefaulterrorformat) to set the fallback when no Accept header matches.
 
-You cannot mix single and content-negotiated modes (validation fails at startup).
+You cannot mix single and content-negotiated modes (config validation fails at startup).
 
 Example — single formatter:
 

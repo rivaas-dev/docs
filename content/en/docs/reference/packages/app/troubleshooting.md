@@ -13,11 +13,13 @@ description: >
 
 ## Configuration Errors
 
-### Validation Errors
+### Configuration errors from app.New()
 
-**Problem:** `app.New()` returns validation errors.
+**Problem:** `app.New()` returns configuration errors.
 
-**Solution:** Check error message for specific field. Common issues:
+**Solution:** Check the error message for the specific field. To inspect errors programmatically, use `errors.As(err, &configErrs)` with `var configErrs *app.ConfigErrors`; `configErrs.Errors` is a slice of [ConfigError](api-reference/#configerror) values. For request/struct validation in handlers, use the [validation package](/docs/reference/packages/validation/) and `errors.As(err, &validation.Error)` instead.
+
+Common configuration issues:
 
 - Empty service name or version.
 - Invalid environment. Must be "development" or "production".

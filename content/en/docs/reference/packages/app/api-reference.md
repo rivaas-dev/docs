@@ -26,7 +26,7 @@ Creates a new App instance with the given options. Returns an error if configura
 
 **Returns:**
 - `*App` - The app instance
-- `error` - Configuration validation errors
+- `error` - Configuration validation errors; use `errors.As(err, &configErrs)` with `var configErrs *app.ConfigErrors` for structured access to multiple config errors (`configErrs.Errors` is `[]*ConfigError`)
 
 **Example:**
 
