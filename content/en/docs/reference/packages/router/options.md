@@ -159,13 +159,15 @@ Sets the number of hash functions for bloom filters.
 r := router.MustNew(router.WithBloomFilterHashFunctions(4))
 ```
 
-### `WithCancellationCheck(enabled bool)` / `WithoutCancellationCheck()`
+### `WithoutCancellationCheck()`
 
-Controls context cancellation checking in the middleware chain. When enabled (default), the router checks for canceled contexts between handlers.
+Disables context cancellation checking in the middleware chain. Cancellation checking is **enabled by default**: the router checks for canceled contexts between handlers to avoid wasted work on timed-out requests.
+
+Use when you don't use request timeouts, handle cancellation manually in handlers, or want to avoid the small overhead of cancellation checks.
 
 ```go
-// Enabled by default
-r := router.MustNew(router.WithCancellationCheck(true))
+// Default: cancellation check enabled (no option needed)
+r := router.MustNew()
 
 // Disable if you handle cancellation manually
 r := router.MustNew(router.WithoutCancellationCheck())
