@@ -71,7 +71,7 @@ handler := tracing.MustMiddleware(tracer,
 http.ListenAndServe(":8080", handler)
 ```
 
-Use `MustMiddleware` when invalid options are a programming error. It panics with the same validation errors that `Middleware` would return.
+Use `MustMiddleware` when invalid options are a programming error. It panics with an error (the same validation errors that `Middleware` would return); you can recover and use `errors.As` / `errors.Is`.
 
 ## What Gets Traced
 

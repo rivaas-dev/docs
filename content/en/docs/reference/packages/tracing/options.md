@@ -346,6 +346,8 @@ Allows you to provide a custom OpenTelemetry TracerProvider. When using this opt
 
 **Important:** When using `WithTracerProvider`, provider options (`WithOTLP`, `WithStdout`, etc.) are ignored since you're managing the provider yourself. You are also responsible for calling `Shutdown()` on your provider.
 
+**Validation:** Passing `nil` as the provider is invalid. `New()` returns an error (`tracerProvider: cannot be nil when using WithTracerProvider`), and `MustNew()` panics with that error.
+
 **Example:**
 
 ```go

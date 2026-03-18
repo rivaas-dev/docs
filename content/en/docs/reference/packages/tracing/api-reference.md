@@ -63,7 +63,7 @@ defer tracer.Shutdown(context.Background())
 func MustNew(opts ...Option) *Tracer
 ```
 
-Creates a new Tracer with the given options. Panics if the tracing provider fails to initialize. Use this when you want to panic on initialization errors.
+Creates a new Tracer with the given options. Panics **with an error** if the tracing provider fails to initialize. Callers that recover from the panic get an error they can unwrap with `errors.As` / `errors.Is`; the error message describes the failure. Use this when you want to panic on initialization errors.
 
 **Example:**
 
@@ -104,7 +104,7 @@ http.ListenAndServe(":8080", handler(mux))
 func MustMiddleware(tracer *Tracer, opts ...MiddlewareOption) func(http.Handler) http.Handler
 ```
 
-Same as Middleware but panics on error. Use when invalid options are a programming error.
+Same as Middleware but panics **with an error** on failure. Callers that recover from the panic get an error they can unwrap with `errors.As` / `errors.Is`. Use when invalid options are a programming error.
 
 **Example:**
 
@@ -537,12 +537,12 @@ A helper type for router context integration that provides convenient access to 
 func NewContextTracing(ctx context.Context, tracer *Tracer, span trace.Span) *ContextTracing
 ```
 
-Creates a new context tracing helper. Panics if ctx is nil.
+Creates a new context tracing helper. Panics if `ctx`, `tracer`, or `span` is nil with one of: `tracing: nil context passed to NewContextTracing`, `tracing: tracer cannot be nil`, `tracing: span cannot be nil`.
 
 **Parameters:**
-- `ctx`: The request context
-- `tracer`: The Tracer instance
-- `span`: The current span
+- `ctx`: The request context (must not be nil)
+- `tracer`: The Tracer instance (must not be nil)
+- `span`: The current span (must not be nil)
 
 **Example:**
 

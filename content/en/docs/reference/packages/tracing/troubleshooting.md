@@ -37,6 +37,8 @@ if err := tracer.Start(context.Background()); err != nil {
 }
 ```
 
+If you use OTLP without calling `Start(ctx)`, the package may log a one-time warning: *"OTLP tracer not started: call Start(ctx) before creating spans; traces will not be exported"*.
+
 #### 2. Sampling Rate Too Low
 
 **Problem:** Sample rate is set too low. For example, 1% sampling means 99% of requests aren't traced.

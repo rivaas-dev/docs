@@ -153,6 +153,8 @@ middleware := tracing.TestingMiddleware(t, middlewareOptions...)
 
 ### ContextTracing Helper
 
+`ctx`, `tracer`, and `span` must all be non-nil; otherwise `NewContextTracing` panics.
+
 ```go
 ct := tracing.NewContextTracing(ctx, tracer, span)
 ct.SetSpanAttribute("key", value)

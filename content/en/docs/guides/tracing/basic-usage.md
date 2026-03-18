@@ -31,7 +31,7 @@ defer tracer.Shutdown(context.Background())
 
 ### Panic on Error
 
-For convenience, use `MustNew` which panics if initialization fails:
+For convenience, use `MustNew` which panics if initialization fails (the panic value is an `error` you can recover and unwrap with `errors.As` / `errors.Is`):
 
 ```go
 tracer := tracing.MustNew(
