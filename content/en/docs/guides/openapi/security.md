@@ -112,18 +112,12 @@ OAuth2 supports multiple flows: authorization code, implicit, password, and clie
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithOAuth2(
-        "oauth2",
-        "OAuth2 authentication",
-        openapi.OAuth2Flow{
-            Type:             openapi.FlowAuthorizationCode,
-            AuthorizationURL: "https://example.com/oauth/authorize",
-            TokenURL:         "https://example.com/oauth/token",
-            Scopes: map[string]string{
-                "read":  "Read access to resources",
-                "write": "Write access to resources",
-                "admin": "Administrative access",
-            },
+    openapi.WithOAuth2AuthorizationCode("oauth2", "OAuth2 authentication",
+        "https://example.com/oauth/authorize", "https://example.com/oauth/token", "",
+        map[string]string{
+            "read":  "Read access to resources",
+            "write": "Write access to resources",
+            "admin": "Administrative access",
         },
     ),
 )
@@ -134,17 +128,9 @@ api := openapi.MustNew(
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithOAuth2(
-        "oauth2",
-        "OAuth2 authentication",
-        openapi.OAuth2Flow{
-            Type:             openapi.FlowImplicit,
-            AuthorizationURL: "https://example.com/oauth/authorize",
-            Scopes: map[string]string{
-                "read":  "Read access",
-                "write": "Write access",
-            },
-        },
+    openapi.WithOAuth2Implicit("oauth2", "OAuth2 authentication",
+        "https://example.com/oauth/authorize", "",
+        map[string]string{"read": "Read access", "write": "Write access"},
     ),
 )
 ```
@@ -154,17 +140,9 @@ api := openapi.MustNew(
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithOAuth2(
-        "oauth2",
-        "OAuth2 authentication",
-        openapi.OAuth2Flow{
-            Type:     openapi.FlowPassword,
-            TokenURL: "https://example.com/oauth/token",
-            Scopes: map[string]string{
-                "read":  "Read access",
-                "write": "Write access",
-            },
-        },
+    openapi.WithOAuth2Password("oauth2", "OAuth2 authentication",
+        "https://example.com/oauth/token", "",
+        map[string]string{"read": "Read access", "write": "Write access"},
     ),
 )
 ```
@@ -174,16 +152,9 @@ api := openapi.MustNew(
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithOAuth2(
-        "oauth2",
-        "OAuth2 authentication",
-        openapi.OAuth2Flow{
-            Type:     openapi.FlowClientCredentials,
-            TokenURL: "https://example.com/oauth/token",
-            Scopes: map[string]string{
-                "api": "API access",
-            },
-        },
+    openapi.WithOAuth2ClientCredentials("oauth2", "OAuth2 authentication",
+        "https://example.com/oauth/token", "",
+        map[string]string{"api": "API access"},
     ),
 )
 ```
@@ -328,18 +299,9 @@ func main() {
             openapi.InHeader,
             "API key authentication",
         ),
-        openapi.WithOAuth2(
-            "oauth2",
-            "OAuth2 authentication",
-            openapi.OAuth2Flow{
-                Type:             openapi.FlowAuthorizationCode,
-                AuthorizationURL: "https://example.com/oauth/authorize",
-                TokenURL:         "https://example.com/oauth/token",
-                Scopes: map[string]string{
-                    "read":  "Read access",
-                    "write": "Write access",
-                },
-            },
+        openapi.WithOAuth2AuthorizationCode("oauth2", "OAuth2 authentication",
+            "https://example.com/oauth/authorize", "https://example.com/oauth/token", "",
+            map[string]string{"read": "Read access", "write": "Write access"},
         ),
     )
 

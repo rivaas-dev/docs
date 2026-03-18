@@ -364,32 +364,15 @@ func main() {
         openapi.WithTitle("OAuth2 API", "1.0.0"),
         
         // Authorization code flow (for web apps)
-        openapi.WithOAuth2(
-            "oauth2AuthCode",
-            "OAuth2 authorization code flow",
-            openapi.OAuth2Flow{
-                Type:             openapi.FlowAuthorizationCode,
-                AuthorizationURL: "https://auth.example.com/authorize",
-                TokenURL:         "https://auth.example.com/token",
-                Scopes: map[string]string{
-                    "read":  "Read access",
-                    "write": "Write access",
-                    "admin": "Admin access",
-                },
-            },
+        openapi.WithOAuth2AuthorizationCode("oauth2AuthCode", "OAuth2 authorization code flow",
+            "https://auth.example.com/authorize", "https://auth.example.com/token", "",
+            map[string]string{"read": "Read access", "write": "Write access", "admin": "Admin access"},
         ),
         
         // Client credentials flow (for service-to-service)
-        openapi.WithOAuth2(
-            "oauth2ClientCreds",
-            "OAuth2 client credentials flow",
-            openapi.OAuth2Flow{
-                Type:     openapi.FlowClientCredentials,
-                TokenURL: "https://auth.example.com/token",
-                Scopes: map[string]string{
-                    "api": "API access",
-                },
-            },
+        openapi.WithOAuth2ClientCredentials("oauth2ClientCreds", "OAuth2 client credentials flow",
+            "https://auth.example.com/token", "",
+            map[string]string{"api": "API access"},
         ),
     )
 
@@ -643,7 +626,9 @@ func main() {
         log.Fatal(err)
     }
 
-    api.AddOperation(healthOp, listOp, getOp, createOp, updateOp, deleteOp)
+    if err := api.AddOperation(healthOp, listOp, getOp, createOp, updateOp, deleteOp); err != nil {
+        log.Fatal(err)
+    }
     result, err := api.Spec(context.Background())
     if err != nil {
         log.Fatalf("Generation failed: %v", err)

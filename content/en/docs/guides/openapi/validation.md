@@ -15,6 +15,8 @@ Learn how to validate OpenAPI specifications using built-in validation against o
 
 The package provides built-in validation against official OpenAPI meta-schemas for both 3.0.x and 3.1.x specifications.
 
+Configuration (including operations passed via `WithOperations`) is validated when you call `New()` or `MustNew()`. Operations added later via `AddOperation` are validated at add time; invalid operations (e.g. empty method or path, or invalid path format) cause `AddOperation` to return an error and no operations are added.
+
 ## Enabling Validation
 
 Validation is disabled by default for performance. Enable it during development or in CI/CD pipelines:
@@ -262,7 +264,9 @@ func main() {
         openapi.WithSummary("Get user"),
         openapi.WithResponse(200, User{}),
     )
-    api.AddOperation(op)
+    if err := api.AddOperation(op); err != nil {
+        log.Fatal(err)
+    }
     result, err := api.Spec(context.Background())
     if err != nil {
         log.Fatalf("Generation/validation failed: %v", err)
@@ -305,7 +309,7 @@ api := openapi.MustNew(
     openapi.WithValidateSpec(true),
 )
 op, _ := openapi.WithGET("/", openapi.WithSummary("Root"))
-api.AddOperation(op)
+_ = api.AddOperation(op)
 result, err := api.Spec(context.Background())
 // err is nil (spec is valid)
 // result.Warnings contains warning about info.summary being dropped

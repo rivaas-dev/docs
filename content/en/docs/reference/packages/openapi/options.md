@@ -264,33 +264,68 @@ Adds API key authentication scheme.
 openapi.WithAPIKey("apiKey", "X-API-Key", openapi.InHeader, "API key for authentication")
 ```
 
-### WithOAuth2
+### WithOAuth2AuthorizationCode
 
 ```go
-func WithOAuth2(name, description string, flows ...OAuth2Flow) Option
+func WithOAuth2AuthorizationCode(name, desc, authURL, tokenURL, refreshURL string, scopes map[string]string) Option
 ```
 
-Adds OAuth2 authentication scheme.
-
-**Parameters:**
-- `name` - Security scheme name
-- `description` - Scheme description
-- `flows` - OAuth2 flow configurations
+Adds the OAuth2 authorization code flow to the named scheme. `authURL` and `tokenURL` are required; `refreshURL` is optional. If a scheme with the same name already exists (e.g. from another flow option), the flow is merged into it.
 
 **Example:**
 
 ```go
-openapi.WithOAuth2("oauth2", "OAuth2 authentication",
-    openapi.OAuth2Flow{
-        Type:             openapi.FlowAuthorizationCode,
-        AuthorizationURL: "https://example.com/oauth/authorize",
-        TokenURL:         "https://example.com/oauth/token",
-        Scopes: map[string]string{
-            "read":  "Read access",
-            "write": "Write access",
-        },
-    },
-)
+openapi.WithOAuth2AuthorizationCode("oauth2", "OAuth2 authentication",
+    "https://example.com/oauth/authorize", "https://example.com/oauth/token", "https://example.com/oauth/refresh",
+    map[string]string{"read": "Read access", "write": "Write access"})
+```
+
+### WithOAuth2Implicit
+
+```go
+func WithOAuth2Implicit(name, desc, authURL, refreshURL string, scopes map[string]string) Option
+```
+
+Adds the OAuth2 implicit flow. `authURL` is required; `refreshURL` is optional.
+
+**Example:**
+
+```go
+openapi.WithOAuth2Implicit("oauth2", "OAuth2 authentication",
+    "https://example.com/oauth/authorize", "",
+    map[string]string{"read": "Read access"})
+```
+
+### WithOAuth2Password
+
+```go
+func WithOAuth2Password(name, desc, tokenURL, refreshURL string, scopes map[string]string) Option
+```
+
+Adds the OAuth2 resource owner password flow. `tokenURL` is required; `refreshURL` is optional.
+
+**Example:**
+
+```go
+openapi.WithOAuth2Password("oauth2", "OAuth2 authentication",
+    "https://example.com/oauth/token", "",
+    map[string]string{"read": "Read access"})
+```
+
+### WithOAuth2ClientCredentials
+
+```go
+func WithOAuth2ClientCredentials(name, desc, tokenURL, refreshURL string, scopes map[string]string) Option
+```
+
+Adds the OAuth2 client credentials flow. `tokenURL` is required; `refreshURL` is optional.
+
+**Example:**
+
+```go
+openapi.WithOAuth2ClientCredentials("oauth2", "OAuth2 authentication",
+    "https://example.com/oauth/token", "",
+    map[string]string{"api": "API access"})
 ```
 
 ### WithOpenIDConnect
@@ -318,19 +353,19 @@ openapi.WithOpenIDConnect("openId", "https://example.com/.well-known/openid-conf
 func WithDefaultSecurity(requirements ...SecurityReq) Option
 ```
 
-Sets default security requirements at API level. Use [SecurityRequirement] to build each requirement.
+Sets default security requirements at API level. Use [RequireSecurity] to build each requirement.
 
 **Example:**
 
 ```go
-openapi.WithDefaultSecurity(openapi.SecurityRequirement("bearerAuth"))
-openapi.WithDefaultSecurity(openapi.SecurityRequirement("oauth2", "read", "write"))
+openapi.WithDefaultSecurity(openapi.RequireSecurity("bearerAuth"))
+openapi.WithDefaultSecurity(openapi.RequireSecurity("oauth2", "read", "write"))
 ```
 
-### SecurityRequirement
+### RequireSecurity
 
 ```go
-func SecurityRequirement(scheme string, scopes ...string) SecurityReq
+func RequireSecurity(scheme string, scopes ...string) SecurityReq
 ```
 
 Builds a [SecurityReq] for use with [WithDefaultSecurity] or operation [WithSecurity].

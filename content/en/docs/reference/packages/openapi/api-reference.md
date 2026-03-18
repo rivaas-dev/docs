@@ -29,15 +29,15 @@ Main API configuration container. Holds the OpenAPI specification metadata and c
 
 **Methods:**
 - `Spec(ctx context.Context) (*Result, error)` - Generate OpenAPI specification from current config and operations.
-- `AddOperation(ops ...Operation)` - Add operations (e.g. from [WithGET], [WithPOST]) for inclusion in the spec.
+- `AddOperation(ops ...Operation) error` - Add operations (e.g. from [WithGET], [WithPOST]) for inclusion in the spec. Returns an error if any operation has empty method/path or invalid path format; on error no operations are added.
 - `Validate() error` - Check if the API configuration is valid.
 - `UI() UISnapshot` - Read-only snapshot of Swagger UI configuration for rendering (e.g. use [UISnapshot.ToJSON] to embed in HTML).
-- `Info() model.Info` - API metadata (title, version, description, etc.).
-- `Servers() []model.Server` - Server list.
-- `Tags() []model.Tag` - Tags.
-- `SecuritySchemes() map[string]*model.SecurityScheme` - Security schemes.
-- `DefaultSecurity() []model.SecurityRequirement` - Default security requirements.
-- `ExternalDocs() *model.ExternalDocs` - External documentation link.
+- `Info() Info` - API metadata (title, version, description, etc.).
+- `Servers() []Server` - Server list.
+- `Tags() []Tag` - Tags.
+- `SecuritySchemes() map[string]*SecurityScheme` - Security schemes.
+- `DefaultSecurity() []SecurityRequirement` - Default security requirements.
+- `ExternalDocs() *ExternalDocs` - External documentation link.
 - `Extensions() map[string]any` - Root-level extensions.
 - `Version() Version` - Target OpenAPI version (V30x or V31x).
 - `StrictDownlevel() bool` - Whether 3.1-only features error when targeting 3.0.
@@ -201,7 +201,9 @@ op, err := openapi.WithGET("/users/:id",
     openapi.WithSummary("Get user"),
     openapi.WithResponse(200, User{}),
 )
-api.AddOperation(op)
+if err == nil {
+    _ = api.AddOperation(op)
+}
 ```
 
 ### WithPOST
@@ -220,7 +222,9 @@ op, err := openapi.WithPOST("/users",
     openapi.WithRequest(CreateUserRequest{}),
     openapi.WithResponse(201, User{}),
 )
-api.AddOperation(op)
+if err == nil {
+    _ = api.AddOperation(op)
+}
 ```
 
 ### WithPUT, WithPATCH, WithDELETE, WithHEAD, WithOPTIONS, WithTRACE
@@ -250,7 +254,9 @@ Generates an OpenAPI specification from the API's current configuration and oper
 ```go
 api := openapi.MustNew(openapi.WithTitle("My API", "1.0.0"))
 op, _ := openapi.WithGET("/users/:id", openapi.WithSummary("Get user"), openapi.WithResponse(200, User{}))
-api.AddOperation(op)
+if err := api.AddOperation(op); err != nil {
+    log.Fatal(err)
+}
 result, err := api.Spec(context.Background())
 // Or use WithOperations at construction and skip AddOperation
 ```
@@ -258,10 +264,10 @@ result, err := api.Spec(context.Background())
 ### API.AddOperation
 
 ```go
-func (api *API) AddOperation(ops ...Operation)
+func (api *API) AddOperation(ops ...Operation) error
 ```
 
-Adds one or more operations to the API. Call [API.Spec] to generate the spec including these operations.
+Adds one or more operations to the API. Call [API.Spec] to generate the spec including these operations. Returns an error if any operation has empty Method or Path or an invalid path format; on error no operations are added.
 
 ### API.Version
 
@@ -298,19 +304,6 @@ const (
 ```
 
 Used with `WithAPIKey()` to specify where the API key is located.
-
-### OAuth2 Flow Types
-
-```go
-const (
-    FlowAuthorizationCode OAuthFlowType = "authorizationCode"
-    FlowImplicit          OAuthFlowType = "implicit"
-    FlowPassword          OAuthFlowType = "password"
-    FlowClientCredentials OAuthFlowType = "clientCredentials"
-)
-```
-
-Used with `WithOAuth2()` to specify the OAuth2 flow type.
 
 ### Swagger UI Constants
 
@@ -366,6 +359,17 @@ const (
 ```
 
 See [Swagger UI Options](swagger-ui-options/) for usage.
+
+## Breaking changes / Migration
+
+If upgrading from an older version, note:
+
+- **OAuth2:** `WithOAuth2(name, desc, flows ...OAuth2Flow)` and the `OAuth2Flow` struct have been removed. Use flow-specific options instead: [WithOAuth2AuthorizationCode], [WithOAuth2Implicit], [WithOAuth2Password], [WithOAuth2ClientCredentials]. Multiple flows for the same scheme name can be composed by calling more than one option.
+- **Getters:** `Info()`, `Servers()`, `Tags()`, `SecuritySchemes()`, `DefaultSecurity()`, and `ExternalDocs()` now return types defined in the openapi package (`Info`, `Server`, `Tag`, `SecurityScheme`, `SecurityRequirement`, `ExternalDocs`) instead of `internal/model` types.
+- **AddOperation:** `AddOperation(ops ...Operation)` now returns `error`. Invalid operations (empty method/path or invalid path format) cause an error and no operations are added. Always check the return value.
+- **Default security builder:** The constructor for security requirements was renamed from `SecurityRequirement(scheme, scopes...)` to [RequireSecurity].
+- **Operations validation:** Operations passed to `WithOperations` or `AddOperation` are validated at construction or add time (method and path required, path format validated). Invalid operations cause `New()` or `AddOperation()` to fail.
+- **UI config types:** `SyntaxHighlightConfig` and `RequestSnippetsConfig` are no longer exported. Configure syntax highlighting and request snippets only via [WithUISyntaxTheme], [WithUIRequestSnippets], and related UIOptions.
 
 ## Next Steps
 

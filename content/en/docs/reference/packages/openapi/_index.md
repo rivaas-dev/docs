@@ -50,7 +50,7 @@ Core specification generation including:
 - Operation builders - `WithGET()`, `WithPOST()`, `WithPUT()`, etc.
 - Operation options - `WithRequest()`, `WithResponse()`, `WithSecurity()`, etc.
 - `WithOperations()` - Declarative operations at construction
-- `API.AddOperation()` - Add operations after construction
+- `API.AddOperation()` - Add operations after construction (returns error if invalid)
 - `API.Spec(ctx)` - Specification generation
 
 ### Example sub-package (`rivaas.dev/openapi/example`)
@@ -90,8 +90,10 @@ api := openapi.MustNew(options...)      // Panics on error
 ### Specification Generation
 
 ```go
-api.AddOperation(op1, op2)           // or use WithOperations at construction
-result, err := api.Spec(ctx)
+if err := api.AddOperation(op1, op2); err != nil {
+    log.Fatal(err)
+}
+result, err := api.Spec(ctx)        // or use WithOperations at construction
 ```
 
 ### Operation Builders
@@ -228,7 +230,9 @@ Functional option for operation configuration.
 ```go
 api := openapi.MustNew(openapi.WithTitle("My API", "1.0.0"))
 op, _ := openapi.WithGET("/users/:id", openapi.WithSummary("Get user"), openapi.WithResponse(200, User{}))
-api.AddOperation(op)
+if err := api.AddOperation(op); err != nil {
+    log.Fatal(err)
+}
 result, err := api.Spec(context.Background())
 ```
 
@@ -240,7 +244,9 @@ api := openapi.MustNew(
     openapi.WithBearerAuth("bearerAuth", "JWT authentication"),
 )
 op, _ := openapi.WithGET("/users/:id", openapi.WithSecurity("bearerAuth"), openapi.WithResponse(200, User{}))
-api.AddOperation(op)
+if err := api.AddOperation(op); err != nil {
+    log.Fatal(err)
+}
 result, err := api.Spec(context.Background())
 ```
 
