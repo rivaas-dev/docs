@@ -114,7 +114,7 @@ Configures OTLP gRPC provider with endpoint. Use this for production deployments
 - `endpoint`: OTLP endpoint in format `"host:port"` (e.g., `"localhost:4317"`)
 - `opts`: Optional OTLP-specific options (e.g., `OTLPInsecure()`)
 
-**Requires:** Call `tracer.Start(ctx)` before tracing
+**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it will result in no traces (and no error at `New`).
 
 **Example:**
 
@@ -143,7 +143,7 @@ Configures OTLP HTTP provider with endpoint. Use this when gRPC is not available
 **Parameters:**
 - `endpoint`: OTLP HTTP endpoint with protocol (e.g., `"http://localhost:4318"`, `"https://collector:4318"`)
 
-**Requires:** Call `tracer.Start(ctx)` before tracing
+**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it will result in no traces (and no error at `New`).
 
 **Example:**
 

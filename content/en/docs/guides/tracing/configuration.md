@@ -56,6 +56,10 @@ tracer := tracing.MustNew(
     tracing.WithServiceVersion("v1.2.3"),
     tracing.WithOTLP("collector:4317"),
 )
+// With OTLP, call Start(ctx) before traces are exported; skipping it yields no traces.
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
 ```
 
 These attributes appear in every span:

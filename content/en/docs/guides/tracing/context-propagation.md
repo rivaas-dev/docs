@@ -294,7 +294,7 @@ Returns empty string if no active span.
 
 ### Set Attributes from Context
 
-Add attributes to the current span:
+Add attributes to the current span. Use these helpers when you only have context (e.g. from the middleware); they are equivalent to the tracer's `SetSpanAttribute` and `AddSpanEvent`.
 
 ```go
 func processOrder(ctx context.Context, orderID string) {

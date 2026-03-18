@@ -385,6 +385,8 @@ func TestTraceInjection(t *testing.T) {
 
 ### Integration Test Example
 
+In handlers you often only have context; `SetSpanAttributeFromContext` and `AddSpanEventFromContext` are equivalent to the tracer's `SetSpanAttribute` and `AddSpanEvent` in that case.
+
 ```go
 func TestAPIWithTracing(t *testing.T) {
     t.Parallel()

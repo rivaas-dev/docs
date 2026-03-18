@@ -35,7 +35,7 @@ The main entry point for distributed tracing. Holds OpenTelemetry tracing config
 func New(opts ...Option) (*Tracer, error)
 ```
 
-Creates a new Tracer with the given options. Returns an error if the tracing provider fails to initialize.
+Creates a new Tracer with the given options. Returns an error if the tracing provider fails to initialize. When using OTLP options (`WithOTLP`, `WithOTLPHTTP`), you must call `Start(ctx)` before traces are exported.
 
 **Default configuration:**
 - Service name: `"rivaas-service"`.
@@ -123,7 +123,7 @@ http.ListenAndServe(":8080", handler)
 func (t *Tracer) Start(ctx context.Context) error
 ```
 
-Initializes OTLP providers that require network connections. The context is used for the OTLP connection establishment. This method is idempotent; calling it multiple times is safe.
+Initializes OTLP providers that require network connections. When using OTLP, you must call `Start(ctx)` before traces are exported; forgetting to call it results in no traces being exported and no error at `New`. The context is used for the OTLP connection establishment. This method is idempotent; calling it multiple times is safe.
 
 **Required for:** OTLP (gRPC and HTTP) providers  
 **Optional for:** Noop and Stdout providers (they initialize immediately in `New()`)
@@ -438,7 +438,7 @@ log.Printf("Processing request [span=%s]", spanID)
 func SetSpanAttributeFromContext(ctx context.Context, key string, value any)
 ```
 
-Adds an attribute to the current span from context. This is a no-op if tracing is not active.
+Adds an attribute to the current span from context. Convenience for when you only have context (e.g. from the tracing middleware); corresponds to `tracer.SetSpanAttribute(span, key, value)` when you have the tracer and span. This is a no-op if tracing is not active.
 
 **Example:**
 
@@ -455,7 +455,7 @@ func handleRequest(ctx context.Context) {
 func AddSpanEventFromContext(ctx context.Context, name string, attrs ...attribute.KeyValue)
 ```
 
-Adds an event to the current span from context. This is a no-op if tracing is not active.
+Adds an event to the current span from context. Convenience for when you only have context (e.g. from the tracing middleware); corresponds to `tracer.AddSpanEvent(span, name, attrs...)` when you have the tracer and span. This is a no-op if tracing is not active.
 
 **Example:**
 

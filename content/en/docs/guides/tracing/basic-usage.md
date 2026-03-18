@@ -62,6 +62,10 @@ if err := tracer.Start(context.Background()); err != nil {
 defer tracer.Shutdown(context.Background())
 ```
 
+{{< alert color="warning" >}}
+With OTLP, forgetting `Start(ctx)` means **no traces** are exported and no error is returned.
+{{< /alert >}}
+
 {{< alert color="info" >}}
 For Stdout and Noop providers, `Start()` is optional (they initialize immediately in `New()`).
 {{< /alert >}}
@@ -159,7 +163,7 @@ func fetchUser(ctx context.Context, tracer *tracing.Tracer, userID string) error
 
 ## Context Helpers
 
-Work with spans through the context without direct span references:
+Work with spans through the context without direct span references. Use these when you only have context (e.g. from the middleware); they are equivalent to the tracer's `SetSpanAttribute` and `AddSpanEvent`.
 
 ### Set Attributes from Context
 

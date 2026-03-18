@@ -26,7 +26,9 @@ func main() {
         tracing.WithServiceName("my-api"),
         tracing.WithOTLP("localhost:4317"),
     )
-    tracer.Start(context.Background())
+    if err := tracer.Start(context.Background()); err != nil {
+        log.Fatal(err)
+    }
     defer tracer.Shutdown(context.Background())
 
     mux := http.NewServeMux()
@@ -38,6 +40,8 @@ func main() {
     http.ListenAndServe(":8080", handler)
 }
 ```
+
+With OTLP, you must call `Start(ctx)` before traces are exported; omitting it means no traces.
 
 ## Middleware Functions
 
@@ -377,7 +381,7 @@ func handleMetrics(w http.ResponseWriter, r *http.Request) {
 
 ## Integration with Custom Context
 
-Access the span from within your handlers:
+Access the span from within your handlers. When you only have context (e.g. from the middleware), use `SetSpanAttributeFromContext` and `AddSpanEventFromContext`; they are equivalent to `tracer.SetSpanAttribute` and `tracer.AddSpanEvent`.
 
 ```go
 func handleUser(w http.ResponseWriter, r *http.Request) {

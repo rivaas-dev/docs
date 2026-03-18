@@ -87,6 +87,8 @@ Options must not be nil; passing a nil option results in an error (or panic with
 
 ### Lifecycle Management
 
+For OTLP providers, `Start(ctx)` is required before traces are exported; forgetting it results in no traces (no error at creation).
+
 ```go
 err := tracer.Start(ctx context.Context)   // Start OTLP providers
 err := tracer.Shutdown(ctx context.Context) // Graceful shutdown
@@ -131,6 +133,8 @@ handler := tracing.MustMiddleware(tracer, options...)(httpHandler)
 ```
 
 ### Context Helpers
+
+`SetSpanAttributeFromContext` and `AddSpanEventFromContext` are conveniences when you only have context (e.g. in handlers using the tracing middleware); they are the context-based counterpart to `tracer.SetSpanAttribute` and `tracer.AddSpanEvent` (see [Span Management](#span-management) above).
 
 ```go
 traceID := tracing.TraceID(ctx)

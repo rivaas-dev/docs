@@ -137,7 +137,7 @@ func recordMetrics(span trace.Span, statusCode int) {
 func handleUsers(w http.ResponseWriter, r *http.Request) {
     ctx := r.Context()
     
-    // Add custom span attributes
+    // Add custom span attributes (context helpers when you only have context from middleware; equivalent to tracer.SetSpanAttribute/AddSpanEvent)
     tracing.SetSpanAttributeFromContext(ctx, "handler", "users")
     tracing.SetSpanAttributeFromContext(ctx, "operation", "list")
     

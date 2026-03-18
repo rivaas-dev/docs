@@ -154,7 +154,7 @@ Traces are printed as pretty-printed JSON to stdout:
 
 ## OTLP Provider (gRPC)
 
-The OTLP gRPC provider exports traces to an OpenTelemetry collector using the gRPC protocol.
+The OTLP gRPC provider exports traces to an OpenTelemetry collector using the gRPC protocol. You must call `Start(ctx)` before traces are exported; otherwise no traces will be sent and no error occurs at creation.
 
 ### When to Use
 
@@ -217,7 +217,7 @@ tracing.WithOTLP("localhost:4317", tracing.OTLPInsecure())
 
 ## OTLP Provider (HTTP)
 
-The OTLP HTTP provider exports traces to an OpenTelemetry collector using the HTTP protocol.
+The OTLP HTTP provider exports traces to an OpenTelemetry collector using the HTTP protocol. You must call `Start(ctx)` before traces are exported; otherwise no traces will be sent and no error occurs at creation.
 
 ### When to Use
 
