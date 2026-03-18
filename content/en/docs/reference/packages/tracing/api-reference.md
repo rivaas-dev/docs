@@ -75,6 +75,46 @@ tracer := tracing.MustNew(
 defer tracer.Shutdown(context.Background())
 ```
 
+## Middleware constructors
+
+### Middleware
+
+```go
+func Middleware(tracer *Tracer, opts ...MiddlewareOption) (func(http.Handler) http.Handler, error)
+```
+
+Creates HTTP middleware for standalone request tracing. Returns the middleware function and an error if the tracer is nil or any option is invalid (e.g. nil option, invalid regex in path exclusion). Use for config-driven setup or when you need to handle errors.
+
+**Example:**
+
+```go
+handler, err := tracing.Middleware(tracer,
+    tracing.WithExcludePaths("/health", "/metrics"),
+    tracing.WithHeaders("X-Request-ID"),
+)
+if err != nil {
+    log.Fatal(err)
+}
+http.ListenAndServe(":8080", handler(mux))
+```
+
+### MustMiddleware
+
+```go
+func MustMiddleware(tracer *Tracer, opts ...MiddlewareOption) func(http.Handler) http.Handler
+```
+
+Same as Middleware but panics on error. Use when invalid options are a programming error.
+
+**Example:**
+
+```go
+handler := tracing.MustMiddleware(tracer,
+    tracing.WithExcludePaths("/health", "/metrics"),
+)(mux)
+http.ListenAndServe(":8080", handler)
+```
+
 ## Lifecycle Methods
 
 ### Start

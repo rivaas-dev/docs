@@ -19,6 +19,8 @@ type MiddlewareOption func(*middlewareConfig)
 
 Configuration option function type used with `Middleware()` and `MustMiddleware()`. These options control HTTP request tracing behavior.
 
+**Nil options:** Passing a nil option is invalid. `Middleware` returns an error (e.g. "middleware option at index N cannot be nil"); `MustMiddleware` panics.
+
 ## Path Exclusion Options
 
 Exclude specific paths from tracing to reduce noise and overhead.

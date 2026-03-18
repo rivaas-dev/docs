@@ -188,7 +188,7 @@ tracer := tracing.MustNew(
 func WithSampleRate(rate float64) Option
 ```
 
-Sets the sampling rate (0.0 to 1.0). Values outside this range are clamped to valid bounds.
+Sets the sampling rate (0.0 to 1.0). Values outside this range cause a validation error at tracer creation (e.g. `sampleRate: must be between 0.0 and 1.0, got %f`).
 
 A rate of 1.0 samples all requests, 0.5 samples 50%, and 0.0 samples none. Sampling decisions are made per-request based on the configured rate.
 
@@ -512,14 +512,21 @@ tracer, err := tracing.New(
 ### Invalid Sample Rate
 
 ```go
-// Values are automatically clamped
+// Out-of-range rate causes validation error
+tracer, err := tracing.New(
+    tracing.WithServiceName("my-service"),
+    tracing.WithSampleRate(1.5),
+)
+// err: "validation errors: sampleRate: must be between 0.0 and 1.0, got 1.500000"
+
+// MustNew panics on out-of-range rate
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
-    tracing.WithSampleRate(1.5), // Clamped to 1.0
-)
+    tracing.WithSampleRate(1.5),
+) // panics
 ```
 
-Sample rates outside 0.0-1.0 are automatically clamped to valid bounds.
+Sample rates outside 0.0-1.0 are rejected at tracer creation; they are not clamped.
 
 ## Complete Option Reference
 
@@ -531,7 +538,7 @@ Sample rates outside 0.0-1.0 are automatically clamped to valid bounds.
 | `WithStdout()` | Stdout provider | - |
 | `WithOTLP(endpoint, opts...)` | OTLP gRPC provider | - |
 | `WithOTLPHTTP(endpoint)` | OTLP HTTP provider | - |
-| `WithSampleRate(rate)` | Sampling rate (0.0-1.0) | `1.0` |
+| `WithSampleRate(rate)` | Sampling rate (0.0-1.0); out-of-range rejected at init | `1.0` |
 | `WithSpanStartHook(hook)` | Span start callback | - |
 | `WithSpanFinishHook(hook)` | Span finish callback | - |
 | `WithLogger(logger)` | Set slog logger for internal events; nil or omit = no output | - |

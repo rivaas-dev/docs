@@ -32,8 +32,8 @@ func main() {
     mux := http.NewServeMux()
     mux.HandleFunc("/api/users", handleUsers)
     
-    // Wrap with middleware
-    handler := tracing.Middleware(tracer)(mux)
+    // Wrap with middleware (MustMiddleware panics on invalid options)
+    handler := tracing.MustMiddleware(tracer)(mux)
     
     http.ListenAndServe(":8080", handler)
 }
@@ -43,25 +43,31 @@ func main() {
 
 Two functions are available for creating middleware:
 
-### Middleware (Panics on Error)
+### Middleware (returns error)
 
 ```go
-handler := tracing.Middleware(tracer,
+handler, err := tracing.Middleware(tracer,
     tracing.WithExcludePaths("/health"),
-)(mux)
+    tracing.WithHeaders("X-Request-ID"),
+)
+if err != nil {
+    log.Fatal(err) // e.g. nil tracer, nil option, invalid regex
+}
+http.ListenAndServe(":8080", handler(mux))
 ```
 
-Panics if middleware options are invalid (e.g., invalid regex pattern).
+Use `Middleware` when you need to handle errors (e.g. config-driven setup). It returns an error for nil tracer, nil options, or invalid options (e.g. invalid regex in path exclusion).
 
-### MustMiddleware (Alias)
+### MustMiddleware (panics on error)
 
 ```go
 handler := tracing.MustMiddleware(tracer,
     tracing.WithExcludePaths("/health"),
 )(mux)
+http.ListenAndServe(":8080", handler)
 ```
 
-Identical to `Middleware()` - provided for API consistency with `MustNew()`.
+Use `MustMiddleware` when invalid options are a programming error. It panics with the same validation errors that `Middleware` would return.
 
 ## What Gets Traced
 
@@ -98,7 +104,7 @@ Exclude specific paths from tracing to reduce noise and overhead.
 Exclude specific paths exactly:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithExcludePaths("/health", "/metrics", "/ready"),
 )(mux)
 ```
@@ -110,7 +116,7 @@ Requests to `/health`, `/metrics`, or `/ready` won't create spans.
 Exclude all paths with a given prefix:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithExcludePrefixes("/debug/", "/internal/", "/.well-known/"),
 )(mux)
 ```
@@ -126,7 +132,7 @@ Excludes:
 Exclude paths matching regex patterns:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithExcludePatterns(
         `^/v[0-9]+/internal/.*`,  // Version-prefixed internal routes
         `^/api/health.*`,          // Any health-related endpoint
@@ -141,7 +147,7 @@ handler := tracing.Middleware(tracer,
 Use multiple exclusion types together:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     // Exact paths
     tracing.WithExcludePaths("/health", "/metrics"),
     
@@ -170,7 +176,7 @@ Record specific request headers as span attributes.
 ### Basic Header Recording
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithHeaders("X-Request-ID", "X-Correlation-ID"),
 )(mux)
 ```
@@ -197,7 +203,7 @@ This protects against accidental credential exposure in traces.
 
 ```go
 // This is safe - Authorization header is filtered
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithHeaders(
         "X-Request-ID",
         "Authorization", // ← Automatically filtered, won't be recorded
@@ -244,7 +250,7 @@ Span attributes:
 Record only specific parameters:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithRecordParams("page", "limit", "user_id"),
 )(mux)
 ```
@@ -256,7 +262,7 @@ Only `page`, `limit`, and `user_id` are recorded. Others are ignored.
 Exclude sensitive parameters while recording all others:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithExcludeParams("password", "token", "api_key", "secret"),
 )(mux)
 ```
@@ -268,7 +274,7 @@ All parameters recorded **except** `password`, `token`, `api_key`, and `secret`.
 Don't record any query parameters:
 
 ```go
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithoutParams(),
 )(mux)
 ```
@@ -279,7 +285,7 @@ Useful when parameters may contain sensitive data.
 
 ```go
 // Record only safe parameters, explicitly exclude sensitive ones
-handler := tracing.Middleware(tracer,
+handler := tracing.MustMiddleware(tracer,
     tracing.WithRecordParams("page", "limit", "sort"),
     tracing.WithExcludeParams("api_key", "token"), // Takes precedence
 )(mux)
@@ -396,7 +402,7 @@ The tracing middleware follows the same pattern as the metrics middleware:
 
 | Aspect | Metrics | Tracing |
 |--------|---------|---------|
-| Main Function | `metrics.Middleware()` | `tracing.Middleware()` |
+| Main Function | `metrics.Middleware()` | `tracing.Middleware()` returns `(handler, error)` |
 | Panic Version | `metrics.MustMiddleware()` | `tracing.MustMiddleware()` |
 | Path Exclusion | `metrics.WithExcludePaths()` | `tracing.WithExcludePaths()` |
 | Prefix Exclusion | `metrics.WithExcludePrefixes()` | `tracing.WithExcludePrefixes()` |

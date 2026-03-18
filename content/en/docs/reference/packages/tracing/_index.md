@@ -119,7 +119,14 @@ tracer.InjectTraceContext(ctx, req.Header)
 ### HTTP Middleware
 
 ```go
-handler := tracing.Middleware(tracer, options...)(httpHandler)
+// Error-returning (for config-driven setup)
+handler, err := tracing.Middleware(tracer, options...)
+if err != nil {
+    log.Fatal(err)
+}
+// use handler(httpHandler)
+
+// Panic-on-error
 handler := tracing.MustMiddleware(tracer, options...)(httpHandler)
 ```
 
@@ -329,7 +336,7 @@ The tracing package follows the same design pattern as the metrics package:
 | Provider Options | `WithPrometheus()`, `WithOTLP()` | `WithOTLP()`, `WithStdout()`, `WithNoop()` |
 | Constructor | `New(opts...) (*Recorder, error)` | `New(opts...) (*Tracer, error)` |
 | Panic Version | `MustNew(opts...) *Recorder` | `MustNew(opts...) *Tracer` |
-| Middleware | `Middleware(recorder, opts...)` | `Middleware(tracer, opts...)` |
+| Middleware | `Middleware(recorder, opts...)` | `Middleware(tracer, opts...)` returns `(handler, error)` |
 | Panic Middleware | `MustMiddleware(recorder, opts...)` | `MustMiddleware(tracer, opts...)` |
 | Path Exclusion | `MiddlewareOption` | `MiddlewareOption` |
 | Header Recording | `MiddlewareOption` | `MiddlewareOption` |
