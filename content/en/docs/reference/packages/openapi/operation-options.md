@@ -11,6 +11,8 @@ weight: 3
 
 Complete reference for all operation-level configuration options (functions passed to HTTP method constructors).
 
+Operation constructors (`WithGET`, `WithPOST`, etc.) return an error for invalid paths (e.g. missing leading slash, invalid parameter syntax) instead of panicking.
+
 ## Metadata Options
 
 ### WithSummary
@@ -27,10 +29,10 @@ Sets the operation summary (short description).
 openapi.WithSummary("Get user by ID")
 ```
 
-### WithDescription
+### WithOperationDescription
 
 ```go
-func WithDescription(description string) OperationOption
+func WithOperationDescription(description string) OperationOption
 ```
 
 Sets the operation description (detailed explanation).
@@ -38,7 +40,7 @@ Sets the operation description (detailed explanation).
 **Example:**
 
 ```go
-openapi.WithDescription("Retrieves a user by their unique identifier from the database")
+openapi.WithOperationDescription("Retrieves a user by their unique identifier from the database")
 ```
 
 ### WithOperationID
@@ -153,7 +155,7 @@ openapi.WithSecurity("oauth2", "read", "write")
 Multiple calls create alternative security requirements (OR logic):
 
 ```go
-openapi.GET("/users/:id",
+openapi.WithGET("/users/:id",
     openapi.WithSecurity("bearerAuth"),  // Can use bearer auth
     openapi.WithSecurity("apiKey"),      // OR can use API key
     openapi.WithResponse(200, User{}),
@@ -201,15 +203,15 @@ openapi.WithProduces("application/json", "application/xml")
 ### WithDeprecated
 
 ```go
-func WithDeprecated() OperationOption
+func WithDeprecated(deprecated ...bool) OperationOption
 ```
 
-Marks the operation as deprecated.
+Marks the operation as deprecated. `WithDeprecated()` is shorthand for true; `WithDeprecated(false)` clears deprecation.
 
 **Example:**
 
 ```go
-openapi.GET("/users/legacy",
+openapi.WithGET("/users/legacy",
     openapi.WithSummary("Legacy user list"),
     openapi.WithDeprecated(),
     openapi.WithResponse(200, []User{}),
@@ -221,7 +223,7 @@ openapi.GET("/users/legacy",
 ### WithOperationExtension
 
 ```go
-func WithOperationExtension(key string, value interface{}) OperationOption
+func WithOperationExtension(key string, value any) OperationOption
 ```
 
 Adds a custom `x-*` extension to the operation.
@@ -242,10 +244,10 @@ openapi.WithOperationExtension("x-cache-ttl", 300)
 ### WithOptions
 
 ```go
-func WithOptions(opts ...OperationOption) OperationOption
+func WithOptions(opts ...OperationOption) (OperationOption, error)
 ```
 
-Combines multiple operation options into a single reusable option.
+Combines multiple operation options into a single reusable option. Returns an error if any element of `opts` is nil (validation at compose time).
 
 **Parameters:**
 - `opts` - Operation options to combine
@@ -253,19 +255,25 @@ Combines multiple operation options into a single reusable option.
 **Example:**
 
 ```go
-CommonErrors := openapi.WithOptions(
+CommonErrors, err := openapi.WithOptions(
     openapi.WithResponse(400, ErrorResponse{}),
     openapi.WithResponse(500, ErrorResponse{}),
 )
+if err != nil {
+    // handle err (e.g. log.Fatal(err))
+}
 
-UserEndpoint := openapi.WithOptions(
+UserEndpoint, err := openapi.WithOptions(
     openapi.WithTags("users"),
     openapi.WithSecurity("bearerAuth"),
     CommonErrors,
 )
+if err != nil {
+    // handle err
+}
 
 // Use in operations
-openapi.GET("/users/:id",
+openapi.WithGET("/users/:id",
     UserEndpoint,
     openapi.WithSummary("Get user"),
     openapi.WithResponse(200, User{}),
@@ -277,7 +285,7 @@ openapi.GET("/users/:id",
 | Option | Description |
 |--------|-------------|
 | `WithSummary(s)` | Set operation summary |
-| `WithDescription(s)` | Set operation description |
+| `WithOperationDescription(s)` | Set operation description |
 | `WithOperationID(id)` | Set custom operation ID |
 | `WithRequest(type, examples...)` | Set request body type |
 | `WithResponse(status, type, examples...)` | Set response type for status code |

@@ -45,18 +45,18 @@ Sets the API title and version only if they are still the defaults ("API" and "1
 opts = append(opts, openapi.WithTitleIfDefault(serviceName, serviceVersion))
 ```
 
-### WithInfoDescription
+### WithDescription
 
 ```go
-func WithInfoDescription(description string) Option
+func WithDescription(description string) Option
 ```
 
-Sets the API description.
+Sets the API description (Info object).
 
 **Example:**
 
 ```go
-openapi.WithInfoDescription("Comprehensive API for managing users and resources")
+openapi.WithDescription("Comprehensive API for managing users and resources")
 ```
 
 ### WithInfoSummary
@@ -315,21 +315,25 @@ openapi.WithOpenIDConnect("openId", "https://example.com/.well-known/openid-conf
 ### WithDefaultSecurity
 
 ```go
-func WithDefaultSecurity(scheme string, scopes ...string) Option
+func WithDefaultSecurity(requirements ...SecurityReq) Option
 ```
 
-Sets default security requirement at API level (applies to all operations unless overridden).
-
-**Parameters:**
-- `scheme` - Security scheme name
-- `scopes` - Optional OAuth2 scopes
+Sets default security requirements at API level. Use [SecurityRequirement] to build each requirement.
 
 **Example:**
 
 ```go
-openapi.WithDefaultSecurity("bearerAuth")
-openapi.WithDefaultSecurity("oauth2", "read", "write")
+openapi.WithDefaultSecurity(openapi.SecurityRequirement("bearerAuth"))
+openapi.WithDefaultSecurity(openapi.SecurityRequirement("oauth2", "read", "write"))
 ```
+
+### SecurityRequirement
+
+```go
+func SecurityRequirement(scheme string, scopes ...string) SecurityReq
+```
+
+Builds a [SecurityReq] for use with [WithDefaultSecurity] or operation [WithSecurity].
 
 ## Tag Options
 
@@ -374,21 +378,18 @@ openapi.WithExternalDocs("https://docs.example.com", "Full API Documentation")
 
 ## Validation Options
 
-### WithValidation
+### WithValidateSpec
 
 ```go
-func WithValidation(enabled bool) Option
+func WithValidateSpec(validate bool) Option
 ```
 
-Enables or disables specification validation. Default is `false`.
-
-**Parameters:**
-- `enabled` - Whether to validate generated specs
+Enables or disables JSON Schema validation of the generated spec. Default is `false`.
 
 **Example:**
 
 ```go
-openapi.WithValidation(true) // Enable validation
+openapi.WithValidateSpec(true)
 ```
 
 ### WithStrictDownlevel

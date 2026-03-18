@@ -251,28 +251,35 @@ openapi.PUT("/users/:id",
 
 ## Composable Operation Options
 
-Use `WithOptions()` to create reusable option sets:
+Use `WithOptions()` to create reusable option sets. Check the error when composing options (e.g. at init or start of main):
 
 ```go
-// Define reusable option sets
-var (
-    CommonErrors = openapi.WithOptions(
-        openapi.WithResponse(400, ErrorResponse{}),
-        openapi.WithResponse(401, ErrorResponse{}),
-        openapi.WithResponse(500, ErrorResponse{}),
-    )
-    
-    UserEndpoint = openapi.WithOptions(
-        openapi.WithTags("users"),
-        openapi.WithSecurity("bearerAuth"),
-        CommonErrors,
-    )
-    
-    JSONContent = openapi.WithOptions(
-        openapi.WithConsumes("application/json"),
-        openapi.WithProduces("application/json"),
-    )
+// Define reusable option sets (check error when composing)
+CommonErrors, err := openapi.WithOptions(
+    openapi.WithResponse(400, ErrorResponse{}),
+    openapi.WithResponse(401, ErrorResponse{}),
+    openapi.WithResponse(500, ErrorResponse{}),
 )
+if err != nil {
+    log.Fatal(err)
+}
+
+UserEndpoint, err := openapi.WithOptions(
+    openapi.WithTags("users"),
+    openapi.WithSecurity("bearerAuth"),
+    CommonErrors,
+)
+if err != nil {
+    log.Fatal(err)
+}
+
+JSONContent, err := openapi.WithOptions(
+    openapi.WithConsumes("application/json"),
+    openapi.WithProduces("application/json"),
+)
+if err != nil {
+    log.Fatal(err)
+}
 
 // Apply to operations
 result, err := api.Generate(context.Background(),
@@ -303,26 +310,33 @@ result, err := api.Generate(context.Background(),
 
 ### Nested Composable Options
 
-Option sets can be nested:
+Option sets can be nested. Check the error from each `WithOptions` call:
 
 ```go
-var (
-    ErrorResponses = openapi.WithOptions(
-        openapi.WithResponse(400, ErrorResponse{}),
-        openapi.WithResponse(500, ErrorResponse{}),
-    )
-    
-    AuthRequired = openapi.WithOptions(
-        openapi.WithSecurity("bearerAuth"),
-        openapi.WithResponse(401, ErrorResponse{}),
-        ErrorResponses,
-    )
-    
-    UserAPI = openapi.WithOptions(
-        openapi.WithTags("users"),
-        AuthRequired,
-    )
+ErrorResponses, err := openapi.WithOptions(
+    openapi.WithResponse(400, ErrorResponse{}),
+    openapi.WithResponse(500, ErrorResponse{}),
 )
+if err != nil {
+    log.Fatal(err)
+}
+
+AuthRequired, err := openapi.WithOptions(
+    openapi.WithSecurity("bearerAuth"),
+    openapi.WithResponse(401, ErrorResponse{}),
+    ErrorResponses,
+)
+if err != nil {
+    log.Fatal(err)
+}
+
+UserAPI, err := openapi.WithOptions(
+    openapi.WithTags("users"),
+    AuthRequired,
+)
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 ## Custom Operation IDs

@@ -22,10 +22,10 @@ Validation is disabled by default for performance. Enable it during development 
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithValidation(true), // Enable validation
+    openapi.WithValidateSpec(true), // Enable validation
 )
 
-result, err := api.Generate(context.Background(), operations...)
+result, err := api.Spec(context.Background())
 if err != nil {
     log.Fatal(err) // Will fail if spec is invalid
 }
@@ -54,7 +54,7 @@ Validation has a performance cost:
 When validation fails, you'll receive a detailed error:
 
 ```go
-result, err := api.Generate(context.Background(), operations...)
+result, err := api.Spec(context.Background())
 if err != nil {
     // Error contains validation details
     fmt.Printf("Validation failed: %v\n", err)
@@ -183,12 +183,10 @@ import (
 func main() {
     api := openapi.MustNew(
         openapi.WithTitle("My API", "1.0.0"),
-        openapi.WithValidation(true), // Enable for CI/CD
+        openapi.WithValidateSpec(true), // Enable for CI/CD
     )
     
-    result, err := api.Generate(context.Background(),
-        // ... operations
-    )
+    result, err := api.Spec(context.Background())
     if err != nil {
         log.Fatalf("Validation failed: %v", err)
     }
@@ -258,15 +256,14 @@ func main() {
     // Generate with validation enabled
     api := openapi.MustNew(
         openapi.WithTitle("User API", "1.0.0"),
-        openapi.WithValidation(true),
+        openapi.WithValidateSpec(true),
     )
-    
-    result, err := api.Generate(context.Background(),
-        openapi.GET("/users/:id",
-            openapi.WithSummary("Get user"),
-            openapi.WithResponse(200, User{}),
-        ),
+    op, _ := openapi.WithGET("/users/:id",
+        openapi.WithSummary("Get user"),
+        openapi.WithResponse(200, User{}),
     )
+    api.AddOperation(op)
+    result, err := api.Spec(context.Background())
     if err != nil {
         log.Fatalf("Generation/validation failed: %v", err)
     }
@@ -305,10 +302,11 @@ api := openapi.MustNew(
     openapi.WithTitle("API", "1.0.0"),
     openapi.WithVersion(openapi.V30x),
     openapi.WithInfoSummary("Summary"), // 3.1-only feature
-    openapi.WithValidation(true),
+    openapi.WithValidateSpec(true),
 )
-
-result, err := api.Generate(context.Background(), ops...)
+op, _ := openapi.WithGET("/", openapi.WithSummary("Root"))
+api.AddOperation(op)
+result, err := api.Spec(context.Background())
 // err is nil (spec is valid)
 // result.Warnings contains warning about info.summary being dropped
 ```

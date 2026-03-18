@@ -47,9 +47,11 @@ The package is organized into two main components:
 Core specification generation including:
 - `API` struct - Configuration container
 - `New()` / `MustNew()` - API initialization
-- HTTP method constructors - `GET()`, `POST()`, `PUT()`, etc.
+- Operation builders - `WithGET()`, `WithPOST()`, `WithPUT()`, etc.
 - Operation options - `WithRequest()`, `WithResponse()`, `WithSecurity()`, etc.
-- `Generate()` - Specification generation
+- `WithOperations()` - Declarative operations at construction
+- `API.AddOperation()` - Add operations after construction
+- `API.Spec(ctx)` - Specification generation
 
 ### Example sub-package (`rivaas.dev/openapi/example`)
 
@@ -88,20 +90,22 @@ api := openapi.MustNew(options...)      // Panics on error
 ### Specification Generation
 
 ```go
-result, err := api.Generate(ctx context.Context, operations...)
+api.AddOperation(op1, op2)           // or use WithOperations at construction
+result, err := api.Spec(ctx)
 ```
 
-### HTTP Method Constructors
+### Operation Builders
 
 ```go
-openapi.GET(path, ...opts) Operation
-openapi.POST(path, ...opts) Operation
-openapi.PUT(path, ...opts) Operation
-openapi.PATCH(path, ...opts) Operation
-openapi.DELETE(path, ...opts) Operation
-openapi.HEAD(path, ...opts) Operation
-openapi.OPTIONS(path, ...opts) Operation
-openapi.TRACE(path, ...opts) Operation
+openapi.WithGET(path, ...opts) (Operation, error)
+openapi.WithPOST(path, ...opts) (Operation, error)
+openapi.WithPUT(path, ...opts) (Operation, error)
+openapi.WithPATCH(path, ...opts) (Operation, error)
+openapi.WithDELETE(path, ...opts) (Operation, error)
+openapi.WithHEAD(path, ...opts) (Operation, error)
+openapi.WithOPTIONS(path, ...opts) (Operation, error)
+openapi.WithTRACE(path, ...opts) (Operation, error)
+openapi.WithOp(method, path, ...opts) (Operation, error)
 ```
 
 ### Result Access
@@ -222,16 +226,10 @@ Functional option for operation configuration.
 ### Basic Generation
 
 ```go
-api := openapi.MustNew(
-    openapi.WithTitle("My API", "1.0.0"),
-)
-
-result, err := api.Generate(context.Background(),
-    openapi.GET("/users/:id",
-        openapi.WithSummary("Get user"),
-        openapi.WithResponse(200, User{}),
-    ),
-)
+api := openapi.MustNew(openapi.WithTitle("My API", "1.0.0"))
+op, _ := openapi.WithGET("/users/:id", openapi.WithSummary("Get user"), openapi.WithResponse(200, User{}))
+api.AddOperation(op)
+result, err := api.Spec(context.Background())
 ```
 
 ### With Security
@@ -241,13 +239,9 @@ api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
     openapi.WithBearerAuth("bearerAuth", "JWT authentication"),
 )
-
-result, err := api.Generate(context.Background(),
-    openapi.GET("/users/:id",
-        openapi.WithSecurity("bearerAuth"),
-        openapi.WithResponse(200, User{}),
-    ),
-)
+op, _ := openapi.WithGET("/users/:id", openapi.WithSecurity("bearerAuth"), openapi.WithResponse(200, User{}))
+api.AddOperation(op)
+result, err := api.Spec(context.Background())
 ```
 
 ### With Validation
@@ -255,10 +249,9 @@ result, err := api.Generate(context.Background(),
 ```go
 api := openapi.MustNew(
     openapi.WithTitle("My API", "1.0.0"),
-    openapi.WithValidation(true),
+    openapi.WithValidateSpec(true),
 )
-
-result, err := api.Generate(context.Background(), operations...)
+result, err := api.Spec(context.Background())
 // Fails if spec is invalid
 ```
 
@@ -267,7 +260,7 @@ result, err := api.Generate(context.Background(), operations...)
 ```go
 import "rivaas.dev/openapi/diag"
 
-result, err := api.Generate(context.Background(), operations...)
+result, err := api.Spec(context.Background())
 if err != nil {
     log.Fatal(err)
 }
@@ -280,7 +273,7 @@ if result.Warnings.Has(diag.WarnDownlevelInfoSummary) {
 ## Thread Safety
 
 The `API` type is safe for concurrent use:
-- Multiple goroutines can call `Generate()` simultaneously
+- Multiple goroutines can call `Spec()` and `AddOperation()` (operations slice is protected)
 - Configuration is immutable after creation
 
 Not thread-safe:

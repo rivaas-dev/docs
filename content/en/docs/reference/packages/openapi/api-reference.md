@@ -28,7 +28,8 @@ Main API configuration container. Holds the OpenAPI specification metadata and c
 - `MustNew(...Option) *API` - Panics on error.
 
 **Methods:**
-- `Generate(ctx context.Context, ...Operation) (*Result, error)` - Generate OpenAPI specification.
+- `Spec(ctx context.Context) (*Result, error)` - Generate OpenAPI specification from current config and operations.
+- `AddOperation(ops ...Operation)` - Add operations (e.g. from [WithGET], [WithPOST]) for inclusion in the spec.
 - `Validate() error` - Check if the API configuration is valid.
 - `UI() UISnapshot` - Read-only snapshot of Swagger UI configuration for rendering (e.g. use [UISnapshot.ToJSON] to embed in HTML).
 - `Info() model.Info` - API metadata (title, version, description, etc.).
@@ -55,15 +56,16 @@ type Operation struct {
 
 Represents an HTTP operation with method, path, and configuration.
 
-**Created by HTTP method constructors:**
-- `GET(path string, ...OperationOption) Operation`
-- `POST(path string, ...OperationOption) Operation`
-- `PUT(path string, ...OperationOption) Operation`
-- `PATCH(path string, ...OperationOption) Operation`
-- `DELETE(path string, ...OperationOption) Operation`
-- `HEAD(path string, ...OperationOption) Operation`
-- `OPTIONS(path string, ...OperationOption) Operation`
-- `TRACE(path string, ...OperationOption) Operation`
+**Created by operation builders:**
+- `WithGET(path string, ...OperationOption) (Operation, error)`
+- `WithPOST(path string, ...OperationOption) (Operation, error)`
+- `WithPUT(path string, ...OperationOption) (Operation, error)`
+- `WithPATCH(path string, ...OperationOption) (Operation, error)`
+- `WithDELETE(path string, ...OperationOption) (Operation, error)`
+- `WithHEAD(path string, ...OperationOption) (Operation, error)`
+- `WithOPTIONS(path string, ...OperationOption) (Operation, error)`
+- `WithTRACE(path string, ...OperationOption) (Operation, error)`
+- `WithOp(method, path string, ...OperationOption) (Operation, error)` - Custom method
 
 ### Result
 
@@ -112,7 +114,7 @@ Read-only view of Swagger UI configuration returned by [API.UI]. Use it for rend
 ### Option
 
 ```go
-type Option func(*API) error
+type Option func(*config)
 ```
 
 Functional option for configuring the API. See [Options](options/) for all available options.
@@ -120,7 +122,7 @@ Functional option for configuring the API. See [Options](options/) for all avail
 ### OperationOption
 
 ```go
-type OperationOption func(*Operation) error
+type OperationOption func(*operationDoc)
 ```
 
 Functional option for configuring operations. See [Operation Options](operation-options/) for all available options.
@@ -180,166 +182,94 @@ api := openapi.MustNew(
 )
 ```
 
-## HTTP Method Constructors
+## Operation Builders
 
-### GET
+Operations are created with `WithGET`, `WithPOST`, etc., and added to the API via [WithOperations] at construction or [API.AddOperation] after. Then call [API.Spec] to generate the spec.
+
+### WithGET
 
 ```go
-func GET(path string, opts ...OperationOption) Operation
+func WithGET(path string, opts ...OperationOption) (Operation, error)
 ```
 
 Creates a GET operation.
 
-**Parameters:**
-- `path` - URL path (use `:param` syntax for path parameters)
-- `opts` - Variable number of OperationOption functions
-
-**Returns:**
-- `Operation` - Configured operation
-
 **Example:**
 
 ```go
-openapi.GET("/users/:id",
+op, err := openapi.WithGET("/users/:id",
     openapi.WithSummary("Get user"),
     openapi.WithResponse(200, User{}),
 )
+api.AddOperation(op)
 ```
 
-### POST
+### WithPOST
 
 ```go
-func POST(path string, opts ...OperationOption) Operation
+func WithPOST(path string, opts ...OperationOption) (Operation, error)
 ```
 
 Creates a POST operation.
 
-**Parameters:**
-- `path` - URL path
-- `opts` - Variable number of OperationOption functions
-
-**Returns:**
-- `Operation` - Configured operation
-
 **Example:**
 
 ```go
-openapi.POST("/users",
+op, err := openapi.WithPOST("/users",
     openapi.WithSummary("Create user"),
     openapi.WithRequest(CreateUserRequest{}),
     openapi.WithResponse(201, User{}),
 )
+api.AddOperation(op)
 ```
 
-### PUT
+### WithPUT, WithPATCH, WithDELETE, WithHEAD, WithOPTIONS, WithTRACE
+
+Same pattern as `WithGET` / `WithPOST` for other HTTP methods.
+
+### WithOp
 
 ```go
-func PUT(path string, opts ...OperationOption) Operation
+func WithOp(method, path string, opts ...OperationOption) (Operation, error)
 ```
 
-Creates a PUT operation.
-
-### PATCH
-
-```go
-func PATCH(path string, opts ...OperationOption) Operation
-```
-
-Creates a PATCH operation.
-
-### DELETE
-
-```go
-func DELETE(path string, opts ...OperationOption) Operation
-```
-
-Creates a DELETE operation.
-
-**Example:**
-
-```go
-openapi.DELETE("/users/:id",
-    openapi.WithSummary("Delete user"),
-    openapi.WithResponse(204, nil),
-)
-```
-
-### HEAD
-
-```go
-func HEAD(path string, opts ...OperationOption) Operation
-```
-
-Creates a HEAD operation.
-
-### OPTIONS
-
-```go
-func OPTIONS(path string, opts ...OperationOption) Operation
-```
-
-Creates an OPTIONS operation.
-
-### TRACE
-
-```go
-func TRACE(path string, opts ...OperationOption) Operation
-```
-
-Creates a TRACE operation.
+Creates an operation with a custom HTTP method.
 
 ## Methods
 
-### API.Generate
+### API.Spec
 
 ```go
-func (api *API) Generate(ctx context.Context, operations ...Operation) (*Result, error)
+func (api *API) Spec(ctx context.Context) (*Result, error)
 ```
 
-Generates an OpenAPI specification from the configured API and operations.
-
-**Parameters:**
-- `ctx` - Context for cancellation
-- `operations` - Variable number of Operation instances
-
-**Returns:**
-- `*Result` - Generation result with JSON, YAML, and warnings
-- `error` - Generation or validation error if any
-
-**Errors:**
-- Returns error if context is nil
-- Returns error if generation fails
-- Returns error if validation is enabled and spec is invalid
+Generates an OpenAPI specification from the API's current configuration and operations (from [WithOperations] and/or [API.AddOperation]). No operation list is passed at call time.
 
 **Example:**
 
 ```go
-result, err := api.Generate(context.Background(),
-    openapi.GET("/users/:id",
-        openapi.WithSummary("Get user"),
-        openapi.WithResponse(200, User{}),
-    ),
-    openapi.POST("/users",
-        openapi.WithSummary("Create user"),
-        openapi.WithRequest(CreateUserRequest{}),
-        openapi.WithResponse(201, User{}),
-    ),
-)
-if err != nil {
-    log.Fatal(err)
-}
-
-// Use result.JSON or result.YAML
-fmt.Println(string(result.JSON))
+api := openapi.MustNew(openapi.WithTitle("My API", "1.0.0"))
+op, _ := openapi.WithGET("/users/:id", openapi.WithSummary("Get user"), openapi.WithResponse(200, User{}))
+api.AddOperation(op)
+result, err := api.Spec(context.Background())
+// Or use WithOperations at construction and skip AddOperation
 ```
+
+### API.AddOperation
+
+```go
+func (api *API) AddOperation(ops ...Operation)
+```
+
+Adds one or more operations to the API. Call [API.Spec] to generate the spec including these operations.
 
 ### API.Version
 
 ```go
-func (api *API) Version() string
+func (api *API) Version() Version
 ```
 
-Returns the target OpenAPI version as a string.
+Returns the target OpenAPI version (V30x or V31x).
 
 **Returns:**
 - `string` - Version string ("3.0.4" or "3.1.2")

@@ -263,43 +263,51 @@ type ErrorResponse struct {
     Message string `json:"message"`
 }
 
-// Define reusable option sets
-var (
-    // Common error responses
-    CommonErrors = openapi.WithOptions(
+func main() {
+    // Define reusable option sets (WithOptions returns (OperationOption, error))
+    CommonErrors, err := openapi.WithOptions(
         openapi.WithResponse(400, ErrorResponse{}),
         openapi.WithResponse(401, ErrorResponse{}),
         openapi.WithResponse(500, ErrorResponse{}),
     )
-    
-    // Authenticated user endpoints
-    UserEndpoint = openapi.WithOptions(
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    UserEndpoint, err := openapi.WithOptions(
         openapi.WithTags("users"),
         openapi.WithSecurity("bearerAuth"),
         CommonErrors,
     )
-    
-    // JSON content type
-    JSONContent = openapi.WithOptions(
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    JSONContent, err := openapi.WithOptions(
         openapi.WithConsumes("application/json"),
         openapi.WithProduces("application/json"),
     )
-    
-    // Read operations
-    ReadOperation = openapi.WithOptions(
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    ReadOperation, err := openapi.WithOptions(
         UserEndpoint,
         JSONContent,
     )
-    
-    // Write operations
-    WriteOperation = openapi.WithOptions(
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    WriteOperation, err := openapi.WithOptions(
         UserEndpoint,
         JSONContent,
         openapi.WithResponse(404, ErrorResponse{}),
     )
-)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-func main() {
     api := openapi.MustNew(
         openapi.WithTitle("Composable API", "1.0.0"),
         openapi.WithBearerAuth("bearerAuth", "JWT authentication"),
@@ -517,22 +525,26 @@ type ErrorResponse struct {
     Timestamp time.Time `json:"timestamp"`
 }
 
-// Reusable option sets
-var (
-    CommonErrors = openapi.WithOptions(
+func main() {
+    // Reusable option sets (WithOptions returns (OperationOption, error))
+    CommonErrors, err := openapi.WithOptions(
         openapi.WithResponse(400, ErrorResponse{}),
         openapi.WithResponse(401, ErrorResponse{}),
         openapi.WithResponse(500, ErrorResponse{}),
     )
-    
-    UserEndpoint = openapi.WithOptions(
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    UserEndpoint, err := openapi.WithOptions(
         openapi.WithTags("users"),
         openapi.WithSecurity("bearerAuth"),
         CommonErrors,
     )
-)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-func main() {
     api := openapi.MustNew(
         // Basic info
         openapi.WithTitle("User Management API", "2.1.0"),
@@ -571,55 +583,68 @@ func main() {
         openapi.WithValidation(true),
     )
 
-    result, err := api.Generate(context.Background(),
-        // Public endpoints
-        openapi.GET("/health",
-            openapi.WithSummary("Health check"),
-            openapi.WithDescription("Check API health status"),
-            openapi.WithResponse(200, map[string]string{"status": "ok"}),
-        ),
-        
-        // User CRUD operations
-        openapi.GET("/users",
-            UserEndpoint,
-            openapi.WithSummary("List users"),
-            openapi.WithDescription("Retrieve paginated list of users"),
-            openapi.WithResponse(200, []User{}),
-        ),
-        
-        openapi.GET("/users/:id",
-            UserEndpoint,
-            openapi.WithSummary("Get user"),
-            openapi.WithDescription("Retrieve a specific user by ID"),
-            openapi.WithResponse(200, User{}),
-            openapi.WithResponse(404, ErrorResponse{}),
-        ),
-        
-        openapi.POST("/users",
-            UserEndpoint,
-            openapi.WithSummary("Create user"),
-            openapi.WithDescription("Create a new user"),
-            openapi.WithRequest(CreateUserRequest{}),
-            openapi.WithResponse(201, User{}),
-        ),
-        
-        openapi.PUT("/users/:id",
-            UserEndpoint,
-            openapi.WithSummary("Update user"),
-            openapi.WithDescription("Update an existing user"),
-            openapi.WithRequest(CreateUserRequest{}),
-            openapi.WithResponse(200, User{}),
-            openapi.WithResponse(404, ErrorResponse{}),
-        ),
-        
-        openapi.DELETE("/users/:id",
-            UserEndpoint,
-            openapi.WithSummary("Delete user"),
-            openapi.WithDescription("Delete a user"),
-            openapi.WithResponse(204, nil),
-            openapi.WithResponse(404, ErrorResponse{}),
-        ),
+    // Build operations (WithGET/WithPOST etc. return (Operation, error))
+    healthOp, err := openapi.WithGET("/health",
+        openapi.WithSummary("Health check"),
+        openapi.WithOperationDescription("Check API health status"),
+        openapi.WithResponse(200, map[string]string{"status": "ok"}),
     )
+    if err != nil {
+        log.Fatal(err)
+    }
+    listOp, err := openapi.WithGET("/users",
+        UserEndpoint,
+        openapi.WithSummary("List users"),
+        openapi.WithOperationDescription("Retrieve paginated list of users"),
+        openapi.WithResponse(200, []User{}),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    getOp, err := openapi.WithGET("/users/:id",
+        UserEndpoint,
+        openapi.WithSummary("Get user"),
+        openapi.WithOperationDescription("Retrieve a specific user by ID"),
+        openapi.WithResponse(200, User{}),
+        openapi.WithResponse(404, ErrorResponse{}),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    createOp, err := openapi.WithPOST("/users",
+        UserEndpoint,
+        openapi.WithSummary("Create user"),
+        openapi.WithOperationDescription("Create a new user"),
+        openapi.WithRequest(CreateUserRequest{}),
+        openapi.WithResponse(201, User{}),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    updateOp, err := openapi.WithPUT("/users/:id",
+        UserEndpoint,
+        openapi.WithSummary("Update user"),
+        openapi.WithOperationDescription("Update an existing user"),
+        openapi.WithRequest(CreateUserRequest{}),
+        openapi.WithResponse(200, User{}),
+        openapi.WithResponse(404, ErrorResponse{}),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+    deleteOp, err := openapi.WithDELETE("/users/:id",
+        UserEndpoint,
+        openapi.WithSummary("Delete user"),
+        openapi.WithOperationDescription("Delete a user"),
+        openapi.WithResponse(204, nil),
+        openapi.WithResponse(404, ErrorResponse{}),
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    api.AddOperation(healthOp, listOp, getOp, createOp, updateOp, deleteOp)
+    result, err := api.Spec(context.Background())
     if err != nil {
         log.Fatalf("Generation failed: %v", err)
     }
