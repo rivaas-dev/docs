@@ -355,7 +355,7 @@ tracer := tracing.MustNew(
 defer tp.Shutdown(context.Background())
 ```
 
-**Note**: When using `WithTracerProvider`, you're responsible for shutting down the provider.
+**Note**: When using `WithTracerProvider`, you're responsible for shutting down the provider. Combining `WithTracerProvider` with any provider option (e.g. `WithOTLP`, `WithStdout`) is invalid and returns an error from `New()`.
 
 ### Global Tracer Provider
 

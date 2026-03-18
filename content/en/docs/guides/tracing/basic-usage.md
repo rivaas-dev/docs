@@ -63,11 +63,11 @@ defer tracer.Shutdown(context.Background())
 ```
 
 {{< alert color="warning" >}}
-With OTLP, forgetting `Start(ctx)` means **no traces** are exported and no error is returned.
+With OTLP, forgetting `Start(ctx)` means **no traces** are exported and no error is returned; a one-time log warning is emitted when the first span is created.
 {{< /alert >}}
 
 {{< alert color="info" >}}
-For Stdout and Noop providers, `Start()` is optional (they initialize immediately in `New()`).
+For Stdout and Noop providers, `Start()` is optional (they initialize immediately in `New()`). Use `tracer.RequiresStart()` and `tracer.IsStarted()` in tests or wiring to assert that Start was used when required.
 {{< /alert >}}
 
 ### Shutting Down

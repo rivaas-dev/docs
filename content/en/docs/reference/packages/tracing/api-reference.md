@@ -35,7 +35,7 @@ The main entry point for distributed tracing. Holds OpenTelemetry tracing config
 func New(opts ...Option) (*Tracer, error)
 ```
 
-Creates a new Tracer with the given options. Returns an error if the tracing provider fails to initialize. When using OTLP options (`WithOTLP`, `WithOTLPHTTP`), you must call `Start(ctx)` before traces are exported.
+Creates a new Tracer with the given options. Returns an error if the tracing provider fails to initialize. When using OTLP options (`WithOTLP`, `WithOTLPHTTP`), you must call `Start(ctx)` before traces are exported; otherwise no traces are exported and no error is returned—only a one-time log warning when the first span is created.
 
 **Default configuration:**
 - Service name: `"rivaas-service"`.
@@ -123,7 +123,7 @@ http.ListenAndServe(":8080", handler)
 func (t *Tracer) Start(ctx context.Context) error
 ```
 
-Initializes OTLP providers that require network connections. When using OTLP, you must call `Start(ctx)` before traces are exported; forgetting to call it results in no traces being exported and no error at `New`. The context is used for the OTLP connection establishment. This method is idempotent; calling it multiple times is safe.
+Initializes OTLP providers that require network connections. When using OTLP, you must call `Start(ctx)` before traces are exported; forgetting it results in no traces and no error at `New`, and a one-time log warning when the first span is created. The context is used for the OTLP connection establishment. This method is idempotent; calling it multiple times is safe.
 
 **Required for:** OTLP (gRPC and HTTP) providers  
 **Optional for:** Noop and Stdout providers (they initialize immediately in `New()`)
@@ -138,6 +138,40 @@ tracer := tracing.MustNew(
 if err := tracer.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
+```
+
+### RequiresStart
+
+```go
+func (t *Tracer) RequiresStart() bool
+```
+
+Returns true if the tracer uses an OTLP provider and therefore requires `Start(ctx)` to be called before traces are exported. Use in tests or wiring code to assert that Start must be called.
+
+**Example:**
+
+```go
+if tracer.RequiresStart() && !tracer.IsStarted() {
+    log.Fatal("OTLP tracer must be started before use")
+}
+```
+
+### IsStarted
+
+```go
+func (t *Tracer) IsStarted() bool
+```
+
+Returns true after `Start()` has been called. Use in tests or wiring code to assert that the tracer was started when required (e.g. when `RequiresStart()` is true).
+
+**Example:**
+
+```go
+tracer, _ := tracing.New(tracing.WithOTLP("localhost:4317"))
+require.True(t, tracer.RequiresStart())
+require.False(t, tracer.IsStarted())
+require.NoError(t, tracer.Start(ctx))
+require.True(t, tracer.IsStarted())
 ```
 
 ### Shutdown

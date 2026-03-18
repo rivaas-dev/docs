@@ -87,11 +87,13 @@ Options must not be nil; passing a nil option results in an error (or panic with
 
 ### Lifecycle Management
 
-For OTLP providers, `Start(ctx)` is required before traces are exported; forgetting it results in no traces (no error at creation).
+For OTLP providers, `Start(ctx)` is required before traces are exported. Forgetting it results in no traces and no error at creation; a one-time log warning is emitted when the first span is created. Use `RequiresStart()` to detect when a tracer needs Start (true for OTLP), and `IsStarted()` to assert that Start has been called (e.g. in tests or wiring).
 
 ```go
 err := tracer.Start(ctx context.Context)   // Start OTLP providers
 err := tracer.Shutdown(ctx context.Context) // Graceful shutdown
+ok := tracer.RequiresStart()                // true if OTLP (Start required)
+ok := tracer.IsStarted()                    // true after Start() has been called
 ```
 
 ### Span Management

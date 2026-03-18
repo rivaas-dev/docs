@@ -114,7 +114,7 @@ Configures OTLP gRPC provider with endpoint. Use this for production deployments
 - `endpoint`: OTLP endpoint in format `"host:port"` (e.g., `"localhost:4317"`)
 - `opts`: Optional OTLP-specific options (e.g., `OTLPInsecure()`)
 
-**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it will result in no traces (and no error at `New`).
+**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it yields no export and only a one-time log warning when the first span is created (no error at `New`).
 
 **Example:**
 
@@ -143,7 +143,7 @@ Configures OTLP HTTP provider with endpoint. Use this when gRPC is not available
 **Parameters:**
 - `endpoint`: OTLP HTTP endpoint with protocol (e.g., `"http://localhost:4318"`, `"https://collector:4318"`)
 
-**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it will result in no traces (and no error at `New`).
+**Requires:** Call `tracer.Start(ctx)` before tracing. Forgetting it yields no export and only a one-time log warning when the first span is created (no error at `New`).
 
 **Example:**
 
@@ -344,9 +344,7 @@ Allows you to provide a custom OpenTelemetry TracerProvider. When using this opt
 - Need multiple independent tracing configurations
 - Want to avoid global state in your application
 
-**Important:** When using `WithTracerProvider`, provider options (`WithOTLP`, `WithStdout`, etc.) are ignored since you're managing the provider yourself. You are also responsible for calling `Shutdown()` on your provider.
-
-**Validation:** Passing `nil` as the provider is invalid. `New()` returns an error (`tracerProvider: cannot be nil when using WithTracerProvider`), and `MustNew()` panics with that error.
+**Validation:** Combining `WithTracerProvider` with any provider option (`WithOTLP`, `WithOTLPHTTP`, `WithStdout`, `WithNoop`) is invalid. `New()` returns an error; use only one of `WithTracerProvider` or a provider option. Passing `nil` as the provider is also invalid (`tracerProvider: cannot be nil when using WithTracerProvider`); `MustNew()` panics with that error.
 
 **Example:**
 

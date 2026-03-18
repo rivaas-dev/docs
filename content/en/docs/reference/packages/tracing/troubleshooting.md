@@ -21,7 +21,7 @@ No traces appear in your tracing backend (Jaeger, Zipkin, etc.) even though trac
 
 #### 1. OTLP Provider Not Started
 
-**Problem:** OTLP providers require calling `Start(ctx)` before tracing.
+**Problem:** OTLP providers require calling `Start(ctx)` before tracing. No error is returned at `New()`; only a one-time log warning is emitted when the first span is created: *"OTLP tracer not started: call Start(ctx) before creating spans; traces will not be exported"*.
 
 **Solution:**
 
@@ -37,7 +37,7 @@ if err := tracer.Start(context.Background()); err != nil {
 }
 ```
 
-If you use OTLP without calling `Start(ctx)`, the package may log a one-time warning: *"OTLP tracer not started: call Start(ctx) before creating spans; traces will not be exported"*.
+In tests or wiring, use `tracer.RequiresStart()` (true for OTLP) and `tracer.IsStarted()` (true after `Start()` has been called) to assert that the tracer was started when required.
 
 #### 2. Sampling Rate Too Low
 
@@ -285,6 +285,34 @@ tracer, err := tracing.New(
 )
 
 // ✓ Good - one provider
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithOTLP("localhost:4317"),
+)
+```
+
+### WithTracerProvider combined with provider options
+
+**Error:** `"invalid configuration: cannot combine WithTracerProvider with provider options (WithOTLP, WithStdout, WithNoop, WithOTLPHTTP): provider options are ignored when using WithTracerProvider; use only one"`
+
+**Problem:** Using both `WithTracerProvider` and a provider option (e.g. `WithOTLP`, `WithStdout`).
+
+**Solution:** Use either `WithTracerProvider` or one provider option, not both:
+
+```go
+// ✗ Error - combine custom provider with provider option
+tracer, err := tracing.New(
+    tracing.WithTracerProvider(customTP),
+    tracing.WithOTLP("localhost:4317"), // Error!
+)
+
+// ✓ Good - custom provider only
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithTracerProvider(customTP),
+)
+
+// ✓ Good - provider option only
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLP("localhost:4317"),
