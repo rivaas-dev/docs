@@ -125,9 +125,10 @@ func (a *App) OnReady(fn func())
 func (a *App) OnShutdown(fn func(context.Context))
 func (a *App) OnStop(fn func())
 func (a *App) OnRoute(fn func(*route.Route))
+func (a *App) OnReload(fn func(context.Context) error)
 ```
 
-Register lifecycle hooks. See [Lifecycle Hooks](lifecycle-hooks/) for details.
+Register lifecycle hooks. See [Lifecycle Hooks](lifecycle-hooks/) for details (including `OnReload` and SIGHUP on Unix).
 
 ### Accessors
 

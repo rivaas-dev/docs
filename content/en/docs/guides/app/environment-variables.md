@@ -50,37 +50,50 @@ That's it! No need to set these in code anymore.
 
 All environment variables start with the `RIVAAS_` prefix. You can also use a custom prefix with `WithEnvPrefix()`.
 
-### Server Configuration
+### Core application
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
-| `RIVAAS_PORT` | Port number to listen on | `8080` | `3000` |
-| `RIVAAS_HOST` | Host address to bind to | `0.0.0.0` | `127.0.0.1` |
+| `RIVAAS_ENV` | Environment mode | `development` (from app defaults if unset) | `development`, `production` |
+| `RIVAAS_SERVICE_NAME` | Service name (observability, OpenAPI) | `rivaas-app` (app default) | `orders-api` |
+| `RIVAAS_SERVICE_VERSION` | Service version | `1.0.0` (app default) | `v1.2.3` |
 
-### Logging Configuration
-
-| Variable | Description | Default | Example |
-|----------|-------------|---------|---------|
-| `RIVAAS_LOG_LEVEL` | Log level to use | `info` | `debug`, `info`, `warn`, `error` |
-| `RIVAAS_LOG_FORMAT` | Log output format | `json` | `json`, `text`, `console` |
-
-### Metrics Configuration
+### Server configuration
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
-| `RIVAAS_METRICS_EXPORTER` | Type of metrics exporter | - | `prometheus`, `otlp`, `stdout` |
-| `RIVAAS_METRICS_ADDR` | Prometheus server address | `:9090` | `:9000`, `0.0.0.0:9090` |
-| `RIVAAS_METRICS_PATH` | Prometheus metrics path | `/metrics` | `/custom-metrics` |
-| `RIVAAS_METRICS_ENDPOINT` | OTLP endpoint for metrics | - | `http://localhost:4318` |
+| `RIVAAS_PORT` | Port number to listen on | `8080` (app default) | `3000` |
+| `RIVAAS_HOST` | Host/interface to bind to | Empty string: listen on all interfaces (same as `:PORT` in Go) | `127.0.0.1` |
+| `RIVAAS_READ_TIMEOUT` | Request read timeout | App default (e.g. `10s`) | `30s` |
+| `RIVAAS_WRITE_TIMEOUT` | Response write timeout | App default (e.g. `10s`) | `30s` |
+| `RIVAAS_SHUTDOWN_TIMEOUT` | Graceful shutdown timeout | App default (e.g. `30s`) | `60s` |
 
-### Tracing Configuration
+### Logging configuration
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
-| `RIVAAS_TRACING_EXPORTER` | Type of tracing exporter | - | `otlp`, `otlp-http`, `stdout` |
-| `RIVAAS_TRACING_ENDPOINT` | OTLP endpoint for traces | - | `localhost:4317` |
+| `RIVAAS_LOG_LEVEL` | Log level when this or `LOG_FORMAT` is set | — (unset: no env override for logging) | `debug`, `info`, `warn`, `error` |
+| `RIVAAS_LOG_FORMAT` | Log format when set | — (unset: no env override; not implicitly `json`) | `json`, `text`, `console` |
 
-### Debug Configuration
+If neither variable is set, logging is not configured from the environment; programmatic options and app defaults apply. Invalid `RIVAAS_LOG_LEVEL` values fall back to `info` in code.
+
+### Metrics configuration
+
+| Variable | Description | Default | Example |
+|----------|-------------|---------|---------|
+| `RIVAAS_METRICS_EXPORTER` | Type of metrics exporter | — | `prometheus`, `otlp`, `stdout` |
+| `RIVAAS_METRICS_ADDR` | Listen address for Prometheus scrape HTTP server | `:9090` when exporter is `prometheus` | `:9000`, `0.0.0.0:9090` |
+| `RIVAAS_METRICS_PATH` | HTTP path for Prometheus scrape endpoint | `/metrics` when exporter is `prometheus` | `/custom-metrics` |
+| `RIVAAS_METRICS_ENDPOINT` | OTLP metrics endpoint (required for `otlp`) | — | `http://localhost:4318` |
+
+### Tracing configuration
+
+| Variable | Description | Default | Example |
+|----------|-------------|---------|---------|
+| `RIVAAS_TRACING_EXPORTER` | Type of tracing exporter | — | `otlp`, `otlp-http`, `stdout` |
+| `RIVAAS_TRACING_ENDPOINT` | OTLP endpoint for traces (required for `otlp` / `otlp-http`) | — | `localhost:4317` |
+
+### Debug configuration
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
@@ -90,15 +103,15 @@ All environment variables start with the `RIVAAS_` prefix. You can also use a cu
 
 You can set up metrics using just environment variables. No need to write code for it.
 
-### Prometheus (Default)
+### Prometheus scrape endpoint
 
-The simplest way to get metrics:
+The simplest way to expose metrics for scraping:
 
 ```bash
 export RIVAAS_METRICS_EXPORTER=prometheus
 ```
 
-This starts a Prometheus server on `:9090/metrics`. Your app will expose metrics there.
+The app starts an HTTP listener (default `:9090`) and serves the scrape endpoint at `/metrics` (defaults). This is **not** the Prometheus server binary; Prometheus (or another scraper) pulls metrics from your app.
 
 ### Custom Prometheus Settings
 
@@ -173,20 +186,20 @@ You'll see all traces in your console. Great for testing.
 
 Control how your app logs messages.
 
-### Log Level
+### Log level
 
-Set the minimum log level:
+Set the minimum log level when you use `RIVAAS_LOG_LEVEL` (and optionally `RIVAAS_LOG_FORMAT`; see the reference table above):
 
 ```bash
 export RIVAAS_LOG_LEVEL=debug  # Show everything
-export RIVAAS_LOG_LEVEL=info   # Normal logging (default)
+export RIVAAS_LOG_LEVEL=info   # Typical default when using env-based logging
 export RIVAAS_LOG_LEVEL=warn   # Only warnings and errors
 export RIVAAS_LOG_LEVEL=error  # Only errors
 ```
 
-### Log Format
+### Log format
 
-Choose how logs look:
+Set `RIVAAS_LOG_FORMAT` when you want the environment to choose the handler (`json`, `text`, or `console`). If you only set `RIVAAS_LOG_LEVEL`, the level comes from the environment but the format still follows whatever your code configured (or other defaults), unless you also set `RIVAAS_LOG_FORMAT`.
 
 ```bash
 export RIVAAS_LOG_FORMAT=json     # JSON format (good for production)
@@ -231,7 +244,7 @@ export RIVAAS_TRACING_ENDPOINT=jaeger:4317
 This gives you:
 - Standard port 8080
 - JSON logs (easy to parse)
-- Prometheus metrics on `:9090`
+- Prometheus-compatible metrics endpoint (default listen `:9090`, path `/metrics`)
 - Traces sent to Jaeger
 
 ### Docker Setup

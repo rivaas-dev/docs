@@ -183,7 +183,7 @@ type Context struct {
 c.Bind(out any, opts ...BindOption) error
 c.MustBind(out any, opts ...BindOption) bool
 c.BindOnly(out any, opts ...BindOption) error
-c.Validate(v any, opts ...validation.Option) error
+c.Validate(v any, opts ...ValidateOption) error
 ```
 
 ### Error Handling
@@ -205,11 +205,7 @@ c.ServiceUnavailable(err error)
 
 ### Logging
 
-```go
-c.Logger() *slog.Logger
-```
-
-See [Context API](context-api/) for complete reference.
+There is no `Context.Logger()` method. When the app enables observability logging, it sets the **slog default logger** at startup. From handlers, use `slog.InfoContext(c.RequestContext(), ...)` (or `ErrorContext`, etc.) for trace correlation; outside handlers use `app.BaseLogger()` or the default logger. See [Context API](context-api/#logging) for details.
 
 ## HandlerFunc
 

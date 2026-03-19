@@ -31,10 +31,10 @@ This downloads the app package and all its dependencies. These include:
 - `rivaas.dev/binding` - Request binding and parsing.
 - `rivaas.dev/validation` - Request validation.
 - `rivaas.dev/errors` - Error formatting.
-- `rivaas.dev/logging` - Structured logging (optional).
-- `rivaas.dev/metrics` - Metrics collection (optional).
-- `rivaas.dev/tracing` - OpenTelemetry tracing (optional).
-- `rivaas.dev/openapi` - OpenAPI generation (optional).
+- `rivaas.dev/logging` - Structured logging (module is always pulled; enable in app config when you want app-managed logging).
+- `rivaas.dev/metrics` - Metrics (module is always pulled; enable exporters in app config when you want metrics).
+- `rivaas.dev/tracing` - OpenTelemetry tracing (module is always pulled; enable exporters in app config when you want tracing).
+- `rivaas.dev/openapi` - OpenAPI generation (module is always pulled; enable when you use OpenAPI options).
 
 ## Verify Installation
 
