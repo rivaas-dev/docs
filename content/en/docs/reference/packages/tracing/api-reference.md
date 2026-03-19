@@ -219,7 +219,7 @@ If tracing is disabled, returns the original context and a non-recording span. T
 
 ```go
 ctx, span := tracer.StartSpan(ctx, "database-query")
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
 
 tracer.SetSpanAttribute(span, "db.query", "SELECT * FROM users")
 ```
@@ -227,23 +227,80 @@ tracer.SetSpanAttribute(span, "db.query", "SELECT * FROM users")
 ### FinishSpan
 
 ```go
-func (t *Tracer) FinishSpan(span trace.Span, statusCode int)
+func (t *Tracer) FinishSpan(span trace.Span)
 ```
 
-Completes the span with the given status code. Sets the span status based on the HTTP status code:
-- 2xx-3xx: Success (`codes.Ok`)
-- 4xx-5xx: Error (`codes.Error`)
-
-This method is safe to call multiple times; subsequent calls are no-ops.
-
-**Parameters:**
-- `span`: The span to finish
-- `statusCode`: HTTP status code (e.g., `http.StatusOK`)
+Ends the span with status Ok. Use for child spans that complete successfully and have no HTTP status. Safe to call multiple times; subsequent calls are no-ops.
 
 **Example:**
 
 ```go
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
+```
+
+### FinishSpanWithHTTPStatus
+
+```go
+func (t *Tracer) FinishSpanWithHTTPStatus(span trace.Span, statusCode int)
+```
+
+Ends the span and sets status from the HTTP status code: 2xx-3xx → Ok, 4xx-5xx → Error. Use for request-level spans or when you have an HTTP status. Safe to call multiple times.
+
+**Example:**
+
+```go
+defer tracer.FinishSpanWithHTTPStatus(span, rw.Status())
+```
+
+### FinishSpanWithError
+
+```go
+func (t *Tracer) FinishSpanWithError(span trace.Span, err error)
+```
+
+Marks the span as failed with the given error, sets standard error attributes (`exception.type`, `exception.message`, `error`), and ends the span. Status description is `err.Error()`. Safe to call multiple times.
+
+**Example:**
+
+```go
+if err != nil {
+    tracer.FinishSpanWithError(span, err)
+    return err
+}
+tracer.FinishSpan(span)
+```
+
+### RecordError
+
+```go
+func (t *Tracer) RecordError(span trace.Span, err error)
+```
+
+Records an error on the span without ending it. Sets exception attributes and span status to Error. Use when an error occurs mid-span and you want to record it but continue (e.g. retry). Call `FinishSpan` or `FinishSpanWithError` when the span ends.
+
+**Example:**
+
+```go
+if err := step(); err != nil {
+    tracer.RecordError(span, err)
+}
+defer tracer.FinishSpan(span)
+```
+
+### WithSpan
+
+```go
+func (t *Tracer) WithSpan(ctx context.Context, name string, fn func(context.Context) error) error
+```
+
+Runs `fn` under a new span with the given name. The span is finished with success (`FinishSpan`) if `fn` returns nil, or with error (`FinishSpanWithError`) if `fn` returns a non-nil error. Returns the error from `fn`.
+
+**Example:**
+
+```go
+err := tracer.WithSpan(ctx, "process-order", func(ctx context.Context) error {
+    return processOrder(ctx, id)
+})
 ```
 
 ### SetSpanAttribute
@@ -323,7 +380,7 @@ If no trace context is found in headers, returns the original context. Uses W3C 
 ```go
 ctx := tracer.ExtractTraceContext(r.Context(), r.Header)
 ctx, span := tracer.StartSpan(ctx, "operation")
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
 ```
 
 ### InjectTraceContext
@@ -436,6 +493,41 @@ Returns the current tracing provider.
 
 These are package-level functions for working with spans through context.
 
+### CopyTraceContext
+
+```go
+func CopyTraceContext(ctx context.Context) context.Context
+```
+
+Returns a new context that carries the current trace (span context) from `ctx` but has no active span. Use when starting goroutines or background work so new spans created in that context are linked to the same trace. If `ctx` has no valid span context, returns `context.Background()`.
+
+**Example:**
+
+```go
+traceCtx := tracing.CopyTraceContext(r.Context())
+go func() {
+    _, span := tracer.StartSpan(traceCtx, "async-job")
+    defer tracer.FinishSpan(span)
+    doAsyncWork(ctx)
+}()
+```
+
+### RecordErrorFromContext
+
+```go
+func RecordErrorFromContext(ctx context.Context, err error)
+```
+
+Records an error on the current span in `ctx` without ending it. Sets exception attributes and span status to Error. No-op if `ctx` has no recording span or `err` is nil.
+
+**Example:**
+
+```go
+if err := step(); err != nil {
+    tracing.RecordErrorFromContext(ctx, err)
+}
+```
+
 ### TraceID
 
 ```go
@@ -510,6 +602,31 @@ func TraceContext(ctx context.Context) context.Context
 Returns the context as-is (it should already contain trace information). Provided for API consistency.
 
 Internal operational events are logged at the appropriate slog level via the logger passed to [WithLogger]. See [WithLogger](options/#withlogger) in Options.
+
+## App Context (rivaas.dev/app)
+
+When using the [app](/docs/reference/packages/app/) package with tracing enabled, the request context `*app.Context` exposes the same semantics via:
+
+| Method | Description |
+|--------|-------------|
+| `FinishSpan(span)` | End child span with success. Delegates to `tracing.FinishSpan`. |
+| `FinishSpanWithHTTPStatus(span, statusCode)` | End span with HTTP status. Delegates to `tracing.FinishSpanWithHTTPStatus`. |
+| `FinishSpanWithError(span, err)` | End span with error. Delegates to `tracing.FinishSpanWithError`. |
+| `RecordError(err)` | Record error on request span without ending it. Uses `tracing.RecordErrorFromContext(c.RequestContext(), err)`. |
+| `CopyTraceContext()` | New context with same trace for goroutines. Delegates to `tracing.CopyTraceContext(c.RequestContext())`. |
+| `WithSpan(name, fn)` | Run `fn` under a span; finish with success or error from return. Uses `c.StartSpan` and `FinishSpan` / `FinishSpanWithError`. |
+
+**Example:**
+
+```go
+err := c.WithSpan("fetch-user", func(ctx context.Context) error {
+    user, err := fetchUser(ctx, id)
+    if err != nil {
+        return err
+    }
+    return c.JSON(http.StatusOK, user)
+})
+```
 
 ## Hook Types
 

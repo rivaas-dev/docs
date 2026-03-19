@@ -89,14 +89,30 @@ defer func() {
 
 Create and manage spans manually for detailed tracing:
 
+### Minimal trace example
+
+Copy-paste example: create a tracer, start a span, finish it, and shut down.
+
+```go
+tracer := tracing.MustNew(
+    tracing.WithServiceName("my-service"),
+    tracing.WithStdout(),
+)
+defer tracer.Shutdown(context.Background())
+
+ctx, span := tracer.StartSpan(context.Background(), "my-operation")
+defer tracer.FinishSpan(span)
+// ... use ctx and span ...
+```
+
 ### Basic Span Creation
+
+Use `FinishSpan(span)` for success (no HTTP status). Use `FinishSpanWithHTTPStatus(span, statusCode)` when you have an HTTP status (e.g. request-level spans).
 
 ```go
 func processData(ctx context.Context, tracer *tracing.Tracer) {
-    // Start a span
     ctx, span := tracer.StartSpan(ctx, "process-data")
-    defer tracer.FinishSpan(span, http.StatusOK)
-    
+    defer tracer.FinishSpan(span)
     // Your code here...
 }
 ```
@@ -107,7 +123,7 @@ Add attributes to provide context about the operation:
 
 ```go
 ctx, span := tracer.StartSpan(ctx, "database-query")
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
 
 // Add attributes
 tracer.SetSpanAttribute(span, "db.system", "postgresql")
@@ -130,7 +146,7 @@ Record significant moments in a span's lifetime:
 import "go.opentelemetry.io/otel/attribute"
 
 ctx, span := tracer.StartSpan(ctx, "cache-lookup")
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
 
 // Add an event
 tracer.AddSpanEvent(span, "cache_hit",
@@ -141,24 +157,73 @@ tracer.AddSpanEvent(span, "cache_hit",
 
 ### Error Handling
 
-Use the status code to indicate span success or failure:
+When a span fails, use `FinishSpanWithError(span, err)` to record the error and end the span. On success, use `FinishSpan(span)`.
 
 ```go
 func fetchUser(ctx context.Context, tracer *tracing.Tracer, userID string) error {
     ctx, span := tracer.StartSpan(ctx, "fetch-user")
     defer func() {
         if err != nil {
-            tracer.FinishSpan(span, http.StatusInternalServerError)
+            tracer.FinishSpanWithError(span, err)
         } else {
-            tracer.FinishSpan(span, http.StatusOK)
+            tracer.FinishSpan(span)
         }
     }()
-    
     tracer.SetSpanAttribute(span, "user.id", userID)
-    
-    // Fetch user logic...
+    user, err := db.GetUser(ctx, userID)
+    if err != nil {
+        return err
+    }
+    // ...
     return nil
 }
+```
+
+To record an error on the span without ending it (e.g. retry and then finish), use `RecordError`:
+
+```go
+if err := step(); err != nil {
+    tracer.RecordError(span, err)
+}
+// ... continue, then later ...
+defer tracer.FinishSpan(span)
+```
+
+### Propagating trace to goroutines
+
+Use `CopyTraceContext(ctx)` when starting goroutines or background work so new spans link to the same trace:
+
+```go
+traceCtx := tracing.CopyTraceContext(r.Context())
+go func() {
+    _, span := tracer.StartSpan(traceCtx, "async-job")
+    defer tracer.FinishSpan(span)
+    doAsyncWork(ctx)
+}()
+```
+
+### WithSpan
+
+Run a function under a span; the span is finished with success or error based on the returned error:
+
+```go
+// Standalone
+err := tracer.WithSpan(ctx, "process-order", func(ctx context.Context) error {
+    order, err := loadOrder(ctx, id)
+    if err != nil {
+        return err
+    }
+    return executeOrder(ctx, order)
+})
+
+// With app context (in a handler)
+err := c.WithSpan("fetch-user", func(ctx context.Context) error {
+    user, err := fetchUser(ctx, id)
+    if err != nil {
+        return err
+    }
+    return c.JSON(http.StatusOK, user)
+})
 ```
 
 ## Context Helpers
@@ -225,7 +290,7 @@ func main() {
     
     // Parent span
     ctx, parentSpan := tracer.StartSpan(ctx, "process-order")
-    defer tracer.FinishSpan(parentSpan, 200)
+    defer tracer.FinishSpan(parentSpan)
     
     tracer.SetSpanAttribute(parentSpan, "order.id", "12345")
     
@@ -240,7 +305,7 @@ func main() {
 
 func validateOrder(ctx context.Context, tracer *tracing.Tracer) {
     ctx, span := tracer.StartSpan(ctx, "validate-order")
-    defer tracer.FinishSpan(span, 200)
+    defer tracer.FinishSpan(span)
     
     tracer.SetSpanAttribute(span, "validation.status", "passed")
     tracer.AddSpanEvent(span, "validation_complete")
@@ -250,7 +315,7 @@ func validateOrder(ctx context.Context, tracer *tracing.Tracer) {
 
 func chargePayment(ctx context.Context, tracer *tracing.Tracer) {
     ctx, span := tracer.StartSpan(ctx, "charge-payment")
-    defer tracer.FinishSpan(span, 200)
+    defer tracer.FinishSpan(span)
     
     tracer.SetSpanAttribute(span, "payment.amount", 99.99)
     tracer.SetSpanAttribute(span, "payment.method", "credit_card")
@@ -271,7 +336,7 @@ Use `defer` to ensure spans are finished even if errors occur:
 
 ```go
 ctx, span := tracer.StartSpan(ctx, "operation")
-defer tracer.FinishSpan(span, http.StatusOK) // Always close
+defer tracer.FinishSpan(span) // Always close
 ```
 
 ### Propagate Context
@@ -280,7 +345,7 @@ Always pass the context returned by `StartSpan` to child operations:
 
 ```go
 ctx, span := tracer.StartSpan(ctx, "parent")
-defer tracer.FinishSpan(span, http.StatusOK)
+defer tracer.FinishSpan(span)
 
 // Pass the new context to children
 childOperation(ctx) // ✓ Correct
@@ -309,7 +374,7 @@ Include relevant information as attributes:
 
 ```go
 ctx, span := tracer.StartSpan(ctx, "api-call")
-defer tracer.FinishSpan(span, statusCode)
+defer tracer.FinishSpanWithHTTPStatus(span, statusCode)
 
 tracer.SetSpanAttribute(span, "http.method", "POST")
 tracer.SetSpanAttribute(span, "http.url", "/api/users")
