@@ -407,7 +407,7 @@ resp, _ := http.DefaultClient.Do(req)
 
 ## Request Span Methods
 
-These methods are used internally by the middleware but can also be used for custom HTTP handling.
+Use these when you integrate tracing with your own HTTP stack (for example the [app](https://pkg.go.dev/rivaas.dev/app) package calls `StartRequestSpan` / `FinishRequestSpan`). Standalone `tracing.Middleware` does **not** use `StartRequestSpan`; it uses an internal helper with the same propagation, sampling, and core attributes, but sets `http.route` from `req.URL.Path` and `rivaas.router.static_route` to `true`.
 
 ### StartRequestSpan
 
@@ -415,13 +415,13 @@ These methods are used internally by the middleware but can also be used for cus
 func (t *Tracer) StartRequestSpan(ctx context.Context, req *http.Request, path string, isStatic bool) (context.Context, trace.Span)
 ```
 
-Starts a span for an HTTP request. This is used by the middleware to create request spans with standard attributes.
+Starts a span for an HTTP request with standard attributes. The `path` argument becomes `http.route` (for example a matched route template). `isStatic` is stored as `rivaas.router.static_route`. Span start / finish hooks run when configured.
 
 **Parameters:**
 - `ctx`: Request context
 - `req`: HTTP request
-- `path`: Request path
-- `isStatic`: Whether this is a static route
+- `path`: Route or path label for `http.route` (caller-defined)
+- `isStatic`: Whether the route is static; sets `rivaas.router.static_route`
 
 **Returns:**
 - Context with span
@@ -487,7 +487,7 @@ Returns the OpenTelemetry propagator.
 func (t *Tracer) GetProvider() Provider
 ```
 
-Returns the current tracing provider.
+Returns the current tracing provider. If tracing is disabled (`IsEnabled()` is false), returns an empty `Provider` (`""`).
 
 ## Context Helper Functions
 

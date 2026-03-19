@@ -13,11 +13,7 @@ Complete reference for all `Option` functions used to configure the `Tracer`.
 
 ## Option Type
 
-```go
-type Option func(*Tracer)
-```
-
-Configuration option function type used with `New()` and `MustNew()`. Options are applied during Tracer creation.
+Options are functions applied to an internal configuration value during `New()` / `MustNew()` before the `*Tracer` is built. The concrete signature is not exported; you only pass values of type `Option` from this package (for example `WithServiceName("api")`).
 
 ## Service Configuration Options
 
@@ -124,12 +120,20 @@ tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLP("collector.example.com:4317"),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 
 // Insecure (local development)
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLP("localhost:4317", tracing.OTLPInsecure()),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 ```
 
 ### WithOTLPHTTP
@@ -153,12 +157,20 @@ tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLPHTTP("http://localhost:4318"),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 
 // HTTPS (secure - production)
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLPHTTP("https://collector.example.com:4318"),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 ```
 
 ## OTLP Options
@@ -178,6 +190,10 @@ tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithOTLP("localhost:4317", tracing.OTLPInsecure()),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 ```
 
 ## Sampling Options
@@ -215,7 +231,7 @@ tracer := tracing.MustNew(
 func WithSpanStartHook(hook SpanStartHook) Option
 ```
 
-Sets a callback that is invoked when a request span is started. The hook receives the context, span, and HTTP request, allowing custom attribute injection, dynamic sampling decisions, or integration with APM tools.
+Sets a callback that is invoked when an HTTP **request** span is started (standalone `tracing.Middleware` or `StartRequestSpan`). It is **not** called for spans created with `StartSpan`. The hook receives the context, span, and HTTP request, allowing custom attribute injection, dynamic sampling decisions, or integration with APM tools.
 
 **Type:**
 ```go
@@ -243,7 +259,7 @@ tracer := tracing.MustNew(
 func WithSpanFinishHook(hook SpanFinishHook) Option
 ```
 
-Sets a callback that is invoked when a request span is finished. The hook receives the span and HTTP status code, allowing custom metrics recording, logging, or post-processing.
+Sets a callback that is invoked when an HTTP **request** span is finished (same scope as `WithSpanStartHook`). The hook receives the span and HTTP status code, allowing custom metrics recording, logging, or post-processing.
 
 **Type:**
 ```go
@@ -290,42 +306,6 @@ logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 tracer := tracing.MustNew(
     tracing.WithServiceName("my-service"),
     tracing.WithLogger(logger),
-)
-```
-
-### WithEventHandler
-
-```go
-func WithEventHandler(handler EventHandler) Option
-```
-
-Sets a custom event handler for internal operational events. Use this for advanced use cases like sending errors to Sentry, custom alerting, or integrating with non-slog logging systems.
-
-**Type:**
-```go
-type EventHandler func(Event)
-```
-
-**Example:**
-
-```go
-eventHandler := func(e tracing.Event) {
-    switch e.Type {
-    case tracing.EventError:
-        sentry.CaptureMessage(e.Message)
-        myLogger.Error(e.Message, e.Args...)
-    case tracing.EventWarning:
-        myLogger.Warn(e.Message, e.Args...)
-    case tracing.EventInfo:
-        myLogger.Info(e.Message, e.Args...)
-    case tracing.EventDebug:
-        myLogger.Debug(e.Message, e.Args...)
-    }
-}
-
-tracer := tracing.MustNew(
-    tracing.WithServiceName("my-service"),
-    tracing.WithEventHandler(eventHandler),
 )
 ```
 
@@ -376,7 +356,9 @@ Allows using a custom OpenTelemetry tracer. This is useful when you need specifi
 **Example:**
 
 ```go
-tp := trace.NewTracerProvider(...)
+import sdktrace "go.opentelemetry.io/otel/sdk/trace"
+
+tp := sdktrace.NewTracerProvider()
 customTracer := tp.Tracer("my-tracer")
 
 tracer := tracing.MustNew(
@@ -439,6 +421,10 @@ tracer := tracing.MustNew(
     tracing.WithOTLP("localhost:4317"),
     tracing.WithGlobalTracerProvider(), // Register globally
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 ```
 
 ## Option Combinations
@@ -466,6 +452,10 @@ tracer := tracing.MustNew(
     tracing.WithSpanStartHook(enrichSpan),
     tracing.WithSpanFinishHook(recordMetrics),
 )
+if err := tracer.Start(context.Background()); err != nil {
+    log.Fatal(err)
+}
+defer tracer.Shutdown(context.Background())
 ```
 
 ### Testing Configuration

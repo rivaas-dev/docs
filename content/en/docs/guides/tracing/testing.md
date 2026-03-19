@@ -13,13 +13,14 @@ The tracing package provides testing utilities to help you write tests for trace
 
 ## Testing Utilities
 
-Three helper functions are provided for testing:
+These helpers are provided for testing:
 
 | Function | Purpose | Provider |
 |----------|---------|----------|
 | `TestingTracer()` | Create tracer for tests. | Noop |
 | `TestingTracerWithStdout()` | Create tracer with output. | Stdout |
-| `TestingMiddleware()` | Create test middleware. | Noop |
+| `TestingMiddleware()` | Create test middleware with a default noop tracer. | Noop |
+| `TestingMiddlewareWithTracer()` | Create test middleware with your own `*Tracer`. | (caller's tracer) |
 
 ## TestingTracer
 

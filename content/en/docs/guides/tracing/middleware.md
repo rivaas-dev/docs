@@ -9,7 +9,7 @@ keywords:
   - automatic tracing
 ---
 
-The tracing package provides HTTP middleware for automatic request tracing with any HTTP framework. When using the [app](https://pkg.go.dev/rivaas.dev/app) package, request spans use the same semantics (W3C propagation, sampling, standard HTTP attributes) as this middleware.
+The tracing package provides HTTP middleware for automatic request tracing with any HTTP framework. When using the [app](https://pkg.go.dev/rivaas.dev/app) package, observability uses `StartRequestSpan` with the same W3C propagation, sampling rules, and core HTTP attributes. Standalone middleware sets `http.route` from `req.URL.Path` and `rivaas.router.static_route` to `true`; the app passes the route path and static flag explicitly.
 
 ## Basic Usage
 
@@ -98,6 +98,9 @@ Every traced request includes:
 | `http.status_code` | Response status | `200` |
 | `service.name` | Service name | `"my-api"` |
 | `service.version` | Service version | `"v1.0.0"` |
+| `rivaas.router.static_route` | Standalone middleware always sets this to `true` | `true` |
+
+For this middleware, `http.route` is the request path (`req.URL.Path`), not a framework route template.
 
 ## Path Exclusion
 
@@ -144,7 +147,7 @@ handler := tracing.MustMiddleware(tracer,
 )(mux)
 ```
 
-**Important**: Invalid regex patterns cause the middleware to panic during initialization.
+**Important**: Invalid regex patterns make `tracing.Middleware` return an error. `tracing.MustMiddleware` panics with that same error during setup.
 
 ### Combined Exclusions
 
@@ -238,7 +241,8 @@ Record URL query parameters as span attributes.
 By default, **all** query parameters are recorded:
 
 ```go
-handler := tracing.Middleware(tracer)(mux)
+handler := tracing.MustMiddleware(tracer)(mux)
+// Or: mw, err := tracing.Middleware(tracer); if err != nil { ... }; handler := mw(mux)
 // All params recorded by default
 ```
 
