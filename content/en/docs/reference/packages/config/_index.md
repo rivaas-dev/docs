@@ -24,7 +24,7 @@ This is the API reference for the `rivaas.dev/config` package. For learning-focu
 
 ## Package Overview
 
-The config package provides powerful configuration management for Go applications with support for multiple sources, formats, and validation strategies.
+The config package loads settings from files, environment variables, and Consul, merges them in order, and supports validation and struct binding.
 
 ### Core Features
 
@@ -34,7 +34,7 @@ The config package provides powerful configuration management for Go application
 - Automatic struct binding with type safety
 - Multiple validation strategies
 - Thread-safe operations
-- Nil-safe getter methods
+- Nil-safe typed getters (`String`, `Int`, `Get`, and similar); do not call `Values()` on a nil `*Config`
 
 ## Architecture
 
@@ -105,7 +105,7 @@ Complete documentation of the Config struct and all methods including:
 
 ### [Options](options/)
 
-Comprehensive list of all configuration options:
+All option functions for `New` and `MustNew`:
 - Source options (`WithFile`, `WithEnv`, `WithConsul`, `WithConsulOptional`, etc.)
 - Validation options (`WithBinding`, `WithValidator`, `WithJSONSchema`)
 - Dumper options (`WithFileDumper`, `WithDumper`)
@@ -139,26 +139,22 @@ type Config struct {
 
 Main configuration container. Thread-safe for concurrent access.
 
-### ConfigError
+### Error
 
 ```go
-type ConfigError struct {
+type Error struct {
     Source    string // Where the error occurred
-    Field     string // Specific field with error
+    Field     string // Specific field with error (optional)
     Operation string // Operation being performed
     Err       error  // Underlying error
 }
 ```
 
-Error type for configuration operations with detailed context.
+Configuration errors use the exported type **`config.Error`** (some comments refer to this shape as “config error”). Use `errors.As` with `*config.Error` to inspect `Source`, `Operation`, and `Err`.
 
 ### Option
 
-```go
-type Option func(*Config)
-```
-
-Configuration option function type used with `New()` and `MustNew()`. Validation errors from options are collected and reported when the config is built.
+`Option` is a functional option for `New` / `MustNew`. It applies to an **internal** builder type, not `*Config` directly—pass only values returned from `WithFile`, `WithEnv`, and other `With…` functions. Validation errors from options are collected when the config is built.
 
 ## Common Patterns
 

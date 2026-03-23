@@ -123,33 +123,27 @@ debug := cfg.BoolOr("debug", false)
 timeout := cfg.DurationOr("timeout", 30*time.Second)
 ```
 
-### Generic Getters for Custom Types
+### Generic getters (`Get`, `GetOr`, `GetE`)
 
-For custom types or explicit error handling, use the generic `GetE` function:
+Use `GetE` when a missing or invalid value should be an error. Supported type parameters match the conversion logic in the package (same general idea as `spf13/cast`); they do **not** turn a nested map into an arbitrary struct.
 
 ```go
-// With error handling
 port, err := config.GetE[int](cfg, "server.port")
 if err != nil {
     log.Printf("invalid port: %v", err)
-    port = 8080  // fallback
+    port = 8080 // fallback
 }
 
-// For custom types
-type DatabaseConfig struct {
-    Host string
-    Port int
-}
-
-dbConfig, err := config.GetE[DatabaseConfig](cfg, "database")
+// Nested JSON/YAML objects are typically map[string]any until you bind with WithBinding
+db, err := config.GetE[map[string]any](cfg, "database")
 if err != nil {
-    log.Fatalf("invalid database config: %v", err)
+    log.Fatalf("missing database block: %v", err)
 }
 ```
 
 ## Error Handling
 
-The config package provides comprehensive error handling through different getter variants.
+You can choose getters that return zero values, explicit defaults (`Or` methods), or errors (`GetE`).
 
 ### Short Form (No Error)
 
@@ -186,49 +180,50 @@ if err != nil {
     return fmt.Errorf("invalid port configuration: %w", err)
 }
 
-// Errors provide context
-// Example: "config error: key 'server.port' not found"
+// Example: `key "server.port" not found` or conversion error
 ```
 
-### ConfigError Structure
+### `config.Error` shape
 
-When errors occur during loading, they're wrapped in `ConfigError`:
+Many `Load` failures are returned as `*config.Error` (wrapping the underlying problem):
 
 ```go
-type ConfigError struct {
+type Error struct {
     Source    string // Where the error occurred (e.g., "source[0]")
-    Field     string // Specific field with the error
+    Field     string // Specific field with the error (optional)
     Operation string // Operation being performed (e.g., "load")
     Err       error  // Underlying error
 }
 ```
 
-Example error handling during load:
+Example error handling during load (`import "errors"`):
 
 ```go
 if err := cfg.Load(context.Background()); err != nil {
-    // Error message includes context:
-    // "config error in source[0] during load: file not found: config.yaml"
+    var cfgErr *config.Error
+    if errors.As(err, &cfgErr) {
+        log.Printf("in %s during %s: %v", cfgErr.Source, cfgErr.Operation, cfgErr.Err)
+    }
     log.Fatalf("configuration error: %v", err)
 }
 ```
 
-## Nil-Safe Operations
+## Nil-safe getters
 
-All getter methods handle nil `Config` instances gracefully:
+Typed getters and `Get` handle a nil `*config.Config` without panicking:
 
 ```go
 var cfg *config.Config  // nil
 
-// Short methods return zero values (no panic)
 cfg.String("key")       // Returns ""
 cfg.Int("key")          // Returns 0
 cfg.Bool("key")         // Returns false
 
-// Error methods return errors
 port, err := config.GetE[int](cfg, "key")
 // err: "config instance is nil"
 ```
+
+Do not call `Values()` on a nil config; it is not nil-receiver-safe.
 
 ## Complete Example
 

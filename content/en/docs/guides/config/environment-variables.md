@@ -9,7 +9,7 @@ keywords:
   - env config
 ---
 
-The config package provides powerful environment variable support. It automatically maps environment variables to nested configuration structures. This follows the [Twelve-Factor App methodology](https://12factor.net/config) for configuration management.
+With a prefix such as `MYAPP_`, the config package maps environment variables to nested keys (for example `MYAPP_SERVER_PORT` → `server.port`). This matches the [Twelve-Factor App](https://12factor.net/config) idea of storing config in the environment.
 
 ## Basic Usage
 

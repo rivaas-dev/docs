@@ -26,13 +26,13 @@ Main configuration container. Thread-safe for concurrent read operations and loa
 **Key properties:**
 
 - Thread-safe for concurrent `Load()` and getter operations.
-- Nil-safe. All getter methods handle nil instances gracefully.
+- Nil-safe typed getters (`Get`, `String`, `Int`, and similar) on a nil `*Config` return zero values. Do **not** call `Values()` on a nil receiver (it will panic).
 - Hierarchical data storage with dot notation support.
 
-### ConfigError
+### Error
 
 ```go
-type ConfigError struct {
+type Error struct {
     Source    string // Where the error occurred (e.g., "source[0]", "json-schema")
     Field     string // Specific field with the error (optional)
     Operation string // Operation being performed (e.g., "load", "validate")
@@ -40,7 +40,7 @@ type ConfigError struct {
 }
 ```
 
-Error type providing detailed context about configuration errors.
+Exported error type (`config.Error`) with context for failed loads, validation, or binding. For field-level context, the package also provides `NewFieldError`. Unwrap with `var e *config.Error` and `errors.As(err, &e)`.
 
 **Example error messages:**
 
@@ -130,7 +130,7 @@ Loads configuration from all configured sources, merges them, and runs validatio
 
 **Returns:**
 
-- `error` - ConfigError if loading, merging, or validation fails
+- `error` - `*config.Error` (or wrapped) if loading, merging, or validation fails
 
 **Behavior:**
 
@@ -150,6 +150,14 @@ if err := cfg.Load(context.Background()); err != nil {
 ```
 
 **Thread-safety:** Safe for concurrent calls (uses internal locking).
+
+### MustLoad
+
+```go
+func (c *Config) MustLoad(ctx context.Context)
+```
+
+Calls `Load` and panics if loading fails. Use when failure should stop the program (for example in `main`).
 
 ### Dump
 
@@ -179,6 +187,14 @@ cfg.Dump(context.Background())  // Writes to output.yaml
 ```
 
 **Use cases:** Debugging, configuration snapshots, generating configuration files.
+
+### MustDump
+
+```go
+func (c *Config) MustDump(ctx context.Context)
+```
+
+Calls `Dump` and panics if dumping fails.
 
 ## Getter Methods
 
@@ -447,7 +463,7 @@ Retrieves a map or returns the default if not found.
 func GetE[T any](c *Config, key string) (T, error)
 ```
 
-Generic getter that returns the value and an error. Useful for custom types and explicit error handling.
+Generic getter that returns the value and an error. Supports built-in types handled by the same conversion path as `spf13/cast` (see `get.go`). It does **not** decode a nested `map[string]any` into a custom struct; use `WithBinding` for struct-shaped config.
 
 **Type parameters:**
 
@@ -461,7 +477,7 @@ Generic getter that returns the value and an error. Useful for custom types and 
 **Returns:**
 
 - `T` - Value at the key (zero value if error)
-- `error` - Error if key not found, type mismatch, or nil instance
+- `error` - Error if key not found, conversion fails, or nil instance
 
 **Example:**
 
@@ -472,13 +488,8 @@ if err != nil {
     port = 8080
 }
 
-// Custom type
-type DatabaseConfig struct {
-    Host string
-    Port int
-}
-
-dbConfig, err := config.GetE[DatabaseConfig](cfg, "database")
+// Nested objects are map[string]any until you bind to a struct
+db, err := config.GetE[map[string]any](cfg, "database")
 ```
 
 ### GetOr
@@ -517,24 +528,22 @@ port := config.Get[int](cfg, "server.port")  // 0 if missing
 func (c *Config) Values() *map[string]any
 ```
 
-Returns a pointer to the internal configuration map.
+Returns a pointer to the loaded configuration map after `Load`. If no load has happened yet (`c.values` is nil), it returns a pointer to a **new** empty map (not shared with future loads).
 
-**Returns:** `nil` if Config instance is nil
+**Nil receiver:** Do not call on a nil `*Config` (panics).
 
-**Warning:** Direct modification of the returned map is not recommended. Use for read-only operations.
+**Warning:** Treat the map as read-only; mutating it bypasses normal locking.
 
 **Example:**
 
 ```go
 values := cfg.Values()
-if values != nil {
-    fmt.Printf("Config data: %+v\n", *values)
-}
+fmt.Printf("Config data: %+v\n", *values)
 ```
 
 ## Nil-Safety Guarantees
 
-All getter methods handle nil Config instances gracefully:
+Typed getters and `Get` handle a nil `*Config` without panicking:
 
 ```go
 var cfg *config.Config  // nil
@@ -550,6 +559,8 @@ cfg.StringMap("key")    // Returns map[string]any{}
 port, err := config.GetE[int](cfg, "key")
 // err: "config instance is nil"
 ```
+
+Avoid `cfg.Values()` when `cfg` may be nil; it is not nil-receiver-safe.
 
 ## Thread Safety
 
@@ -591,10 +602,10 @@ if err != nil {
 
 ```go
 if err := cfg.Load(context.Background()); err != nil {
-    var configErr *config.ConfigError
-    if errors.As(err, &configErr) {
+    var cfgErr *config.Error
+    if errors.As(err, &cfgErr) {
         log.Printf("Config error in %s during %s: %v",
-            configErr.Source, configErr.Operation, configErr.Err)
+            cfgErr.Source, cfgErr.Operation, cfgErr.Err)
     }
     return err
 }

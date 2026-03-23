@@ -10,7 +10,7 @@ keywords:
   - layered config
 ---
 
-The config package supports loading configuration from multiple sources simultaneously. This enables powerful patterns like base configuration with environment-specific overrides.
+The config package can load from several sources at once—for example a base file plus an environment-specific file and environment variables.
 
 ## Source Precedence
 

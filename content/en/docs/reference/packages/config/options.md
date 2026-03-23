@@ -9,15 +9,11 @@ keywords:
 weight: 3
 ---
 
-Comprehensive documentation of all option functions used to configure Config instances.
+Reference for all option functions passed to `New` and `MustNew`.
 
 ## Option Type
 
-```go
-type Option func(*Config)
-```
-
-Options are functions that configure a Config instance during initialization. They are passed to `New()` or `MustNew()`. Validation errors from options are collected and reported when you call `New()` (or when `MustNew()` panics).
+`Option` is a functional option that applies to an **internal** builder during construction, then produces the public `*Config`. It is **not** `func(*Config)`. Pass only non-nil values from `WithFile`, `WithEnv`, and other `With…` helpers. Validation errors from options are collected when you call `New` (or when `MustNew` panics).
 
 ## Environment Variable Expansion
 
@@ -322,14 +318,14 @@ Binds configuration to a Go struct and optionally validates it.
 **Example:**
 
 ```go
-type Config struct {
+type AppSettings struct {
     Port int `config:"port"`
 }
 
-var cfg Config
-config := config.MustNew(
+var settings AppSettings
+cfg := config.MustNew(
     config.WithFile("config.yaml"),
-    config.WithBinding(&cfg),
+    config.WithBinding(&settings),
 )
 ```
 
@@ -355,14 +351,14 @@ Changes the struct tag name used for binding (default: "config").
 **Example:**
 
 ```go
-type Config struct {
+type AppSettings struct {
     Port int `yaml:"port"`
 }
 
-var cfg Config
-config := config.MustNew(
+var settings AppSettings
+cfg := config.MustNew(
     config.WithTag("yaml"),
-    config.WithBinding(&cfg),
+    config.WithBinding(&settings),
 )
 ```
 
@@ -394,7 +390,7 @@ cfg := config.MustNew(
 )
 ```
 
-**Timing:** Validation runs after sources are merged, before struct binding.
+**Timing:** Runs after sources are merged and after JSON Schema validation (if any), before struct binding.
 
 **Multiple validators:** You can register multiple validators; all will be executed.
 
@@ -492,7 +488,7 @@ Adds a custom configuration dumper.
 
 ```go
 type Dumper interface {
-    Dump(ctx context.Context, data map[string]any) error
+    Dump(ctx context.Context, values *map[string]any) error
 }
 ```
 
@@ -501,8 +497,8 @@ type Dumper interface {
 ```go
 type CustomDumper struct{}
 
-func (d *CustomDumper) Dump(ctx context.Context, data map[string]any) error {
-    // Write data somewhere
+func (d *CustomDumper) Dump(ctx context.Context, values *map[string]any) error {
+    // Write *values somewhere; do not mutate the map unless you own the contract
     return nil
 }
 

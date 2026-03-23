@@ -350,7 +350,7 @@ All three validations will run in sequence.
 
 ## Error Handling
 
-Validation errors are wrapped in `ConfigError` with context:
+Validation failures from `Load` are often returned as `*config.Error` with context:
 
 ```go
 if err := cfg.Load(context.Background()); err != nil {

@@ -12,16 +12,21 @@ weight: 4
 
 Complete reference for built-in codecs and guidance on creating custom codecs.
 
-## Codec Interface
+## Encoder and Decoder
+
+The `rivaas.dev/config/codec` package registers implementations by name (`codec.Type`). Two interfaces are used:
 
 ```go
-type Codec interface {
+type Encoder interface {
     Encode(v any) ([]byte, error)
+}
+
+type Decoder interface {
     Decode(data []byte, v any) error
 }
 ```
 
-Codecs handle encoding and decoding of configuration data between different formats.
+Format codecs (JSON, YAML, TOML) implement both and are registered for `Encode` and `Decode`. Caster types are registered as **decoders only** (see below).
 
 ## Built-in Format Codecs
 
@@ -78,10 +83,8 @@ cfg := config.MustNew(
 ```
 
 **Features:**
-- Uses [gopkg.in/yaml.v3](https://gopkg.in/yaml.v3)
-- Supports YAML 1.2 features
-- Handles anchors and aliases
-- Preserves indentation on encoding
+- Uses [github.com/goccy/go-yaml](https://github.com/goccy/go-yaml)
+- YAML 1.2-oriented parsing and emission via that library
 
 **Common YAML types:**
 
@@ -172,7 +175,9 @@ PREFIX_A_B_C=nested
 
 ## Built-in Caster Codecs
 
-Caster codecs provide automatic type conversion for getter methods.
+Caster codecs are **decoder** registrations in the codec registry (`RegisterDecoder` only). They are useful when you plug decoders into custom pipelines.
+
+**`Config` getters** (`String`, `Int`, `Bool`, `Duration`, and so on) use [github.com/spf13/cast](https://github.com/spf13/cast) on merged values—they do not call `codec.GetDecoder(TypeCaster…)` for each read.
 
 ### Boolean Caster
 
@@ -187,7 +192,7 @@ Converts values to `bool`.
 **Example:**
 
 ```go
-debug := cfg.Bool("debug")  // Uses BoolCaster internally
+debug := cfg.Bool("debug")
 ```
 
 ### Integer Casters
@@ -267,7 +272,7 @@ Converts any value to string.
 **Example:**
 
 ```go
-value := cfg.String("key")  // Uses StringCaster internally
+value := cfg.String("key")
 ```
 
 ### Time Caster
@@ -326,13 +331,7 @@ timeout := cfg.Duration("timeout")  // "30s" → 30 * time.Second
 | YAML | ✅ | ✅ | ✅ | `.yaml`, `.yml` |
 | TOML | ✅ | ✅ | ✅ | `.toml` |
 | EnvVar | ❌ | ✅ | ❌ | - |
-| Bool | ✅ | ✅ | ❌ | - |
-| Int* | ✅ | ✅ | ❌ | - |
-| Uint* | ✅ | ✅ | ❌ | - |
-| Float* | ✅ | ✅ | ❌ | - |
-| String | ✅ | ✅ | ❌ | - |
-| Time | ✅ | ✅ | ❌ | - |
-| Duration | ✅ | ✅ | ❌ | - |
+| Caster types (Bool, Int*, …) | — | ✅ | ❌ | - |
 
 ## Format Auto-Detection
 
@@ -368,16 +367,16 @@ cfg := config.MustNew(
 import "rivaas.dev/config/codec"
 
 func init() {
-    codec.RegisterEncoder("myformat", MyCodec{})
-    codec.RegisterDecoder("myformat", MyCodec{})
+    codec.RegisterEncoder(codec.Type("myformat"), MyCodec{})
+    codec.RegisterDecoder(codec.Type("myformat"), MyCodec{})
 }
 ```
 
 **Registration functions:**
 
 ```go
-func RegisterEncoder(name string, encoder Codec)
-func RegisterDecoder(name string, decoder Codec)
+func RegisterEncoder(name codec.Type, encoder codec.Encoder)
+func RegisterDecoder(name codec.Type, decoder codec.Decoder)
 ```
 
 ### Custom Codec Example
@@ -413,8 +412,8 @@ func (c MyCodec) Decode(data []byte, v any) error {
 }
 
 func init() {
-    codec.RegisterEncoder("myformat", MyCodec{})
-    codec.RegisterDecoder("myformat", MyCodec{})
+    codec.RegisterEncoder(codec.Type("myformat"), MyCodec{})
+    codec.RegisterDecoder(codec.Type("myformat"), MyCodec{})
 }
 ```
 
@@ -452,10 +451,14 @@ cfg := config.MustNew(
 ### Pattern 4: Custom Codec
 
 ```go
-import _ "yourmodule/xmlcodec"  // Registers custom codec
+import (
+    "rivaas.dev/config"
+    "rivaas.dev/config/codec"
+    _ "yourmodule/xmlcodec" // registers custom codec in init()
+)
 
 cfg := config.MustNew(
-    config.WithFileAs("config.xml", "xml"),
+    config.WithFileAs("config.xml", codec.Type("xml")),
 )
 ```
 
@@ -538,7 +541,7 @@ if err != nil {
 - **JSON**: Fast, minimal overhead
 - **YAML**: Moderate overhead (parsing complexity)
 - **TOML**: Fast, strict typing
-- **Casters**: Minimal overhead, optimized for common cases
+- **Registry caster decoders**: small overhead when used in custom decode paths; getters use `spf13/cast` separately
 
 ## Next Steps
 

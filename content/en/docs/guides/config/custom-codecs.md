@@ -12,21 +12,21 @@ keywords:
 
 The config package allows you to extend configuration support to any format by implementing and registering custom codecs.
 
-## Codec Interface
+## Encoder and Decoder
 
-A codec is responsible for encoding and decoding configuration data.
+Registration uses `codec.Type` as the name. A format codec is usually one type that implements **both** `codec.Encoder` and `codec.Decoder`:
 
 ```go
-type Codec interface {
+type Encoder interface {
     Encode(v any) ([]byte, error)
+}
+
+type Decoder interface {
     Decode(data []byte, v any) error
 }
 ```
 
-**Methods:**
-
-- `Encode(v any) ([]byte, error)` - Convert Go data structures to bytes.
-- `Decode(data []byte, v any) error` - Convert bytes to Go data structures.
+`Encode` turns a value into bytes; `Decode` fills a value (often `*map[string]any`) from bytes.
 
 ## Built-in Codecs
 
@@ -154,8 +154,9 @@ func (c INICodec) Encode(v any) ([]byte, error) {
 }
 
 func init() {
-    codec.RegisterEncoder("ini", INICodec{})
-    codec.RegisterDecoder("ini", INICodec{})
+    const iniType codec.Type = "ini"
+    codec.RegisterEncoder(iniType, INICodec{})
+    codec.RegisterDecoder(iniType, INICodec{})
 }
 ```
 
@@ -168,12 +169,13 @@ import (
     "context"
     "log"
     "rivaas.dev/config"
+    "rivaas.dev/config/codec"
     _ "yourmodule/inicodec"  // Register codec via init()
 )
 
 func main() {
     cfg := config.MustNew(
-        config.WithFileAs("config.ini", "ini"),
+        config.WithFileAs("config.ini", codec.Type("ini")),
     )
     
     if err := cfg.Load(context.Background()); err != nil {
@@ -207,15 +209,16 @@ Codecs must be registered before use:
 import "rivaas.dev/config/codec"
 
 func init() {
-    codec.RegisterEncoder("mytype", MyCodec{})
-    codec.RegisterDecoder("mytype", MyCodec{})
+    t := codec.Type("mytype")
+    codec.RegisterEncoder(t, MyCodec{})
+    codec.RegisterDecoder(t, MyCodec{})
 }
 ```
 
 **Registration functions:**
 
-- `RegisterEncoder(name string, encoder Codec)` - Register for encoding
-- `RegisterDecoder(name string, decoder Codec)` - Register for decoding
+- `RegisterEncoder(name codec.Type, encoder codec.Encoder)` — register an encoder
+- `RegisterDecoder(name codec.Type, decoder codec.Decoder)` — register a decoder
 
 You can register the same codec for both or different codecs for each operation.
 
@@ -236,8 +239,8 @@ func (c EnvVarCodec) Encode(v any) ([]byte, error) {
 }
 
 func init() {
-    codec.RegisterDecoder("envvar", EnvVarCodec{})
-    // Note: Not registering encoder
+    codec.RegisterDecoder(codec.Type("envvar"), EnvVarCodec{})
+    // Note: not registering an encoder
 }
 ```
 
@@ -296,23 +299,19 @@ func (c XMLCodec) Encode(v any) ([]byte, error) {
 }
 
 func init() {
-    codec.RegisterEncoder("xml", XMLCodec{})
-    codec.RegisterDecoder("xml", XMLCodec{})
+    xmlType := codec.Type("xml")
+    codec.RegisterEncoder(xmlType, XMLCodec{})
+    codec.RegisterDecoder(xmlType, XMLCodec{})
 }
 ```
 
 ## Caster Codecs
 
-Caster codecs provide type conversion. You typically don't need to implement these - use the built-in casters:
+Built-in caster types are registered as decoders on the codec registry. **`Config` getters** (`Int`, `Duration`, and so on) use **`spf13/cast`** on merged values, not `codec.GetDecoder(TypeCaster…)` on each read.
 
 ```go
-import "rivaas.dev/config/codec"
-
-// Get int value with automatic conversion
-port := cfg.Int("server.port")  // Uses codec.TypeCasterInt internally
-
-// Get duration with automatic conversion
-timeout := cfg.Duration("timeout")  // Uses codec.TypeCasterDuration internally
+port := cfg.Int("server.port")
+timeout := cfg.Duration("timeout")
 ```
 
 ### Custom Caster Example
@@ -359,7 +358,7 @@ func (c URLCaster) Encode(v any) ([]byte, error) {
 ### Use Built-in Codecs For:
 
 1. **Standard formats** - JSON, YAML, TOML
-2. **Type conversion** - Use caster codecs (Int, Bool, Duration, etc.)
+2. **Type conversion on read** — use typed getters; nested structures use struct binding
 3. **Simple text formats** - Can often use JSON/YAML
 
 ## Best Practices
@@ -409,8 +408,9 @@ Register codecs in `init()` for automatic setup:
 
 ```go
 func init() {
-    codec.RegisterEncoder("myformat", MyCodec{})
-    codec.RegisterDecoder("myformat", MyCodec{})
+    t := codec.Type("myformat")
+    codec.RegisterEncoder(t, MyCodec{})
+    codec.RegisterDecoder(t, MyCodec{})
 }
 ```
 
@@ -442,7 +442,7 @@ Include usage examples:
 //   import _ "yourmodule/mycodec"
 //
 //   cfg := config.MustNew(
-//       config.WithFileAs("config.xyz", "xyz"),
+//       config.WithFileAs("config.xyz", codec.Type("xyz")),
 //   )
 //
 type MyCodec struct{}
@@ -457,6 +457,7 @@ import (
     "context"
     "log"
     "rivaas.dev/config"
+    "rivaas.dev/config/codec"
     _ "yourmodule/xmlcodec"   // Custom XML codec
     _ "yourmodule/inicodec"   // Custom INI codec
 )
@@ -464,8 +465,8 @@ import (
 func main() {
     cfg := config.MustNew(
         config.WithFile("config.yaml"),           // Built-in YAML
-        config.WithFileAs("config.xml", "xml"), // Custom XML
-        config.WithFileAs("config.ini", "ini"), // Custom INI
+        config.WithFileAs("config.xml", codec.Type("xml")), // Custom XML
+        config.WithFileAs("config.ini", codec.Type("ini")), // custom INI
         config.WithEnv("MYAPP_"),                  // Built-in EnvVar
     )
 
@@ -495,7 +496,7 @@ func TestMyCodec_Decode(t *testing.T) {
     `)
     
     var result map[string]any
-    err := codec.Decode(input, &result)
+    err := subject.Decode(input, &result)
     
     assert.NoError(t, err)
     assert.Equal(t, "localhost", result["server"].(map[string]any)["host"])
@@ -512,7 +513,7 @@ func TestMyCodec_Encode(t *testing.T) {
         },
     }
     
-    output, err := codec.Encode(data)
+    output, err := subject.Encode(data)
     
     assert.NoError(t, err)
     assert.Contains(t, string(output), "[server]")

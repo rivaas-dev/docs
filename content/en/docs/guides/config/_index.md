@@ -22,15 +22,15 @@ The Rivaas Config package provides configuration management for Go applications.
 - **Flexible Sources**: Load from files, environment variables (with custom prefixes), Consul, and easily extend with custom sources
 - **Dynamic Paths**: Use `${VAR}` in file and Consul paths for environment-based configuration
 - **Format Agnostic**: Supports JSON, YAML, TOML, and other formats via extensible codecs
-- **Type Casting**: Built-in caster codecs for automatic type conversion (bool, int, float, time, duration, etc.)
+- **Type conversion**: Getters convert values with [spf13/cast](https://github.com/spf13/cast); the codec package also registers caster decoders for custom decode paths
 - **Hierarchical Merging**: Configurations from multiple sources are merged, with later sources overriding earlier ones
 - **Struct Binding**: Automatically map configuration data to Go structs
 - **Built-in Validation**: Validate configuration using struct methods, JSON Schemas, or custom functions
 - **Dot Notation Access**: Navigate nested configuration easily (e.g., `cfg.String("database.host")`)
-- **Type-Safe Retrieval**: Get values as specific types (`string`, `int`, `bool`, etc.), with error-returning options for robust handling
+- **Typed retrieval**: `String`, `Int`, `Bool`, and related methods, plus `GetE` when you need an error for a missing or invalid key
 - **Configuration Dumping**: Save the effective configuration to files or other custom destinations
 - **Thread-Safe**: Safe for concurrent access and configuration loading in multi-goroutine applications
-- **Nil-Safe Operations**: All getter methods handle nil Config instances gracefully
+- **Nil-safe getters**: Typed getters and `Get` on a nil `*Config` return zero values; avoid `Values()` on a nil config (it panics)
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ func main() {
         log.Fatalf("failed to load configuration: %v", err)
     }
 
-    // Access configuration values - simple and clean!
+    // Access configuration values
     port := cfg.Int("server.port")
     host := cfg.StringOr("server.host", "localhost")  // With default value
     debug := cfg.Bool("debug")
@@ -70,9 +70,9 @@ func main() {
 
 - **Sources** are loaded in order; later sources override earlier ones
 - **Dot notation** allows deep access: `cfg.Get("database.host")`
-- **Type-safe accessors**: `String`, `Int`, `Bool`, etc., plus generic `Get[T]`, `GetOr[T]`, `GetE[T]` for custom types
+- **Typed accessors**: `String`, `Int`, `Bool`, etc., plus `Get[T]`, `GetOr[T]`, `GetE[T]` for a fixed set of convertible types (use struct binding for nested config shapes)
 - **Context validation**: Both `Load()` and `Dump()` methods validate that context is not nil
-- **Error handling**: All methods return descriptive errors for easier debugging
+- **Errors**: `Load` and `Dump` return errors; `Load` failures are often `*config.Error` (use `errors.As`)
 
 ## Learning Path
 
