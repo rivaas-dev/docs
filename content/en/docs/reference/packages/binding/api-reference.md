@@ -683,48 +683,34 @@ func Raw[T any](getter ValueGetter, source string, opts ...Option) (T, error)
 func RawInto(getter ValueGetter, source string, target interface{}, opts ...Option) error
 ```
 
-## Events and Observability
+## Observability
 
-### Events Type
+### Result Type
 
-Hooks for observing binding operations:
+Binding metrics captured via `WithResult`:
 
 ```go
-type Events struct {
-    FieldBound   func(name, tag string)
-    UnknownField func(name string)
-    Done         func(stats Stats)
+type Result struct {
+    FieldsBound int           // Fields that were successfully bound
+    Errors      int           // Errors encountered during binding
+    Duration    time.Duration // Wall-clock time of the binding call
+    Unknown     []string      // Unknown field paths (with UnknownWarn/UnknownError)
 }
 ```
+
+### WithResult
+
+```go
+func WithResult(r *Result) Option
+```
+
+Captures binding metrics into the provided `Result`. Pass `nil` to skip collection (no-op). When `WithResult` is not used, there is no overhead.
 
 **Example:**
 ```go
-binder := binding.MustNew(
-    binding.WithEvents(binding.Events{
-        FieldBound: func(name, tag string) {
-            log.Printf("Bound field %s from %s", name, tag)
-        },
-        UnknownField: func(name string) {
-            log.Printf("Unknown field: %s", name)
-        },
-        Done: func(stats binding.Stats) {
-            log.Printf("Binding completed: %d fields, %d errors",
-                stats.FieldsBound, stats.ErrorCount)
-        },
-    }),
-)
-```
-
-### Stats Type
-
-Statistics from binding operation:
-
-```go
-type Stats struct {
-    FieldsBound int           // Number of fields successfully bound
-    ErrorCount  int           // Number of errors encountered
-    Duration    time.Duration // Time taken for binding
-}
+var result binding.Result
+user, err := binding.JSON[User](data, binding.WithResult(&result))
+fmt.Printf("Bound %d fields in %v\n", result.FieldsBound, result.Duration)
 ```
 
 ## Constants
@@ -765,25 +751,9 @@ const (
 var DefaultTimeLayouts = []string{
     time.RFC3339,
     time.RFC3339Nano,
-    time.RFC1123,
-    time.RFC1123Z,
-    time.RFC822,
-    time.RFC822Z,
-    time.RFC850,
-    time.ANSIC,
-    time.UnixDate,
-    time.RubyDate,
-    time.Kitchen,
-    time.Stamp,
-    time.StampMilli,
-    time.StampMicro,
-    time.StampNano,
-    time.DateTime,
     time.DateOnly,
-    time.TimeOnly,
-    "2006-01-02",
-    "01/02/2006",
-    "2006/01/02",
+    time.DateTime,
+    "2006-01-02T15:04:05",
 }
 ```
 

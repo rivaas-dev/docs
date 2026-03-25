@@ -512,23 +512,13 @@ req, err := binding.Bind[Request](
 
 ### Q: How do I debug binding issues?
 
-**A:** Use event hooks:
+**A:** Use `WithResult` to capture binding metrics:
 
 ```go
-binder := binding.MustNew(
-    binding.WithEvents(binding.Events{
-        FieldBound: func(name, tag string) {
-            log.Printf("Bound %s from %s", name, tag)
-        },
-        UnknownField: func(name string) {
-            log.Printf("Unknown field: %s", name)
-        },
-        Done: func(stats binding.Stats) {
-            log.Printf("%d fields, %d errors, %v",
-                stats.FieldsBound, stats.ErrorCount, stats.Duration)
-        },
-    }),
-)
+var result binding.Result
+user, err := binding.JSON[User](body, binding.WithResult(&result))
+fmt.Printf("Bound %d fields in %v, errors: %d, unknown: %v\n",
+    result.FieldsBound, result.Duration, result.Errors, result.Unknown)
 ```
 
 ### Q: Is binding thread-safe?

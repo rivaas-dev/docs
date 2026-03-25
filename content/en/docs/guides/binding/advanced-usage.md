@@ -294,12 +294,6 @@ var AppBinder = binding.MustNew(
     // Error handling
     binding.WithAllErrors(),
     
-    // Observability
-    binding.WithEvents(binding.Events{
-        FieldBound: logFieldBound,
-        UnknownField: logUnknownField,
-        Done: logBindingStats,
-    }),
 )
 
 // Use across handlers
@@ -313,46 +307,43 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-## Observability Hooks
+## Observability
 
-Monitor binding operations:
+Pass `WithResult` to capture metrics from a binding call:
 
 ```go
-binder := binding.MustNew(
-    binding.WithEvents(binding.Events{
-        // Called when a field is successfully bound
-        FieldBound: func(name, tag string) {
-            metrics.Increment("binding.field.bound", "field:"+name, "source:"+tag)
-        },
-        
-        // Called when an unknown field is encountered
-        UnknownField: func(name string) {
-            slog.Warn("Unknown field in request", "field", name)
-            metrics.Increment("binding.field.unknown", "field:"+name)
-        },
-        
-        // Called after binding completes
-        Done: func(stats binding.Stats) {
-            slog.Info("Binding completed",
-                "fields_bound", stats.FieldsBound,
-                "errors", stats.ErrorCount,
-                "duration", stats.Duration,
-            )
-            
-            metrics.Histogram("binding.duration", stats.Duration.Milliseconds())
-            metrics.Gauge("binding.fields.bound", stats.FieldsBound)
-        },
-    }),
+var result binding.Result
+user, err := binding.JSON[User](body,
+    binding.WithUnknownFields(binding.UnknownWarn),
+    binding.WithResult(&result),
 )
+// result.FieldsBound == 3, result.Duration == 142µs
+// result.Unknown == ["extra_field"]  (only with UnknownWarn/UnknownError)
 ```
 
-### Binding Stats
+The `Result` struct:
 
 ```go
-type Stats struct {
-    FieldsBound int           // Number of fields successfully bound
-    ErrorCount  int           // Number of errors encountered
-    Duration    time.Duration // Time taken for binding
+type Result struct {
+    FieldsBound int           // Fields that were successfully bound
+    Errors      int           // Errors encountered during binding
+    Duration    time.Duration // Wall-clock time of the binding call
+    Unknown     []string      // Unknown field paths (with UnknownWarn/UnknownError)
+}
+```
+
+When you do not pass `WithResult`, there is no overhead — the binder skips metric collection entirely.
+
+### Metrics integration
+
+```go
+var result binding.Result
+user, err := AppBinder.JSON[User](body, binding.WithResult(&result))
+
+metrics.Histogram("binding.duration", result.Duration.Milliseconds())
+metrics.Gauge("binding.fields.bound", result.FieldsBound)
+if len(result.Unknown) > 0 {
+    slog.Warn("unknown fields in request", "fields", result.Unknown)
 }
 ```
 

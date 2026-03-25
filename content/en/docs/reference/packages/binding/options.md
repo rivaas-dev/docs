@@ -9,7 +9,7 @@ keywords:
 weight: 2
 ---
 
-Comprehensive reference for all configuration options available in the binding package.
+All configuration options for the binding package.
 
 ## Option Type
 
@@ -430,51 +430,38 @@ binder := binding.MustNew(
 
 ## Observability
 
-### WithEvents
+### WithResult
 
 ```go
-func WithEvents(events Events) Option
+func WithResult(r *Result) Option
 
-type Events struct {
-    FieldBound   func(name, tag string)
-    UnknownField func(name string)
-    Done         func(stats Stats)
-}
-
-type Stats struct {
-    FieldsBound int
-    ErrorCount  int
-    Duration    time.Duration
+type Result struct {
+    FieldsBound int           // Fields that were successfully bound
+    Errors      int           // Errors encountered during binding
+    Duration    time.Duration // Wall-clock time of the binding call
+    Unknown     []string      // Unknown field paths (with UnknownWarn/UnknownError)
 }
 ```
 
-Registers event handlers for observing binding operations.
+Captures binding metrics into the provided `Result`. Pass `nil` to skip collection (no-op). When `WithResult` is not used, there is no overhead.
 
 **Example:**
 ```go
-binder := binding.MustNew(
-    binding.WithEvents(binding.Events{
-        FieldBound: func(name, tag string) {
-            metrics.Increment("binding.field.bound",
-                "field:"+name, "source:"+tag)
-        },
-        UnknownField: func(name string) {
-            log.Warn("Unknown field", "name", name)
-        },
-        Done: func(stats binding.Stats) {
-            metrics.Histogram("binding.duration",
-                stats.Duration.Milliseconds())
-            metrics.Gauge("binding.fields", stats.FieldsBound)
-        },
-    }),
+var result binding.Result
+user, err := binding.JSON[User](data,
+    binding.WithUnknownFields(binding.UnknownWarn),
+    binding.WithResult(&result),
 )
+// result.FieldsBound == 3, result.Errors == 0
+// result.Duration == 142µs
+// result.Unknown == ["extra_field"]
 ```
 
 **Use Cases:**
 - Metrics collection
 - Debugging
 - Performance monitoring
-- Audit logging
+- Detecting unknown fields in development
 
 ## Multi-Source Options
 
@@ -601,14 +588,12 @@ var ProductionBinder = binding.MustNew(
         "2006-01-02",
         "01/02/2006",
     )...),
-    
-    // Observability
-    binding.WithEvents(binding.Events{
-        FieldBound:   logFieldBound,
-        UnknownField: logUnknownField,
-        Done:         recordMetrics,
-    }),
 )
+
+// Per-call observability
+var result binding.Result
+user, err := ProductionBinder.JSON[User](data, binding.WithResult(&result))
+metrics.Histogram("binding.duration", result.Duration.Milliseconds())
 ```
 
 ### Development Configuration
@@ -624,21 +609,13 @@ var DevBinder = binding.MustNew(
     
     // Collect all errors for debugging
     binding.WithAllErrors(),
-    
-    // Verbose logging
-    binding.WithEvents(binding.Events{
-        FieldBound: func(name, tag string) {
-            log.Printf("[DEBUG] Bound %s from %s", name, tag)
-        },
-        UnknownField: func(name string) {
-            log.Printf("[WARN] Unknown field: %s", name)
-        },
-        Done: func(stats binding.Stats) {
-            log.Printf("[DEBUG] Binding: %d fields, %d errors, %v",
-                stats.FieldsBound, stats.ErrorCount, stats.Duration)
-        },
-    }),
 )
+
+// Per-call: capture and log result
+var result binding.Result
+user, err := DevBinder.JSON[User](data, binding.WithResult(&result))
+log.Printf("[DEBUG] Binding: %d fields, %d errors, %v, unknown: %v",
+    result.FieldsBound, result.Errors, result.Duration, result.Unknown)
 ```
 
 ### Testing Configuration

@@ -257,6 +257,9 @@ binding.WithSliceMode(mode)      // SliceRepeat or SliceCSV
 
 // Error collection
 binding.WithAllErrors()          // Collect all errors instead of failing on first
+
+// Observability
+binding.WithResult(&result)      // Capture binding metrics into Result
 ```
 
 ## Reusable Binders
