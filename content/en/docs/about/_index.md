@@ -45,9 +45,11 @@ Every decision we make follows a few key ideas:
 
 ## Learn More
 
-Want to understand how we built Rivaas? Read about our design principles:
+Want to understand how we built Rivaas?
 
-[Design Principles →](design-principles/)
+- [Design Principles](design-principles/) — The core ideas that guide every decision
+- [Architecture](architecture/) — How the packages and modules are structured
+- [Design Decisions](design-decisions/) — Why we chose specific approaches
 
 ## Join the Community
 

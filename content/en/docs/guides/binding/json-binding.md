@@ -195,6 +195,73 @@ if req.Email != nil {
 }
 ```
 
+## Default Values
+
+Use the `default` tag to set fallback values for fields that are absent from the JSON payload:
+
+```go
+type CreateServerRequest struct {
+    Host    string        `json:"host" default:"localhost"`
+    Port    int           `json:"port" default:"8080"`
+    Debug   bool          `json:"debug" default:"true"`
+    Timeout time.Duration `json:"timeout" default:"30s"`
+    Tags    []string      `json:"tags" default:"prod,main"`
+}
+
+// POST with: {"host": "api.example.com"}
+req, err := binding.JSON[CreateServerRequest](r.Body)
+// Result: Host="api.example.com", Port=8080, Debug=true, Timeout=30s, Tags=["prod","main"]
+```
+
+Defaults are only applied to fields **absent** from the JSON. A field sent with its zero value is kept as-is:
+
+```go
+type Settings struct {
+    Active bool `json:"active" default:"true"`
+    Count  int  `json:"count" default:"42"`
+}
+
+// POST with: {"active": false, "count": 0}
+// Result: Active=false, Count=0 — defaults are NOT applied
+```
+
+### Supported Types
+
+Defaults work for all scalar types, pointer types, and slices:
+
+| Type | Example Tag |
+|------|-------------|
+| `string` | `default:"hello"` |
+| `int`, `int8`..`int64` | `default:"42"` |
+| `uint`, `uint8`..`uint64` | `default:"10"` |
+| `float32`, `float64` | `default:"3.14"` |
+| `bool` | `default:"true"` or `default:"false"` |
+| `time.Time` | `default:"2024-01-01T00:00:00Z"` |
+| `time.Duration` | `default:"5s"` |
+| `net.IP` | `default:"192.168.1.1"` |
+| `url.URL` | `default:"https://example.com"` |
+| Pointer variants (`*T`) | Same syntax; creates a non-nil pointer |
+| Slices (`[]T`) | Comma-separated: `default:"a,b,c"` |
+
+### Nested Struct Defaults
+
+When a nested struct key is present in the JSON but some child fields are missing, those child fields receive their defaults:
+
+```go
+type Address struct {
+    City    string `json:"city" default:"Unknown"`
+    Country string `json:"country" default:"US"`
+}
+
+type User struct {
+    Name    string  `json:"name" default:"anonymous"`
+    Address Address `json:"address"`
+}
+
+// POST with: {"address": {"city": "NYC"}}
+// Result: Name="anonymous", Address.City="NYC", Address.Country="US"
+```
+
 ## Array Bodies
 
 Bind arrays directly:

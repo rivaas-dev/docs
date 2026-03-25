@@ -198,7 +198,7 @@ Control binding behavior with struct tags:
 | `header` | HTTP header | `header:"X-Header-Name"` |
 | `path` | Path parameter | `path:"param_name"` |
 | `cookie` | HTTP cookie | `cookie:"cookie_name"` |
-| `default` | Default value | `default:"value"` |
+| `default` | Default value (all sources including JSON body) | `default:"value"` |
 | `validate` | Validation rules | `validate:"required,email"` |
 
 ## Error Types

@@ -214,7 +214,7 @@ type CookieParams struct {
 
 ## Default Tag
 
-Specify default values for fields:
+Specify default values for fields. Defaults work for all binding sources: query, path, header, cookie, form, and JSON body.
 
 ```go
 type Config struct {
@@ -232,6 +232,22 @@ type Config struct {
 }
 ```
 
+### JSON Body Defaults
+
+For JSON body binding, defaults are applied after decoding. Only fields **absent** from the JSON payload receive their default. A field sent with its zero value (e.g. `{"active": false}`) is NOT overwritten by the default.
+
+```go
+type CreateRequest struct {
+    Host    string   `json:"host" default:"localhost"`
+    Port    int      `json:"port" default:"8080"`
+    Debug   bool     `json:"debug" default:"true"`
+    Tags    []string `json:"tags" default:"prod,main"`
+}
+
+// POST with: {"host": "api.example.com"}
+// Result: Host="api.example.com", Port=8080, Debug=true, Tags=["prod","main"]
+```
+
 ### Default Value Types
 
 ```go
@@ -242,6 +258,16 @@ type Defaults struct {
     Bool     bool          `default:"true"`
     Duration time.Duration `default:"1h30m"`
     Time     time.Time     `default:"2025-01-01T00:00:00Z"`
+}
+```
+
+For slices, use comma-separated values. Whitespace around elements is trimmed:
+
+```go
+type SliceDefaults struct {
+    Tags     []string        `default:"a, b, c"`
+    IDs      []int           `default:"1,2,3"`
+    Timeouts []time.Duration `default:"1s,2m,3h"`
 }
 ```
 
