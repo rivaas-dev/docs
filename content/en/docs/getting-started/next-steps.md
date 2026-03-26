@@ -216,9 +216,7 @@ api := a.Group("/api", authMiddleware)
 ### Start Server
 
 ```go
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-a.Start(ctx)
+a.Start(context.Background())
 ```
 
 ### Handle Requests

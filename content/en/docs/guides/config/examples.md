@@ -428,9 +428,6 @@ package main
 import (
     "context"
     "log"
-    "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
     "rivaas.dev/config"
@@ -469,11 +466,7 @@ func main() {
         c.JSON(200, map[string]string{"status": "ok"})
     })
     
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-    
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatalf("server error: %v", err)
     }
 }

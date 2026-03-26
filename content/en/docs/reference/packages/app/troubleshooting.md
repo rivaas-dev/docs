@@ -134,13 +134,15 @@ Kill the process or use a different port with `WithPort(n)`.
 
 ### Graceful Shutdown Not Working
 
-**Problem:** Server doesn't shut down cleanly.
+**Problem:** Server doesn't shut down on Ctrl+C, or doesn't shut down cleanly.
 
 **Solution:**
 
+- `Start` handles SIGINT and SIGTERM internally. Pass `context.Background()` — no `signal.NotifyContext` is needed.
 - Increase shutdown timeout: `WithShutdownTimeout(60 * time.Second)`.
 - Check OnShutdown hooks complete quickly.
 - Verify handlers respect context cancellation.
+- If the server is stuck during shutdown, press Ctrl+C a second time to force-terminate immediately.
 
 ## Observability Issues
 

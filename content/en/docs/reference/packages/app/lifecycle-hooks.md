@@ -77,6 +77,8 @@ Called when the application receives a reload signal (SIGHUP) or when `Reload()`
 
 If no OnReload hooks are registered, SIGHUP is ignored on Unix so the process keeps running (e.g. `kill -HUP` does not terminate it).
 
+Note: SIGINT and SIGTERM trigger graceful shutdown (not reload). These are handled internally by `Start` — no `signal.NotifyContext` setup is needed.
+
 Hooks run sequentially and stop on first error. Errors are logged but don't crash the server.
 
 **Use for:** Reloading configuration, rotating certificates, flushing caches, updating runtime settings.
@@ -106,11 +108,12 @@ Registering any lifecycle hook after the router is frozen (e.g. after `Start()` 
 4. OnReady hooks execute (async, non-blocking)
 5. Server handles requests...
    → OnReload hooks execute when SIGHUP received (sequential, logged on error)
-6. Context canceled (SIGTERM/SIGINT)
+6. Shutdown triggered (SIGINT/SIGTERM signal, or context canceled)
 7. OnShutdown hooks execute (LIFO order, with timeout)
 8. Server shutdown complete
 9. OnStop hooks execute (best-effort, no timeout)
 10. Process exits
+    → Second signal during step 7-9: immediate os.Exit(1)
 ```
 
 ## Hook Characteristics

@@ -168,9 +168,7 @@ a.OnReload(func(ctx context.Context) error {
 })
 
 // Start server
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-a.Start(ctx)
+a.Start(context.Background())
 ```
 
 Now you can reload without restarting:
@@ -477,9 +475,6 @@ package main
 import (
     "context"
     "log"
-    "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
 )
@@ -558,13 +553,9 @@ func main() {
     a.GET("/", homeHandler)
     a.GET("/health", healthHandler)
     
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-    
-    // Start server
+    // Start server - signal handling (SIGINT/SIGTERM) is built in
     log.Println("Starting server...")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -579,11 +570,12 @@ func main() {
 4. OnReady hooks execute (async, non-blocking)
 5. Server handles requests...
    → OnReload hooks execute when SIGHUP received (sequential, logged on error)
-6. Context canceled (SIGTERM/SIGINT)
+6. Shutdown triggered (SIGINT/SIGTERM signal, or context canceled)
 7. OnShutdown hooks execute (LIFO order, with timeout)
 8. Server shutdown complete
 9. OnStop hooks execute (best-effort, no timeout)
 10. Process exits
+    → Second signal during step 7-9: immediate os.Exit(1)
 ```
 
 ## Next Steps

@@ -319,17 +319,9 @@ func main() {
     // Register routes...
     a.GET("/", homeHandler)
     
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(
-        context.Background(),
-        os.Interrupt,
-        syscall.SIGTERM,
-    )
-    defer cancel()
-    
-    // Start server
+    // Start server - signal handling (SIGINT/SIGTERM) is built in
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -434,17 +426,9 @@ func main() {
         c.JSON(http.StatusOK, req)
     })
     
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(
-        context.Background(),
-        os.Interrupt,
-        syscall.SIGTERM,
-    )
-    defer cancel()
-    
-    // Start server
+    // Start server - signal handling (SIGINT/SIGTERM) is built in
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

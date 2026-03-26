@@ -20,13 +20,12 @@ description: >
 Start an HTTP server:
 
 ```go
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-
-if err := a.Start(ctx); err != nil {
+if err := a.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
 ```
+
+`Start` handles SIGINT (Ctrl+C) and SIGTERM internally. No signal setup is needed. Press Ctrl+C twice to force-terminate if graceful shutdown is taking too long.
 
 ### Custom Address
 
@@ -40,7 +39,7 @@ a, err := app.New(
     app.WithPort(8080),
 )
 // ...
-a.Start(ctx)
+a.Start(context.Background())
 
 // All interfaces (default)
 a, err := app.New(
@@ -48,7 +47,7 @@ a, err := app.New(
     app.WithPort(8080),
 )
 // ...
-a.Start(ctx)
+a.Start(context.Background())
 ```
 
 ## HTTPS Server
@@ -64,10 +63,7 @@ a := app.MustNew(
 )
 // ... register routes ...
 
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-
-if err := a.Start(ctx); err != nil {
+if err := a.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
 ```
@@ -110,10 +106,7 @@ a := app.MustNew(
 )
 // ... register routes ...
 
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-
-if err := a.Start(ctx); err != nil {
+if err := a.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
 ```
@@ -138,35 +131,43 @@ a := app.MustNew(
     ),
 )
 // ...
-if err := a.Start(ctx); err != nil { ... }
+if err := a.Start(context.Background()); err != nil { ... }
 ```
 
 ## Graceful Shutdown
 
-### Signal-Based Shutdown
+### Automatic Signal Handling
 
-Use `signal.NotifyContext` for graceful shutdown:
+`Start` handles SIGINT (Ctrl+C) and SIGTERM automatically. No `signal.NotifyContext` boilerplate is needed:
 
 ```go
-ctx, cancel := signal.NotifyContext(
-    context.Background(),
-    os.Interrupt,
-    syscall.SIGTERM,
-)
-defer cancel()
-
-if err := a.Start(ctx); err != nil {
+if err := a.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
 ```
 
+The context parameter is still useful for programmatic shutdown — for example in tests or admin endpoints — by canceling the context directly.
+
+### Force Shutdown
+
+If the server is taking too long to shut down, press Ctrl+C a second time. The process will terminate immediately with exit code 1.
+
+Terminal output during a normal graceful shutdown:
+
+```
+^C
+INFO  shutdown signal received              signal=interrupt
+INFO  shutting down gracefully, press Ctrl+C again to force
+INFO  server exited                         protocol=HTTP
+```
+
 ### Shutdown Process
 
-When context is canceled:
+When a shutdown signal or context cancellation is received:
 
 1. Server stops accepting new connections
-2. OnShutdown hooks execute (LIFO order)
-3. Server waits for in-flight requests (up to shutdown timeout)
+2. OnShutdown hooks execute (LIFO order, within shutdown timeout)
+3. Server waits for in-flight requests to drain
 4. Observability components shut down (metrics, tracing)
 5. OnStop hooks execute (best-effort)
 6. Process exits
@@ -195,9 +196,6 @@ package main
 import (
     "context"
     "log"
-    "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
 )
@@ -209,15 +207,8 @@ func main() {
     
     a.GET("/", homeHandler)
     
-    ctx, cancel := signal.NotifyContext(
-        context.Background(),
-        os.Interrupt,
-        syscall.SIGTERM,
-    )
-    defer cancel()
-    
     log.Println("Server starting on :8080")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }
@@ -234,8 +225,6 @@ import (
     "crypto/x509"
     "log"
     "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
 )
@@ -261,12 +250,8 @@ func main() {
         ), // default port 8443
     )
     a.GET("/", homeHandler)
-    
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-    
-    log.Println("mTLS server starting on :8443 (default)")
-    if err := a.Start(ctx); err != nil {
+
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

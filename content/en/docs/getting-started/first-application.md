@@ -40,9 +40,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
 
     "rivaas.dev/app"
 )
@@ -59,13 +56,9 @@ func main() {
     a.GET("/hello/:name", handleHello)
     a.POST("/echo", handleEcho)
 
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
+    // Start the server - signal handling (SIGINT/SIGTERM) is built in
 
-    // Start the server
-    log.Println("🚀 Starting server on http://localhost:8080")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }
@@ -194,20 +187,18 @@ a.POST("/echo", handleEcho)
 - `:name` is a path parameter. Access it with `c.Param("name")`.
 - Handler functions receive an `*app.Context` with all request data.
 
-### 3. Graceful Shutdown
+### 3. Starting the Server
 
 ```go
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-
-if err := a.Start(ctx); err != nil {
+if err := a.Start(context.Background()); err != nil {
     log.Fatal(err)
 }
 ```
 
-- `signal.NotifyContext()` creates a context that cancels on SIGINT (Ctrl+C) or SIGTERM.
-- `Start()` starts the server and blocks until the context is canceled.
-- The server shuts down gracefully. It finishes active requests before stopping.
+- `Start()` starts the server and blocks until shutdown.
+- Signal handling is built in: SIGINT (Ctrl+C) and SIGTERM trigger graceful shutdown automatically.
+- Press Ctrl+C twice to force-terminate immediately if needed.
+- The server finishes active requests before stopping.
 
 ### 4. Handler Functions
 
@@ -348,16 +339,16 @@ if err != nil {
 }
 ```
 
-### Not Using Context for Shutdown
+### Passing a Canceled Context
 
 ```go
-// ❌ Bad: No graceful shutdown
-a.Start(context.Background())
-
-// ✅ Good: Graceful shutdown with signals
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
+// ❌ Bad: context already canceled before Start — shuts down immediately
+ctx, cancel := context.WithCancel(context.Background())
+cancel() // canceled immediately
 a.Start(ctx)
+
+// ✅ Good: pass context.Background() — Start handles signals internally
+a.Start(context.Background())
 ```
 
 ### Registering Routes After Start

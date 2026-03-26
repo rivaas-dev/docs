@@ -66,9 +66,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
 )
@@ -87,12 +84,8 @@ func main() {
         })
     })
 
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
     // Start server with graceful shutdown
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }
@@ -109,9 +102,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
     "time"
     
     "rivaas.dev/app"
@@ -164,12 +154,8 @@ func main() {
         })
     })
 
-    // Setup graceful shutdown
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
     // Start server
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatalf("Server error: %v", err)
     }
 }

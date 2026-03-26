@@ -40,9 +40,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
 
     "rivaas.dev/app"
     "rivaas.dev/openapi"
@@ -65,10 +62,7 @@ func main() {
         })
     })
 
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }
@@ -136,7 +130,7 @@ With the options used above, your Rivaas application includes:
 - **Liveness and readiness probes** at `/livez` and `/readyz`
 - **OpenAPI 3.1 spec** generated from your registered routes and Go types
 - **Interactive Swagger UI** at `/docs`
-- **Graceful shutdown** handling SIGTERM/SIGINT
+- **Graceful shutdown** — `Start` handles SIGINT/SIGTERM built-in, no signal setup needed
 - **Panic recovery** middleware
 
 Need observability? Add `WithObservability()` to enable structured logging, OpenTelemetry tracing, and Prometheus metrics — each configurable independently.

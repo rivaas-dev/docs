@@ -91,9 +91,7 @@ func main() {
     a.GET("/", handleRoot)
     
     // Start server
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-    a.Start(ctx)
+    a.Start(context.Background())
 }
 ```
 
@@ -399,9 +397,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
     "time"
 
     "rivaas.dev/app"
@@ -440,10 +435,7 @@ func main() {
     admin.GET("/dashboard", getDashboard)
 
     // Start server
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

@@ -75,9 +75,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
 
     "rivaas.dev/app"
 )
@@ -94,11 +91,8 @@ func main() {
         })
     })
 
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
     log.Println("Test server running on http://localhost:8080")
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }
@@ -117,7 +111,7 @@ curl http://localhost:8080
 # Output: {"message":"✅ Rivaas installed successfully!"}
 ```
 
-Press `Ctrl+C` to stop the server gracefully.
+Press `Ctrl+C` to stop the server gracefully. Signal handling (SIGINT/SIGTERM) is built into `app.Start`, so no additional setup is needed.
 
 ## System Requirements
 

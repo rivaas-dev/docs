@@ -948,8 +948,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
     "rivaas.dev/app"
     "rivaas.dev/binding"
     "rivaas.dev/router"
@@ -965,15 +963,11 @@ func main() {
     // Setup routes
     setupRoutes(a)
     
-    // Graceful shutdown
-    ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
-    defer stop()
-    
     // Start server
     addr := ":8080"
     log.Printf("Server starting on %s", addr)
     
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

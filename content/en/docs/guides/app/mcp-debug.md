@@ -167,17 +167,11 @@ package main
 import (
     "context"
     "log"
-    "os"
-    "os/signal"
-    "syscall"
 
     "rivaas.dev/app"
 )
 
 func main() {
-    ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-    defer cancel()
-
     a, err := app.New(
         app.WithServiceName("my-api"),
         app.WithServiceVersion("v1.0.0"),
@@ -194,7 +188,7 @@ func main() {
     // Debug MCP: http://localhost:8080/_internal/debug/mcp
     // pprof:     http://localhost:8080/_internal/debug/pprof/
 
-    if err = a.Start(ctx); err != nil {
+    if err = a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

@@ -115,7 +115,9 @@ Serve static files and set custom 404 handler.
 func (a *App) Start(ctx context.Context) error
 ```
 
-Starts the server with graceful shutdown. The server runs HTTP, HTTPS, or mTLS depending on configuration: use [WithTLS](options/#withtls) or [WithMTLS](options/#withmtls) at construction to serve over TLS; otherwise plain HTTP is used.
+Starts the server with built-in graceful shutdown. The server runs HTTP, HTTPS, or mTLS depending on configuration: use [WithTLS](options/#withtls) or [WithMTLS](options/#withmtls) at construction to serve over TLS; otherwise plain HTTP is used.
+
+Signal handling is built in — `Start` listens for SIGINT (Ctrl+C) and SIGTERM internally. No `signal.NotifyContext` setup is needed. Pass `context.Background()` for production use; pass a cancelable context for programmatic shutdown (tests, admin endpoints). A second signal during the shutdown window calls `os.Exit(1)` immediately.
 
 ### Lifecycle Hooks
 

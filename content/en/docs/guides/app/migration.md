@@ -71,9 +71,7 @@ http.ListenAndServe(":8080", r)
 **App:**
 ```go
 a := app.MustNew()
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-defer cancel()
-a.Start(ctx)  // Includes graceful shutdown
+a.Start(context.Background())  // Includes graceful shutdown
 ```
 
 ## Migration Steps
@@ -131,9 +129,7 @@ func handler(c *app.Context) {  // Change context type
 http.ListenAndServe(":8080", r)
 
 // After
-ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
-defer cancel()
-a.Start(ctx)
+a.Start(context.Background())
 ```
 
 ## Complete Migration Example
@@ -173,9 +169,6 @@ import (
     "context"
     "log"
     "net/http"
-    "os"
-    "os/signal"
-    "syscall"
     
     "rivaas.dev/app"
 )
@@ -199,14 +192,7 @@ func main() {
         })
     })
     
-    ctx, cancel := signal.NotifyContext(
-        context.Background(),
-        os.Interrupt,
-        syscall.SIGTERM,
-    )
-    defer cancel()
-    
-    if err := a.Start(ctx); err != nil {
+    if err := a.Start(context.Background()); err != nil {
         log.Fatal(err)
     }
 }

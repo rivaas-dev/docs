@@ -261,7 +261,7 @@ app.OnShutdown(func(ctx context.Context) {
 })
 ```
 
-Graceful shutdown handles in-flight requests, drains connections, and runs shutdown hooks — all managed by `Start(ctx)`.
+Graceful shutdown handles in-flight requests, drains connections, and runs shutdown hooks — all managed by `Start(ctx)`. Signal handling (SIGINT/SIGTERM) is built into `Start`; a second signal during the shutdown window triggers immediate `os.Exit(1)`.
 
 ## Observability Architecture
 
