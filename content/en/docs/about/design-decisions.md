@@ -173,3 +173,32 @@ The trade-off is that handlers must not hold references to the context after the
 ```
 
 We chose RFC 9457 over custom formats because it's well-defined, widely supported by HTTP tooling, and reduces what API consumers need to learn.
+
+## Why config bridge structs for file-based loading?
+
+**Decision:** Export `ObservabilityConfig`, `TracingConfig`, `MetricsConfig`, and `LoggingConfig` as DTOs, even though the general rule is "no user-facing config structs".
+
+**Reason:**
+
+Applications often load configuration from YAML or JSON files at startup. Functional options work well in code, but they don't have a natural text format for file-based configuration. A bridge struct solves this without giving up the functional options API:
+
+1. The user populates the struct by unmarshalling a config file.
+2. The user passes it to `WithObservabilityFromConfig`, which converts it to functional options internally.
+3. The rest of the API stays functional-options-only.
+
+This is different from replacing functional options with structs. These structs are DTOs — Data Transfer Objects — used only to move data from files into the options API. Users never mutate them to configure the app; they only pass them to one function. The functional options API (`WithObservability`, `WithTracing`, etc.) remains the primary way to configure observability in code.
+
+```go
+// File-based config loading (uses the bridge struct)
+var cfg AppConfig
+yaml.Unmarshal(data, &cfg)
+app.New(app.WithObservabilityFromConfig(cfg.Observability))
+
+// Code-based config (uses functional options directly — same result)
+app.New(app.WithObservability(
+    app.WithTracing(tracing.WithOTLP("localhost:4317")),
+    app.WithMetrics(metrics.WithPrometheus(":9090")),
+))
+```
+
+The trade-off is that exporting these structs creates a surface that could be misused. We accept this because the structs are simple, well-documented, and the only entry point is `WithObservabilityFromConfig`.
