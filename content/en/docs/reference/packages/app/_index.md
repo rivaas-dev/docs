@@ -86,6 +86,8 @@ The App package provides a high-level, opinionated framework built on top of the
 - [Observability Options](observability-options/) - Metrics, tracing, logging
 - [Health Options](health-options/) - Health endpoint configuration
 - [Debug Options](debug-options/) - Debug endpoint configuration
+- [MCP Debug Options](mcp-debug-options/) - MCP debug server configuration
+- [MCP Options](mcp-options/) - Business MCP server configuration
 
 ### API Reference
 

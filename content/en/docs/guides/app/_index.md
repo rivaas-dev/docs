@@ -202,6 +202,8 @@ Monitor your application:
 - [Observability](observability/) - Integrate metrics, tracing, and logging
 - [Health Endpoints](health-endpoints/) - Configure liveness and readiness probes
 - [Debug Endpoints](debug-endpoints/) - Enable pprof for performance profiling
+- [MCP Debug](mcp-debug/) - Expose Go runtime internals to AI tools via MCP
+- [MCP](mcp/) - Expose business tools and resources to AI agents via MCP
 
 ### 4. Production Readiness
 
